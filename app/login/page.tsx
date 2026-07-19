@@ -63,9 +63,9 @@ export default function LoginPage() {
   return (
     <div style={{ 
       minHeight: "100vh", 
-      display: "flex", alignItems: "flex-end", justifyContent: "center",
-      padding: "1rem 1rem 1rem 1rem", 
-      background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", /* เปลี่ยนสีให้สว่างขึ้น */
+      display: "flex", alignItems: "center", justifyContent: "center",
+      padding: "1rem", 
+      background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", 
       position: "relative", overflow: "hidden", fontFamily: "sans-serif" 
     }}>
       
@@ -85,10 +85,10 @@ export default function LoginPage() {
         ))}
       </div>
 
-      <div style={{ width: "100%", maxWidth: "420px", position: "relative", zIndex: 10, marginTop: "8rem" }}>
+      <div style={{ width: "100%", maxWidth: "420px", position: "relative", zIndex: 10 }}>
         
         {/* Header / Logo */}
-        <div style={{ textAlign: "center", marginBottom: "0rem", marginTop: "8rem" }}> {/* 🔴 แก้ marginTop เป็น 8rem หรือ 10rem ตรงนี้ครับ */}
+        <div style={{ textAlign: "center", marginBottom: "1.5rem" }}>
           {/* ใช้ Logo แบบรูปภาพ */}
           <img 
             src="/logo.png" 
