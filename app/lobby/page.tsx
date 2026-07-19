@@ -110,7 +110,7 @@ export default function LobbyPage() {
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "12px 16px" }}>
 
         {/* Banner */}
-          <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden" }}>
+        <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden" }}>
           <Link href="/promotions">
             <img
               src="/banner.jpg"
@@ -118,6 +118,73 @@ export default function LobbyPage() {
               style={{ width: "100%", height: "auto", display: "block", borderRadius: "12px" }}
             />
           </Link>
+        </div>
+
+        {/* 🟢 นำเกมไฮไลท์ (กล่องแดง) มาวางตรงนี้ 🟢 */}
+        <div style={{ marginBottom: "24px", background: "radial-gradient(57.87% 93.51% at 50% 6.49%, rgb(124, 58, 237) -60%, rgb(10, 7, 21) 40%)", backdropFilter: "blur(10px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
+          
+          {/* เส้นแสงสีแดงเรืองแสงด้านบน */}
+          <div style={{ position: "absolute", top: 0, left: 0, width: "100%", display: "flex", justifyContent: "center" }}>
+            <div style={{ width: "90%", height: "2px", borderRadius: "50%", background: "radial-gradient(50% 50% at 50% 50%, rgb(168, 85, 247) 0%, rgba(7, 29, 70, 0) 100%)", boxShadow: "0 0 10px rgb(246,42,0)" }}></div>
+          </div>
+
+          {/* หัวข้อแถบสีแดง */}
+          <div style={{ position: "relative", width: "100%", height: "40px", marginBottom: "20px", borderRadius: "6px", overflow: "hidden" }}>
+            <div style={{ position: "absolute", inset: 0, opacity: 0.48, background: "linear-gradient(90deg, rgba(22, 4, 4, 0.6) -6.21%, rgb(168, 85, 247) 6.41%, rgba(22, 4, 4, 0.6) 80.01%)" }}></div>
+            <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "2px", opacity: 0.44, background: "linear-gradient(90deg, rgba(22, 4, 4, 0.6) -6.21%, rgb(246, 42, 0) 4.41%, rgba(22, 4, 4, 0.6) 83.01%)" }}></div>
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", gap: "10px", paddingLeft: "16px" }}>
+              <span style={{ fontSize: "1.2rem", filter: "drop-shadow(0 0 5px rgba(255,255,255,0.5))" }}>⭐</span>
+              <span style={{ color: "white", fontSize: "1.1rem", fontWeight: 700 }}>เกมไฮไลท์</span>
+            </div>
+          </div>
+
+          {/* เนื้อหาด้านใน (แบ่งซ้าย 30% ขวา 70%) */}
+          <div style={{ display: "flex", gap: "20px", alignItems: "stretch" }}>
+            
+            {/* ด้านซ้าย: แบนเนอร์โปรโมต */}
+            <div style={{ width: "30%", flexShrink: 0 }}>
+              <img 
+                src="https://cdn.zabbet.com/T6WF/highlight/1775292485579-7ee0b7c4-1e20-4f31-84fb-66d0ac36c9a3.webp" 
+                alt="Highlight Banner" 
+                style={{ width: "100%", height: "100%", minHeight: "180px", borderRadius: "12px", objectFit: "cover", boxShadow: "0 10px 25px rgba(0,0,0,0.5)" }} 
+              />
+            </div>
+
+            {/* ด้านขวา: รายการเกมแบบเลื่อนได้ */}
+            <div style={{ width: "70%", display: "flex", gap: "24px", overflowX: "auto", scrollbarWidth: "none", padding: "10px 10px 20px 24px" }}>
+              {allGames.slice(0, 6).map((game, i) => (
+                <div key={`highlight-${game.id}`} className="rank-card" onClick={() => handleLaunchGame(game)}>
+                  
+                  <div className="rank-number-svg" style={{ left: "-15px", bottom: "10px" }}>
+                    <svg width="60" height="70" viewBox="0 0 60 72">
+                      <text x="50%" y="55%" dominantBaseline="central" textAnchor="middle" fill="#0a0a14" stroke="#1298FF" strokeWidth="3" fontSize="60" fontWeight="900" fontFamily="Arial, sans-serif" paintOrder="stroke">
+                        {i + 1}
+                      </text>
+                    </svg>
+                  </div>
+
+                  <div className="rank-img-wrapper" style={{ boxShadow: "0 8px 16px rgba(0,0,0,0.6)" }}>
+                    {game.image_url && <img src={game.image_url} className="rank-glow" alt="" />}
+                    {game.image_url ? (
+                      <img src={game.image_url} className="rank-main-img" alt={game.game_name} loading="lazy" />
+                    ) : (
+                      <div className="rank-no-img">No Image</div>
+                    )}
+                    
+                    <div style={{ position: "absolute", top: "6px", right: "6px", zIndex: 20, background: "linear-gradient(135deg, rgb(244, 86, 67), rgb(252, 58, 133))", padding: "3px 8px", borderRadius: "10px", fontSize: "0.55rem", fontWeight: 800, color: "white", boxShadow: "0 2px 5px rgba(243, 45, 120, 0.7)" }}>
+                      HOT
+                    </div>
+
+                    <div className="rank-provider-badge">
+                      <span style={{ fontSize: "10px", fontWeight: 800, color: "rgba(255,255,255,0.9)" }}>{game.product_id}</span>
+                    </div>
+                  </div>
+
+                  <div className="rank-title">{game.game_name_th || game.game_name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* 10 อันดับเกมมาแรง (สไตล์แบบ Swiper Premium) */}
@@ -369,77 +436,6 @@ export default function LobbyPage() {
                 </div>
               </div>
             )}
-
-            {/* เกมไฮไลท์ (กล่องแดง) */}
-            <div style={{ marginTop: "32px", background: "radial-gradient(57.87% 93.51% at 50% 6.49%, rgb(124, 58, 237) -60%, rgb(10, 7, 21) 40%)", backdropFilter: "blur(10px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
-              
-              {/* เส้นแสงสีแดงเรืองแสงด้านบน */}
-              <div style={{ position: "absolute", top: 0, left: 0, width: "100%", display: "flex", justifyContent: "center" }}>
-                <div style={{ width: "90%", height: "2px", borderRadius: "50%", background: "radial-gradient(50% 50% at 50% 50%, rgb(168, 85, 247) 0%, rgba(7, 29, 70, 0) 100%)", boxShadow: "0 0 10px rgb(246,42,0)" }}></div>
-              </div>
-
-              {/* หัวข้อแถบสีแดง */}
-              <div style={{ position: "relative", width: "100%", height: "40px", marginBottom: "20px", borderRadius: "6px", overflow: "hidden" }}>
-                <div style={{ position: "absolute", inset: 0, opacity: 0.48, background: "linear-gradient(90deg, rgba(22, 4, 4, 0.6) -6.21%, rgb(168, 85, 247) 6.41%, rgba(22, 4, 4, 0.6) 80.01%)" }}></div>
-                <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "2px", opacity: 0.44, background: "linear-gradient(90deg, rgba(22, 4, 4, 0.6) -6.21%, rgb(246, 42, 0) 4.41%, rgba(22, 4, 4, 0.6) 83.01%)" }}></div>
-                <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", gap: "10px", paddingLeft: "16px" }}>
-                  <span style={{ fontSize: "1.2rem", filter: "drop-shadow(0 0 5px rgba(255,255,255,0.5))" }}>⭐</span>
-                  <span style={{ color: "white", fontSize: "1.1rem", fontWeight: 700 }}>เกมไฮไลท์</span>
-                </div>
-              </div>
-
-              {/* เนื้อหาด้านใน (แบ่งซ้าย 30% ขวา 70%) */}
-              <div style={{ display: "flex", gap: "20px", alignItems: "stretch" }}>
-                
-                {/* ด้านซ้าย: แบนเนอร์โปรโมต */}
-                <div style={{ width: "30%", flexShrink: 0 }}>
-                  <img 
-                    src="https://cdn.zabbet.com/T6WF/highlight/1775292485579-7ee0b7c4-1e20-4f31-84fb-66d0ac36c9a3.webp" 
-                    alt="Highlight Banner" 
-                    style={{ width: "100%", height: "100%", minHeight: "180px", borderRadius: "12px", objectFit: "cover", boxShadow: "0 10px 25px rgba(0,0,0,0.5)" }} 
-                  />
-                </div>
-
-                {/* ด้านขวา: รายการเกมแบบเลื่อนได้ (ใช้คลาส rank-card ของเดิมได้เลย) */}
-                <div style={{ width: "70%", display: "flex", gap: "24px", overflowX: "auto", scrollbarWidth: "none", padding: "10px 10px 20px 24px" }}>
-                  {allGames.slice(0, 6).map((game, i) => (
-                    <div key={`highlight-${game.id}`} className="rank-card" onClick={() => handleLaunchGame(game)}>
-                      
-                      {/* 🔴 ย้ายตัวเลข SVG ออกมาวางตรงนี้ (ระหว่าง rank-card กับ rank-img-wrapper) */}
-                      <div className="rank-number-svg" style={{ left: "-15px", bottom: "10px" }}>
-                        <svg width="60" height="70" viewBox="0 0 60 72">
-                          <text x="50%" y="55%" dominantBaseline="central" textAnchor="middle" fill="#0a0a14" stroke="#1298FF" strokeWidth="3" fontSize="60" fontWeight="900" fontFamily="Arial, sans-serif" paintOrder="stroke">
-                            {i + 1}
-                          </text>
-                        </svg>
-                      </div>
-
-                      {/* กล่องรูปภาพเกม (โดนตัดขอบมนเหมือนเดิม) */}
-                      <div className="rank-img-wrapper" style={{ boxShadow: "0 8px 16px rgba(0,0,0,0.6)" }}>
-                        {game.image_url && <img src={game.image_url} className="rank-glow" alt="" />}
-                        {game.image_url ? (
-                          <img src={game.image_url} className="rank-main-img" alt={game.game_name} loading="lazy" />
-                        ) : (
-                          <div className="rank-no-img">No Image</div>
-                        )}
-                        
-                        {/* ป้าย HOT */}
-                        <div style={{ position: "absolute", top: "6px", right: "6px", zIndex: 20, background: "linear-gradient(135deg, rgb(244, 86, 67), rgb(252, 58, 133))", padding: "3px 8px", borderRadius: "10px", fontSize: "0.55rem", fontWeight: 800, color: "white", boxShadow: "0 2px 5px rgba(243, 45, 120, 0.7)" }}>
-                          HOT
-                        </div>
-
-                        {/* ชื่อค่าย */}
-                        <div className="rank-provider-badge">
-                          <span style={{ fontSize: "10px", fontWeight: 800, color: "rgba(255,255,255,0.9)" }}>{game.product_id}</span>
-                        </div>
-                      </div>
-
-                      <div className="rank-title">{game.game_name_th || game.game_name}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
