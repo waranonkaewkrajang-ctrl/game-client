@@ -188,55 +188,6 @@ export default function LobbyPage() {
           </div>
         </div>
 
-        {/* 10 อันดับเกมมาแรง (สไตล์แบบ Swiper Premium) */}
-        <div style={{ marginBottom: "24px" }}>
-          <div style={{
-            background: "linear-gradient(90deg, rgba(124, 58, 237, 0.2) 0%, rgba(26, 26, 46, 0) 100%)",
-            padding: "12px 20px",
-            borderLeft: "4px solid #7c3aed",
-            borderRadius: "8px",
-            marginBottom: "16px",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px"
-         }}>
-  <span style={{ fontSize: "1.2rem" }}>🔥</span>
-  <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>10 อันดับเกมมาแรงค่าย PG</h3>
-</div>
-
-          <div className="rank-scroll-container">
-            {allGames.slice(0, 10).map((game, i) => (
-              <div key={`top-${game.id}`} className="rank-card" onClick={() => handleLaunchGame(game)}>
-                
-                {/* ตัวเลข SVG ลอยด้านหน้าการ์ด */}
-                <div className="rank-number-svg">
-                  <svg width="70" height="85" viewBox="0 0 70 85">
-                    <text x="50%" y="55%" dominantBaseline="central" textAnchor="middle" fill="#0a0a14" stroke="#1298FF" strokeWidth="3" fontSize="80" fontWeight="900" fontFamily="Arial, sans-serif" paintOrder="stroke">
-                      {i + 1}
-                    </text>
-                  </svg>
-                </div>
-
-                {/* กล่องรูปภาพเกม */}
-                <div className="rank-img-wrapper">
-                  {game.image_url && <img src={game.image_url} className="rank-glow" alt="" />}
-                  {game.image_url ? (
-                    <img src={game.image_url} className="rank-main-img" alt={game.game_name} loading="lazy" />
-                  ) : (
-                    <div className="rank-no-img">No Image</div>
-                  )}
-                  <div className="rank-provider-badge">
-                    <span style={{ fontSize: "9px", fontWeight: 800, color: "rgba(255,255,255,0.8)" }}>{game.product_id}</span>
-                  </div>
-                </div>
-
-                {/* ชื่อเกมด้านล่าง */}
-                <div className="rank-title">{game.game_name_th || game.game_name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
         {/* 10 ค่ายเกมสล็อต ปล่อยแรกแตก - ปรับสไตล์ใหม่ให้เหมือนโซน PG */}
 <div style={{ marginBottom: "24px" }}>
   {/* ส่วนหัวข้อ Highlight ใหม่ */}
