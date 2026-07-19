@@ -98,10 +98,10 @@ export default function LobbyPage() {
       top: `${(i * 7) % 100}%`,
       left: `${(i * 11) % 100}%`,
       fontSize: `${18 + (i % 4) * 10}px`,
-      opacity: 0.03 + (i % 3) * 0.015,
+      opacity: 0.15, /* ปรับความชัดตรงนี้ (0.15 คือ 15%) */
       animation: `floatDice ${22 + (i % 5) * 3}s ease-in-out infinite`,
       animationDelay: `${i * 1.2}s`,
-      filter: "grayscale(1) brightness(0.4)",
+      filter: "grayscale(1) brightness(1.2)", /* ปรับให้สว่างขึ้น */
     }}>🎲</div>
   ))}
 </div>
@@ -516,9 +516,9 @@ export default function LobbyPage() {
       
         @keyframes floatDice {
           0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
-          15% { opacity: 0.05; }
-          50% { transform: translate(-10px, -15px) rotate(180deg) scale(1.8); opacity: 0.06; }
-          85% { opacity: 0.03; }
+          15% { opacity: 0.1; }
+          50% { transform: translate(-10px, -15px) rotate(180deg) scale(1.8); opacity: 0.15 !important; }
+          85% { opacity: 0.1; }
           100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
         }
       `}} />
