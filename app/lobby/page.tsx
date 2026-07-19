@@ -87,12 +87,28 @@ export default function LobbyPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0a14", paddingBottom: "70px" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", paddingBottom: "70px", position: "relative", overflow: "hidden" }}>
+
+      {/* Dice Background */}
+<div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
+  {Array.from({ length: 20 }).map((_, i) => (
+    <div key={`dice-${i}`} style={{
+      position: "absolute",
+      top: `${(i * 7) % 100}%`,
+      left: `${(i * 11) % 100}%`,
+      fontSize: `${18 + (i % 4) * 10}px`,
+      opacity: 0.03 + (i % 3) * 0.015,
+      animation: `floatDice ${22 + (i % 5) * 3}s ease-in-out infinite`,
+      animationDelay: `${i * 1.2}s`,
+      filter: "grayscale(1) brightness(0.4)",
+    }}>🎲</div>
+  ))}
+</div>
       <Navbar />
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "12px 16px" }}>
 
-        {/* Banner */}
+        {/* Banner */}s
         <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden" }}>
           <a href="/promotions">
             <img
@@ -496,6 +512,14 @@ export default function LobbyPage() {
         .game-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
         .game-overlay { position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 1/1; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
         .game-card:hover .game-overlay { opacity: 1; }
+      
+        @keyframes floatDice {
+          0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
+          15% { opacity: 0.05; }
+          50% { transform: translate(-10px, -15px) rotate(180deg) scale(1.8); opacity: 0.06; }
+          85% { opacity: 0.03; }
+          100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
+        }
       `}} />
       </div>
     </div>
