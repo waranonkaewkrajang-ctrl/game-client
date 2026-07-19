@@ -151,7 +151,7 @@ export default function LobbyPage() {
             </div>
 
             {/* ด้านขวา: รายการเกมแบบเลื่อนได้ */}
-            <div style={{ width: "70%", display: "flex", gap: "24px", overflowX: "auto", scrollbarWidth: "none", padding: "10px 10px 20px 24px" }}>
+            <div style={{ width: "70%", display: "flex", alignItems: "center", gap: "24px", overflowX: "auto", scrollbarWidth: "none", padding: "10px 10px 20px 24px" }}>
               {allGames.slice(0, 6).map((game, i) => (
                 <div key={`highlight-${game.id}`} className="rank-card" onClick={() => handleLaunchGame(game)}>
                   
