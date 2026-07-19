@@ -1,26 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #0a0a14;
+  color: #e2e8f0;
+  font-family: 'Inter', -apple-system, sans-serif;
+  min-height: 100vh;
+  overflow-x: clip;
 }
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0a14; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 3px; }
+
+.btn {
+  padding: 0.65rem 1.5rem;
+  border-radius: 8px;
+  border: none;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.btn-red { background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; }
+.btn-red:hover { box-shadow: 0 4px 20px rgba(220,38,38,0.4); }
+.btn-gold { background: linear-gradient(135deg, #f59e0b, #d97706); color: #1a1a2e; }
+.btn-gold:hover { box-shadow: 0 4px 20px rgba(245,158,11,0.4); }
+.btn-dark { background: rgba(255,255,255,0.08); color: #e2e8f0; border: 1px solid rgba(255,255,255,0.1); }
+.btn-dark:hover { background: rgba(255,255,255,0.12); }
+.btn-green { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  color: white;
+  width: 100%;
+  outline: none;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+.input:focus { border-color: #dc2626; box-shadow: 0 0 0 2px rgba(220,38,38,0.2); }
+.input::placeholder { color: #4a5568; }
+
+select.input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+}
+
+.game-card {
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  background: #14142a;
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.game-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 12px 30px rgba(220,38,38,0.2);
+  border-color: rgba(220,38,38,0.4);
+}
+.game-card:hover .game-overlay { opacity: 1; }
+
+.game-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.category-chip {
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.category-chip.active { background: linear-gradient(135deg, #dc2626, #b91c1c); color: white; }
+.category-chip.inactive { background: rgba(255,255,255,0.06); color: #94a3b8; }
+.category-chip.inactive:hover { background: rgba(255,255,255,0.1); color: white; }
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(10,10,20,0.95);
+  border-top: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  padding: 6px 0;
+  z-index: 200;
+  backdrop-filter: blur(10px);
+}
+.bottom-nav a {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 0;
+  color: #64748b;
+  text-decoration: none;
+  font-size: 0.65rem;
+  font-weight: 600;
+  transition: color 0.15s;
+}
+.bottom-nav a.active { color: #dc2626; }
