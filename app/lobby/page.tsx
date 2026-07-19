@@ -155,7 +155,7 @@ export default function LobbyPage() {
               {allGames.slice(0, 6).map((game, i) => (
                 <div key={`highlight-${game.id}`} className="rank-card" onClick={() => handleLaunchGame(game)}>
                   
-                  <div className="rank-number-svg" style={{ left: "-15px", bottom: "10px" }}>
+                  <div className="rank-number-svg" style={{ left: "-32px", bottom: "22px" }}>
                     <svg width="60" height="70" viewBox="0 0 60 72">
                       <text x="50%" y="55%" dominantBaseline="central" textAnchor="middle" fill="#0a0a14" stroke="#1298FF" strokeWidth="3" fontSize="60" fontWeight="900" fontFamily="Arial, sans-serif" paintOrder="stroke">
                         {i + 1}
