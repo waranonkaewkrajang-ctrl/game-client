@@ -5,6 +5,7 @@ import api from "@/lib/api";
 import Navbar from "@/components/Navbar";
 import GameSidebar from "@/components/GameSidebar";
 import Swal from "sweetalert2";
+import Link from "next/link";
 
 interface Game {
   id: number; product_id: string; game_code: string; game_name: string; game_name_th: string | null;
@@ -108,15 +109,15 @@ export default function LobbyPage() {
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "12px 16px" }}>
 
-        {/* Banner */}s
-        <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden" }}>
-          <a href="/promotions">
+        {/* Banner */}
+          <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden" }}>
+          <Link href="/promotions">
             <img
               src="/banner.jpg"
               alt="Banner"
               style={{ width: "100%", height: "auto", display: "block", borderRadius: "12px" }}
             />
-          </a>
+          </Link>
         </div>
 
         {/* 10 อันดับเกมมาแรง (สไตล์แบบ Swiper Premium) */}
@@ -232,7 +233,7 @@ export default function LobbyPage() {
             { id: "event", label: "กิจกรรม", href: "/promotions" },
             { id: "news", label: "ข่าวสาร", href: "/history" },
           ].map((tab) => (
-            <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.href) window.location.href = tab.href; }} style={{
+            <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.href) router.push(tab.href); }} style={{
               height: "34px", padding: "0 20px", borderRadius: "6px", border: "none", cursor: "pointer",
               display: "flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap",
               fontSize: "0.8rem", fontWeight: 700, transition: "all 0.2s",
