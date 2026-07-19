@@ -203,7 +203,12 @@ export default function LobbyPage() {
     marginLeft: "16px",
     marginRight: "16px"
   }}>
-    <span style={{ fontSize: "1.2rem" }}>🚀</span>
+    {/* 🔴 แทนที่จรวดด้วยรูป GIF ไฟ (ปรับขนาด width/height ให้พอดีกับตัวอักษร) */}
+    <img 
+      src="https://kingwin88.live/storage/images/wallet/hot.gif" 
+      alt="Hot" 
+      style={{ width: "35px", height: "35px", objectFit: "contain", margin: "-8px 0" }} 
+    />
     <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#f59e0b", margin: 0 }}>10 ค่ายเกมสล็อต ปล่อยแรกแตก!!!</h3>
   </div>
   
