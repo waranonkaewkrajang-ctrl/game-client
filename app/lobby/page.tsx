@@ -155,9 +155,10 @@ export default function LobbyPage() {
               {allGames.slice(0, 6).map((game, i) => (
                 <div key={`highlight-${game.id}`} className="rank-card" onClick={() => handleLaunchGame(game)}>
                   
-                  <div className="rank-number-svg" style={{ left: "-32px", bottom: "22px" }}>
-                    <svg width="60" height="70" viewBox="0 0 60 72">
-                      <text x="50%" y="55%" dominantBaseline="central" textAnchor="middle" fill="#0a0a14" stroke="#1298FF" strokeWidth="3" fontSize="60" fontWeight="900" fontFamily="Arial, sans-serif" paintOrder="stroke">
+                  {/* 🔴 แก้จุดนี้: ปรับ bottom ให้ดันขึ้นไปทับรูปภาพ และขยายขนาดตัวเลขให้เท่าโซน PG */}
+                  <div className="rank-number-svg" style={{ left: "-28px", bottom: "26px" }}>
+                    <svg width="70" height="85" viewBox="0 0 70 85">
+                      <text x="50%" y="55%" dominantBaseline="central" textAnchor="middle" fill="#0a0a14" stroke="#1298FF" strokeWidth="3" fontSize="80" fontWeight="900" fontFamily="Arial, sans-serif" paintOrder="stroke">
                         {i + 1}
                       </text>
                     </svg>
