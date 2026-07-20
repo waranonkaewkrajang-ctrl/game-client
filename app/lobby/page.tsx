@@ -302,20 +302,20 @@ export default function LobbyPage() {
                     if (slotGames.length === 0 && pGames.length === 0) return null;
                     const firstImg = pGames.find((g) => g.image_url);
                     return (
-                      <div key={`room-${p}`} onClick={() => router.push(`/lobby/${p}`)} style={{ cursor: "pointer", background: "#121214", borderRadius: "14px", border: "2px solid rgba(245,158,11,0.15)", overflow: "hidden", transition: "all 0.3s ease", position: "relative" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "#f59e0b"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(245,158,11,0.15)"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.borderColor = "rgba(245,158,11,0.15)"; e.currentTarget.style.boxShadow = ""; }}>
+                      <div key={`room-${p}`} onClick={() => router.push(`/lobby/${p}`)} style={{ cursor: "pointer", background: "#121214", borderRadius: "14px", border: "2px solid rgba(124,58,237,0.15)", overflow: "hidden", transition: "all 0.3s ease", position: "relative" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "#7c3aed"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(124,58,237,0.15)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.borderColor = "rgba(124,58,237,0.15)"; e.currentTarget.style.boxShadow = ""; }}>
                         
                         {/* รูปตัวอย่างค่าย */}
                         <div style={{ width: "100%", aspectRatio: "1/1", background: "#1a1a2e", position: "relative", overflow: "hidden" }}>
                           {firstImg?.image_url ? (
                             <img src={firstImg.image_url} alt={p} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy" />
                           ) : (
-                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#f59e0b", fontSize: "1.5rem", fontWeight: 900 }}>{p.charAt(0)}</div>
+                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#7c3aed", fontSize: "1.5rem", fontWeight: 900 }}>{p.charAt(0)}</div>
                           )}
                           {/* Badge จำนวนเกม */}
                           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.9))", padding: "20px 8px 8px", textAlign: "center" }}>
-                            <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "white", background: "rgba(245,158,11,0.3)", padding: "3px 10px", borderRadius: "10px" }}>
+                            <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "white", background: "rgba(124,58,237,0.3)", padding: "3px 10px", borderRadius: "10px" }}>
                               {pGames.length} เกม
                             </span>
                           </div>
@@ -323,7 +323,7 @@ export default function LobbyPage() {
                           <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.4)", opacity: 0, transition: "opacity 0.3s" }}
                             onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
                             onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}>
-                            <span style={{ background: "linear-gradient(135deg, #f59e0b, #ea580c)", color: "white", padding: "8px 18px", borderRadius: "8px", fontSize: "0.8rem", fontWeight: 800, boxShadow: "0 4px 15px rgba(245,158,11,0.4)" }}>
+                            <span style={{ background: "linear-gradient(135deg, #7c3aed, #6d28d9)", color: "white", padding: "8px 18px", borderRadius: "8px", fontSize: "0.8rem", fontWeight: 800, boxShadow: "0 4px 15px rgba(124,58,237,0.4)" }}>
                               เข้าห้อง →
                             </span>
                           </div>
