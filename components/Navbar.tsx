@@ -40,7 +40,7 @@ export default function Navbar() {
 
   return (
     <>
-      <header style={{ background: "linear-gradient(180deg, #14142a, #0a0a14)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 16px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 150, backdropFilter: "blur(10px)" }}>
+      <header style={{ background: "linear-gradient(to bottom, #aa00a0, #2b002b)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 16px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 150, backdropFilter: "blur(10px)" }}>
         <a href="/lobby" style={{ textDecoration: "none" }}>
           <img src="/logo.png" alt="Logo" style={{ height: "36px", width: "auto" }} />
         </a>
