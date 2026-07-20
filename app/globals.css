@@ -144,10 +144,10 @@ select.input {
   .bottom-nav a span { font-size: 0.6rem; }
 }
 
-@media (min-width: 769px) {
+@media screen and (min-width: 769px) {
   .sidebar-desktop { display: flex !important; }
   .sidebar-mobile { display: none !important; }
   
   /* ซ่อน bottom nav บนคอม */
-  .bottom-nav { display: none !important; }
+  .bottom-nav { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
 }
