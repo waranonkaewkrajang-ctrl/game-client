@@ -148,12 +148,12 @@ export default function LobbyPage() {
                     // รองรับทั้งกรณีที่ API ส่งมาเป็น Object (banner.image_url) หรือ URL ตรงๆ (banner)
                     src={banner.image_url || banner.image || banner || "/banner.jpg"} 
                     alt={`Banner ${index + 1}`}
-                    style={{ width: "100%", flexShrink: 0, height: "auto", display: "block", borderRadius: "12px" }}
+                    style={{ width: "100%", flexShrink: 0, height: "auto", maxHeight: "400px", objectFit: "cover", display: "block", borderRadius: "12px" }}
                     onError={(e) => e.currentTarget.src = "/banner.jpg"}
                   />
                 ))
               ) : (
-                <img src="/banner.jpg" alt="Banner Default" style={{ width: "100%", height: "auto", display: "block", borderRadius: "12px" }} />
+                <img src="/banner.jpg" alt="Banner Default" style={{ width: "100%", height: "auto", maxHeight: "400px", objectFit: "cover", display: "block", borderRadius: "12px" }} />
               )}
             </div>
           </Link>
