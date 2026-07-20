@@ -24,15 +24,39 @@ export default function LobbyPage() {
   const [activeTab, setActiveTab] = useState("highlight");
   const [gameCategories, setGameCategories] = useState<{id: string; label: string; count: number}[]>([]);
 
+  // 🟢 เพิ่ม 2 บรรทัดนี้เข้าไป เพื่อให้ระบบรู้จัก currentBanner 🟢
+  const [banners, setBanners] = useState<any[]>([]);
+  const [currentBanner, setCurrentBanner] = useState(0);
+
   // หมวดที่ต้องเข้าห้องค่ายก่อน (ไม่เปิดเกมตรง)
   const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS"];
   const isRoomMode = ROOM_CATEGORIES.includes(selectedCategory.toUpperCase());
 
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
+    
     api.get("/games/products").then((res) => { if (res.data.status === "success") setProducts(res.data.data || []); }).catch(() => {});
+    
+    // 🟢 ดึงข้อมูลแบนเนอร์จากหลังบ้าน 🟢
+    api.get("/banners").then((res) => {
+      if (res.data.status === "success") {
+        setBanners(res.data.data || []);
+      }
+    }).catch(() => {
+      setBanners([{ image_url: "/banner.jpg" }]); // ถ้าโหลดไม่ติด ใช้รูป default
+    });
+
     fetchGames();
   }, []);
+
+  // 🟢 ระบบเลื่อนแบนเนอร์อัตโนมัติ 🟢
+  useEffect(() => {
+    if (banners.length <= 1) return;
+    const interval = setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % banners.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [banners]);
 
   const fetchGames = (productId?: string, searchTerm?: string) => {
     setLoading(true);
