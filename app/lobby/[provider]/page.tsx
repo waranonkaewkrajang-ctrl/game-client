@@ -68,14 +68,15 @@ export default function ProviderRoomPage() {
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "12px 16px", position: "relative", zIndex: 1 }}>
 
         {/* Room Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "18px", padding: "12px 16px", background: "linear-gradient(90deg, rgba(245,158,11,0.15), transparent)", borderRadius: "10px", borderLeft: "3px solid #f59e0b" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "18px", padding: "12px 16px", background: "linear-gradient(90deg, rgba(124,58,237,0.15), transparent)"
+            , borderRadius: "10px", borderLeft: "3px solid #7c3aed" }}>
           <button onClick={() => router.push("/lobby")} style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "8px", color: "#e2e8f0", padding: "8px 16px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "6px", transition: "all 0.2s" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(245,158,11,0.2)"; e.currentTarget.style.borderColor = "#f59e0b"; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(124,58,237,0.2)"; e.currentTarget.style.borderColor = "#7c3aed"; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}>
             ← กลับ
           </button>
           <div>
-            <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#f59e0b", margin: 0 }}>
+            <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#a78bfa", margin: 0 }}>
               ห้อง {provider}
             </h2>
             <span style={{ fontSize: "0.7rem", color: "#94a3b8" }}>
@@ -94,7 +95,7 @@ export default function ProviderRoomPage() {
         ) : games.length === 0 ? (
           <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
             <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกมในค่ายนี้</p>
-            <button onClick={() => router.push("/lobby")} style={{ marginTop: "12px", background: "linear-gradient(135deg, #f59e0b, #ea580c)", color: "white", border: "none", padding: "10px 24px", borderRadius: "8px", cursor: "pointer", fontSize: "0.85rem", fontWeight: 700 }}>
+            <button onClick={() => router.push("/lobby")} style={{ marginTop: "12px", background: "linear-gradient(135deg, #7c3aed, #6d28d9)", color: "white", border: "none", padding: "10px 24px", borderRadius: "8px", cursor: "pointer", fontSize: "0.85rem", fontWeight: 700 }}>
               กลับหน้า Lobby
             </button>
           </div>
@@ -113,9 +114,9 @@ export default function ProviderRoomPage() {
                     <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#2d2d4a", fontSize: "0.65rem" }}>No Image</div>
                   )}
                   <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "20px 8px 8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
-                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
-                    <span style={{ fontSize: "0.55rem", color: "#f59e0b", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.product_id}</span>
-                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
+                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#a78bfa" }} />
+                    <span style={{ fontSize: "0.55rem", color: "#a78bfa", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.product_id}</span>
+                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#a78bfa" }} />
                   </div>
                 </div>
                 <p style={{ fontSize: "0.72rem", fontWeight: 600, color: "#e2e8f0", margin: "6px 0 0", textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
