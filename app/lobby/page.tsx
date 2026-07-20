@@ -332,7 +332,7 @@ export default function LobbyPage() {
         </div>
 
         {/* Main Layout: Sidebar + Games */}
-        <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+        <div style={{ display: "flex", gap: "12px", alignItems: "flex-start", flexWrap: "wrap" }}>
 
           {/* Sidebar */}
           <GameSidebar selected={selectedCategory} onSelect={handleCategoryFilter} categories={gameCategories} />
@@ -351,7 +351,7 @@ export default function LobbyPage() {
                 </div>
 
                 {/* Provider Room Cards */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "14px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "14px" }}>
                   {products.map((p) => {
                     const pGames = allGames.filter((g) => g.product_id === p);
                     const slotGames = pGames.filter((g) => ROOM_CATEGORIES.includes((g.category || g.type || "").toUpperCase()));
@@ -409,7 +409,7 @@ export default function LobbyPage() {
 
                 {/* Games Grid */}
                 {loading ? (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "10px" }}>
                     {Array.from({ length: 12 }).map((_, i) => (
                       <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4" }} />
                     ))}
@@ -419,7 +419,7 @@ export default function LobbyPage() {
                     <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกม</p>
                   </div>
                 ) : (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "10px" }}>
                     {games.map((game) => (
                       <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
                         <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
@@ -458,10 +458,10 @@ export default function LobbyPage() {
                   </span>
                 </div>
                 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "14px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "14px" }}>
                   {games.slice(0, 8).map((game) => (
                     <div 
-                      key={`hot-${game.id}`} 
+                      key={`hot-${game.id}`} ห
                       onClick={() => handleLaunchGame(game)} 
                       style={{ background: "#121214", borderRadius: "14px", border: "1px solid rgba(245,158,11,0.2)", overflow: "visible", position: "relative", cursor: "pointer", transition: "all 0.3s ease", display: "flex", flexDirection: "column" }}
                       onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.6)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(245,158,11,0.15)"; }}
