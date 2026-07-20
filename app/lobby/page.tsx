@@ -23,6 +23,11 @@ export default function LobbyPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("highlight");
   const [gameCategories, setGameCategories] = useState<{id: string; label: string; count: number}[]>([]);
+  const [selectedRoom, setSelectedRoom] = useState<string | null>(null); // ค่ายเกมที่เข้าห้อง
+
+  // หมวดที่ต้องเข้าห้องค่ายก่อน (ไม่เปิดเกมตรง)
+  const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS"];
+  const isRoomMode = ROOM_CATEGORIES.includes(selectedCategory.toUpperCase());
 
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
@@ -61,6 +66,7 @@ export default function LobbyPage() {
   const handleCategoryFilter = (catId: string) => {
     setSelectedCategory(catId);
     setSelectedProduct("");
+    setSelectedRoom(null); // reset ห้องเวลาเปลี่ยนหมวด
     if (!catId) {
       setGames(allGames);
     } else {
@@ -75,6 +81,22 @@ export default function LobbyPage() {
   };
 
   const handleSearch = (e: React.FormEvent) => { e.preventDefault(); fetchGames(selectedProduct, search); };
+
+  // เข้าห้องค่ายเกม (แสดงเกมทั้งหมดของค่ายนั้น)
+  const handleEnterRoom = (productId: string) => {
+    setSelectedRoom(productId);
+    setSelectedProduct(productId);
+    setSelectedCategory("");
+    fetchGames(productId);
+  };
+
+  // ออกจากห้อง กลับไปหน้ารวมค่าย
+  const handleBackFromRoom = () => {
+    setSelectedRoom(null);
+    setSelectedProduct("");
+    // กลับไปแสดงหมวดสล็อต (รายการค่ายเกม)
+    handleCategoryFilter("SLOT");
+  };
 
   const handleLaunchGame = async (game: Game) => {
     try {
@@ -218,7 +240,7 @@ export default function LobbyPage() {
       const pGames = allGames.filter((g) => g.product_id === p);
       const firstImg = pGames.find((g) => g.image_url);
       return (
-        <div key={`provider-${p}`} className="rank-card" onClick={() => { setSelectedProduct(p); setSelectedCategory(""); fetchGames(p); }}>
+        <div key={`provider-${p}`} className="rank-card" onClick={() => handleEnterRoom(p)}>
           
           {/* ตัวเลข Rank (ใช้สีส้มให้เข้ากับค่ายเกม) */}
           <div className="rank-number-svg">
@@ -278,59 +300,170 @@ export default function LobbyPage() {
 
           {/* Games Area */}
           <div style={{ flex: 1, minWidth: 0 }}>
-            
-            {/* Section Title */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
-              <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
-                {selectedCategory || selectedProduct || "เกมทั้งหมด"}
-                <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem", marginLeft: "6px" }}>({games.length})</span>
-              </h2>
-            </div>
 
-            {/* Games Grid */}
-            {loading ? (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
-                {Array.from({ length: 12 }).map((_, i) => (
-                  <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4" }} />
-                ))}
-              </div>
-            ) : games.length === 0 ? (
-              <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
-                <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกม</p>
-              </div>
-            ) : (
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
-                {games.map((game) => (
-                  <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
-                    
-                    {/* รูปเกม มุมโค้ง */}
-                    <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
-                      onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.4)"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
-                      {game.image_url ? (
-                        <img src={game.image_url} alt={game.game_name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy"
-                          onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
-                          onMouseLeave={(e) => e.currentTarget.style.transform = ""} />
-                      ) : (
-                        <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#2d2d4a", fontSize: "0.65rem" }}>No Image</div>
-                      )}
-                      {/* ชื่อค่ายมุมล่าง */}
-                      {/* ชื่อค่าย + gradient ด้านล่าง */}
-                      <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "20px 8px 8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
-                        <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
-                        <span style={{ fontSize: "0.55rem", color: "#f59e0b", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.product_id}</span>
-                        <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
-                      </div>
-                    </div>
-
-                    {/* ชื่อเกม ลอยด้านล่าง (ไม่มีกรอบ) */}
-                    <p style={{ fontSize: "0.72rem", fontWeight: 600, color: "#e2e8f0", margin: "6px 0 0", textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                      {game.game_name_th || game.game_name}
-                    </p>
+            {/* ===== โหมด 1: อยู่ในห้องค่ายเกม (กดค่ายมาแล้ว → แสดงเกมทั้งหมดของค่าย) ===== */}
+            {selectedRoom ? (
+              <>
+                {/* Room Header - ชื่อค่าย + ปุ่มกลับ */}
+                <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px", padding: "10px 14px", background: "linear-gradient(90deg, rgba(245,158,11,0.15), transparent)", borderRadius: "10px", borderLeft: "3px solid #f59e0b" }}>
+                  <button onClick={handleBackFromRoom} style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "8px", color: "#e2e8f0", padding: "6px 14px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "6px", transition: "all 0.2s" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(245,158,11,0.2)"; e.currentTarget.style.borderColor = "#f59e0b"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}>
+                    ← กลับ
+                  </button>
+                  <div>
+                    <h2 style={{ fontSize: "1rem", fontWeight: 800, color: "#f59e0b", margin: 0 }}>
+                      🎰 ห้อง {selectedRoom}
+                    </h2>
+                    <span style={{ fontSize: "0.7rem", color: "#94a3b8" }}>เกมทั้งหมด {games.length} เกม</span>
                   </div>
-                ))}
-              </div>
-            )}
+                </div>
+
+                {/* Games Grid ในห้อง */}
+                {loading ? (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+                    {Array.from({ length: 12 }).map((_, i) => (
+                      <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4" }} />
+                    ))}
+                  </div>
+                ) : games.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
+                    <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกมในค่ายนี้</p>
+                  </div>
+                ) : (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+                    {games.map((game) => (
+                      <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
+                        <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.4)"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
+                          {game.image_url ? (
+                            <img src={game.image_url} alt={game.game_name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy"
+                              onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+                              onMouseLeave={(e) => e.currentTarget.style.transform = ""} />
+                          ) : (
+                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#2d2d4a", fontSize: "0.65rem" }}>No Image</div>
+                          )}
+                          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "20px 8px 8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
+                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
+                            <span style={{ fontSize: "0.55rem", color: "#f59e0b", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.product_id}</span>
+                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
+                          </div>
+                        </div>
+                        <p style={{ fontSize: "0.72rem", fontWeight: 600, color: "#e2e8f0", margin: "6px 0 0", textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {game.game_name_th || game.game_name}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+
+            /* ===== โหมด 2: เลือกหมวดสล็อต → แสดงรายการค่ายเกม (ห้อง) ===== */
+            ) : isRoomMode ? (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
+                  <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
+                    🎰 เลือกค่ายเกม
+                  </h2>
+                  <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem" }}>({products.length} ค่าย)</span>
+                </div>
+
+                {/* Provider Room Cards */}
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "14px" }}>
+                  {products.map((p) => {
+                    const pGames = allGames.filter((g) => g.product_id === p);
+                    const slotGames = pGames.filter((g) => ROOM_CATEGORIES.includes((g.category || g.type || "").toUpperCase()));
+                    // แสดงเฉพาะค่ายที่มีเกมสล็อต
+                    if (slotGames.length === 0 && pGames.length === 0) return null;
+                    const firstImg = pGames.find((g) => g.image_url);
+                    return (
+                      <div key={`room-${p}`} onClick={() => handleEnterRoom(p)} style={{ cursor: "pointer", background: "#121214", borderRadius: "14px", border: "2px solid rgba(245,158,11,0.15)", overflow: "hidden", transition: "all 0.3s ease", position: "relative" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "#f59e0b"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(245,158,11,0.15)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.borderColor = "rgba(245,158,11,0.15)"; e.currentTarget.style.boxShadow = ""; }}>
+                        
+                        {/* รูปตัวอย่างค่าย */}
+                        <div style={{ width: "100%", aspectRatio: "1/1", background: "#1a1a2e", position: "relative", overflow: "hidden" }}>
+                          {firstImg?.image_url ? (
+                            <img src={firstImg.image_url} alt={p} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy" />
+                          ) : (
+                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#f59e0b", fontSize: "1.5rem", fontWeight: 900 }}>{p.charAt(0)}</div>
+                          )}
+                          {/* Badge จำนวนเกม */}
+                          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.9))", padding: "20px 8px 8px", textAlign: "center" }}>
+                            <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "white", background: "rgba(245,158,11,0.3)", padding: "3px 10px", borderRadius: "10px" }}>
+                              {pGames.length} เกม
+                            </span>
+                          </div>
+                          {/* ปุ่มเข้าห้อง */}
+                          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.4)", opacity: 0, transition: "opacity 0.3s" }}
+                            onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+                            onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}>
+                            <span style={{ background: "linear-gradient(135deg, #f59e0b, #ea580c)", color: "white", padding: "8px 18px", borderRadius: "8px", fontSize: "0.8rem", fontWeight: 800, boxShadow: "0 4px 15px rgba(245,158,11,0.4)" }}>
+                              เข้าห้อง →
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* ชื่อค่าย */}
+                        <div style={{ padding: "10px", textAlign: "center" }}>
+                          <p style={{ fontSize: "0.8rem", fontWeight: 800, color: "#e4e4e7", margin: 0 }}>{p}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+
+            /* ===== โหมด 3: หน้าปกติ (Lobby / หมวดอื่น) → เปิดเกมได้โดยตรง ===== */
+            ) : (
+              <>
+                {/* Section Title */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                  <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
+                    {selectedCategory || selectedProduct || "เกมทั้งหมด"}
+                    <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem", marginLeft: "6px" }}>({games.length})</span>
+                  </h2>
+                </div>
+
+                {/* Games Grid */}
+                {loading ? (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+                    {Array.from({ length: 12 }).map((_, i) => (
+                      <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4" }} />
+                    ))}
+                  </div>
+                ) : games.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
+                    <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกม</p>
+                  </div>
+                ) : (
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+                    {games.map((game) => (
+                      <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
+                        <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
+                          onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.4)"; }}
+                          onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
+                          {game.image_url ? (
+                            <img src={game.image_url} alt={game.game_name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy"
+                              onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+                              onMouseLeave={(e) => e.currentTarget.style.transform = ""} />
+                          ) : (
+                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#2d2d4a", fontSize: "0.65rem" }}>No Image</div>
+                          )}
+                          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "20px 8px 8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
+                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
+                            <span style={{ fontSize: "0.55rem", color: "#f59e0b", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.product_id}</span>
+                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
+                          </div>
+                        </div>
+                        <p style={{ fontSize: "0.72rem", fontWeight: 600, color: "#e2e8f0", margin: "6px 0 0", textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                          {game.game_name_th || game.game_name}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
             {/* Hot Games Section */}
             {!selectedProduct && !selectedCategory && games.length > 0 && (
@@ -393,6 +526,8 @@ export default function LobbyPage() {
                 </div>
               </div>
             )}
+          </>
+          )}
           </div>
         </div>
 
