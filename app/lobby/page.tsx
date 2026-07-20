@@ -23,7 +23,6 @@ export default function LobbyPage() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("highlight");
   const [gameCategories, setGameCategories] = useState<{id: string; label: string; count: number}[]>([]);
-  const [selectedRoom, setSelectedRoom] = useState<string | null>(null); // ค่ายเกมที่เข้าห้อง
 
   // หมวดที่ต้องเข้าห้องค่ายก่อน (ไม่เปิดเกมตรง)
   const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS"];
@@ -66,7 +65,6 @@ export default function LobbyPage() {
   const handleCategoryFilter = (catId: string) => {
     setSelectedCategory(catId);
     setSelectedProduct("");
-    setSelectedRoom(null); // reset ห้องเวลาเปลี่ยนหมวด
     if (!catId) {
       setGames(allGames);
     } else {
@@ -81,22 +79,6 @@ export default function LobbyPage() {
   };
 
   const handleSearch = (e: React.FormEvent) => { e.preventDefault(); fetchGames(selectedProduct, search); };
-
-  // เข้าห้องค่ายเกม (แสดงเกมทั้งหมดของค่ายนั้น)
-  const handleEnterRoom = (productId: string) => {
-    setSelectedRoom(productId);
-    setSelectedProduct(productId);
-    setSelectedCategory("");
-    fetchGames(productId);
-  };
-
-  // ออกจากห้อง กลับไปหน้ารวมค่าย
-  const handleBackFromRoom = () => {
-    setSelectedRoom(null);
-    setSelectedProduct("");
-    // กลับไปแสดงหมวดสล็อต (รายการค่ายเกม)
-    handleCategoryFilter("SLOT");
-  };
 
   const handleLaunchGame = async (game: Game) => {
     try {
@@ -240,7 +222,7 @@ export default function LobbyPage() {
       const pGames = allGames.filter((g) => g.product_id === p);
       const firstImg = pGames.find((g) => g.image_url);
       return (
-        <div key={`provider-${p}`} className="rank-card" onClick={() => handleEnterRoom(p)}>
+        <div key={`provider-${p}`} className="rank-card" onClick={() => router.push(`/lobby/${p}`)}>
           
           {/* ตัวเลข Rank (ใช้สีส้มให้เข้ากับค่ายเกม) */}
           <div className="rank-number-svg">
@@ -301,70 +283,12 @@ export default function LobbyPage() {
           {/* Games Area */}
           <div style={{ flex: 1, minWidth: 0 }}>
 
-            {/* ===== โหมด 1: อยู่ในห้องค่ายเกม (กดค่ายมาแล้ว → แสดงเกมทั้งหมดของค่าย) ===== */}
-            {selectedRoom ? (
-              <>
-                {/* Room Header - ชื่อค่าย + ปุ่มกลับ */}
-                <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "14px", padding: "10px 14px", background: "linear-gradient(90deg, rgba(245,158,11,0.15), transparent)", borderRadius: "10px", borderLeft: "3px solid #f59e0b" }}>
-                  <button onClick={handleBackFromRoom} style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "8px", color: "#e2e8f0", padding: "6px 14px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "6px", transition: "all 0.2s" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(245,158,11,0.2)"; e.currentTarget.style.borderColor = "#f59e0b"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}>
-                    ← กลับ
-                  </button>
-                  <div>
-                    <h2 style={{ fontSize: "1rem", fontWeight: 800, color: "#f59e0b", margin: 0 }}>
-                      🎰 ห้อง {selectedRoom}
-                    </h2>
-                    <span style={{ fontSize: "0.7rem", color: "#94a3b8" }}>เกมทั้งหมด {games.length} เกม</span>
-                  </div>
-                </div>
-
-                {/* Games Grid ในห้อง */}
-                {loading ? (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
-                    {Array.from({ length: 12 }).map((_, i) => (
-                      <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4" }} />
-                    ))}
-                  </div>
-                ) : games.length === 0 ? (
-                  <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
-                    <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกมในค่ายนี้</p>
-                  </div>
-                ) : (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
-                    {games.map((game) => (
-                      <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
-                        <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.4)"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
-                          {game.image_url ? (
-                            <img src={game.image_url} alt={game.game_name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy"
-                              onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
-                              onMouseLeave={(e) => e.currentTarget.style.transform = ""} />
-                          ) : (
-                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#2d2d4a", fontSize: "0.65rem" }}>No Image</div>
-                          )}
-                          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "20px 8px 8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
-                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
-                            <span style={{ fontSize: "0.55rem", color: "#f59e0b", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.product_id}</span>
-                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
-                          </div>
-                        </div>
-                        <p style={{ fontSize: "0.72rem", fontWeight: 600, color: "#e2e8f0", margin: "6px 0 0", textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                          {game.game_name_th || game.game_name}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </>
-
-            /* ===== โหมด 2: เลือกหมวดสล็อต → แสดงรายการค่ายเกม (ห้อง) ===== */
-            ) : isRoomMode ? (
+            {/* ===== โหมด 2: เลือกหมวดสล็อต → แสดงรายการค่ายเกม ===== */}
+            {isRoomMode ? (
               <>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
                   <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
-                    🎰 เลือกค่ายเกม
+                    เลือกค่ายเกม
                   </h2>
                   <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem" }}>({products.length} ค่าย)</span>
                 </div>
@@ -378,7 +302,7 @@ export default function LobbyPage() {
                     if (slotGames.length === 0 && pGames.length === 0) return null;
                     const firstImg = pGames.find((g) => g.image_url);
                     return (
-                      <div key={`room-${p}`} onClick={() => handleEnterRoom(p)} style={{ cursor: "pointer", background: "#121214", borderRadius: "14px", border: "2px solid rgba(245,158,11,0.15)", overflow: "hidden", transition: "all 0.3s ease", position: "relative" }}
+                      <div key={`room-${p}`} onClick={() => router.push(`/lobby/${p}`)} style={{ cursor: "pointer", background: "#121214", borderRadius: "14px", border: "2px solid rgba(245,158,11,0.15)", overflow: "hidden", transition: "all 0.3s ease", position: "relative" }}
                         onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "#f59e0b"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(245,158,11,0.15)"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.borderColor = "rgba(245,158,11,0.15)"; e.currentTarget.style.boxShadow = ""; }}>
                         
