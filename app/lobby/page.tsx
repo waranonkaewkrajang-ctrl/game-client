@@ -113,15 +113,48 @@ export default function LobbyPage() {
 
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "12px 16px" }}>
 
-        {/* Banner */}
-        <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden" }}>
+        {/* Banner (ดึงจากหลังบ้าน + เลื่อนอัตโนมัติ) */}
+        <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden", position: "relative" }}>
           <Link href="/promotions">
-            <img
-              src="/banner.jpg"
-              alt="Banner"
-              style={{ width: "100%", height: "auto", display: "block", borderRadius: "12px" }}
-            />
+            <div style={{ display: "flex", width: "100%", transition: "transform 0.5s ease-in-out", transform: `translateX(-${currentBanner * 100}%)` }}>
+              {banners.length > 0 ? (
+                banners.map((banner, index) => (
+                  <img
+                    key={index}
+                    // รองรับทั้งกรณีที่ API ส่งมาเป็น Object (banner.image_url) หรือ URL ตรงๆ (banner)
+                    src={banner.image_url || banner.image || banner || "/banner.jpg"} 
+                    alt={`Banner ${index + 1}`}
+                    style={{ width: "100%", flexShrink: 0, height: "auto", display: "block", borderRadius: "12px" }}
+                    onError={(e) => e.currentTarget.src = "/banner.jpg"}
+                  />
+                ))
+              ) : (
+                <img src="/banner.jpg" alt="Banner Default" style={{ width: "100%", height: "auto", display: "block", borderRadius: "12px" }} />
+              )}
+            </div>
           </Link>
+
+          {/* ปุ่มจุดไข่ปลา (Dots) */}
+          {banners.length > 1 && (
+            <div style={{ position: "absolute", bottom: "12px", left: "0", right: "0", display: "flex", justifyContent: "center", gap: "6px" }}>
+              {banners.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={(e) => { e.preventDefault(); setCurrentBanner(index); }}
+                  style={{
+                    width: currentBanner === index ? "20px" : "8px",
+                    height: "8px",
+                    borderRadius: "4px",
+                    background: currentBanner === index ? "#f59e0b" : "rgba(255,255,255,0.5)",
+                    border: "none",
+                    cursor: "pointer",
+                    transition: "all 0.3s ease"
+                  }}
+                  aria-label={`Slide ${index + 1}`}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* 🟢 นำเกมไฮไลท์ (กล่องแดง) มาวางตรงนี้ 🟢 */}
