@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
-import Navbar from "@/components/Navbar";
 import GameSidebar from "@/components/GameSidebar";
 import Swal from "sweetalert2";
 import Link from "next/link";
@@ -133,8 +132,6 @@ export default function LobbyPage() {
     }}>🎲</div>
   ))}
 </div>
-      <Navbar />
-
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "12px 16px" }}>
 
         {/* Banner (ดึงจากหลังบ้าน + เลื่อนอัตโนมัติ) */}

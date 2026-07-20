@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import api from "@/lib/api";
-import Navbar from "@/components/Navbar";
 import Swal from "sweetalert2";
 
 interface Game {
@@ -62,9 +61,6 @@ export default function ProviderRoomPage() {
           }}>🎲</div>
         ))}
       </div>
-
-      <Navbar />
-
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "12px 16px", position: "relative", zIndex: 1 }}>
 
         {/* Room Header */}

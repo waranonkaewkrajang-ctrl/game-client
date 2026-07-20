@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
-import Navbar from "@/components/Navbar";
 
 export default function WalletPage() {
   const router = useRouter();
@@ -69,7 +68,6 @@ export default function WalletPage() {
 
   return (
     <div className="min-h-screen bg-[#0F111A] pb-24 md:pb-10" style={{ fontFamily: "'Kanit', sans-serif" }}>
-      <Navbar />
       
       <div className="page-content mt-6">
         <div className="flex justify-center">

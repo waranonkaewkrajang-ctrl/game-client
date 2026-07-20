@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
-import Navbar from "@/components/Navbar";
 import Swal from "sweetalert2";
 
 export default function ProfilePage() {
@@ -40,7 +39,6 @@ export default function ProfilePage() {
 
   if (!user) return (
     <div style={{ minHeight: "100vh", background: "#09090b" }}>
-      <Navbar />
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
         <div style={{ width: "24px", height: "24px", border: "2px solid #27272a", borderTopColor: "#fafafa", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
       </div>
@@ -103,8 +101,6 @@ export default function ProfilePage() {
     }}>🎲</div>
   ))}
 </div>
-      
-      <Navbar />
       
       <div style={{ maxWidth: "480px", margin: "0 auto", padding: "2rem 1.5rem", position: "relative", zIndex: 10 }}>
         

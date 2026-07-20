@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
-import Navbar from "@/components/Navbar";
 
 export default function PromotionsPage() {
   const router = useRouter();
@@ -18,7 +17,6 @@ export default function PromotionsPage() {
 
   return (
     <div style={{ minHeight: "100vh", background: "#0f0f1a" }}>
-      <Navbar />
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "1.5rem" }}>
         <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#e2e8f0", marginBottom: "1rem" }}>โปรโมชัน</h1>
         {loading ? <p style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>กำลังโหลด...</p> : promotions.length === 0 ? <p style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>ยังไม่มีโปรโมชัน</p> : (
