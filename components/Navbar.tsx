@@ -42,7 +42,7 @@ export default function Navbar() {
     <>
       <header style={{ background: "linear-gradient(to bottom, #aa00a0, #2b002b)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 16px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 150, backdropFilter: "blur(10px)" }}>
         <a href="/lobby" style={{ textDecoration: "none" }}>
-          <img src="/logo.png" alt="Logo" style={{ height: "36px", width: "auto" }} />
+          <img src="/logo.png" alt="Logo" style={{ height: "48px", width: "auto" }} />
         </a>
 
         {/* Right Side */}
