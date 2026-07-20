@@ -85,7 +85,7 @@ export default function Navbar() {
       </header>
 
       {isLoggedIn && (
-        <nav className="bottom-nav" id="bottom-nav">
+        <nav className="bottom-nav">
           {navItems.map((item) => (
             <a key={item.href} href={item.href} className={pathname === item.href ? "active" : ""}>
               <img src={item.img} alt={item.label} style={{ width: "24px", height: "24px", objectFit: "contain", opacity: pathname === item.href ? 1 : 0.5, transition: "opacity 0.15s" }} />
@@ -94,12 +94,6 @@ export default function Navbar() {
           ))}
         </nav>
       )}
-
-    <style>{`
-        @media screen and (min-width: 769px) {
-          .bottom-nav { display: none !important; }
-        }
-      `}</style>
     </>
   );
 }

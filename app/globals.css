@@ -125,29 +125,3 @@ select.input {
   transition: color 0.15s;
 }
 .bottom-nav a.active { color: #dc2626; }
-
-/* ===== เพิ่มต่อท้ายสุดของไฟล์ ===== */
-
-/* ซ่อน/แสดงตาม device */
-.hide-mobile { display: block; }
-.hide-desktop { display: none; }
-
-@media (max-width: 768px) {
-  .hide-mobile { display: none !important; }
-  .hide-desktop { display: block !important; }
-  
-  /* Sidebar มือถือ → แนวนอน */
-  .sidebar-desktop { display: none !important; }
-  .sidebar-mobile { display: flex !important; }
-  
-  /* Bottom nav ปรับ */
-  .bottom-nav a span { font-size: 0.6rem; }
-}
-
-@media screen and (min-width: 769px) {
-  .sidebar-desktop { display: flex !important; }
-  .sidebar-mobile { display: none !important; }
-  
-  /* ซ่อน bottom nav บนคอม */
-  .bottom-nav { display: none !important; visibility: hidden !important; height: 0 !important; overflow: hidden !important; }
-}

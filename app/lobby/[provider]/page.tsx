@@ -87,7 +87,7 @@ export default function ProviderRoomPage() {
 
         {/* Games Grid */}
         {loading ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "10px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
             {Array.from({ length: 12 }).map((_, i) => (
               <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4", animation: "pulse 1.5s ease-in-out infinite" }} />
             ))}
@@ -100,7 +100,7 @@ export default function ProviderRoomPage() {
             </button>
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(150px, 1fr))", gap: "10px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
             {games.map((game) => (
               <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
                 <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}

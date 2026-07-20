@@ -148,12 +148,12 @@ export default function LobbyPage() {
                     // รองรับทั้งกรณีที่ API ส่งมาเป็น Object (banner.image_url) หรือ URL ตรงๆ (banner)
                     src={banner.image_url || banner.image || banner || "/banner.jpg"} 
                     alt={`Banner ${index + 1}`}
-                    style={{ width: "100%", flexShrink: 0, height: "auto", maxHeight: "400px", objectFit: "cover", display: "block", borderRadius: "12px" }}
+                    style={{ width: "100%", flexShrink: 0, height: "auto", display: "block", borderRadius: "12px" }}
                     onError={(e) => e.currentTarget.src = "/banner.jpg"}
                   />
                 ))
               ) : (
-                <img src="/banner.jpg" alt="Banner Default" style={{ width: "100%", height: "auto", maxHeight: "400px", objectFit: "cover", display: "block", borderRadius: "12px" }} />
+                <img src="/banner.jpg" alt="Banner Default" style={{ width: "100%", height: "auto", display: "block", borderRadius: "12px" }} />
               )}
             </div>
           </Link>
@@ -332,7 +332,7 @@ export default function LobbyPage() {
         </div>
 
         {/* Main Layout: Sidebar + Games */}
-        <div style={{ display: "flex", gap: "12px", alignItems: "flex-start", flexWrap: "wrap" }}>
+        <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
 
           {/* Sidebar */}
           <GameSidebar selected={selectedCategory} onSelect={handleCategoryFilter} categories={gameCategories} />
@@ -351,7 +351,7 @@ export default function LobbyPage() {
                 </div>
 
                 {/* Provider Room Cards */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "14px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "14px" }}>
                   {products.map((p) => {
                     const pGames = allGames.filter((g) => g.product_id === p);
                     const slotGames = pGames.filter((g) => ROOM_CATEGORIES.includes((g.category || g.type || "").toUpperCase()));
@@ -409,7 +409,7 @@ export default function LobbyPage() {
 
                 {/* Games Grid */}
                 {loading ? (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "10px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
                     {Array.from({ length: 12 }).map((_, i) => (
                       <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4" }} />
                     ))}
@@ -419,7 +419,7 @@ export default function LobbyPage() {
                     <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกม</p>
                   </div>
                 ) : (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "10px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
                     {games.map((game) => (
                       <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
                         <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
@@ -458,7 +458,7 @@ export default function LobbyPage() {
                   </span>
                 </div>
                 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "14px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "14px" }}>
                   {games.slice(0, 8).map((game) => (
                     <div 
                       key={`hot-${game.id}`} 

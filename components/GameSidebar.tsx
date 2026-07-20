@@ -39,72 +39,44 @@ export default function GameSidebar({ selected, onSelect, categories }: { select
   const allItems = [{ id: "", label: "หน้าแรก", count: 0 }, ...categories];
 
   return (
-    <>
-      {/* คอม: แนวตั้งด้านซ้าย */}
-      <div className="sidebar-desktop" style={{ display: "flex", flexDirection: "column", gap: "6px", width: "68px", flexShrink: 0, paddingTop: "4px", position: "sticky", top: "12px", maxHeight: "100vh" }}>
-        {allItems.map((cat) => {
-          const isActive = selected === cat.id;
-          const color = colors[cat.id] || "#64748b";
-          const icon = iconMap[cat.id];
-          return (
-            <button key={cat.id} onClick={() => onSelect(cat.id)} style={{
-              width: "60px", minHeight: "60px", borderRadius: "12px", border: "none", cursor: "pointer",
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3px",
-              padding: "6px 2px", transition: "all 0.2s",
-              background: isActive ? `linear-gradient(135deg, ${color}, ${color}dd)` : "rgba(255,255,255,0.06)",
-              boxShadow: isActive ? `0 4px 12px ${color}40` : "0 2px 4px rgba(0,0,0,0.2)",
-            }}>
-              <div style={{
-                width: "28px", height: "28px", borderRadius: "8px",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                overflow: "hidden",
-              }}>
-                {icon ? (
-                  <img src={icon} alt={cat.label} style={{
-                    width: "24px", height: "24px", objectFit: "contain",
-                    filter: isActive ? "brightness(1.2)" : "brightness(0.7)",
-                    transition: "filter 0.2s",
-                  }} />
-                ) : (
-                  <span style={{
-                    fontSize: "0.85rem", fontWeight: 800,
-                    color: isActive ? "white" : color,
-                  }}>{cat.label.charAt(0)}</span>
-                )}
-              </div>
-              <span style={{
-                fontSize: "0.5rem", fontWeight: 700, lineHeight: 1.2,
-                color: isActive ? "white" : "#94a3b8", textAlign: "center",
-              }}>{cat.label}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      {/* มือถือ: แนวนอน scroll ได้ */}
-      <div className="sidebar-mobile" style={{ display: "none", gap: "8px", overflowX: "auto", padding: "8px 12px", WebkitOverflowScrolling: "touch" }}>
-        {allItems.map((cat) => {
-          const isActive = selected === cat.id;
-          const color = colors[cat.id] || "#64748b";
-          const icon = iconMap[cat.id];
-          return (
-            <button key={`m-${cat.id}`} onClick={() => onSelect(cat.id)} style={{
-              minWidth: "56px", height: "50px", borderRadius: "10px", border: "none", cursor: "pointer",
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "2px",
-              padding: "4px 8px", flexShrink: 0,
-              background: isActive ? `linear-gradient(135deg, ${color}, ${color}dd)` : "rgba(255,255,255,0.06)",
-              boxShadow: isActive ? `0 3px 10px ${color}40` : "none",
+    <div style={{ display: "flex", flexDirection: "column", gap: "6px", width: "68px", flexShrink: 0, paddingTop: "4px", position: "sticky", top: "12px", maxHeight: "100vh" }}>
+      {allItems.map((cat) => {
+        const isActive = selected === cat.id;
+        const color = colors[cat.id] || "#64748b";
+        const icon = iconMap[cat.id];
+        return (
+          <button key={cat.id} onClick={() => onSelect(cat.id)} style={{
+            width: "60px", minHeight: "60px", borderRadius: "12px", border: "none", cursor: "pointer",
+            display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3px",
+            padding: "6px 2px", transition: "all 0.2s",
+            background: isActive ? `linear-gradient(135deg, ${color}, ${color}dd)` : "rgba(255,255,255,0.06)",
+            boxShadow: isActive ? `0 4px 12px ${color}40` : "0 2px 4px rgba(0,0,0,0.2)",
+          }}>
+            <div style={{
+              width: "28px", height: "28px", borderRadius: "8px",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              overflow: "hidden",
             }}>
               {icon ? (
-                <img src={icon} alt={cat.label} style={{ width: "20px", height: "20px", objectFit: "contain", filter: isActive ? "brightness(1.2)" : "brightness(0.7)" }} />
+                <img src={icon} alt={cat.label} style={{
+                  width: "24px", height: "24px", objectFit: "contain",
+                  filter: isActive ? "brightness(1.2)" : "brightness(0.7)",
+                  transition: "filter 0.2s",
+                }} />
               ) : (
-                <span style={{ fontSize: "0.75rem", fontWeight: 800, color: isActive ? "white" : color }}>{cat.label.charAt(0)}</span>
+                <span style={{
+                  fontSize: "0.85rem", fontWeight: 800,
+                  color: isActive ? "white" : color,
+                }}>{cat.label.charAt(0)}</span>
               )}
-              <span style={{ fontSize: "0.45rem", fontWeight: 700, color: isActive ? "white" : "#94a3b8", whiteSpace: "nowrap" }}>{cat.label}</span>
-            </button>
-          );
-        })}
-      </div>
-    </>
+            </div>
+            <span style={{
+              fontSize: "0.5rem", fontWeight: 700, lineHeight: 1.2,
+              color: isActive ? "white" : "#94a3b8", textAlign: "center",
+            }}>{cat.label}</span>
+          </button>
+        );
+      })}
+    </div>
   );
 }
