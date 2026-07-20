@@ -88,7 +88,7 @@ export default function ProviderRoomPage() {
         {/* Games Grid */}
         {loading ? (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", gap: "10px" }}>
-            {Array.from({ length: 12 }).map((_, i) => (ด
+            {Array.from({ length: 12 }).map((_, i) => (
               <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4", animation: "pulse 1.5s ease-in-out infinite" }} />
             ))}
           </div>
