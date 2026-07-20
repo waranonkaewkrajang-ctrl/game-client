@@ -512,39 +512,40 @@ export default function LobbyPage() {
           </div>
         </div>
 
-        {/* 🟢 แท็บเมนูด้านล่าง (Bottom Menu) 🟢 */}
+        {/* 🟢 แท็บเมนูด้านล่าง (Bottom Menu) แบบใหม่ 🟢 */}
         <div className="-outer-wrapper">
+          {/* พื้นหลังสีม่วงที่มีรอยแหว่งเว้าตรงกลาง */}
+          <div className="-bg-bar"></div>
+
           <div className="-left-wrapper">
             <a href="https://line.me/R/ti/p/@ODIN996" className="-item-wrapper -line" target="_blank" rel="noopener noreferrer nofollow">
-              <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-1.png" className="-ic-img" alt="Line" width={34} height={34} />
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-1.png" className="-ic-img" alt="Line" />
               <span className="-text">Line</span>
             </a>
             <Link href="/promotions" className="-item-wrapper -promotion">
-              <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชั่น" width={34} height={34} />
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชั่น" />
               <span className="-text">โปรโมชัน</span>
             </Link>
           </div>
 
           <Link href="/" className="-center-wrapper" aria-label="หน้าแรก">
             <div className="-selected">
+              {/* โลโก้ตรงกลางปุ่ม */}
+              <img src="https://odin996.com/theme_1/img/logo.png" alt="Odin996" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
               <span className="-text">หน้าแรก</span>
-              <img src="https://odin996.com/theme_1/img/curve-bottom.png" className="-bottom-curve" alt="หน้าแรก" width={72} height={18} />
             </div>
           </Link>
 
-          <div className="-fake-center-bg-wrapper"></div>
-
           <div className="-right-wrapper">
             <Link href="/deposits" className="-item-wrapper -deposit">
-              <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" className="-ic-img" alt="ฝากเงิน" width={34} height={34} />
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" className="-ic-img" alt="ฝากเงิน" />
               <span className="-text">ฝากเงิน</span>
             </Link>
             <Link href="/withdrawals" className="-item-wrapper -withdraw">
-              <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-2.png" className="-ic-img" alt="ถอนเงิน" width={34} height={34} />
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-2.png" className="-ic-img" alt="ถอนเงิน" />
               <span className="-text">ถอนเงิน</span>
             </Link>
           </div>
-          <div className="-fully-overlay js-footer-lobby-overlay"></div>
         </div>
 
       {/* 🔴 หัวใจสำคัญคือตรงนี้ครับ CSS ที่จะจัดหน้าให้ตรงตามภาพเป๊ะๆ 🔴 */}
@@ -626,35 +627,53 @@ export default function LobbyPage() {
           100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
         }
 
-        /* 🟢 สไตล์ของเมนูด้านล่าง 🟢 */
-        .-outer-wrapper { position: fixed; bottom: 0; left: 0; width: 100%; height: 65px; z-index: 1000; }
-        .-left-wrapper, .-right-wrapper {
-          position: absolute; bottom: 0; width: 50%; height: 60px; display: flex;
-          justify-content: space-evenly; align-items: center;
-          background: linear-gradient(to bottom, #2a2a4a, #13131f);
-          box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+        /* 🟢 สไตล์ของเมนูด้านล่าง (ปรับเป็นสีม่วง + รอยเว้าตรงกลางแบบเป๊ะๆ) 🟢 */
+        .-outer-wrapper { 
+          position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; 
+          z-index: 1000; filter: drop-shadow(0 -4px 10px rgba(0,0,0,0.5)); 
         }
-        .-left-wrapper { left: 0; border-top-right-radius: 25px; }
-        .-right-wrapper { right: 0; border-top-left-radius: 25px; }
-        .-item-wrapper { display: flex; flex-direction: column; align-items: center; text-decoration: none; gap: 4px; cursor: pointer; transition: transform 0.2s ease; }
+        
+        .-bg-bar {
+          position: absolute; bottom: 0; left: 0; width: 100%; height: 65px;
+          background: linear-gradient(to bottom, #aa00a0, #2b002b);
+          border-top-left-radius: 16px; border-top-right-radius: 16px;
+          /* โค้ดตัดขอบเว้าตรงกลางให้พอดีกับปุ่ม (U-Shape Cutout) */
+          mask-image: radial-gradient(circle 42px at 50% 0%, transparent 42px, black 43px);
+          -webkit-mask-image: radial-gradient(circle 42px at 50% 0%, transparent 42px, black 43px);
+        }
+
+        .-left-wrapper, .-right-wrapper {
+          position: absolute; bottom: 0; width: 42%; height: 65px; display: flex;
+          justify-content: space-evenly; align-items: center; z-index: 10;
+        }
+        .-left-wrapper { left: 0; }
+        .-right-wrapper { right: 0; }
+
+        .-item-wrapper { 
+          display: flex; flex-direction: column; align-items: center; 
+          text-decoration: none; gap: 4px; cursor: pointer; transition: transform 0.2s ease; 
+        }
         .-item-wrapper:hover { transform: translateY(-3px); }
-        .-ic-img { width: 26px; height: 26px; object-fit: contain; }
-        .-item-wrapper .-text { color: #94a3b8; font-size: 0.65rem; font-weight: 600; }
-        .-center-wrapper { position: absolute; left: 50%; bottom: 15px; transform: translateX(-50%); z-index: 10; display: flex; justify-content: center; align-items: center; text-decoration: none; }
+        .-ic-img { width: 30px; height: 30px; object-fit: contain; }
+        .-item-wrapper .-text { 
+          color: #ffffff; font-size: 0.75rem; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+        }
+
+        .-center-wrapper { 
+          position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); 
+          z-index: 20; display: flex; justify-content: center; align-items: center; text-decoration: none; 
+        }
+        
         .-selected {
           position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
-          width: 65px; height: 65px; background: linear-gradient(135deg, #f59e0b, #ea580c); border-radius: 50%;
-          border: 6px solid #1c1c2d; box-shadow: 0 -4px 15px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.3);
-          animation: pulseGlow 2s infinite;
+          width: 76px; height: 76px; 
+          background: radial-gradient(circle at 50% 20%, #ffdf00, #ff8c00 50%, #cc3300); 
+          border-radius: 50%;
+          box-shadow: 0 5px 10px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.7);
+          border: 2px solid #ffb300;
         }
-        .-selected .-text { color: #ffffff; font-size: 0.7rem; font-weight: 800; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
-        .-bottom-curve { position: absolute; bottom: -18px; width: 72px; height: auto; pointer-events: none; opacity: 0.8; }
-        .-fake-center-bg-wrapper { display: none; }
-        @keyframes pulseGlow {
-          0% { box-shadow: 0 -4px 15px rgba(0,0,0,0.5), 0 0 0 0 rgba(245, 158, 11, 0.4); }
-          70% { box-shadow: 0 -4px 15px rgba(0,0,0,0.5), 0 0 0 10px rgba(245, 158, 11, 0); }
-          100% { box-shadow: 0 -4px 15px rgba(0,0,0,0.5), 0 0 0 0 rgba(245, 158, 11, 0); }
-        }
+        .-center-icon { width: 42px; height: 42px; object-fit: contain; margin-bottom: -2px; }
+        .-selected .-text { color: #ffffff; font-size: 0.75rem; font-weight: 800; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
       `}} />
       </div>
     </div>
