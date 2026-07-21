@@ -21,6 +21,7 @@ export default function LobbyPage() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("highlight");
+  const [productImages, setProductImages] = useState<Record<string, any>>({});
   const [gameCategories, setGameCategories] = useState<{id: string; label: string; count: number}[]>([]);
 
   // 🟢 เพิ่ม 2 บรรทัดนี้เข้าไป เพื่อให้ระบบรู้จัก currentBanner 🟢
@@ -47,6 +48,12 @@ export default function LobbyPage() {
     });
 
     fetchGames();
+  }, []);
+
+  useEffect(() => {
+    api.get("/games/product-images").then((res) => {
+      if (res.data.status === "success") setProductImages(res.data.data || {});
+    }).catch(() => {});
   }, []);
 
   const loopBanners = banners.length > 1
@@ -322,8 +329,8 @@ export default function LobbyPage() {
 
           {/* กล่องรูปภาพ (ใช้สไตล์ rank-img-wrapper เดิม) */}
           <div className="rank-img-wrapper">
-             {firstImg?.image_url ? (
-               <img src={firstImg.image_url} className="rank-main-img" alt={p} loading="lazy" />
+             {productImages[p]?.image_url || firstImg?.image_url ? (
+               <img src={productImages[p]?.image_url || firstImg?.image_url} className="rank-main-img" alt={p} loading="lazy" />
              ) : (
                <div className="rank-no-img">{p.charAt(0)}</div>
              )}
@@ -499,8 +506,8 @@ export default function LobbyPage() {
                         
                         {/* รูปตัวอย่างค่าย */}
                         <div style={{ width: "100%", aspectRatio: "1/1", background: "#1a1a2e", position: "relative", overflow: "hidden" }}>
-                          {firstImg?.image_url ? (
-                            <img src={firstImg.image_url} alt={p} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy" />
+                          {productImages[p]?.image_url || firstImg?.image_url ? (
+                            <img src={productImages[p]?.image_url || firstImg?.image_url} alt={p} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy" />
                           ) : (
                             <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#7c3aed", fontSize: "1.5rem", fontWeight: 900 }}>{p.charAt(0)}</div>
                           )}
