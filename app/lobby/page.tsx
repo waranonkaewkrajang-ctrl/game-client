@@ -134,30 +134,41 @@ export default function LobbyPage() {
 </div>
       <div style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
 
-        {/* Banner (ดึงจากหลังบ้าน + เลื่อนอัตโนมัติ) */}
-        <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden", position: "relative", maxWidth: "900px", margin: "0 auto 14px" }}>
-          <Link href="/promotions">
-            <div style={{ display: "flex", width: "100%", transition: "transform 0.5s ease-in-out", transform: `translateX(-${currentBanner * 100}%)` }}>
+        {/* Banner (เลื่อนแบบ 3 ภาพ centerMode) */}
+        <div style={{ marginBottom: "14px", position: "relative", overflow: "visible", padding: "0 8%" }}>
+          <div style={{ overflow: "hidden", borderRadius: "12px" }}>
+            <div style={{
+              display: "flex", 
+              transition: "transform 0.5s ease-in-out", 
+              transform: `translateX(-${currentBanner * (100 / 3)}%)`,
+              gap: "10px",
+            }}>
               {banners.length > 0 ? (
                 banners.map((banner, index) => (
-                  <img
-                    key={index}
-                    // รองรับทั้งกรณีที่ API ส่งมาเป็น Object (banner.image_url) หรือ URL ตรงๆ (banner)
-                    src={banner.image_url || banner.image || banner || "/banner.jpg"} 
-                    alt={`Banner ${index + 1}`}
-                    style={{ width: "100%", flexShrink: 0, height: "auto", maxHeight: "380px", objectFit: "cover", display: "block", borderRadius: "12px" }}
-                    onError={(e) => e.currentTarget.src = "/banner.jpg"}
-                  />
+                  <Link href="/promotions" key={index} style={{ 
+                    minWidth: "calc(33.333% - 7px)", flexShrink: 0, 
+                    transition: "transform 0.4s, opacity 0.4s",
+                    transform: currentBanner === index ? "scale(1.05)" : "scale(0.95)",
+                    opacity: currentBanner === index ? 1 : 0.6,
+                    borderRadius: "12px", overflow: "hidden",
+                  }}>
+                    <img
+                      src={banner.image_url || banner.image || banner || "/banner.jpg"}
+                      alt={`Banner ${index + 1}`}
+                      style={{ width: "100%", height: "auto", maxHeight: "350px", objectFit: "cover", display: "block", borderRadius: "12px" }}
+                      onError={(e) => e.currentTarget.src = "/banner.jpg"}
+                    />
+                  </Link>
                 ))
               ) : (
-                <img src="/banner.jpg" alt="Banner Default" style={{ width: "100%", height: "auto", display: "block", borderRadius: "12px" }} />
+                <img src="/banner.jpg" alt="Banner Default" style={{ width: "100%", height: "auto", maxHeight: "350px", objectFit: "cover", display: "block", borderRadius: "12px" }} />
               )}
             </div>
-          </Link>
+          </div>
 
           {/* ปุ่มจุดไข่ปลา (Dots) */}
           {banners.length > 1 && (
-            <div style={{ position: "absolute", bottom: "12px", left: "0", right: "0", display: "flex", justifyContent: "center", gap: "6px" }}>
+            <div style={{ position: "absolute", bottom: "12px", left: "0", right: "0", display: "flex", justifyContent: "center", gap: "6px", zIndex: 10 }}>
               {banners.map((_, index) => (
                 <button
                   key={index}
