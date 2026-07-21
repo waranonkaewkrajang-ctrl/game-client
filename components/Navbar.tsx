@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import api from "@/lib/api";
+import Link from "next/link";
 
 export default function Navbar() {
   const router = useRouter();
@@ -83,6 +84,42 @@ export default function Navbar() {
 
         </div>
       </header>
+
+      {/* 🟢 นำริชเมนูด้านล่างมาวางแทรกไว้ตรงนี้ (เพื่อให้แสดงผลทุกหน้าในโหมดมือถือ) 🟢 */}
+      <div className="-outer-wrapper mobile-only">
+        {/* พื้นหลังสีม่วงที่มีรอยแหว่งเว้าตรงกลาง */}
+        <div className="-bg-bar"></div>
+
+        <div className="-left-wrapper">
+          <a href="https://line.me/R/ti/p/@ODIN996" className="-item-wrapper -line" target="_blank" rel="noopener noreferrer nofollow">
+            <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-1.png" className="-ic-img" alt="Line" />
+            <span className="-text">Line</span>
+          </a>
+          <Link href="/promotions" className="-item-wrapper -promotion">
+            <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชั่น" />
+            <span className="-text">โปรโมชัน</span>
+          </Link>
+        </div>
+
+        <Link href="/" className="-center-wrapper" aria-label="หน้าแรก">
+          <div className="-selected">
+            {/* โลโก้ตรงกลางปุ่ม */}
+            <img src="https://odin996.com/theme_1/img/logo.png" alt="Odin996" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
+            <span className="-text">หน้าแรก</span>
+          </div>
+        </Link>
+
+        <div className="-right-wrapper">
+          <Link href="/deposits" className="-item-wrapper -deposit">
+            <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" className="-ic-img" alt="ฝากเงิน" />
+            <span className="-text">ฝากเงิน</span>
+          </Link>
+          <Link href="/withdrawals" className="-item-wrapper -withdraw">
+            <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-2.png" className="-ic-img" alt="ถอนเงิน" />
+            <span className="-text">ถอนเงิน</span>
+          </Link>
+        </div>
+      </div>
     </>
   );
 }
