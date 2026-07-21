@@ -331,8 +331,10 @@ export default function LobbyPage() {
         {/* Main Layout: Sidebar + Games */}
         <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
 
-          {/* Sidebar */}
-          <GameSidebar selected={selectedCategory} onSelect={handleCategoryFilter} categories={gameCategories} />
+          {/* Sidebar (แท็บข้าง - โชว์เฉพาะบนคอมพิวเตอร์) */}
+          <div className="desktop-only">
+            <GameSidebar selected={selectedCategory} onSelect={handleCategoryFilter} categories={gameCategories} />
+          </div>
 
           {/* Games Area */}
           <div style={{ flex: 1, minWidth: 0 }}>
@@ -509,8 +511,8 @@ export default function LobbyPage() {
           </div>
         </div>
 
-        {/* 🟢 แท็บเมนูด้านล่าง (Bottom Menu) แบบใหม่ 🟢 */}
-        <div className="-outer-wrapper">
+        {/* 🟢 แท็บเมนูด้านล่าง (Bottom Menu) แบบใหม่ (โชว์เฉพาะมือถือ) 🟢 */}
+        <div className="-outer-wrapper mobile-only">
           {/* พื้นหลังสีม่วงที่มีรอยแหว่งเว้าตรงกลาง */}
           <div className="-bg-bar"></div>
 
@@ -671,6 +673,18 @@ export default function LobbyPage() {
         }
         .-center-icon { width: 42px; height: 42px; object-fit: contain; margin-bottom: -2px; }
         .-selected .-text { color: #ffffff; font-size: 0.75rem; font-weight: 800; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+
+        /* 🟢 โค้ดแบ่งการแสดงผล (Responsive Design) 🟢 */
+        /* ค่าเริ่มต้น (หน้าจอมือถือ) */
+        .desktop-only { display: none; }
+        .mobile-only { display: block; }
+        
+        /* เมื่อหน้าจอใหญ่กว่า 1024px (หน้าจอคอมพิวเตอร์/แท็บเล็ตแนวนอน) */
+        @media (min-width: 1024px) {
+          .desktop-only { display: block; }
+          .mobile-only { display: none; }
+          .-outer-wrapper { display: none !important; } /* สั่งซ่อนแท็บล่างเด็ดขาดบนคอม */
+        }
       `}} />
       </div>
     </div>
