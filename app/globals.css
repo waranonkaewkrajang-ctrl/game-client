@@ -99,36 +99,61 @@ select.input {
 .category-chip.inactive { background: rgba(255,255,255,0.06); color: #94a3b8; }
 .category-chip.inactive:hover { background: rgba(255,255,255,0.1); color: white; }
 
-.bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: rgba(10,10,20,0.95);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  display: flex;
-  padding: 6px 0;
-  z-index: 200;
-  backdrop-filter: blur(10px);
+/* ==========================================================
+   🟢 ริชเมนูด้านล่าง (Mobile Bottom Rich Menu) & Responsive 🟢
+   ========================================================== */
+.-outer-wrapper { 
+  position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; 
+  z-index: 1000; filter: drop-shadow(0 -4px 10px rgba(0,0,0,0.5)); 
 }
-.bottom-nav a {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2px;
-  padding: 6px 0;
-  color: #64748b;
-  text-decoration: none;
-  font-size: 0.65rem;
-  font-weight: 600;
-  transition: color 0.15s;
-}
-.bottom-nav a.active { color: #dc2626; }
 
-/* 🟢 ซ่อนแท็บเมนูด้านล่างตัวเก่าเมื่อเปิดในคอมพิวเตอร์ (หน้าจอตั้งแต่ 1024px ขึ้นไป) 🟢 */
+.-bg-bar {
+  position: absolute; bottom: 0; left: 0; width: 100%; height: 65px;
+  background: linear-gradient(to bottom, #aa00a0, #2b002b);
+  border-top-left-radius: 16px; border-top-right-radius: 16px;
+  mask-image: radial-gradient(circle 42px at 50% 0%, transparent 42px, black 43px);
+  -webkit-mask-image: radial-gradient(circle 42px at 50% 0%, transparent 42px, black 43px);
+}
+
+.-left-wrapper, .-right-wrapper {
+  position: absolute; bottom: 0; width: 42%; height: 65px; display: flex;
+  justify-content: space-evenly; align-items: center; z-index: 10;
+}
+.-left-wrapper { left: 0; }
+.-right-wrapper { right: 0; }
+
+.-item-wrapper { 
+  display: flex; flex-direction: column; align-items: center; 
+  text-decoration: none; gap: 4px; cursor: pointer; transition: transform 0.2s ease; 
+}
+.-item-wrapper:hover { transform: translateY(-3px); }
+.-ic-img { width: 30px; height: 30px; object-fit: contain; }
+.-item-wrapper .-text { 
+  color: #ffffff; font-size: 0.75rem; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
+}
+
+.-center-wrapper { 
+  position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); 
+  z-index: 20; display: flex; justify-content: center; align-items: center; text-decoration: none; 
+}
+
+.-selected {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 76px; height: 76px; 
+  background: radial-gradient(circle at 50% 20%, #ffdf00, #ff8c00 50%, #cc3300); 
+  border-radius: 50%;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.7);
+  border: 2px solid #ffb300;
+}
+.-center-icon { width: 42px; height: 42px; object-fit: contain; margin-bottom: -2px; }
+.-selected .-text { color: #ffffff; font-size: 0.75rem; font-weight: 800; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+
+/* ควบคุมการแสดงผลตามขนาดหน้าจอ (ซ่อนริชเมนูล่างบนคอมพิวเตอร์) */
+.desktop-only { display: none; }
+.mobile-only { display: block; }
+
 @media (min-width: 1024px) {
-  .bottom-nav {
-    display: none !important;
-  }
+  .desktop-only { display: block; }
+  .mobile-only { display: none; }
+  .-outer-wrapper { display: none !important; }
 }
