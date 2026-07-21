@@ -110,11 +110,11 @@ export default function Navbar() {
         </Link>
 
         <div className="-right-wrapper">
-          <Link href="/deposits" className="-item-wrapper -deposit">
+          <Link href="/wallet" className="-item-wrapper -deposit">
             <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" className="-ic-img" alt="ฝากเงิน" />
             <span className="-text">ฝากเงิน</span>
           </Link>
-          <Link href="/withdrawals" className="-item-wrapper -withdraw">
+          <Link href="/wallet" className="-item-wrapper -withdraw">
             <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-2.png" className="-ic-img" alt="ถอนเงิน" />
             <span className="-text">ถอนเงิน</span>
           </Link>
