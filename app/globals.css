@@ -125,3 +125,10 @@ select.input {
   transition: color 0.15s;
 }
 .bottom-nav a.active { color: #dc2626; }
+
+/* 🟢 ซ่อนแท็บเมนูด้านล่างตัวเก่าเมื่อเปิดในคอมพิวเตอร์ (หน้าจอตั้งแต่ 1024px ขึ้นไป) 🟢 */
+@media (min-width: 1024px) {
+  .bottom-nav {
+    display: none !important;
+  }
+}
