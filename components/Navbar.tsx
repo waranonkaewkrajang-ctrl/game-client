@@ -85,7 +85,7 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* 🟢 นำริชเมนูด้านล่างมาวางแทรกไว้ตรงนี้ (เพื่อให้แสดงผลทุกหน้าในโหมดมือถือ) 🟢 */}
+      {/* 🟢 ริชเมนูด้านล่าง (Bottom Menu) แบบใหม่ (โชว์เฉพาะมือถือ) 🟢 */}
       <div className="-outer-wrapper mobile-only">
         {/* พื้นหลังสีม่วงที่มีรอยแหว่งเว้าตรงกลาง */}
         <div className="-bg-bar"></div>
@@ -101,7 +101,7 @@ export default function Navbar() {
           </Link>
         </div>
 
-        <Link href="/" className="-center-wrapper" aria-label="หน้าแรก">
+        <Link href="/lobby" className="-center-wrapper" aria-label="หน้าแรก">
           <div className="-selected">
             {/* โลโก้ตรงกลางปุ่ม */}
             <img src="https://odin996.com/theme_1/img/logo.png" alt="Odin996" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
