@@ -157,3 +157,8 @@ select.input {
   .mobile-only { display: none; }
   .-outer-wrapper { display: none !important; }
 }
+/* Banner จำกัดขนาดบนคอม */
+@media screen and (min-width: 769px) {
+  .banner-container { max-width: 900px; margin: 0 auto; }
+  .banner-container img { max-height: 380px; object-fit: cover; }
+}

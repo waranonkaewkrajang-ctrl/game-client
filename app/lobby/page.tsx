@@ -135,7 +135,7 @@ export default function LobbyPage() {
       <div style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
 
         {/* Banner (ดึงจากหลังบ้าน + เลื่อนอัตโนมัติ) */}
-        <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden", position: "relative" }}>
+        <div style={{ marginBottom: "14px", borderRadius: "12px", overflow: "hidden", position: "relative", maxWidth: "900px", margin: "0 auto 14px" }}>
           <Link href="/promotions">
             <div style={{ display: "flex", width: "100%", transition: "transform 0.5s ease-in-out", transform: `translateX(-${currentBanner * 100}%)` }}>
               {banners.length > 0 ? (
@@ -145,7 +145,7 @@ export default function LobbyPage() {
                     // รองรับทั้งกรณีที่ API ส่งมาเป็น Object (banner.image_url) หรือ URL ตรงๆ (banner)
                     src={banner.image_url || banner.image || banner || "/banner.jpg"} 
                     alt={`Banner ${index + 1}`}
-                    style={{ width: "100%", flexShrink: 0, height: "auto", display: "block", borderRadius: "12px" }}
+                    style={{ width: "100%", flexShrink: 0, height: "auto", maxHeight: "380px", objectFit: "cover", display: "block", borderRadius: "12px" }}
                     onError={(e) => e.currentTarget.src = "/banner.jpg"}
                   />
                 ))
@@ -610,6 +610,42 @@ export default function LobbyPage() {
             )}
           </>
           )}
+          </div>
+        </div>
+
+        {/* 🟢 แท็บเมนูด้านล่าง (Bottom Menu) แบบใหม่ (โชว์เฉพาะมือถือ) 🟢 */}
+        <div className="-outer-wrapper mobile-only">
+          {/* พื้นหลังสีม่วงที่มีรอยแหว่งเว้าตรงกลาง */}
+          <div className="-bg-bar"></div>
+
+          <div className="-left-wrapper">
+            <a href="https://line.me/R/ti/p/@ODIN996" className="-item-wrapper -line" target="_blank" rel="noopener noreferrer nofollow">
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-1.png" className="-ic-img" alt="Line" />
+              <span className="-text">Line</span>
+            </a>
+            <Link href="/promotions" className="-item-wrapper -promotion">
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชั่น" />
+              <span className="-text">โปรโมชัน</span>
+            </Link>
+          </div>
+
+          <Link href="/" className="-center-wrapper" aria-label="หน้าแรก">
+            <div className="-selected">
+              {/* โลโก้ตรงกลางปุ่ม */}
+              <img src="https://odin996.com/theme_1/img/logo.png" alt="Odin996" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
+              <span className="-text">หน้าแรก</span>
+            </div>
+          </Link>
+
+          <div className="-right-wrapper">
+            <Link href="/deposits" className="-item-wrapper -deposit">
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" className="-ic-img" alt="ฝากเงิน" />
+              <span className="-text">ฝากเงิน</span>
+            </Link>
+            <Link href="/withdrawals" className="-item-wrapper -withdraw">
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-2.png" className="-ic-img" alt="ถอนเงิน" />
+              <span className="-text">ถอนเงิน</span>
+            </Link>
           </div>
         </div>
 
