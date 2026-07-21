@@ -26,6 +26,7 @@ export default function LobbyPage() {
   // 🟢 เพิ่ม 2 บรรทัดนี้เข้าไป เพื่อให้ระบบรู้จัก currentBanner 🟢
   const [banners, setBanners] = useState<any[]>([]);
   const [currentBanner, setCurrentBanner] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(true);
 
   // หมวดที่ต้องเข้าห้องค่ายก่อน (ไม่เปิดเกมตรง)
   const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS"];
@@ -48,14 +49,35 @@ export default function LobbyPage() {
     fetchGames();
   }, []);
 
-  // 🟢 ระบบเลื่อนแบนเนอร์อัตโนมัติ 🟢
+  const loopBanners = banners.length > 1
+    ? [banners[banners.length - 1], ...banners, banners[0], banners[1]]
+    : banners;
+  const slideOffset = banners.length > 1 ? 1 : 0; // เริ่มที่ตำแหน่ง 1 (ข้ามตัว clone แรก)
+
   useEffect(() => {
     if (banners.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentBanner((prev) => (prev + 1) % banners.length);
+    // เริ่มที่ตำแหน่ง 1 (ตัวจริงตัวแรก)
+    setCurrentBanner(slideOffset);
+  }, [banners.length]);
+
+  useEffect(() => {
+    if (banners.length <= 1) return;
+    const timer = setInterval(() => {
+      setIsTransitioning(true);
+      setCurrentBanner((prev) => prev + 1);
     }, 4000);
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, [banners]);
+
+  // พอเลื่อนถึง clone ตัวสุดท้าย → กระโดดกลับไปตัวจริงแบบไม่มี animation
+  useEffect(() => {
+    if (currentBanner >= loopBanners.length - 2) {
+      setTimeout(() => {
+        setIsTransitioning(false);
+        setCurrentBanner(slideOffset);
+      }, 500);
+    }
+  }, [currentBanner]);
 
   const fetchGames = (productId?: string, searchTerm?: string) => {
     setLoading(true);
@@ -134,35 +156,35 @@ export default function LobbyPage() {
 </div>
       <div style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
 
-        {/* Banner (เลื่อนแบบ 3 ภาพ centerMode) */}
+        {/* Banner (เลื่อนแบบ 3 ภาพ วนลูป) */}
         <div style={{ marginBottom: "14px", position: "relative", overflow: "visible", padding: "0 8%" }}>
           <div style={{ overflow: "hidden", borderRadius: "12px" }}>
             <div style={{
-              display: "flex", 
-              transition: "transform 0.5s ease-in-out", 
+              display: "flex",
+              transition: isTransitioning ? "transform 0.5s ease-in-out" : "none",
               transform: `translateX(-${currentBanner * (100 / 3)}%)`,
               gap: "10px",
             }}>
-              {banners.length > 0 ? (
-                banners.map((banner, index) => (
-                  <Link href="/promotions" key={index} style={{ 
-                    minWidth: "calc(33.333% - 7px)", flexShrink: 0, 
+              {loopBanners.map((banner, index) => {
+                const realIndex = (index - slideOffset + banners.length) % banners.length;
+                const isCenter = index === currentBanner;
+                return (
+                  <Link href="/promotions" key={index} style={{
+                    minWidth: "calc(33.333% - 7px)", flexShrink: 0,
                     transition: "transform 0.4s, opacity 0.4s",
-                    transform: currentBanner === index ? "scale(1.05)" : "scale(0.95)",
-                    opacity: currentBanner === index ? 1 : 0.6,
+                    transform: isCenter ? "scale(1.05)" : "scale(0.95)",
+                    opacity: isCenter ? 1 : 0.6,
                     borderRadius: "12px", overflow: "hidden",
                   }}>
                     <img
                       src={banner.image_url || banner.image || banner || "/banner.jpg"}
-                      alt={`Banner ${index + 1}`}
+                      alt={`Banner ${realIndex + 1}`}
                       style={{ width: "100%", height: "auto", maxHeight: "350px", objectFit: "cover", display: "block", borderRadius: "12px" }}
                       onError={(e) => e.currentTarget.src = "/banner.jpg"}
                     />
                   </Link>
-                ))
-              ) : (
-                <img src="/banner.jpg" alt="Banner Default" style={{ width: "100%", height: "auto", maxHeight: "350px", objectFit: "cover", display: "block", borderRadius: "12px" }} />
-              )}
+                );
+              })}
             </div>
           </div>
 
@@ -172,12 +194,12 @@ export default function LobbyPage() {
               {banners.map((_, index) => (
                 <button
                   key={index}
-                  onClick={(e) => { e.preventDefault(); setCurrentBanner(index); }}
+                  onClick={(e) => { e.preventDefault(); setIsTransitioning(true); setCurrentBanner(index + slideOffset); }}
                   style={{
-                    width: currentBanner === index ? "20px" : "8px",
+                    width: ((currentBanner - slideOffset + banners.length) % banners.length) === index ? "20px" : "8px",
                     height: "8px",
                     borderRadius: "4px",
-                    background: currentBanner === index ? "#f59e0b" : "rgba(255,255,255,0.5)",
+                    background: ((currentBanner - slideOffset + banners.length) % banners.length) === index ? "#f59e0b" : "rgba(255,255,255,0.5)",
                     border: "none",
                     cursor: "pointer",
                     transition: "all 0.3s ease"
