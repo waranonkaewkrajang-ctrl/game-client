@@ -163,34 +163,26 @@ export default function LobbyPage() {
 </div>
       <div style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
 
-        {/* Banner (เลื่อนแบบ 3 ภาพ วนลูป) */}
+        {/* Banner (เลื่อนแบบ Responsive มือถือ 1 รูป / คอม 3 รูป) */}
         <div style={{ marginBottom: "14px", position: "relative", overflow: "visible", padding: "0 8%" }}>
           <div style={{ overflow: "hidden", borderRadius: "12px" }}>
-            <div style={{
+            <div className="hero-banner-track" style={{
               display: "flex",
               transition: isTransitioning ? "transform 0.5s ease-in-out" : "none",
-              /* 🔴 ใช้ var(--slide-width) เพื่อเปลี่ยนขนาดการเลื่อนตามมือถือ/คอม อัตโนมัติ */
-              transform: `translateX(calc(-${currentBanner} * var(--slide-width)))`,
+              transform: `translateX(calc(-${currentBanner} * var(--bw)))`,
             }}>
               {loopBanners.map((banner, index) => {
                 const realIndex = (index - slideOffset + banners.length) % banners.length;
                 const isCenter = index === currentBanner;
                 return (
-                  <Link href="/promotions" key={index} className="banner-slide-item" style={{
+                  <Link href="/promotions" key={index} className="hero-banner-item" style={{
                     transform: isCenter ? "scale(1)" : "scale(0.95)",
                     opacity: isCenter ? 1 : 0.5,
                   }}>
-                    {/* 🔴 ใช้หลักการ img-fluid ภาพจะโชว์ 100% ไม่โดนตัดขอบแน่นอน 🔴 */}
                     <img
                       src={banner.image_url || banner.image || banner || "/banner.jpg"}
                       alt={`Banner ${realIndex + 1}`}
-                      style={{ 
-                        maxWidth: "100%", 
-                        width: "100%", 
-                        height: "auto", /* 👈 จุดสำคัญ: ปล่อยความสูงยืดหยุ่นตามสัดส่วนภาพจริง */
-                        display: "block", 
-                        borderRadius: "12px" 
-                      }}
+                      className="hero-banner-img"
                       onError={(e) => e.currentTarget.src = "/banner.jpg"}
                     />
                   </Link>
@@ -695,6 +687,24 @@ export default function LobbyPage() {
 
       {/* 🔴 หัวใจสำคัญคือตรงนี้ครับ CSS ที่จะจัดหน้าให้ตรงตามภาพเป๊ะๆ 🔴 */}
       <style dangerouslySetInnerHTML={{__html: `
+        /* 🟢 สไตล์แบนเนอร์ (เปลี่ยนชื่อคลาสใหม่หนีแคชมือถือ) 🟢 */
+        .hero-banner-track { --bw: 100%; }
+        @media (min-width: 768px) { .hero-banner-track { --bw: 33.333%; } }
+        
+        .hero-banner-item {
+          min-width: var(--bw);
+          flex-shrink: 0;
+          padding: 0 4px;
+          transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        
+        .hero-banner-img {
+          width: 100%;
+          height: auto;
+          display: block;
+          border-radius: 12px;
+        }
+
         /* สไตล์ 10 อันดับเกมมาแรง */
         .rank-scroll-container {
           display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none;
