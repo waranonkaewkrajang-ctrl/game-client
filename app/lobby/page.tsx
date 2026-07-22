@@ -554,37 +554,39 @@ export default function LobbyPage() {
                     if (slotGames.length === 0 && pGames.length === 0) return null;
                     const firstImg = pGames.find((g) => g.image_url);
                     return (
-                      <div key={`room-${p}`} onClick={() => router.push(`/lobby/${p}`)} style={{ cursor: "pointer", background: "#121214", borderRadius: "14px", border: "2px solid rgba(124,58,237,0.15)", overflow: "hidden", transition: "all 0.3s ease", position: "relative" }}
-                        onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "#7c3aed"; e.currentTarget.style.boxShadow = "0 8px 24px rgba(124,58,237,0.15)"; }}
-                        onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.borderColor = "rgba(124,58,237,0.15)"; e.currentTarget.style.boxShadow = ""; }}>
-                        
-                        {/* รูปตัวอย่างค่าย */}
-                        <div style={{ width: "100%", aspectRatio: "1/1", background: "#1a1a2e", position: "relative", overflow: "hidden" }}>
-                          {productImages[p]?.image_url || firstImg?.image_url ? (
-                            <img src={productImages[p]?.image_url || firstImg?.image_url} alt={p} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy" />
-                          ) : (
-                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#7c3aed", fontSize: "1.5rem", fontWeight: 900 }}>{p.charAt(0)}</div>
-                          )}
-                          {/* Badge จำนวนเกม */}
-                          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.9))", padding: "20px 8px 8px", textAlign: "center" }}>
-                            <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "white", background: "rgba(124,58,237,0.3)", padding: "3px 10px", borderRadius: "10px" }}>
-                              {pGames.length} เกม
-                            </span>
-                          </div>
-                          {/* ปุ่มเข้าห้อง */}
-                          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", background: "rgba(0,0,0,0.4)", opacity: 0, transition: "opacity 0.3s" }}
-                            onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
-                            onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}>
-                            <span style={{ background: "linear-gradient(135deg, #7c3aed, #6d28d9)", color: "white", padding: "8px 18px", borderRadius: "8px", fontSize: "0.8rem", fontWeight: 800, boxShadow: "0 4px 15px rgba(124,58,237,0.4)" }}>
-                              เข้าห้อง →
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* ชื่อค่าย */}
-                        <div style={{ padding: "10px", textAlign: "center" }}>
-                          <p style={{ fontSize: "0.8rem", fontWeight: 800, color: "#e4e4e7", margin: 0 }}>{p}</p>
-                        </div>
+                      <div 
+                        key={`room-${p}`} 
+                        onClick={() => router.push(`/lobby/${p}`)}
+                        className="theme1-thumb-frame is-loading"
+                        style={{ cursor: "pointer", overflow: "hidden", borderRadius: "14px", background: "#121214" }}
+                      >
+                        <img 
+                          data-src={productImages[p]?.image_url || firstImg?.image_url} 
+                          src={productImages[p]?.image_url || firstImg?.image_url} 
+                          className="-cover-img img-fluid" 
+                          alt={p} 
+                          loading="lazy" 
+                          decoding="async" 
+                          width="255" 
+                          height="255"
+                          style={{ width: "100%", height: "auto", objectFit: "cover", display: "block" }}
+                          onLoad={(e) => {
+                            const c = e.currentTarget.closest('.theme1-thumb-frame');
+                            if (c) {
+                              c.classList.remove('is-loading');
+                              c.classList.remove('is-fallback');
+                            }
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = "/default-provider.png"; 
+                            const c = e.currentTarget.closest('.theme1-thumb-frame');
+                            if (c) {
+                              c.classList.remove('is-loading');
+                              c.classList.add('is-fallback');
+                            }
+                          }}
+                        />
                       </div>
                     );
                   })}
