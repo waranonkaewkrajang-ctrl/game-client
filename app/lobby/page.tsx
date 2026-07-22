@@ -676,28 +676,101 @@ export default function LobbyPage() {
                     <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกม</p>
                   </div>
                 ) : (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+                  ) : games.length === 0 ? (
+                  <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
+                    <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกม</p>
+                  </div>
+                ) : (
+                  /* 🟢 เอาโค้ดของคุณมาวางครอบด้วย grid นี้ 🟢 */
+                  <div style={{ display: "grid", gap: "10px" }} className="game-grid-container">
                     {games.map((game) => (
-                      <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
-                        <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
-                          onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.4)"; }}
-                          onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
+                      <div 
+                        key={game.id} 
+                        onClick={() => handleLaunchGame(game)} 
+                        className="theme1-thumb-frame is-loading"
+                        style={{ 
+                          cursor: "pointer", 
+                          position: "relative", 
+                          overflow: "hidden", 
+                          borderRadius: "14px", 
+                          background: "#121214",
+                          border: "2px solid rgba(170, 0, 160, 0.15)",
+                          transition: "all 0.3s ease"
+                        }}
+                        onMouseEnter={(e) => { 
+                          e.currentTarget.style.transform = "translateY(-4px)"; 
+                          e.currentTarget.style.borderColor = "#aa00a0"; 
+                          e.currentTarget.style.boxShadow = "0 8px 24px rgba(170, 0, 160, 0.35)"; 
+                        }}
+                        onMouseLeave={(e) => { 
+                          e.currentTarget.style.transform = ""; 
+                          e.currentTarget.style.borderColor = "rgba(170, 0, 160, 0.15)"; 
+                          e.currentTarget.style.boxShadow = ""; 
+                        }}
+                      >
+                        {/* รูปเกม */}
+                        <div style={{ width: "100%", aspectRatio: "1/1", position: "relative", overflow: "hidden" }}>
                           {game.image_url ? (
-                            <img src={game.image_url} alt={game.game_name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy"
-                              onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
-                              onMouseLeave={(e) => e.currentTarget.style.transform = ""} />
+                            <img 
+                              src={game.image_url} 
+                              alt={game.game_name} 
+                              className="-cover-img img-fluid"
+                              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+                              loading="lazy" 
+                            />
                           ) : (
-                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#2d2d4a", fontSize: "0.65rem" }}>No Image</div>
+                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#4a5568", fontSize: "0.75rem" }}>No Image</div>
                           )}
-                          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "20px 8px 8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
-                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
-                            <span style={{ fontSize: "0.55rem", color: "#f59e0b", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.product_id}</span>
-                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#f59e0b" }} />
+
+                          {/* ป้ายบอกค่ายเกมมุมล่าง */}
+                          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "15px 8px 6px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", pointerEvents: "none" }}>
+                            <span style={{ fontSize: "0.6rem", color: "#f59e0b", fontWeight: 700, textTransform: "uppercase" }}>{game.product_id}</span>
+                          </div>
+
+                          {/* ปุ่มเข้าเล่นตรงกลาง แสดงเฉพาะตอนเอาเมาส์ชี้ */}
+                          <div 
+                            style={{
+                              position: "absolute",
+                              inset: "0",
+                              background: "rgba(0, 0, 0, 0.45)",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              opacity: 0,
+                              transition: "opacity 0.3s ease"
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+                            onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}
+                          >
+                            <div style={{
+                              background: "linear-gradient(to right, #aa00a0, #4b0082)",
+                              border: "1px solid #f59e0b",
+                              color: "white",
+                              padding: "6px 18px",
+                              borderRadius: "20px",
+                              fontSize: "0.8rem",
+                              fontWeight: 800,
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "6px",
+                              boxShadow: "0 4px 15px rgba(170, 0, 160, 0.8)",
+                              transform: "scale(0.95)",
+                              transition: "transform 0.3s ease"
+                            }}>
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M8 5v14l11-7z"/>
+                              </svg>
+                              เข้าเล่น
+                            </div>
                           </div>
                         </div>
-                        <p style={{ fontSize: "0.72rem", fontWeight: 600, color: "#e2e8f0", margin: "6px 0 0", textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                          {game.game_name_th || game.game_name}
-                        </p>
+
+                        {/* ชื่อเกมด้านล่าง */}
+                        <div style={{ padding: "8px 6px", textAlign: "center", background: "#121214" }}>
+                          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "#e2e8f0", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            {game.game_name_th || game.game_name}
+                          </p>
+                        </div>
                       </div>
                     ))}
                   </div>
