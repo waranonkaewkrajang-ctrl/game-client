@@ -676,12 +676,6 @@ export default function LobbyPage() {
                     <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกม</p>
                   </div>
                 ) : (
-                  ) : games.length === 0 ? (
-                  <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
-                    <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ไม่พบเกม</p>
-                  </div>
-                ) : (
-                  /* 🟢 เอาโค้ดของคุณมาวางครอบด้วย grid นี้ 🟢 */
                   <div style={{ display: "grid", gap: "10px" }} className="game-grid-container">
                     {games.map((game) => (
                       <div 
