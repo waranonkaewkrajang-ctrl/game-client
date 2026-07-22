@@ -177,14 +177,20 @@ export default function LobbyPage() {
                 const isCenter = index === currentBanner;
                 return (
                   <Link href="/promotions" key={index} className="banner-slide-item" style={{
-                    /* 🔴 ลดการซูมลงนิดหน่อย เพื่อไม่ให้ภาพล้นขอบจอในมือถือ */
-                    transform: isCenter ? "scale(1)" : "scale(0.95)", 
+                    transform: isCenter ? "scale(1)" : "scale(0.95)",
                     opacity: isCenter ? 1 : 0.5,
                   }}>
+                    {/* 🔴 ฝัง Style และ aspectRatio แบบที่เว็บชั้นนำใช้กัน หนีแคชมือถือ 100% 🔴 */}
                     <img
                       src={banner.image_url || banner.image || banner || "/banner.jpg"}
                       alt={`Banner ${realIndex + 1}`}
-                      className="banner-img"
+                      style={{ 
+                        width: "100%", 
+                        aspectRatio: "16 / 7",  /* หัวใจสำคัญ: บังคับกรอบรูปให้เป็นแนวนอน 16:7 เสมอ */
+                        objectFit: "cover",     /* ให้รูปจัดทรงพอดีกรอบโดยไม่บีบเบี้ยว */
+                        display: "block", 
+                        borderRadius: "12px" 
+                      }}
                       onError={(e) => e.currentTarget.src = "/banner.jpg"}
                     />
                   </Link>
