@@ -228,8 +228,8 @@ export default function WalletPage() {
                       </div>
                     </div>
 
-                        {/* 🟢 เปลี่ยน gap-4 เป็น gap-2 เพื่อให้ปุ่มชิดกันมากขึ้น */}
-                    <div className="flex gap-2 w-full">
+                        {/* 🟢 เปลี่ยน gap-4 เป็น gap-2 และเพิ่ม mb-24 เพื่อดันให้พ้นเมนูด้านล่างบนมือถือ */}
+                    <div className="flex gap-2 w-full mb-24 md:mb-0">
                       
                       {/* ปุ่มยกเลิก - โทนแดง Rose */}
                       <button 
@@ -277,26 +277,6 @@ export default function WalletPage() {
                       ) : (
                         <span className="text-[11px] md:text-xs text-[#fbbf24]">เงินจะโอนเข้าบัญชีที่ท่านลงทะเบียนไว้เท่านั้น</span>
                       )}
-                    </div>
-
-                    {/* ปุ่ม ยกเลิก / ยืนยัน */}
-                    {/* 🟢 เติม mb-24 เพื่อดันพื้นที่ใต้ปุ่มเฉพาะในมือถือ ให้พ้นจากเมนูด้านล่าง */}
-                    <div className="flex gap-4 mt-auto mb-24 md:mb-0">
-                      <button 
-                        type="button" 
-                        onClick={() => setAmount("")} 
-                        className="cursor-pointer inline-flex items-center justify-center rounded-xl text-xs md:text-sm font-bold transition-all border border-red-500 bg-red-600 text-white hover:bg-red-700 h-10 md:h-11 flex-1 shadow-sm"
-                      >
-                        ยกเลิก
-                      </button>
-                      <button 
-                        type="submit" 
-                        disabled={loading || !amount} 
-                        className="cursor-pointer inline-flex items-center justify-center rounded-xl text-xs md:text-sm font-bold transition-all bg-green-600 text-white hover:bg-green-700 disabled:opacity-50 h-10 md:h-11 flex-1 shadow-sm" 
-                        style={{ background: loading || !amount ? "rgba(22, 163, 74, 0.4)" : "linear-gradient(135deg, #16a34a, #15803d)" }}
-                      >
-                        {loading ? "กำลังทำรายการ..." : "ยืนยัน"}
-                      </button>
                     </div>
 
                   </div>
