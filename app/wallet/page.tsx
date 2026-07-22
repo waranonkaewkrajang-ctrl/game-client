@@ -231,9 +231,11 @@ export default function WalletPage() {
                   {/* ส่วนที่ 2: ระบุจำนวนเงิน และ ปุ่มกดเพิ่มเงิน */}
                   <div className="bg-[#181C31] text-card-foreground flex flex-col gap-5 rounded-2xl border border-[#2B3259] shadow-sm p-4 md:p-6 mb-8">
                     
-                    <label className="text-sm font-medium text-white block w-full text-center">
-                      ระบุจำนวนเงิน{tab === "deposit" ? "ฝาก" : "ถอน"}
-                    </label>
+                    <div className="flex justify-center w-full">
+                      <label className="text-sm font-medium text-white text-center">
+                        ระบุจำนวนเงิน{tab === "deposit" ? "ฝาก" : "ถอน"}
+                      </label>
+                    </div>
                     
                     {/* 1. กล่องกรอกตัวเลข (ปรับให้เล็กลง) */}
                     <div className="flex flex-col items-center justify-center rounded-xl border border-[#2B3259] py-4 relative bg-[#0F111A] h-20 md:h-22 shadow-inner">
