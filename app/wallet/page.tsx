@@ -67,9 +67,33 @@ export default function WalletPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0F111A] pb-24 md:pb-10" style={{ fontFamily: "'Kanit', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", position: "relative", overflow: "hidden", fontFamily: "'Kanit', sans-serif" }} className="pb-24 md:pb-10">
       
-      <div className="page-content mt-6">
+      {/* 🎲 1. วางเลเยอร์ลูกเต๋าไว้ตรงนี้ (เป็นลูกตัวแรกของ div หลัก) */}
+  <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
+    <div style={{ position: "absolute", top: "0%", left: "0%", fontSize: "18px", opacity: 0.03, animation: "floatDice 22s ease-in-out infinite", animationDelay: "0s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "7%", left: "11%", fontSize: "28px", opacity: 0.045, animation: "floatDice 25s ease-in-out infinite", animationDelay: "1.2s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "14%", left: "22%", fontSize: "38px", opacity: 0.06, animation: "floatDice 28s ease-in-out infinite", animationDelay: "2.4s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "21%", left: "33%", fontSize: "48px", opacity: 0.03, animation: "floatDice 31s ease-in-out infinite", animationDelay: "3.6s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "28%", left: "44%", fontSize: "18px", opacity: 0.045, animation: "floatDice 34s ease-in-out infinite", animationDelay: "4.8s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "35%", left: "55%", fontSize: "28px", opacity: 0.06, animation: "floatDice 22s ease-in-out infinite", animationDelay: "6s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "42%", left: "66%", fontSize: "38px", opacity: 0.03, animation: "floatDice 25s ease-in-out infinite", animationDelay: "7.2s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "49%", left: "77%", fontSize: "48px", opacity: 0.045, animation: "floatDice 28s ease-in-out infinite", animationDelay: "8.4s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "56%", left: "88%", fontSize: "18px", opacity: 0.06, animation: "floatDice 31s ease-in-out infinite", animationDelay: "9.6s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "63%", left: "99%", fontSize: "28px", opacity: 0.03, animation: "floatDice 34s ease-in-out infinite", animationDelay: "10.8s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "70%", left: "10%", fontSize: "38px", opacity: 0.045, animation: "floatDice 22s ease-in-out infinite", animationDelay: "12s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "77%", left: "21%", fontSize: "48px", opacity: 0.06, animation: "floatDice 25s ease-in-out infinite", animationDelay: "13.2s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "84%", left: "32%", fontSize: "18px", opacity: 0.03, animation: "floatDice 28s ease-in-out infinite", animationDelay: "14.4s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "91%", left: "43%", fontSize: "28px", opacity: 0.045, animation: "floatDice 31s ease-in-out infinite", animationDelay: "15.6s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "98%", left: "54%", fontSize: "38px", opacity: 0.06, animation: "floatDice 34s ease-in-out infinite", animationDelay: "16.8s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "5%", left: "65%", fontSize: "48px", opacity: 0.03, animation: "floatDice 22s ease-in-out infinite", animationDelay: "18s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "12%", left: "76%", fontSize: "18px", opacity: 0.045, animation: "floatDice 25s ease-in-out infinite", animationDelay: "19.2s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "19%", left: "87%", fontSize: "28px", opacity: 0.06, animation: "floatDice 28s ease-in-out infinite", animationDelay: "20.4s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "26%", left: "98%", fontSize: "38px", opacity: 0.03, animation: "floatDice 31s ease-in-out infinite", animationDelay: "21.6s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+    <div style={{ position: "absolute", top: "33%", left: "9%", fontSize: "48px", opacity: 0.045, animation: "floatDice 34s ease-in-out infinite", animationDelay: "22.8s", filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
+  </div>
+
+      <div className="page-content mt-6" style={{ position: "relative", zIndex: 10 }}>
         <div className="flex justify-center">
           <div dir="ltr" data-orientation="horizontal" className="group/tabs flex gap-2 data-[orientation=horizontal]:flex-col box-container w-[860px] mx-auto px-4">
             
@@ -251,8 +275,7 @@ export default function WalletPage() {
 
                     </div>
 
-                    {/* 3. ปุ่ม + จำนวนเงิน (ขยับลงมาอยู่ใต้ปุ่มยืนยัน) */}
-                    {/* 🟢 เปลี่ยน gap-3 เป็น gap-1.5 หรือ gap-2 เพื่อให้ปุ่มชิดกันขึ้น */}
+                    {/* 3. ปุ่ม + จำนวนเงิน */}
                     <div className="grid grid-cols-3 md:grid-cols-5 gap-1.5 md:gap-2 mt-2">
                       {[100, 300, 500, 1000, 5000].map((val) => (
                         <button 
@@ -267,7 +290,7 @@ export default function WalletPage() {
                       ))}
                     </div>
 
-                    {/* 4. ข้อความแจ้งเตือน (ดึงมาไว้ล่างสุด) */}
+                    {/* 🟢 4. ข้อความแจ้งเตือน (วางต่อจากตรงนี้ลงมาจนจบไฟล์เลยครับ) */}
                     <div className="flex flex-col items-center gap-1 text-center mt-2 px-2">
                       {tab === "deposit" ? (
                         <>
@@ -289,6 +312,21 @@ export default function WalletPage() {
           </div>
         </div>
       </div>
+
+      {/* 🎲 อย่าลืมวางแท็ก style ลูกเต๋าไว้ก่อนปิด div หลักตัวสุดท้ายสุดของหน้านี้ */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @keyframes floatDice {
+          0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
+          15% { opacity: 0.05; }
+          50% { transform: translate(-10px, -15px) rotate(180deg) scale(1.8); opacity: 0.06; }
+          85% { opacity: 0.03; }
+          100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
+        }
+        div[style*="floatDice"] {
+          opacity: 0.15 !important;
+          filter: grayscale(1) brightness(1.2) !important;
+        }
+      `}} />
     </div>
   );
 }
