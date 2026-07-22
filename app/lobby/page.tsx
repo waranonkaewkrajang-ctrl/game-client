@@ -558,8 +558,27 @@ export default function LobbyPage() {
                         key={`room-${p}`} 
                         onClick={() => router.push(`/lobby/${p}`)}
                         className="theme1-thumb-frame is-loading"
-                        style={{ cursor: "pointer", overflow: "hidden", borderRadius: "14px", background: "#121214" }}
+                        style={{ 
+                          cursor: "pointer", 
+                          overflow: "hidden", 
+                          borderRadius: "14px", 
+                          background: "#121214",
+                          position: "relative", /* 🟢 สำคัญ: เพื่อให้ปุ่มลอยอยู่ข้างในได้ */
+                          border: "2px solid rgba(170, 0, 160, 0.15)", /* ขอบสีม่วงอ่อนๆ */
+                          transition: "all 0.3s ease"
+                        }}
+                        onMouseEnter={(e) => { 
+                          e.currentTarget.style.transform = "translateY(-4px)"; 
+                          e.currentTarget.style.borderColor = "#aa00a0"; /* โฮเวอร์แล้วขอบม่วงสว่าง */
+                          e.currentTarget.style.boxShadow = "0 8px 24px rgba(170, 0, 160, 0.35)"; 
+                        }}
+                        onMouseLeave={(e) => { 
+                          e.currentTarget.style.transform = ""; 
+                          e.currentTarget.style.borderColor = "rgba(170, 0, 160, 0.15)"; 
+                          e.currentTarget.style.boxShadow = ""; 
+                        }}
                       >
+                        {/* รูปค่ายเกม */}
                         <img 
                           data-src={productImages[p]?.image_url || firstImg?.image_url} 
                           src={productImages[p]?.image_url || firstImg?.image_url} 
@@ -587,6 +606,39 @@ export default function LobbyPage() {
                             }
                           }}
                         />
+
+                        {/* 🟢 ปุ่มเข้าเล่น (ออกแบบสีตามธีม Header ของคุณ) 🟢 */}
+                        <div style={{
+                          position: "absolute",
+                          bottom: "0",
+                          left: "0",
+                          width: "100%",
+                          background: "linear-gradient(transparent, rgba(0, 0, 0, 0.95))",
+                          padding: "20px 10px 12px", /* ไล่เงาดำขึ้นมาให้ปุ่มเด่น */
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center"
+                        }}>
+                          <div style={{
+                            background: "linear-gradient(to right, #aa00a0, #4b0082)", /* ไล่สีม่วงแบบ Header */
+                            border: "1px solid #f59e0b", /* ขอบสีทองแบบยอดเงิน */
+                            color: "white",
+                            padding: "6px 20px",
+                            borderRadius: "20px", /* ขอบมน */
+                            fontSize: "0.85rem",
+                            fontWeight: 800,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            boxShadow: "0 4px 12px rgba(170, 0, 160, 0.6)" /* เงาสีม่วงเรืองแสง */
+                          }}>
+                            {/* ไอคอน Play (ใช้ SVG แทน FontAwesome เพื่อความชัวร์ว่าแสดงผล 100%) */}
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                              <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            เข้าเล่น
+                          </div>
+                        </div>
                       </div>
                     );
                   })}
