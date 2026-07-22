@@ -166,7 +166,7 @@ export default function LobbyPage() {
         {/* Banner (อัปเดตใหม่ ล็อกสัดส่วนแนวนอนแก้ภาพยืด 100%) */}
         <div className="banner-main-wrapper" style={{ marginBottom: "14px", position: "relative", overflow: "visible" }}>
           <div style={{ overflow: "hidden", borderRadius: "12px" }}>
-            <div className="new-banner-track" style={{
+            <div className="hero-banner-track" style={{
               display: "flex",
               alignItems: "center", /* 🔴 จุดสำคัญ: ป้องกันสไลเดอร์ยืดความสูงภาพเอง */
               transition: isTransitioning ? "transform 0.5s ease-in-out" : "none",
@@ -176,14 +176,14 @@ export default function LobbyPage() {
                 const realIndex = (index - slideOffset + banners.length) % banners.length;
                 const isCenter = index === currentBanner;
                 return (
-                  <Link href="/promotions" key={index} className="new-banner-item" style={{
+                  <Link href="/promotions" key={index} className="hero-banner-item" style={{
                     transform: isCenter ? "scale(1)" : "scale(0.95)",
                     opacity: isCenter ? 1 : 0.5,
                   }}>
                     <img
                       src={banner.image_url || banner.image || banner || "/banner.jpg"}
                       alt={`Banner ${realIndex + 1}`}
-                      className="new-banner-img"
+                      className="hero-banner-img"
                       onError={(e) => e.currentTarget.src = "/banner.jpg"}
                     />
                   </Link>
