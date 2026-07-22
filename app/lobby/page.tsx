@@ -684,10 +684,10 @@ export default function LobbyPage() {
                         className="theme1-thumb-frame is-loading"
                         style={{ 
                           cursor: "pointer", 
-                          position: "relative", 
                           overflow: "hidden", 
                           borderRadius: "14px", 
                           background: "#121214",
+                          position: "relative",
                           border: "2px solid rgba(170, 0, 160, 0.15)",
                           transition: "all 0.3s ease"
                         }}
@@ -711,6 +711,10 @@ export default function LobbyPage() {
                               className="-cover-img img-fluid"
                               style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
                               loading="lazy" 
+                              onError={(e) => {
+                                e.currentTarget.onerror = null;
+                                e.currentTarget.src = "/default-provider.png";
+                              }}
                             />
                           ) : (
                             <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#4a5568", fontSize: "0.75rem" }}>No Image</div>
@@ -740,9 +744,9 @@ export default function LobbyPage() {
                               background: "linear-gradient(to right, #aa00a0, #4b0082)",
                               border: "1px solid #f59e0b",
                               color: "white",
-                              padding: "6px 18px",
+                              padding: "8px 22px",
                               borderRadius: "20px",
-                              fontSize: "0.8rem",
+                              fontSize: "0.85rem",
                               fontWeight: 800,
                               display: "flex",
                               alignItems: "center",
@@ -750,8 +754,11 @@ export default function LobbyPage() {
                               boxShadow: "0 4px 15px rgba(170, 0, 160, 0.8)",
                               transform: "scale(0.95)",
                               transition: "transform 0.3s ease"
-                            }}>
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+                            onMouseLeave={(e) => e.currentTarget.style.transform = "scale(0.95)"}
+                            >
+                              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M8 5v14l11-7z"/>
                               </svg>
                               เข้าเล่น
