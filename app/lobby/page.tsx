@@ -563,13 +563,13 @@ export default function LobbyPage() {
                           overflow: "hidden", 
                           borderRadius: "14px", 
                           background: "#121214",
-                          position: "relative", /* 🟢 สำคัญ: เพื่อให้ปุ่มลอยอยู่ข้างในได้ */
-                          border: "2px solid rgba(170, 0, 160, 0.15)", /* ขอบสีม่วงอ่อนๆ */
+                          position: "relative",
+                          border: "2px solid rgba(170, 0, 160, 0.15)",
                           transition: "all 0.3s ease"
                         }}
                         onMouseEnter={(e) => { 
                           e.currentTarget.style.transform = "translateY(-4px)"; 
-                          e.currentTarget.style.borderColor = "#aa00a0"; /* โฮเวอร์แล้วขอบม่วงสว่าง */
+                          e.currentTarget.style.borderColor = "#aa00a0"; 
                           e.currentTarget.style.boxShadow = "0 8px 24px rgba(170, 0, 160, 0.35)"; 
                         }}
                         onMouseLeave={(e) => { 
@@ -607,32 +607,39 @@ export default function LobbyPage() {
                           }}
                         />
 
-                        {/* 🟢 ปุ่มเข้าเล่น (ออกแบบสีตามธีม Header ของคุณ) 🟢 */}
-                        <div style={{
-                          position: "absolute",
-                          bottom: "0",
-                          left: "0",
-                          width: "100%",
-                          background: "linear-gradient(transparent, rgba(0, 0, 0, 0.95))",
-                          padding: "20px 10px 12px", /* ไล่เงาดำขึ้นมาให้ปุ่มเด่น */
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center"
-                        }}>
+                        {/* 🟢 ปุ่มเข้าเล่นแบบซ่อนไว้ และจะโผล่มาตรงกลางเมื่อเอาเมาส์ชี้ 🟢 */}
+                        <div 
+                          style={{
+                            position: "absolute",
+                            inset: "0", /* คลุมทับเต็มรูป */
+                            background: "rgba(0, 0, 0, 0.45)", /* ฉากหลังมืดลงนิดหน่อยเพื่อให้ปุ่มเด่นขึ้น */
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            opacity: 0, /* ซ่อนปุ่มไว้ตอนปกติ */
+                            transition: "opacity 0.3s ease" /* ความนุ่มนวลเวลาfade in/out */
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+                          onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}
+                        >
                           <div style={{
-                            background: "linear-gradient(to right, #aa00a0, #4b0082)", /* ไล่สีม่วงแบบ Header */
-                            border: "1px solid #f59e0b", /* ขอบสีทองแบบยอดเงิน */
+                            background: "linear-gradient(to right, #aa00a0, #4b0082)",
+                            border: "1px solid #f59e0b",
                             color: "white",
-                            padding: "6px 20px",
-                            borderRadius: "20px", /* ขอบมน */
+                            padding: "8px 22px",
+                            borderRadius: "20px",
                             fontSize: "0.85rem",
                             fontWeight: 800,
                             display: "flex",
                             alignItems: "center",
                             gap: "6px",
-                            boxShadow: "0 4px 12px rgba(170, 0, 160, 0.6)" /* เงาสีม่วงเรืองแสง */
-                          }}>
-                            {/* ไอคอน Play (ใช้ SVG แทน FontAwesome เพื่อความชัวร์ว่าแสดงผล 100%) */}
+                            boxShadow: "0 4px 15px rgba(170, 0, 160, 0.8)",
+                            transform: "scale(0.95)",
+                            transition: "transform 0.3s ease"
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+                          onMouseLeave={(e) => e.currentTarget.style.transform = "scale(0.95)"}
+                          >
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
                               <path d="M8 5v14l11-7z"/>
                             </svg>
