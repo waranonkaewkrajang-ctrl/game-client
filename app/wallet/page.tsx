@@ -231,7 +231,7 @@ export default function WalletPage() {
                   {/* ส่วนที่ 2: ระบุจำนวนเงิน และ ปุ่มกดเพิ่มเงิน */}
                   <div className="bg-[#181C31] text-card-foreground flex flex-col gap-5 rounded-2xl border border-[#2B3259] shadow-sm p-4 md:p-6 mb-8">
                     
-                    <label className="text-sm font-medium text-white block text-center">
+                    <label className="text-sm font-medium text-white block w-full text-center">
                       ระบุจำนวนเงิน{tab === "deposit" ? "ฝาก" : "ถอน"}
                     </label>
                     
