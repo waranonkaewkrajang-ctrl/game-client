@@ -31,7 +31,7 @@ export default function LobbyPage() {
 
   // หมวดที่ต้องเข้าห้องค่ายก่อน (ไม่เปิดเกมตรง)
   const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS"];
-  const isRoomMode = false;
+  const isRoomMode = ROOM_CATEGORIES.includes(selectedCategory.toUpperCase());
 
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
@@ -705,20 +705,16 @@ export default function LobbyPage() {
                         {/* รูปเกม */}
                         <div style={{ width: "100%", aspectRatio: "1/1", position: "relative", overflow: "hidden" }}>
                           {game.image_url ? (
-  <img 
-    src={game.image_url} 
-    alt={game.game_name} 
-    className="-cover-img img-fluid"
-    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
-    loading="lazy"
-    onError={(e) => {
-      e.currentTarget.onerror = null;
-      e.currentTarget.src = "/default-provider.png"; // หรือเปลี่ยนเป็นรูป placeholder ของเกม
-    }} 
-  />
-) : (
-  <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#4a5568", fontSize: "0.75rem" }}>No Image</div>
-)}
+                            <img 
+                              src={game.image_url} 
+                              alt={game.game_name} 
+                              className="-cover-img img-fluid"
+                              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+                              loading="lazy" 
+                            />
+                          ) : (
+                            <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#4a5568", fontSize: "0.75rem" }}>No Image</div>
+                          )}
 
                           {/* ป้ายบอกค่ายเกมมุมล่าง */}
                           <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "15px 8px 6px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", pointerEvents: "none" }}>
