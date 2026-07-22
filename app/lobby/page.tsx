@@ -31,7 +31,7 @@ export default function LobbyPage() {
 
   // หมวดที่ต้องเข้าห้องค่ายก่อน (ไม่เปิดเกมตรง)
   const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS"];
-  const isRoomMode = ROOM_CATEGORIES.includes(selectedCategory.toUpperCase());
+  const isRoomMode = false;
 
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
