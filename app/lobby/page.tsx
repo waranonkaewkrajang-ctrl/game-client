@@ -163,11 +163,12 @@ export default function LobbyPage() {
 </div>
       <div style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
 
-        {/* Banner (เลื่อนแบบ Responsive มือถือ 1 รูป / คอม 3 รูป) */}
-        <div style={{ marginBottom: "14px", position: "relative", overflow: "visible", padding: "0 8%" }}>
+        {/* Banner (อัปเดตใหม่ ล็อกสัดส่วนแนวนอนแก้ภาพยืด 100%) */}
+        <div className="banner-main-wrapper" style={{ marginBottom: "14px", position: "relative", overflow: "visible" }}>
           <div style={{ overflow: "hidden", borderRadius: "12px" }}>
-            <div className="hero-banner-track" style={{
+            <div className="new-banner-track" style={{
               display: "flex",
+              alignItems: "center", /* 🔴 จุดสำคัญ: ป้องกันสไลเดอร์ยืดความสูงภาพเอง */
               transition: isTransitioning ? "transform 0.5s ease-in-out" : "none",
               transform: `translateX(calc(-${currentBanner} * var(--bw)))`,
             }}>
@@ -175,14 +176,14 @@ export default function LobbyPage() {
                 const realIndex = (index - slideOffset + banners.length) % banners.length;
                 const isCenter = index === currentBanner;
                 return (
-                  <Link href="/promotions" key={index} className="hero-banner-item" style={{
+                  <Link href="/promotions" key={index} className="new-banner-item" style={{
                     transform: isCenter ? "scale(1)" : "scale(0.95)",
                     opacity: isCenter ? 1 : 0.5,
                   }}>
                     <img
                       src={banner.image_url || banner.image || banner || "/banner.jpg"}
                       alt={`Banner ${realIndex + 1}`}
-                      className="hero-banner-img"
+                      className="new-banner-img"
                       onError={(e) => e.currentTarget.src = "/banner.jpg"}
                     />
                   </Link>
@@ -836,7 +837,7 @@ export default function LobbyPage() {
         .mobile-only { display: block; }
         
         /* เมื่อหน้าจอใหญ่กว่า 1024px (หน้าจอคอมพิวเตอร์/แท็บเล็ตแนวนอน) */
-        @media (min-width: 1024px) {
+           @media (min-width: 1024px) {
           .desktop-only { display: block; }
           .mobile-only { display: none; }
           .-outer-wrapper { display: none !important; } /* สั่งซ่อนแท็บล่างเด็ดขาดบนคอม */
