@@ -180,14 +180,14 @@ export default function LobbyPage() {
                     transform: isCenter ? "scale(1)" : "scale(0.95)",
                     opacity: isCenter ? 1 : 0.5,
                   }}>
-                    {/* 🔴 ฝัง Style และ aspectRatio แบบที่เว็บชั้นนำใช้กัน หนีแคชมือถือ 100% 🔴 */}
+                    {/* 🔴 ใช้หลักการ img-fluid ภาพจะโชว์ 100% ไม่โดนตัดขอบแน่นอน 🔴 */}
                     <img
                       src={banner.image_url || banner.image || banner || "/banner.jpg"}
                       alt={`Banner ${realIndex + 1}`}
                       style={{ 
+                        maxWidth: "100%", 
                         width: "100%", 
-                        aspectRatio: "16 / 7",  /* หัวใจสำคัญ: บังคับกรอบรูปให้เป็นแนวนอน 16:7 เสมอ */
-                        objectFit: "cover",     /* ให้รูปจัดทรงพอดีกรอบโดยไม่บีบเบี้ยว */
+                        height: "auto", /* 👈 จุดสำคัญ: ปล่อยความสูงยืดหยุ่นตามสัดส่วนภาพจริง */
                         display: "block", 
                         borderRadius: "12px" 
                       }}
