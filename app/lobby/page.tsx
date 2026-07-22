@@ -261,7 +261,7 @@ export default function LobbyPage() {
                     fontSize: "0.7rem", 
                     fontWeight: 700, 
                     color: isActive ? "#ffffff" : "#d1d5db",
-                    textAlign: "white",
+                    textAlign: "center",
                     whiteSpace: "nowrap" 
                   }}>
                     {cat.label}
