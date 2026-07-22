@@ -186,7 +186,7 @@ export default function LobbyPage() {
                     <img
                       src={banner.image_url || banner.image || banner || "/banner.jpg"}
                       alt={`Banner ${realIndex + 1}`}
-                      style={{ width: "100%", height: "auto", maxHeight: "350px", objectFit: "cover", display: "block", borderRadius: "12px" }}
+                      className="banner-img"
                       onError={(e) => e.currentTarget.src = "/banner.jpg"}
                     />
                   </Link>

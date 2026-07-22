@@ -157,8 +157,17 @@ select.input {
   .mobile-only { display: none; }
   .-outer-wrapper { display: none !important; }
 }
-/* Banner จำกัดขนาดบนคอม */
-@media screen and (min-width: 769px) {
-  .banner-container { max-width: 900px; margin: 0 auto; }
-  .banner-container img { max-height: 380px; object-fit: cover; }
+/* 🟢 สไตล์แบนเนอร์: มือถือย่อตามสัดส่วน (ไม่โดนตัด) / คอมล็อกความสูง 🟢 */
+.banner-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+@media (min-width: 768px) {
+  .banner-img {
+    max-height: 350px;
+    object-fit: cover;
+  }
 }
