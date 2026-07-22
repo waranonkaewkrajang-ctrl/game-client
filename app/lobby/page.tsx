@@ -215,6 +215,63 @@ export default function LobbyPage() {
           )}
         </div>
 
+        {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (แสดงเฉพาะหน้าจอเล็ก / ซ่อนบนคอม) 📱 */}
+        <div className="mobile-only" style={{ marginBottom: "20px" }}>
+          <div style={{ 
+            display: "grid", 
+            gridTemplateColumns: "repeat(4, 1fr)", 
+            gap: "10px" 
+          }}>
+            {[
+              { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
+              { id: "LIVECASINO", label: "คาสิโน", icon: "https://odin996.com/theme_1/img/icons8-cards-48.png" },
+              { id: "SLOT", label: "สล็อต", icon: "https://odin996.com/theme_1/img/ic-nav-menu-slot.png" },
+              { id: "FISHING", label: "ยิงปลา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-fishing-game.png" },
+              { id: "CARD", label: "เกมไพ่", icon: "https://odin996.com/theme_1/img/ic-nav-menu-casino.png" },
+              { id: "SPORT", label: "กีฬา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-sport.png" },
+              { id: "LOTTO", label: "หวย", icon: "https://odin996.com/theme_1/img/ic-nav-menu-lotto.png" },
+              { id: "SKILL", label: "สกิล", icon: "https://odin996.com/theme_1/img/ic-nav-menu-skill-game.png" },
+            ].map((cat) => {
+              const isActive = selectedCategory === cat.id;
+              return (
+                <div 
+                  key={`mob-cat-${cat.id}`}
+                  onClick={() => handleCategoryFilter(cat.id)}
+                  style={{
+                    background: isActive ? "linear-gradient(135deg, #aa00a0, #4b0082)" : "#14142a",
+                    border: isActive ? "2px solid #ffb300" : "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: "14px",
+                    padding: "10px 4px",
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "6px",
+                    cursor: "pointer",
+                    boxShadow: isActive ? "0 4px 15px rgba(170,0,160,0.4)" : "0 4px 10px rgba(0,0,0,0.3)",
+                    transition: "all 0.2s ease"
+                  }}
+                >
+                  <img 
+                    src={cat.icon} 
+                    alt={cat.label} 
+                    style={{ width: "36px", height: "36px", objectFit: "contain" }} 
+                  />
+                  <span style={{ 
+                    fontSize: "0.7rem", 
+                    fontWeight: 700, 
+                    color: isActive ? "#ffffff" : "#d1d5db",
+                    textAlign: "white",
+                    whiteSpace: "nowrap" 
+                  }}>
+                    {cat.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
         {/* 🟢 นำเกมไฮไลท์ (กล่องแดง) มาวางตรงนี้ 🟢 */}
         <div style={{ marginBottom: "24px", background: "radial-gradient(57.87% 93.51% at 50% 6.49%, rgb(124, 58, 237) -60%, rgb(10, 7, 21) 40%)", backdropFilter: "blur(10px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
           
