@@ -545,8 +545,9 @@ export default function LobbyPage() {
                   <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem" }}>({products.length} ค่าย)</span>
                 </div>
 
+    
                 {/* Provider Room Cards */}
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", gap: "14px" }}>
+               <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }} className="provider-grid-container">
                   {products.map((p) => {
                     const pGames = allGames.filter((g) => g.product_id === p);
                     const slotGames = pGames.filter((g) => ROOM_CATEGORIES.includes((g.category || g.type || "").toUpperCase()));
@@ -665,7 +666,7 @@ export default function LobbyPage() {
 
                 {/* Games Grid */}
                 {loading ? (
-                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }} className="game-grid-container">
                     {Array.from({ length: 12 }).map((_, i) => (
                       <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4" }} />
                     ))}
@@ -809,6 +810,18 @@ export default function LobbyPage() {
         /* 🟢 สไตล์แบนเนอร์ (เปลี่ยนชื่อคลาสใหม่หนีแคชมือถือ) 🟢 */
         .hero-banner-track { --bw: 100%; }
         @media (min-width: 768px) { .hero-banner-track { --bw: 33.333%; } }
+
+        /* 🟢 บังคับจำนวนคอลัมน์ (มือถือ 3, คอม 4) ตามที่คุณต้องการ 🟢 */
+        .provider-grid-container, .game-grid-container {
+          grid-template-columns: repeat(3, 1fr) !important;
+        }
+
+        @media (min-width: 768px) {
+          .provider-grid-container, .game-grid-container {
+            grid-template-columns: repeat(4, 1fr) !important;
+            gap: 14px !important;
+          }
+        }
         
         .hero-banner-item {
           min-width: var(--bw);
