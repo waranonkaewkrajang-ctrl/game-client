@@ -169,19 +169,17 @@ export default function LobbyPage() {
             <div style={{
               display: "flex",
               transition: isTransitioning ? "transform 0.5s ease-in-out" : "none",
-              transform: `translateX(-${currentBanner * (100 / 3)}%)`,
-              gap: "10px",
+              /* 🔴 ใช้ var(--slide-width) เพื่อเปลี่ยนขนาดการเลื่อนตามมือถือ/คอม อัตโนมัติ */
+              transform: `translateX(calc(-${currentBanner} * var(--slide-width)))`,
             }}>
               {loopBanners.map((banner, index) => {
                 const realIndex = (index - slideOffset + banners.length) % banners.length;
                 const isCenter = index === currentBanner;
                 return (
-                  <Link href="/promotions" key={index} style={{
-                    minWidth: "calc(33.333% - 7px)", flexShrink: 0,
-                    transition: "transform 0.4s, opacity 0.4s",
-                    transform: isCenter ? "scale(1.05)" : "scale(0.95)",
-                    opacity: isCenter ? 1 : 0.6,
-                    borderRadius: "12px", overflow: "hidden",
+                  <Link href="/promotions" key={index} className="banner-slide-item" style={{
+                    /* 🔴 ลดการซูมลงนิดหน่อย เพื่อไม่ให้ภาพล้นขอบจอในมือถือ */
+                    transform: isCenter ? "scale(1)" : "scale(0.95)", 
+                    opacity: isCenter ? 1 : 0.5,
                   }}>
                     <img
                       src={banner.image_url || banner.image || banner || "/banner.jpg"}

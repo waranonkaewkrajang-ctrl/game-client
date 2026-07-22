@@ -171,3 +171,21 @@ select.input {
     object-fit: cover;
   }
 }
+/* 🟢 ตั้งค่าขนาดของกล่องสไลเดอร์แบนเนอร์ (Responsive) 🟢 */
+:root {
+  --slide-width: 100%; /* มือถือ: สไลด์ทีละ 1 รูป (เต็มจอพอดี) */
+}
+@media (min-width: 768px) {
+  :root {
+    --slide-width: 33.333%; /* คอมพิวเตอร์: สไลด์ทีละ 3 รูป */
+  }
+}
+
+.banner-slide-item {
+  min-width: var(--slide-width);
+  flex-shrink: 0;
+  transition: transform 0.4s, opacity 0.4s;
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 0 4px; /* สร้างระยะห่างระหว่างรูปแทนการใช้ gap ของเดิม */
+}
