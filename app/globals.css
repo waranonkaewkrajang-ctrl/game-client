@@ -158,7 +158,7 @@ select.input {
   .-outer-wrapper { display: none !important; }
 }
 /* ===== Banner Responsive ===== */
-.hero-banner-track { --bw: 100%; }
+.hero-banner-track { --bw: 100%; --banner-offset: 0; }
 .hero-banner-item {
   min-width: var(--bw);
   flex-shrink: 0;
@@ -175,7 +175,7 @@ select.input {
 }
 
 @media (min-width: 769px) {
-  .hero-banner-track { --bw: 33.333%; }
+  .hero-banner-track { --bw: 33.333%; --banner-offset: 1; }
   .hero-banner-img { max-height: 380px; }
 }
 

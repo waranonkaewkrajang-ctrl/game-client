@@ -170,7 +170,7 @@ export default function LobbyPage() {
               display: "flex",
               alignItems: "center", /* 🔴 จุดสำคัญ: ป้องกันสไลเดอร์ยืดความสูงภาพเอง */
               transition: isTransitioning ? "transform 0.5s ease-in-out" : "none",
-              transform: `translateX(calc(-${currentBanner} * var(--bw)))`,
+              transform: `translateX(calc((-${currentBanner} + var(--banner-offset, 0)) * var(--bw)))`,
             }}>
               {loopBanners.map((banner, index) => {
                 const realIndex = (index - slideOffset + banners.length) % banners.length;
