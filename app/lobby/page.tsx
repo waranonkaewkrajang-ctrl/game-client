@@ -30,7 +30,7 @@ export default function LobbyPage() {
   const [isTransitioning, setIsTransitioning] = useState(true);
 
   // หมวดที่ต้องเข้าห้องค่ายก่อน (ไม่เปิดเกมตรง)
-  const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS", "LIVECASINO", "LIVE", "FISHING", "FISH", "CARD", "TABLE", "SPORT", "LOTTO", "KENO", "SKILL", "TRADE", "OTHER", ""];
+  const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS", "LIVECASINO", "LIVE", "FISHING", "FISH", "CARD", "TABLE", "SPORT", "LOTTO", "KENO", "SKILL", "TRADE", "OTHER"];
   const isRoomMode = ROOM_CATEGORIES.includes(selectedCategory.toUpperCase());
 
   useEffect(() => {
