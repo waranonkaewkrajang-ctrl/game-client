@@ -29,7 +29,7 @@ export default function WalletPage() {
     amounts: [100, 300, 500, 1000, 5000],
   });
   const [selectedBank, setSelectedBank] = useState<number>(0);
-  const [truewalletNumber, setTruewalletNumber] = useState("");
+  const [truewalletAccounts, setTruewalletAccounts] = useState<{phone: string; name: string; is_active: boolean}[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem("user_token");
@@ -48,8 +48,8 @@ export default function WalletPage() {
     api.get("/finance/settings").then((res) => {
       if (res.data.data) {
         setFinance(res.data.data);
-        if (res.data.data.truewallet_number) {
-          setTruewalletNumber(res.data.data.truewallet_number);
+        if (res.data.data.truewallet_accounts) {
+          setTruewalletAccounts(res.data.data.truewallet_accounts.filter((w: any) => w.is_active));
         }
       }
     }).catch(() => {});
@@ -223,19 +223,26 @@ export default function WalletPage() {
                     <div className={`grid grid-cols-${Math.min(finance.channels.length, 3)} md:grid-cols-2 gap-2 w-full`}>
                       {finance.channels.map((ch) => (
                         <div key={ch} onClick={() => {
-                          if (ch === "truewallet" && truewalletNumber) {
+                          if (ch === "truewallet" && truewalletAccounts.length > 0) {
+                            const walletsHtml = truewalletAccounts.map((w, i) => `
+                              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                                <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:40px;height:40px" />
+                                <div style="flex:1;text-align:left">
+                                  <div style="font-size:13px;color:#166534">${w.name}</div>
+                                  <div style="font-size:18px;font-weight:700;color:#0f172a;letter-spacing:1px">${w.phone}</div>
+                                </div>
+                                <button type="button" class="tw-copy" data-phone="${w.phone}" style="background:#22c55e;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
+                              </div>
+                            `).join("");
+
                             Swal.fire({
                               html: `
                                 <div style="text-align:center;padding:8px 0">
                                   <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:56px;height:56px;margin:0 auto 12px;display:block" />
                                   <h2 style="font-size:18px;font-weight:700;color:#0f172a;margin:0 0 4px">ฝากผ่าน True Wallet</h2>
-                                  <p style="font-size:13px;color:#64748b;margin:0 0 16px">กรุณาโอนเงินไปที่เบอร์ด้านล่าง</p>
-                                  <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:20px;margin-bottom:16px">
-                                    <p style="font-size:13px;color:#166534;margin:0 0 4px">เบอร์ True Wallet</p>
-                                    <p style="font-size:28px;font-weight:700;color:#0f172a;margin:0 0 12px;letter-spacing:2px">${truewalletNumber}</p>
-                                    <button type="button" id="tw-copy-btn" style="background:#22c55e;color:white;border:none;border-radius:8px;padding:8px 24px;font-size:13px;font-weight:600;cursor:pointer">คัดลอกเบอร์</button>
-                                  </div>
-                                  <p style="font-size:12px;color:#ef4444;font-weight:500">โอนเสร็จแล้วเงินจะเข้าอัตโนมัติภายใน 5 นาที</p>
+                                  <p style="font-size:13px;color:#64748b;margin:0 0 16px">กรุณาโอนเงินไปที่บัญชีด้านล่าง</p>
+                                  ${walletsHtml}
+                                  <p style="font-size:12px;color:#ef4444;font-weight:500;margin-top:12px">โอนเสร็จแล้วเงินจะเข้าอัตโนมัติภายใน 5 นาที</p>
                                 </div>
                               `,
                               showConfirmButton: true,
@@ -244,14 +251,14 @@ export default function WalletPage() {
                               background: "#fff",
                               color: "#0f172a",
                               didOpen: () => {
-                                const copyBtn = document.getElementById("tw-copy-btn");
-                                if (copyBtn) {
-                                  copyBtn.addEventListener("click", () => {
-                                    navigator.clipboard.writeText(truewalletNumber);
-                                    copyBtn.textContent = "คัดลอกแล้ว ✓";
-                                    setTimeout(() => { copyBtn.textContent = "คัดลอกเบอร์"; }, 2000);
+                                document.querySelectorAll(".tw-copy").forEach((btn) => {
+                                  btn.addEventListener("click", () => {
+                                    const phone = btn.getAttribute("data-phone") || "";
+                                    navigator.clipboard.writeText(phone);
+                                    btn.textContent = "คัดลอกแล้ว ✓";
+                                    setTimeout(() => { btn.textContent = "คัดลอก"; }, 2000);
                                   });
-                                }
+                                });
                               },
                             });
                           } else {
