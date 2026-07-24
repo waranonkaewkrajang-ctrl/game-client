@@ -17,7 +17,14 @@ export default function Navbar() {
     if (token && userData) {
       setIsLoggedIn(true);
       setUsername(JSON.parse(userData).username);
-      api.get("/wallet/balance").then((res) => setBalance(res.data.data.balance)).catch(() => {});
+      
+      const fetchBalance = () => {
+        api.get("/wallet/balance").then((res) => setBalance(res.data.data.balance)).catch(() => {});
+      };
+
+      fetchBalance();
+      const interval = setInterval(fetchBalance, 10000);
+      return () => clearInterval(interval);
     }
   }, []);
 
