@@ -234,20 +234,18 @@ export default function WalletPage() {
                     </div>
 
                     {/* กล่องกรอกตัวเลข */}
-                    <div className="flex flex-col items-center justify-center rounded-xl border border-[#2B3259] py-3 bg-[#0F111A]">
-                      <span className="text-[#717690] text-[10px] md:text-xs mb-1">
+                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", borderRadius: "12px", border: "1px solid #2B3259", padding: "16px 12px", background: "#0F111A" }}>
+                      <span style={{ color: "#717690", fontSize: "11px", marginBottom: "8px" }}>
                         ขั้นต่ำ: {minAmount.toLocaleString()} / สูงสุด {maxAmount.toLocaleString()}
                       </span>
-                      <div className="flex justify-center items-center w-full gap-1">
-                        <input
-                          inputMode="numeric"
-                          className="text-[#a855f7] bg-transparent text-center text-2xl md:text-3xl font-bold outline-none border-none w-full max-w-[200px] placeholder:text-[#2B3259]"
-                          type="text"
-                          placeholder="0"
-                          value={amount}
-                          onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ''))}
-                        />
-                      </div>
+                      <input
+                        inputMode="numeric"
+                        style={{ color: "#a855f7", background: "transparent", textAlign: "center", fontSize: "1.5rem", fontWeight: 700, outline: "none", border: "none", width: "100%", maxWidth: "200px" }}
+                        type="text"
+                        placeholder="0"
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ''))}
+                      />
                     </div>
 
                     {/* ปุ่มยกเลิก / ยืนยัน */}
