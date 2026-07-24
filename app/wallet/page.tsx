@@ -284,9 +284,9 @@ export default function WalletPage() {
                           key={val} 
                           type="button" 
                           onClick={() => addAmount(val)} 
-                          className="cursor-pointer inline-flex items-center justify-center gap-1.5 rounded-lg font-medium transition-all border border-[#2B3259] bg-[#0F111A] hover:bg-[#7c3aed]/20 hover:border-[#7c3aed] text-white h-10 md:h-11 px-2 text-[12px] md:text-sm shadow-sm"
+                          className="cursor-pointer inline-flex items-center justify-center gap-0.5 md:gap-1.5 rounded-lg font-medium transition-all border border-[#2B3259] bg-[#0F111A] hover:bg-[#7c3aed]/20 hover:border-[#7c3aed] text-white h-10 md:h-11 px-1 md:px-2 text-[11px] md:text-sm shadow-sm"
                         >
-                          <img alt="coin" className="w-4 h-4 shrink-0" src="https://fs.cdnrc.com/payment-layout/svg/coin.svg" />
+                          <img alt="coin" className="w-4 h-4 shrink-0 hidden md:block" src="https://fs.cdnrc.com/payment-layout/svg/coin.svg" />
                           +{val}
                         </button>
                       ))}
