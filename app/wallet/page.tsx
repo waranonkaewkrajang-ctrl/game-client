@@ -214,7 +214,7 @@ export default function WalletPage() {
                   {tab === "withdraw" && userData && (
                     <div>
                       <label className="text-sm font-medium text-white mb-2 block">บัญชีรับเงิน</label>
-                      <div className="flex items-center gap-3 rounded-lg border border-[#7c3aed] bg-[#7c3aed]/10 p-3">
+                      <div className="flex items-center gap-3 rounded-2xl border border-[#7c3aed] bg-[#7c3aed]/10 p-4">
                         <img alt="Bank" width="32" height="32" className="shrink-0 rounded-md bg-white object-contain p-0.5" src={`https://fs.cdnrc.com/payment-layout/iconbank/${userData.bank_code || 'BAY'}.png`} onError={(e) => { e.currentTarget.src = "https://fs.cdnrc.com/payment-layout/svg/bank.svg"; }} />
                         <div className="flex-1 min-w-0">
                           <div className="text-white text-sm font-semibold truncate">{userData.bank_name || "บัญชีของฉัน"}</div>
