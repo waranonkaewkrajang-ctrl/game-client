@@ -7,12 +7,14 @@ import Swal from "sweetalert2";
 export default function ProfilePage() {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
-  const [wallet, setWallet] = useState<any>(null); 
+  const [wallet, setWallet] = useState<any>(null);
+  const [rewards, setRewards] = useState<any>(null);
 
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
     api.get("/auth/me").then((res) => setUser(res.data.data)).catch(() => {});
     api.get("/wallet/balance").then((res) => setWallet(res.data.data)).catch(() => {});
+    api.get("/rewards/summary").then((res) => setRewards(res.data.data)).catch(() => {});
   }, []);
 
   // ฟังก์ชันคัดลอก + แจ้งเตือนสไตล์ Minimal Toast
@@ -144,6 +146,52 @@ export default function ProfilePage() {
         {/* Sections */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           
+          {/* Card: รับรางวัล */}
+          <div>
+            <h2 style={{ fontSize: "13px", color: "#71717a", fontWeight: 500, marginBottom: "8px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+              รับรางวัล
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+              {/* ปุ่มรับยอดเสีย */}
+              <a href="/rewards/cashback" style={{ textDecoration: "none", background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "16px 20px", border: "1px solid rgba(124,58,237,0.3)", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)", cursor: "pointer", transition: "all 0.2s" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.1))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>💰</div>
+                  <div>
+                    <p style={{ margin: 0, fontSize: "14px", fontWeight: 600, color: "#fafafa" }}>รับยอดเสีย</p>
+                    <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>คืนยอดเสียรายวัน</p>
+                  </div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: rewards?.cashback?.pending > 0 ? "#f59e0b" : "#71717a" }}>
+                    ฿{rewards?.cashback?.pending?.toLocaleString("th-TH", { minimumFractionDigits: 2 }) || "0.00"}
+                  </p>
+                  {rewards?.cashback?.pending > 0 && (
+                    <span style={{ fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "4px", background: "rgba(245,158,11,0.15)", color: "#f59e0b" }}>รอรับ</span>
+                  )}
+                </div>
+              </a>
+
+              {/* ปุ่มรับค่าแนะนำ */}
+              <a href="/rewards/referral" style={{ textDecoration: "none", background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "16px 20px", border: "1px solid rgba(124,58,237,0.3)", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)", cursor: "pointer", transition: "all 0.2s" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.1))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>👥</div>
+                  <div>
+                    <p style={{ margin: 0, fontSize: "14px", fontWeight: 600, color: "#fafafa" }}>แนะนำเพื่อน</p>
+                    <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>รับค่าคอมจากเพื่อน</p>
+                  </div>
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: rewards?.referral?.pending > 0 ? "#10b981" : "#71717a" }}>
+                    ฿{rewards?.referral?.pending?.toLocaleString("th-TH", { minimumFractionDigits: 2 }) || "0.00"}
+                  </p>
+                  {rewards?.referral?.pending > 0 && (
+                    <span style={{ fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "4px", background: "rgba(16,185,129,0.15)", color: "#10b981" }}>รอรับ</span>
+                  )}
+                </div>
+              </a>
+            </div>
+          </div>
+
           {/* Card 1: บัญชีธนาคาร (เอาไว้บนสุดเพราะลูกค้าใช้บ่อยสุด) */}
           <div>
             <h2 style={{ fontSize: "13px", color: "#71717a", fontWeight: 500, marginBottom: "8px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
