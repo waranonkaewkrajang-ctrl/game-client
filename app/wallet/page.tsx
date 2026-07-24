@@ -29,6 +29,7 @@ export default function WalletPage() {
     amounts: [100, 300, 500, 1000, 5000],
   });
   const [selectedBank, setSelectedBank] = useState<number>(0);
+  const [truewalletNumber, setTruewalletNumber] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("user_token");
@@ -47,8 +48,8 @@ export default function WalletPage() {
     api.get("/finance/settings").then((res) => {
       if (res.data.data) {
         setFinance(res.data.data);
-        if (res.data.data.channels?.length > 0) {
-          setChannel(res.data.data.channels[0]);
+        if (res.data.data.truewallet_number) {
+          setTruewalletNumber(res.data.data.truewallet_number);
         }
       }
     }).catch(() => {});
@@ -221,7 +222,42 @@ export default function WalletPage() {
                   {tab === "deposit" ? (
                     <div className={`grid grid-cols-${Math.min(finance.channels.length, 3)} md:grid-cols-2 gap-2 w-full`}>
                       {finance.channels.map((ch) => (
-                        <div key={ch} onClick={() => setChannel(ch)} className={`cursor-pointer rounded-xl border w-full h-20 md:h-24 text-center p-2 flex items-center justify-center transition-all ${channel === ch ? "border-[#7c3aed] bg-[#7c3aed]/10" : "border-[#2B3259] hover:bg-[#2B3259]/50"}`}>
+                        <div key={ch} onClick={() => {
+                          if (ch === "truewallet" && truewalletNumber) {
+                            Swal.fire({
+                              html: `
+                                <div style="text-align:center;padding:8px 0">
+                                  <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:56px;height:56px;margin:0 auto 12px;display:block" />
+                                  <h2 style="font-size:18px;font-weight:700;color:#0f172a;margin:0 0 4px">ฝากผ่าน True Wallet</h2>
+                                  <p style="font-size:13px;color:#64748b;margin:0 0 16px">กรุณาโอนเงินไปที่เบอร์ด้านล่าง</p>
+                                  <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:16px;padding:20px;margin-bottom:16px">
+                                    <p style="font-size:13px;color:#166534;margin:0 0 4px">เบอร์ True Wallet</p>
+                                    <p style="font-size:28px;font-weight:700;color:#0f172a;margin:0 0 12px;letter-spacing:2px">${truewalletNumber}</p>
+                                    <button type="button" id="tw-copy-btn" style="background:#22c55e;color:white;border:none;border-radius:8px;padding:8px 24px;font-size:13px;font-weight:600;cursor:pointer">คัดลอกเบอร์</button>
+                                  </div>
+                                  <p style="font-size:12px;color:#ef4444;font-weight:500">โอนเสร็จแล้วเงินจะเข้าอัตโนมัติภายใน 5 นาที</p>
+                                </div>
+                              `,
+                              showConfirmButton: true,
+                              confirmButtonText: "ปิด",
+                              confirmButtonColor: "#22c55e",
+                              background: "#fff",
+                              color: "#0f172a",
+                              didOpen: () => {
+                                const copyBtn = document.getElementById("tw-copy-btn");
+                                if (copyBtn) {
+                                  copyBtn.addEventListener("click", () => {
+                                    navigator.clipboard.writeText(truewalletNumber);
+                                    copyBtn.textContent = "คัดลอกแล้ว ✓";
+                                    setTimeout(() => { copyBtn.textContent = "คัดลอกเบอร์"; }, 2000);
+                                  });
+                                }
+                              },
+                            });
+                          } else {
+                            setChannel(ch);
+                          }
+                        }} className={`cursor-pointer rounded-xl border w-full h-20 md:h-24 text-center p-2 flex items-center justify-center transition-all ${channel === ch ? "border-[#7c3aed] bg-[#7c3aed]/10" : "border-[#2B3259] hover:bg-[#2B3259]/50"}`}>
                           <div className="flex flex-col justify-center items-center gap-1.5">
                             <img className="w-7 h-7 md:w-8 md:h-8" alt={ch} src={channelIcons[ch]?.icon || channelIcons.bank_transfer.icon} />
                             <span className="text-[10px] md:text-xs font-medium text-white">{channelIcons[ch]?.label || ch}</span>
