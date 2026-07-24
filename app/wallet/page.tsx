@@ -234,11 +234,11 @@ export default function WalletPage() {
                     </div>
 
                     {/* กล่องกรอกตัวเลข */}
-                    <div className="flex flex-col items-center justify-center rounded-xl border border-[#2B3259] py-4 relative bg-[#0F111A] h-20 md:h-22">
-                      <span className="absolute top-2 text-[#717690] text-[10px] md:text-xs pointer-events-none">
+                    <div className="flex flex-col items-center justify-center rounded-xl border border-[#2B3259] py-3 bg-[#0F111A]">
+                      <span className="text-[#717690] text-[10px] md:text-xs mb-1">
                         ขั้นต่ำ: {minAmount.toLocaleString()} / สูงสุด {maxAmount.toLocaleString()}
                       </span>
-                      <div className="flex justify-center items-center w-full gap-1 mt-2">
+                      <div className="flex justify-center items-center w-full gap-1">
                         <input
                           inputMode="numeric"
                           className="text-[#a855f7] bg-transparent text-center text-2xl md:text-3xl font-bold outline-none border-none w-full max-w-[200px] placeholder:text-[#2B3259]"
