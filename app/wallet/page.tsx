@@ -255,7 +255,7 @@ export default function WalletPage() {
                     </div>
 
                         {/* 🟢 เปลี่ยน gap-4 เป็น gap-2 และเพิ่ม mb-24 เพื่อดันให้พ้นเมนูด้านล่างบนมือถือ */}
-                    <div className="className="flex gap-2 w-full">
+                    <div className="flex gap-2 w-full">
                       
                       {/* ปุ่มยกเลิก - โทนแดง Rose */}
                       <button 
