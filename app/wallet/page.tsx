@@ -243,6 +243,7 @@ export default function WalletPage() {
                                   <p style="font-size:13px;color:#64748b;margin:0 0 16px">กรุณาโอนเงินไปที่บัญชีด้านล่าง</p>
                                   ${walletsHtml}
                                   <p style="font-size:12px;color:#ef4444;font-weight:500;margin-top:12px">โอนเสร็จแล้วเงินจะเข้าอัตโนมัติภายใน 5 นาที</p>
+                                  <p style="font-size:24px;color:#ef4444;font-weight:700;margin-top:8px" id="tw-timer">10:00</p>
                                 </div>
                               `,
                               showConfirmButton: true,
@@ -259,6 +260,15 @@ export default function WalletPage() {
                                     setTimeout(() => { btn.textContent = "คัดลอก"; }, 2000);
                                   });
                                 });
+                                let twSeconds = 600;
+                                const twTimerEl = document.getElementById("tw-timer");
+                                const twInterval = setInterval(() => {
+                                  twSeconds--;
+                                  if (twSeconds <= 0) { clearInterval(twInterval); Swal.close(); return; }
+                                  const m = Math.floor(twSeconds / 60);
+                                  const s = twSeconds % 60;
+                                  if (twTimerEl) twTimerEl.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+                                }, 1000);
                               },
                             });
                           } else {
