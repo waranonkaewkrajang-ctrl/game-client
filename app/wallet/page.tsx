@@ -247,7 +247,7 @@ export default function WalletPage() {
                               `,
                               showConfirmButton: true,
                               confirmButtonText: "ปิด",
-                              confirmButtonColor: "#22c55e",
+                              confirmButtonColor: "#ef4444",
                               background: "#fff",
                               color: "#0f172a",
                               didOpen: () => {
