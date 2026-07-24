@@ -376,21 +376,9 @@ export default function WalletPage() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-
-      .swal-white-popup { background-color: #ffffff !important; color: #0f172a !important; color-scheme: light !important; }
-        .swal-white-popup .swal2-html-container,
-        .swal-white-popup .swal2-html-container div,
-        .swal-white-popup .swal2-html-container p,
-        .swal-white-popup .swal2-html-container h2,
-        .swal-white-popup .swal2-html-container span { color: inherit !important; background-color: transparent !important; -webkit-text-fill-color: initial !important; }
-        .swal-white-popup .swal2-html-container div[style*="background:#f0fdf4"] { background-color: #f0fdf4 !important; }
-        .swal-white-popup .swal2-html-container div[style*="background:#f8fafc"] { background-color: #f8fafc !important; }
-        .swal-white-popup .swal2-html-container div[style*="background:#fefce8"] { background-color: #fefce8 !important; }
-        .swal-white-popup img { filter: none !important; mix-blend-mode: normal !important; }
-        @media (prefers-color-scheme: dark) {
-          .swal-white-popup { background-color: #ffffff !important; }
-          .swal-white-popup * { color-scheme: light !important; -webkit-text-fill-color: initial !important; }
-        }
+        .swal2-popup { color-scheme: light only !important; }
+        .swal-white-popup { background-color: #ffffff !important; color: #0f172a !important; color-scheme: light only !important; }
+        .swal-white-popup * { color-scheme: light only !important; }
         @keyframes floatDice {
           0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
           15% { opacity: 0.05; }
