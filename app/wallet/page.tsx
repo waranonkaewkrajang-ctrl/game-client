@@ -253,32 +253,6 @@ export default function WalletPage() {
                 {/* Right: Amount & Action */}
                 <div className="flex flex-col w-full flex-1 gap-4 md:gap-6">
 
-                  {/* บัญชีรับฝาก (จาก settings) */}
-                  {tab === "deposit" && finance.banks.length > 0 && (
-                    <div>
-                      <div className="flex flex-col md:flex-row md:justify-between md:items-center w-full gap-1 mb-2 md:mb-3">
-                        <label className="text-sm font-medium text-white">บัญชีปลายทาง</label>
-                        <span className="text-red-500 text-[11px] md:text-xs">กรุณาโอนเข้าบัญชีนี้เท่านั้น</span>
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        {finance.banks.map((bank, i) => (
-                          <div key={i} onClick={() => setSelectedBank(i)} className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-all ${selectedBank === i ? "border-[#7c3aed] bg-[#7c3aed]/10" : "border-[#2B3259] bg-[#0F111A] hover:bg-[#2B3259]/50"}`}>
-                            <img alt={bank.bank_code} width="32" height="32" className="shrink-0 rounded-md bg-white object-contain p-0.5" src={`https://fs.cdnrc.com/payment-layout/iconbank/${bank.bank_code}.png`} onError={(e) => { e.currentTarget.src = "https://fs.cdnrc.com/payment-layout/svg/bank.svg"; }} />
-                            <div className="flex-1 min-w-0">
-                              <div className="text-white text-sm font-semibold truncate">{bank.bank_name}</div>
-                              <div className="text-[#717690] text-xs">{bank.bank_code} — {bank.bank_account}</div>
-                            </div>
-                            {selectedBank === i && (
-                              <div className="w-5 h-5 rounded-full bg-[#7c3aed] flex items-center justify-center shrink-0">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   {/* บัญชีลูกค้า (ถอน) */}
                   {tab === "withdraw" && userData && (
                     <div>
