@@ -255,7 +255,7 @@ export default function WalletPage() {
                     </div>
 
                         {/* 🟢 เปลี่ยน gap-4 เป็น gap-2 และเพิ่ม mb-24 เพื่อดันให้พ้นเมนูด้านล่างบนมือถือ */}
-                    <div className="flex gap-2 w-full mb-24 md:mb-0">
+                    <div className="className="flex gap-2 w-full">
                       
                       {/* ปุ่มยกเลิก - โทนแดง Rose */}
                       <button 
@@ -278,7 +278,7 @@ export default function WalletPage() {
                     </div>
 
                     {/* 3. ปุ่ม + จำนวนเงิน */}
-                    <div className="grid grid-cols-3 md:grid-cols-5 gap-1.5 md:gap-2 mt-2">
+                    <div className="grid grid-cols-5 gap-1.5 md:gap-2 mt-2">
                       {[100, 300, 500, 1000, 5000].map((val) => (
                         <button 
                           key={val} 
