@@ -74,7 +74,76 @@ export default function WalletPage() {
         to_bank: bank?.bank_code || null,
         to_account: bank?.bank_account || null,
       });
-      Swal.fire({ icon: "success", title: "แจ้งฝากเงินสำเร็จ", text: "รอ Admin อนุมัติ", timer: 2000, showConfirmButton: false });
+      if (bank) {
+        const minutesLimit = 15;
+        let secondsLeft = minutesLimit * 60;
+
+        const popup = Swal.fire({
+          html: `
+            <div style="text-align:center;padding:8px 0">
+              <div style="width:56px;height:56px;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;margin:0 auto 12px">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <h2 style="font-size:18px;font-weight:700;color:#0f172a;margin:0 0 4px">แจ้งฝากเงินสำเร็จ</h2>
+              <p style="font-size:13px;color:#64748b;margin:0 0 16px">กรุณาโอนเงินไปที่บัญชีด้านล่าง</p>
+              
+              <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:20px;margin-bottom:16px">
+                <img src="https://fs.cdnrc.com/payment-layout/iconbank/${bank.bank_code}.png" style="width:48px;height:48px;border-radius:12px;background:#fff;padding:4px;object-fit:contain;margin:0 auto 12px;display:block;border:1px solid #e2e8f0" />
+                <p style="font-size:13px;color:#64748b;margin:0 0 4px">${bank.bank_code}</p>
+                <p style="font-size:22px;font-weight:700;color:#0f172a;margin:0 0 4px;letter-spacing:1px" id="swal-account">${bank.bank_account}</p>
+                <p style="font-size:14px;color:#475569;margin:0 0 12px">${bank.bank_name}</p>
+                <button type="button" id="swal-copy-btn" style="background:#7c3aed;color:white;border:none;border-radius:8px;padding:8px 24px;font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s">
+                  คัดลอกเลขบัญชี
+                </button>
+              </div>
+
+              <div style="background:#fefce8;border:1px solid #fde68a;border-radius:12px;padding:14px;margin-bottom:16px">
+                <p style="font-size:24px;font-weight:700;color:#0f172a;margin:0">฿${parseFloat(amount).toLocaleString("th-TH", {minimumFractionDigits: 2})}</p>
+                <p style="font-size:11px;color:#854d0e;margin:4px 0 0">กรุณาโอนตามจำนวนที่แจ้งเท่านั้น</p>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:center;gap:6px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <p style="font-size:13px;color:#ef4444;margin:0;font-weight:600">โอนภายใน <span id="swal-timer">${minutesLimit}:00</span></p>
+              </div>
+            </div>
+          `,
+          showConfirmButton: true,
+          confirmButtonText: "โอนเงินแล้ว",
+          confirmButtonColor: "#22c55e",
+          showCancelButton: false,
+          allowOutsideClick: false,
+          background: "#fff",
+          color: "#0f172a",
+          customClass: { popup: "swal-clean-popup" },
+          didOpen: () => {
+            // คัดลอกเลขบัญชี
+            const copyBtn = document.getElementById("swal-copy-btn");
+            if (copyBtn) {
+              copyBtn.addEventListener("click", () => {
+                navigator.clipboard.writeText(bank.bank_account);
+                copyBtn.textContent = "คัดลอกแล้ว ✓";
+                copyBtn.style.background = "#22c55e";
+                setTimeout(() => {
+                  copyBtn.textContent = "คัดลอกเลขบัญชี";
+                  copyBtn.style.background = "#7c3aed";
+                }, 2000);
+              });
+            }
+            // นับถอยหลัง
+            const timerEl = document.getElementById("swal-timer");
+            const interval = setInterval(() => {
+              secondsLeft--;
+              if (secondsLeft <= 0) { clearInterval(interval); Swal.close(); return; }
+              const m = Math.floor(secondsLeft / 60);
+              const s = secondsLeft % 60;
+              if (timerEl) timerEl.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+            }, 1000);
+          },
+        });
+      } else {
+        Swal.fire({ icon: "success", title: "แจ้งฝากเงินสำเร็จ", text: "รอ Admin อนุมัติ", timer: 2000, showConfirmButton: false });
+      }
       setAmount("");
       fetchWallet();
     } catch (err: any) {
