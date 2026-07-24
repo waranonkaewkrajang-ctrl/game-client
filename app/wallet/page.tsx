@@ -225,10 +225,10 @@ export default function WalletPage() {
                   )}
 
                   {/* กรอกจำนวนเงิน */}
-                  <div className="bg-[#181C31] flex flex-col gap-4 rounded-2xl border border-[#2B3259] p-4 md:p-5">
+                  <div style={{ background: "#181C31", display: "flex", flexDirection: "column", gap: "12px", borderRadius: "16px", border: "1px solid #2B3259", padding: "20px 16px" }}>
 
-                    <div className="flex justify-center w-full">
-                      <label className="text-sm font-medium text-white text-center">
+                    <div style={{ display: "flex", justifyContent: "center", width: "100%", paddingTop: "4px" }}>
+                      <label style={{ fontSize: "14px", fontWeight: 500, color: "white", textAlign: "center" }}>
                         ระบุจำนวนเงิน{tab === "deposit" ? "ฝาก" : "ถอน"}
                       </label>
                     </div>
