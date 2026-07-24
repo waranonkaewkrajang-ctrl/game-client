@@ -107,8 +107,9 @@ export default function WalletPage() {
           confirmButtonText: "โอนเงินแล้ว",
           confirmButtonColor: "#22c55e",
           allowOutsideClick: false,
-          background: "#fff",
+          background: "#ffffff",
           color: "#0f172a",
+          customClass: { popup: "swal-white-popup" },
           didOpen: () => {
             document.querySelectorAll(".swal-copy").forEach((btn) => {
               btn.addEventListener("click", () => {
@@ -249,8 +250,9 @@ export default function WalletPage() {
                               showConfirmButton: true,
                               confirmButtonText: "ปิด",
                               confirmButtonColor: "#ef4444",
-                              background: "#fff",
+                              background: "#ffffff",
                               color: "#0f172a",
+                              customClass: { popup: "swal-white-popup" },
                               didOpen: () => {
                                 document.querySelectorAll(".tw-copy").forEach((btn) => {
                                   btn.addEventListener("click", () => {
@@ -374,6 +376,11 @@ export default function WalletPage() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
+
+      .swal-white-popup, .swal-white-popup * { color-scheme: light !important; }
+        .swal-white-popup { background: #ffffff !important; color: #0f172a !important; }
+        .swal-white-popup .swal2-html-container { color: #0f172a !important; }
+        .swal-white-popup img { filter: none !important; }
         @keyframes floatDice {
           0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
           15% { opacity: 0.05; }
