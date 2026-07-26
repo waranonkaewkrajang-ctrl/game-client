@@ -110,6 +110,12 @@ export default function WalletPage() {
           background: "#fff",
           color: "#0f172a",
           didOpen: () => {
+            const popup = document.querySelector('.swal2-popup') as HTMLElement;
+            if (popup) {
+              popup.style.colorScheme = 'light';
+              popup.style.backgroundColor = '#ffffff';
+              popup.querySelectorAll('*').forEach((el: any) => { el.style.colorScheme = 'light'; });
+            }
             document.querySelectorAll(".swal-copy").forEach((btn) => {
               btn.addEventListener("click", () => {
                 const acc = btn.getAttribute("data-account") || "";
@@ -252,6 +258,13 @@ export default function WalletPage() {
                               background: "#fff",
                               color: "#0f172a",
                               didOpen: () => {
+                                // บังคับสีขาวกัน dark mode มือถือ
+                                const popup = document.querySelector('.swal2-popup') as HTMLElement;
+                                if (popup) {
+                                  popup.style.colorScheme = 'light';
+                                  popup.style.backgroundColor = '#ffffff';
+                                  popup.querySelectorAll('*').forEach((el: any) => { el.style.colorScheme = 'light'; });
+                                }
                                 document.querySelectorAll(".tw-copy").forEach((btn) => {
                                   btn.addEventListener("click", () => {
                                     const phone = btn.getAttribute("data-phone") || "";
