@@ -233,7 +233,7 @@ export default function WalletPage() {
                                 </div>
                                 <button type="button" class="tw-copy" data-phone="${w.phone}" style="background:#22c55e;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
                               </div>
-                            `).join("");ห
+                            `).join("");
 
                             Swal.fire({
                               html: `
