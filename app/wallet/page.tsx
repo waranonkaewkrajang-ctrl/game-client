@@ -73,12 +73,12 @@ export default function WalletPage() {
         const minutesLimit = 15;
         let secondsLeft = minutesLimit * 60;
         const banksHtml = finance.banks.map((b, i) => `
-          <div style="background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
             <img src="https://fs.cdnrc.com/payment-layout/iconbank/${b.bank_code}.png" style="width:40px;height:40px;border-radius:8px;background:#fff;padding:3px;object-fit:contain;border:1px solid #e2e8f0" />
             <div style="flex:1;text-align:left">
-              <div style="font-size:13px;color:#a78bfa">${b.bank_code}</div>
-              <div style="font-size:16px;font-weight:700;color:#ffffff;letter-spacing:0.5px">${b.bank_account}</div>
-              <div style="font-size:13px;color:#94a3b8">${b.bank_name}</div>
+              <div style="font-size:13px;color:#64748b">${b.bank_code}</div>
+              <div style="font-size:16px;font-weight:700;color:#0f172a;letter-spacing:0.5px">${b.bank_account}</div>
+              <div style="font-size:13px;color:#475569">${b.bank_name}</div>
             </div>
             <button type="button" class="swal-copy" data-account="${b.bank_account}" style="background:#7c3aed;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
           </div>
@@ -87,14 +87,14 @@ export default function WalletPage() {
         Swal.fire({
           html: `
             <div style="text-align:center;padding:4px 0">
-              <div style="width:50px;height:50px;border-radius:50%;background:rgba(34,197,94,0.15);display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
+              <div style="width:50px;height:50px;border-radius:50%;background:#f0fdf4;display:flex;align-items:center;justify-content:center;margin:0 auto 10px">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
               </div>
-              <h2 style="font-size:17px;font-weight:700;color:#ffffff;margin:0 0 4px">แจ้งฝากเงินสำเร็จ</h2>
+              <h2 style="font-size:17px;font-weight:700;color:#0f172a;margin:0 0 4px">แจ้งฝากเงินสำเร็จ</h2>
               <p style="font-size:12px;color:#64748b;margin:0 0 14px">กรุณาโอนเงินไปที่บัญชีใดบัญชีหนึ่ง</p>
               ${banksHtml}
               <div style="background:#fefce8;border:1px solid #fde68a;border-radius:10px;padding:12px;margin:12px 0">
-                <p style="font-size:22px;font-weight:700;color:#ffffff;margin:0">฿${parseFloat(amount).toLocaleString("th-TH", {minimumFractionDigits: 2})}</p>
+                <p style="font-size:22px;font-weight:700;color:#0f172a;margin:0">฿${parseFloat(amount).toLocaleString("th-TH", {minimumFractionDigits: 2})}</p>
                 <p style="font-size:11px;color:#854d0e;margin:4px 0 0">กรุณาโอนตามจำนวนที่แจ้งเท่านั้น</p>
               </div>
               <div style="display:flex;align-items:center;justify-content:center;gap:6px">
@@ -107,8 +107,8 @@ export default function WalletPage() {
           confirmButtonText: "โอนเงินแล้ว",
           confirmButtonColor: "#22c55e",
           allowOutsideClick: false,
-          background: "#181C31",
-          color: "#ffffff",
+          background: "#fff",
+          color: "#0f172a",
           didOpen: () => {
             document.querySelectorAll(".swal-copy").forEach((btn) => {
               btn.addEventListener("click", () => {
@@ -225,11 +225,11 @@ export default function WalletPage() {
                         <div key={ch} onClick={() => {
                           if (ch === "truewallet" && truewalletAccounts.length > 0) {
                             const walletsHtml = truewalletAccounts.map((w, i) => `
-                              <div style="background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.3);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
                                 <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:40px;height:40px" />
                                 <div style="flex:1;text-align:left">
-                                  <div style="font-size:13px;color:#86efac">${w.name}</div>
-                                  <div style="font-size:18px;font-weight:700;color:#ffffff;letter-spacing:1px">${w.phone}</div>
+                                  <div style="font-size:13px;color:#166534">${w.name}</div>
+                                  <div style="font-size:18px;font-weight:700;color:#0f172a;letter-spacing:1px">${w.phone}</div>
                                 </div>
                                 <button type="button" class="tw-copy" data-phone="${w.phone}" style="background:#22c55e;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
                               </div>
@@ -239,18 +239,18 @@ export default function WalletPage() {
                               html: `
                                 <div style="text-align:center;padding:8px 0">
                                   <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:56px;height:56px;margin:0 auto 12px;display:block" />
-                                  <h2 style="font-size:18px;font-weight:700;color:#ffffff;margin:0 0 4px">ฝากผ่าน True Wallet</h2>
-                                  <p style="font-size:13px;color:#94a3b8;margin:0 0 16px">กรุณาโอนเงินไปที่บัญชีด้านล่าง</p>
+                                  <h2 style="font-size:18px;font-weight:700;color:#0f172a;margin:0 0 4px">ฝากผ่าน True Wallet</h2>
+                                  <p style="font-size:13px;color:#64748b;margin:0 0 16px">กรุณาโอนเงินไปที่บัญชีด้านล่าง</p>
                                   ${walletsHtml}
-                                  <p style="font-size:12px;color:#f87171;font-weight:500;margin-top:12px">โอนเสร็จแล้วเงินจะเข้าอัตโนมัติภายใน 5 นาที</p>
-                                  <p style="font-size:24px;color:#f87171;font-weight:700;margin-top:8px" id="tw-timer">10:00</p>
+                                  <p style="font-size:12px;color:#ef4444;font-weight:500;margin-top:12px">โอนเสร็จแล้วเงินจะเข้าอัตโนมัติภายใน 5 นาที</p>
+                                  <p style="font-size:24px;color:#ef4444;font-weight:700;margin-top:8px" id="tw-timer">10:00</p>
                                 </div>
                               `,
                               showConfirmButton: true,
                               confirmButtonText: "ปิด",
                               confirmButtonColor: "#ef4444",
-                              background: "#181C31",
-                              color: "#ffffff",
+                              background: "#fff",
+                              color: "#0f172a",
                               didOpen: () => {
                                 document.querySelectorAll(".tw-copy").forEach((btn) => {
                                   btn.addEventListener("click", () => {
@@ -374,9 +374,6 @@ export default function WalletPage() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        .swal2-popup { color-scheme: light only !important; }
-        .swal-white-popup { background-color: #ffffff !important; color: #0f172a !important; color-scheme: light only !important; }
-        .swal-white-popup * { color-scheme: light only !important; }
         @keyframes floatDice {
           0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
           15% { opacity: 0.05; }
