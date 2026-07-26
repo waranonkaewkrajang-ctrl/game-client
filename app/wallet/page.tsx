@@ -232,7 +232,7 @@ export default function WalletPage() {
                           if (ch === "truewallet" && truewalletAccounts.length > 0) {
                             const walletsHtml = truewalletAccounts.map((w, i) => `
                               <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
-                                <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:40px;height:40px" />
+                                <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:40px;height:40px;isolation:isolate;filter:none!important;" />
                                 <div style="flex:1;text-align:left">
                                   <div style="font-size:13px;color:#166534">${w.name}</div>
                                   <div style="font-size:18px;font-weight:700;color:#0f172a;letter-spacing:1px">${w.phone}</div>
@@ -244,7 +244,7 @@ export default function WalletPage() {
                             Swal.fire({
                               html: `
                                 <div style="text-align:center;padding:8px 0">
-                                  <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:56px;height:56px;margin:0 auto 12px;display:block" />
+                                  <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:56px;height:56px;margin:0 auto 12px;display:block;isolation:isolate;filter:none!important;" />
                                   <h2 style="font-size:18px;font-weight:700;color:#0f172a;margin:0 0 4px">ฝากผ่าน True Wallet</h2>
                                   <p style="font-size:13px;color:#64748b;margin:0 0 16px">กรุณาโอนเงินไปที่บัญชีด้านล่าง</p>
                                   ${walletsHtml}
@@ -261,9 +261,8 @@ export default function WalletPage() {
                                 // บังคับสีขาวกัน dark mode มือถือ
                                 const popup = document.querySelector('.swal2-popup') as HTMLElement;
                                 if (popup) {
-                                  popup.style.colorScheme = 'light';
-                                  popup.style.backgroundColor = '#ffffff';
-                                  popup.querySelectorAll('*').forEach((el: any) => { el.style.colorScheme = 'light'; });
+                                 popup.style.colorScheme = 'light';
+                                 popup.style.backgroundColor = '#ffffff';
                                 }
                                 document.querySelectorAll(".tw-copy").forEach((btn) => {
                                   btn.addEventListener("click", () => {
