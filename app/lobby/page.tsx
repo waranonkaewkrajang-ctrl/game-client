@@ -873,12 +873,14 @@ export default function LobbyPage() {
 
           {/* ช่องทางชำระเงิน */}
           <p style={{ color: "#e2e8f0", fontSize: "0.85rem", fontWeight: 700, margin: "0 0 10px" }}>ช่องทางชำระเงิน</p>
-          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "4px", marginBottom: "20px" }}>
-            {["KBANK","SCB","KTB","BAY","TRUEWALLET","GSB","BBL","BAAC","KKB","TTB","TISGO","UOB","CIMB","LNH"].map((bank, i) => (
-              <div key={`bank-${i}`} style={{ padding: "2px" }}>
-                <img src={`https://d2yxt25pyz4ib7.cloudfront.net/_ty1/${bank}.png`} alt={bank} style={{ height: "42px", width: "42px", borderRadius: "8px", objectFit: "cover" }} loading="lazy" />
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "2px", marginBottom: "20px" }}>
+            {["KBANK","SCB","KTB","BAY","TRUEWALLET","GSB","BBL","BAAC","KKB","OSK","TTB","TISGO","UOB","CITI","LNH","CIMB","TCR","MIZUHO","SCBT","ICBC","ISBT","PEER2PAY"].map((bank, i) => (
+              <div key={`bank-${i}`} style={{ margin: "2px" }}>
+                <img src={`https://d2yxt25pyz4ib7.cloudfront.net/_ty1/${bank}.png`} alt={bank} className="footer-bank-img" loading="lazy" />
               </div>
             ))}
+            <div style={{ margin: "2px" }}><img src="https://self-imagex.image-etc.co/supercom/bank_1702541269.png" alt="bank" className="footer-bank-img" loading="lazy" /></div>
+            <div style={{ margin: "2px" }}><img src="https://self-imagex.image-etc.co/supercom/bank_1702541350.png" alt="bank" className="footer-bank-img" loading="lazy" /></div>
           </div>
 
           {/* แท็ก */}
@@ -893,9 +895,9 @@ export default function LobbyPage() {
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#22c55e" width="18" height="18"><path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd"/></svg>
           </p>
           <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
-            <img src="https://slotnarok.games/assets/curacao-DB0Q0sYk.webp" alt="Curacao" style={{ height: "50px" }} loading="lazy" />
-            <img src="https://slotnarok.games/assets/gambling-Bq688pkC.webp" alt="Gambling" style={{ height: "50px" }} loading="lazy" />
-            <img src="https://slotnarok.games/assets/mga-BmZoW2Qo.svg" alt="MGA" style={{ height: "50px" }} loading="lazy" />
+            <img src="https://slotnarok.games/assets/curacao-DB0Q0sYk.webp" alt="Curacao" className="footer-license-img" loading="lazy" />
+            <img src="https://slotnarok.games/assets/gambling-Bq688pkC.webp" alt="Gambling" className="footer-license-img" loading="lazy" />
+            <img src="https://slotnarok.games/assets/mga-BmZoW2Qo.svg" alt="MGA" className="footer-license-img" loading="lazy" />
           </div>
         </div>
         
@@ -1035,6 +1037,13 @@ export default function LobbyPage() {
         .game-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
         .game-overlay { position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 1/1; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
         .game-card:hover .game-overlay { opacity: 1; }
+
+        .footer-bank-img { height: 42px; width: 42px; border-radius: 8px; object-fit: cover; }
+        .footer-license-img { height: 55px; margin: 4px; }
+        @media (max-width: 600px) {
+          .footer-bank-img { height: 32px; width: 32px; border-radius: 6px; }
+          .footer-license-img { height: 28px; margin: 2px; }
+        }
       
         @keyframes floatDice {
           0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
