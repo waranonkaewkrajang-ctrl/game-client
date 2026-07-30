@@ -144,7 +144,7 @@ export default function LobbyPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", paddingBottom: "70px", position: "relative", overflow: "hidden" }}>
+<div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", paddingBottom: "0px", position: "relative", overflow: "hidden" }}>
 
       {/* Dice Background */}
 <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
@@ -837,7 +837,7 @@ export default function LobbyPage() {
         </div>
 
         {/* === Footer ค่ายเกม + ช่องทางชำระเงิน + ใบอนุญาต === */}
-        <div style={{ marginTop: "30px", padding: "40px 24px 80px", textAlign: "center", background: "#0a0a14", borderTop: "1px solid rgba(124,58,237,0.2)", marginLeft: "-24px", marginRight: "-24px", marginBottom: "-70px", position: "relative", zIndex: 2 }}>
+        <div style={{ marginTop: "30px", padding: "40px 24px 80px", textAlign: "center", background: "#0a0a14", borderTop: "1px solid rgba(124,58,237,0.2)", marginLeft: "-24px", marginRight: "-24px", position: "relative", zIndex: 2, paddingBottom: "100px" }}>
 
           {/* ข้อความแนะนำ */}
           <p style={{ color: "#94a3b8", fontSize: "0.8rem", margin: "0 0 16px", lineHeight: "1.6" }}>
