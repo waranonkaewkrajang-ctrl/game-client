@@ -309,7 +309,7 @@ export default function LobbyPage() {
             {/* ด้านขวา: รายการเกมแบบเลื่อนได้ */}
             <div style={{ width: "70%", display: "flex", alignItems: "center", gap: "24px", overflowX: "auto", scrollbarWidth: "none", padding: "10px 10px 20px 24px" }}>
               {allGames.slice(0, 6).map((game, i) => (
-                <div key={`highlight-${game.id}`} className="rank-card" onClick={() => router.push(`/lobby/${game.product_id}`)}>
+                <div key={`highlight-${game.id}`} className="rank-card" onClick={() => handleLaunchGame(game)}>
                   
                   {/* 🔴 แก้จุดนี้: ปรับ bottom ให้ดันขึ้นไปทับรูปภาพ และขยายขนาดตัวเลขให้เท่าโซน PG */}
                   <div className="rank-number-svg" style={{ left: "-28px", bottom: "26px" }}>
@@ -684,7 +684,7 @@ export default function LobbyPage() {
                     {games.map((game) => (
                       <div 
                         key={game.id} 
-                        onClick={() => router.push(`/lobby/${game.product_id}`)}
+                        onClick={() => handleLaunchGame(game)} 
                         className="theme1-thumb-frame is-loading"
                         style={{ 
                           cursor: "pointer", 
@@ -790,7 +790,7 @@ export default function LobbyPage() {
                   {games.slice(0, 8).map((game) => (
                     <div 
                       key={`hot-${game.id}`} 
-                      onClick={() => router.push(`/lobby/${game.product_id}`)}
+                      onClick={() => handleLaunchGame(game)} 
                       style={{ background: "#121214", borderRadius: "14px", border: "1px solid rgba(245,158,11,0.2)", overflow: "visible", position: "relative", cursor: "pointer", transition: "all 0.3s ease", display: "flex", flexDirection: "column" }}
                       onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.6)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(245,158,11,0.15)"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.2)"; e.currentTarget.style.boxShadow = "none"; }}
