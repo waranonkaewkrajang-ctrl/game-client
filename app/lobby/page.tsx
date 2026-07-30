@@ -836,6 +836,48 @@ export default function LobbyPage() {
           </div>
         </div>
 
+        {/* แถบโลโก้ค่ายเกม */}
+        <div style={{ marginTop: "30px", padding: "20px 16px", background: "rgba(20, 20, 42, 0.6)", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.05)" }}>
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "6px" }}>
+            {[
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/pgslot_menu.png", alt: "PGSOFT" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/joker_menu.png", alt: "JOKER" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/jili_menu.png", alt: "JILI" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/ambslot_menu.png", alt: "AMB" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/pragmaticplay_menu.png", alt: "PRAGMATIC" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/spade_menu.png", alt: "SPADE" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/rich88_menu.png", alt: "RICH88" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/hacksaw_menu.png", alt: "HACKSAW" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/fachai_menu.png", alt: "FACHAI" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/evoplay_menu.png", alt: "EVOPLAY" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/yggdrasil_menu.png", alt: "YGGDRASIL" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/microgaming_menu.png", alt: "MICRO" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/5ggames_menu.png", alt: "5G" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/octoplay_menu.png", alt: "OCTOPLAY" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/sexy_menu.png", alt: "SEXY" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/allbet_menu.png", alt: "ALLBET" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/sa_menu.png", alt: "SA" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/dreamgaming_menu.png", alt: "DREAM" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/pretty_menu.png", alt: "PRETTY" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/wmcasino_menu.png", alt: "WM" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/pragmaticplaycasino_menu.png", alt: "PP CASINO" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/sport/saba_menu.png", alt: "SABA" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/sport/sbo_menu.png", alt: "SBO" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/kagaming_menu.png", alt: "KA" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/nextspin_menu.png", alt: "NEXTSPIN" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/kingmakers_menu.png", alt: "KINGMAKER" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/habanero_menu.png", alt: "HABANERO" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/redtiger_menu.png", alt: "REDTIGER" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/wazdan_menu.png", alt: "WAZDAN" },
+              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/cq9_menu.png", alt: "CQ9" },
+            ].map((provider, i) => (
+              <div key={i} style={{ padding: "4px" }}>
+                <img src={provider.src} alt={provider.alt} style={{ height: "40px", objectFit: "contain", opacity: 0.8, transition: "opacity 0.2s" }} loading="lazy" onMouseEnter={(e) => e.currentTarget.style.opacity = "1"} onMouseLeave={(e) => e.currentTarget.style.opacity = "0.8"} />
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* 🟢 แท็บเมนูด้านล่าง (Bottom Menu) แบบใหม่ (โชว์เฉพาะมือถือ) 🟢 */}
         <div className="-outer-wrapper mobile-only">
           {/* พื้นหลังสีม่วงที่มีรอยแหว่งเว้าตรงกลาง */}
