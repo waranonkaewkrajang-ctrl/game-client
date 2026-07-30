@@ -144,7 +144,7 @@ export default function LobbyPage() {
   };
 
   return (
-<div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", paddingBottom: "0px", position: "relative", overflow: "hidden" }}>
+<div style={{ minHeight: "100vh", background: "#0a0a14", paddingBottom: "0px", position: "relative", overflow: "hidden" }}>
 
       {/* Dice Background */}
 <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
