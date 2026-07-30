@@ -837,7 +837,7 @@ export default function LobbyPage() {
         </div>
 
         {/* === Footer ค่ายเกม + ช่องทางชำระเงิน + ใบอนุญาต === */}
-        <div style={{ marginTop: "30px", padding: "24px 16px", background: "rgba(20, 20, 42, 0.6)", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.05)", textAlign: "center" }}>
+        <div style={{ marginTop: "30px", padding: "24px 16px", textAlign: "center" }}>
 
           {/* ข้อความแนะนำ */}
           <p style={{ color: "#94a3b8", fontSize: "0.8rem", margin: "0 0 16px", lineHeight: "1.6" }}>
