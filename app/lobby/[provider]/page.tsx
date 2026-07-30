@@ -37,13 +37,11 @@ export default function ProviderRoomPage() {
       const res = await api.post("/games/launch", { productId: game.product_id, gameCode: game.game_code, isMobile: window.innerWidth < 768 });
       if (res.data.status === "success" && res.data.data.game_url) {
         const gameUrl = res.data.data.game_url;
-        const link = document.createElement("a");
-        link.href = gameUrl;
-        link.target = "_blank";
-        link.rel = "noopener noreferrer";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
+          window.location.href = gameUrl;
+        } else {
+          window.open(gameUrl, "_blank");
+        }
       }
     } catch (err: any) {
       Swal.fire({ icon: "error", title: "เปิดเกมไม่สำเร็จ", text: err.response?.data?.message || "กรุณาลองใหม่", background: "#14142a", color: "#e2e8f0", confirmButtonColor: "#dc2626" });
