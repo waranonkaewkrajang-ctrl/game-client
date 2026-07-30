@@ -836,48 +836,69 @@ export default function LobbyPage() {
           </div>
         </div>
 
-        {/* แถบโลโก้ค่ายเกม */}
-        <div style={{ marginTop: "30px", padding: "20px 16px", background: "rgba(20, 20, 42, 0.6)", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.05)" }}>
-          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "6px" }}>
+        {/* === Footer ค่ายเกม + ช่องทางชำระเงิน + ใบอนุญาต === */}
+        <div style={{ marginTop: "30px", padding: "24px 16px", background: "rgba(20, 20, 42, 0.6)", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.05)", textAlign: "center" }}>
+
+          {/* ข้อความแนะนำ */}
+          <p style={{ color: "#94a3b8", fontSize: "0.8rem", margin: "0 0 16px", lineHeight: "1.6" }}>
+            เว็บรวมเกมส์อันดับ 1 ของไทย เหนือกว่า ในทุกด้าน<br/>
+            สะดวกกว่าในทุกมุมมอง มิติใหม่ เว็บเกม เล่นได้ทุกเกมส์
+          </p>
+
+          {/* โลโก้ค่ายเกม */}
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "4px", marginBottom: "20px" }}>
             {[
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/pgslot_menu.png", alt: "PGSOFT" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/joker_menu.png", alt: "JOKER" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/jili_menu.png", alt: "JILI" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/ambslot_menu.png", alt: "AMB" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/pragmaticplay_menu.png", alt: "PRAGMATIC" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/spade_menu.png", alt: "SPADE" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/rich88_menu.png", alt: "RICH88" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/hacksaw_menu.png", alt: "HACKSAW" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/fachai_menu.png", alt: "FACHAI" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/evoplay_menu.png", alt: "EVOPLAY" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/yggdrasil_menu.png", alt: "YGGDRASIL" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/microgaming_menu.png", alt: "MICRO" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/5ggames_menu.png", alt: "5G" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/slot/octoplay_menu.png", alt: "OCTOPLAY" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/sexy_menu.png", alt: "SEXY" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/allbet_menu.png", alt: "ALLBET" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/sa_menu.png", alt: "SA" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/dreamgaming_menu.png", alt: "DREAM" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/pretty_menu.png", alt: "PRETTY" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/wmcasino_menu.png", alt: "WM" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/casino/pragmaticplaycasino_menu.png", alt: "PP CASINO" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/sport/saba_menu.png", alt: "SABA" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/sport/sbo_menu.png", alt: "SBO" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/kagaming_menu.png", alt: "KA" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/nextspin_menu.png", alt: "NEXTSPIN" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/kingmakers_menu.png", alt: "KINGMAKER" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/habanero_menu.png", alt: "HABANERO" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/redtiger_menu.png", alt: "REDTIGER" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/wazdan_menu.png", alt: "WAZDAN" },
-              { src: "https://imagex-game.image-etc.co/_tempura/provider/table/cq9_menu.png", alt: "CQ9" },
-            ].map((provider, i) => (
-              <div key={i} style={{ padding: "4px" }}>
-                <img src={provider.src} alt={provider.alt} style={{ height: "40px", objectFit: "contain", opacity: 0.8, transition: "opacity 0.2s" }} loading="lazy" onMouseEnter={(e) => e.currentTarget.style.opacity = "1"} onMouseLeave={(e) => e.currentTarget.style.opacity = "0.8"} />
+              "slot/pgslot_menu.png","slot/joker_menu.png","slot/jili_menu.png","slot/playstar_menu.png",
+              "slot/rsg_menu.png","slot/ambslot_menu.png","slot/ygr_menu.png","slot/pragmaticplay_menu.png",
+              "slot/sexyslot_menu.png","slot/octoplay_menu.png","slot/5ggames_menu.png","slot/betsoft_menu.png",
+              "slot/endorphina_menu.png","slot/hacksaw_menu.png","slot/rich88_menu.png","slot/popok_menu.png",
+              "slot/fachai_menu.png","slot/microgaming_menu.png","slot/spade_menu.png","slot/blueprint_menu.png",
+              "slot/mancala_menu.png","slot/yggdrasil_menu.png","slot/pegasus_menu.png","slot/naga_menu.png",
+              "slot/evoplay_menu.png","slot/smartsoft_menu.png","slot/idealgaming_menu.png",
+              "casino/sexy_menu.png","casino/allbet_menu.png","casino/sa_menu.png","casino/ongaming_menu.png",
+              "casino/dreamgaming_menu.png","casino/pretty_menu.png","casino/evolution_menu.png",
+              "casino/pragmaticplaycasino_menu.png","casino/wmcasino_menu.png","casino/sv388_menu.png",
+              "table/kagaming_menu.png","table/playngos_menu.png","table/nextspin_menu.png",
+              "table/peterandsons_menu.png","table/dragoonsoft_menu.png","table/btgaming_menu.png",
+              "table/kingmakers_menu.png","table/habanero_menu.png","table/redtiger_menu.png",
+              "table/wazdan_menu.png","table/relaxgaming_menu.png","table/netent_menu.png",
+              "table/advantplay_menu.png","table/cq9_menu.png",
+              "sport/saba_menu.png","sport/sbo_menu.png","sport/lalika_menu.png",
+            ].map((img, i) => (
+              <div key={`prov-${i}`} style={{ padding: "4px" }}>
+                <img src={`https://imagex-game.image-etc.co/_tempura/provider/${img}`} alt="" style={{ height: "40px", objectFit: "contain", opacity: 0.8 }} loading="lazy" />
               </div>
             ))}
           </div>
-        </div>
 
+          {/* ช่องทางชำระเงิน */}
+          <p style={{ color: "#e2e8f0", fontSize: "0.85rem", fontWeight: 700, margin: "0 0 10px" }}>ช่องทางชำระเงิน</p>
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "4px", marginBottom: "20px" }}>
+            {["KBANK","SCB","KTB","BAY","TRUEWALLET","GSB","BBL","BAAC","KKB","TTB","TISGO","UOB","CIMB","LNH"].map((bank, i) => (
+              <div key={`bank-${i}`} style={{ padding: "2px" }}>
+                <img src={`https://d2yxt25pyz4ib7.cloudfront.net/_ty1/${bank}.png`} alt={bank} style={{ height: "42px", width: "42px", borderRadius: "8px", objectFit: "cover" }} loading="lazy" />
+              </div>
+            ))}
+          </div>
+
+          {/* แท็ก */}
+          <p style={{ color: "#e2e8f0", fontSize: "0.85rem", fontWeight: 700, margin: "0 0 10px" }}>แท็ก</p>
+          <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "6px", marginBottom: "20px" }}>
+            <span style={{ background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.3)", color: "#a78bfa", fontSize: "0.7rem", padding: "4px 12px", borderRadius: "20px" }}>สล็อตเว็บตรง PG เว็บใหญ่ มาแรง 2025 อันดับ 1 ในไทย</span>
+          </div>
+
+          {/* ใบอนุญาต */}
+          <p style={{ color: "#e2e8f0", fontSize: "0.85rem", fontWeight: 700, margin: "0 0 10px", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+            ใบอนุญาต Gambling
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#22c55e" width="18" height="18"><path fillRule="evenodd" d="M8.603 3.799A4.49 4.49 0 0 1 12 2.25c1.357 0 2.573.6 3.397 1.549a4.49 4.49 0 0 1 3.498 1.307 4.491 4.491 0 0 1 1.307 3.497A4.49 4.49 0 0 1 21.75 12a4.49 4.49 0 0 1-1.549 3.397 4.491 4.491 0 0 1-1.307 3.497 4.491 4.491 0 0 1-3.497 1.307A4.49 4.49 0 0 1 12 21.75a4.49 4.49 0 0 1-3.397-1.549 4.49 4.49 0 0 1-3.498-1.306 4.491 4.491 0 0 1-1.307-3.498A4.49 4.49 0 0 1 2.25 12c0-1.357.6-2.573 1.549-3.397a4.49 4.49 0 0 1 1.307-3.497 4.49 4.49 0 0 1 3.497-1.307Zm7.007 6.387a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd"/></svg>
+          </p>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
+            <img src="https://slotnarok.games/assets/curacao-DB0Q0sYk.webp" alt="Curacao" style={{ height: "50px" }} loading="lazy" />
+            <img src="https://slotnarok.games/assets/gambling-Bq688pkC.webp" alt="Gambling" style={{ height: "50px" }} loading="lazy" />
+            <img src="https://slotnarok.games/assets/mga-BmZoW2Qo.svg" alt="MGA" style={{ height: "50px" }} loading="lazy" />
+          </div>
+        </div>
+        
         {/* 🟢 แท็บเมนูด้านล่าง (Bottom Menu) แบบใหม่ (โชว์เฉพาะมือถือ) 🟢 */}
         <div className="-outer-wrapper mobile-only">
           {/* พื้นหลังสีม่วงที่มีรอยแหว่งเว้าตรงกลาง */}
