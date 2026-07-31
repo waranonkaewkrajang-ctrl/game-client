@@ -1020,6 +1020,13 @@ export default function LobbyPage() {
           85% { opacity: 0.1; }
           100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
         }
+
+        .desktop-only { display: none; }
+        .mobile-only { display: block; }
+        @media (min-width: 1024px) {
+          .desktop-only { display: block; }
+          .mobile-only { display: none; }
+        }
       `}} />
       </div>
     </div>
