@@ -767,12 +767,9 @@ export default function LobbyPage() {
                           </div>
                         </div>
 
-                        {/* ชื่อเกมด้านล่าง */}
-                        <div style={{ padding: "6px 4px", textAlign: "center", background: "transparent" }}>
-                          <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "#e2e8f0", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                            {game.game_name_th || game.game_name}
-                          </p>
-                        </div>
+                        <p style={{ fontSize: "0.7rem", fontWeight: 600, color: "#a1a1aa", margin: "6px 0 0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textAlign: "center", padding: "0 2px" }}>
+                          {game.game_name_th || game.game_name}
+                        </p>
                       </div>
                     ))}
                   </div>
