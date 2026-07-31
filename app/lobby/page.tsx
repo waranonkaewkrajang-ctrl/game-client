@@ -938,7 +938,7 @@ export default function LobbyPage() {
               <span className="-text">โปรไฟล์</span>
             </Link>
           </div>
-        </div>
+        </div>  
 
       {/* 🔴 หัวใจสำคัญคือตรงนี้ครับ CSS ที่จะจัดหน้าให้ตรงตามภาพเป๊ะๆ 🔴 */}
       <style dangerouslySetInnerHTML={{__html: `
