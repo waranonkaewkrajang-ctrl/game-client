@@ -252,12 +252,16 @@ export default function ProfilePage() {
       
       <style dangerouslySetInnerHTML={{__html: `
 
-      @keyframes spinRing {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
+      @keyframes flipCard {
+          0% { transform: rotateY(0deg); }
+          25% { transform: rotateY(180deg); }
+          50% { transform: rotateY(180deg); }
+          75% { transform: rotateY(360deg); }
+          100% { transform: rotateY(360deg); }
         }
         .spin-ring {
-          animation: spinRing 3s linear infinite;
+          animation: flipCard 4s ease-in-out infinite;
+          transform-style: preserve-3d;
         }
   @keyframes spin { 100% { transform: rotate(360deg); } }
   @keyframes floatDice {
