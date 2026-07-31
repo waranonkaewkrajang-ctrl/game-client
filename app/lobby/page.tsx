@@ -915,14 +915,21 @@ export default function LobbyPage() {
         .hero-banner-track { --bw: 100%; }
         @media (min-width: 768px) { .hero-banner-track { --bw: 33.333%; } }
 
-        /* 🟢 บังคับจำนวนคอลัมน์ (มือถือ 3, คอม 4) ตามที่คุณต้องการ 🟢 */
         .provider-grid-container, .game-grid-container {
           grid-template-columns: repeat(3, 1fr) !important;
+          gap: 8px !important;
         }
 
         @media (min-width: 768px) {
           .provider-grid-container, .game-grid-container {
-            grid-template-columns: repeat(4, 1fr) !important;
+            grid-template-columns: repeat(5, 1fr) !important;
+            gap: 12px !important;
+          }
+        }
+
+        @media (min-width: 1024px) {
+          .provider-grid-container, .game-grid-container {
+            grid-template-columns: repeat(6, 1fr) !important;
             gap: 14px !important;
           }
         }
