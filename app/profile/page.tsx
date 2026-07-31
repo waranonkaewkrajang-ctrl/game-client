@@ -9,12 +9,14 @@ export default function ProfilePage() {
   const [user, setUser] = useState<any>(null);
   const [wallet, setWallet] = useState<any>(null);
   const [rewards, setRewards] = useState<any>(null);
+  const [rank, setRank] = useState<any>(null);
 
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
     api.get("/auth/me").then((res) => setUser(res.data.data)).catch(() => {});
     api.get("/wallet/balance").then((res) => setWallet(res.data.data)).catch(() => {});
     api.get("/rewards/summary").then((res) => setRewards(res.data.data)).catch(() => {});
+    api.get("/user/rank").then((res) => setRank(res.data.data)).catch(() => {});
   }, []);
 
   // ฟังก์ชันคัดลอก + แจ้งเตือนสไตล์ Minimal Toast
@@ -107,31 +109,50 @@ export default function ProfilePage() {
       <div style={{ maxWidth: "480px", margin: "0 auto", padding: "2rem 1.5rem", position: "relative", zIndex: 10 }}>
         
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "2.5rem" }}>
-          {/* กรอบรูป Gradient หมุน */}
+          {/* กรอบรูป + แรงค์ */}
           <div style={{ position: "relative", marginBottom: "1rem" }}>
-            {/* วงแหวน gradient หมุน */}
             <div className="spin-ring" style={{
               width: "90px", height: "90px", borderRadius: "50%",
-              background: "conic-gradient(#3b82f6, #9333ea, #ec4899, #f59e0b, #3b82f6)",
+              background: rank?.current_rank?.color ? `conic-gradient(${rank.current_rank.color}, #9333ea, ${rank.current_rank.color})` : "conic-gradient(#3b82f6, #9333ea, #ec4899, #f59e0b, #3b82f6)",
               display: "flex", alignItems: "center", justifyContent: "center",
             }}>
               <div style={{
                 width: "82px", height: "82px", borderRadius: "50%",
                 background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center",
               }}>
-                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=game&backgroundColor=09090b" alt="avatar" style={{ width: "60px", height: "60px", borderRadius: "50%" }} />
+                {rank?.current_rank?.image_url ? (
+                  <img src={rank.current_rank.image_url} alt="rank" style={{ width: "60px", height: "60px", borderRadius: "50%", objectFit: "contain" }} />
+                ) : (
+                  <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=game&backgroundColor=09090b" alt="avatar" style={{ width: "60px", height: "60px", borderRadius: "50%" }} />
+                )}
               </div>
             </div>
-            {/* แรงค์ */}
+            {/* ป้ายแรงค์ */}
             <div style={{
               position: "absolute", bottom: "-4px", left: "50%", transform: "translateX(-50%)",
-              background: "linear-gradient(135deg, #f59e0b, #f97316)", color: "#000",
-              fontSize: "9px", fontWeight: 800, padding: "2px 10px", borderRadius: "10px",
+              background: rank?.current_rank?.color ? `linear-gradient(135deg, ${rank.current_rank.color}, ${rank.current_rank.color}dd)` : "linear-gradient(135deg, #71717a, #52525b)",
+              color: "#fff", fontSize: "9px", fontWeight: 800, padding: "2px 10px", borderRadius: "10px",
               border: "2px solid #09090b", whiteSpace: "nowrap",
-            }}>VIP</div>
+            }}>{rank?.current_rank?.name || "ไม่มีแรงค์"}</div>
           </div>
           <h1 style={{ fontSize: "20px", fontWeight: 600, margin: "0 0 4px 0", letterSpacing: "0.5px" }}>{user.full_name || "สมาชิกทั่วไป"}</h1>
           <p style={{ color: "#a1a1aa", fontSize: "14px", margin: 0 }}>@{user.username}</p>
+
+          {/* Progress แรงค์ถัดไป */}
+          {rank?.next_rank && (
+            <div style={{ width: "100%", maxWidth: "280px", marginTop: "12px" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", color: "#71717a", marginBottom: "4px" }}>
+                <span>{rank.current_rank?.name || "-"}</span>
+                <span>{rank.next_rank.name}</span>
+              </div>
+              <div style={{ width: "100%", height: "6px", background: "#27272a", borderRadius: "3px", overflow: "hidden" }}>
+                <div style={{ width: `${rank.progress}%`, height: "100%", background: rank.current_rank?.color || "#7c3aed", borderRadius: "3px", transition: "width 0.5s" }} />
+              </div>
+              <p style={{ fontSize: "10px", color: "#52525b", margin: "4px 0 0", textAlign: "center" }}>
+                ฝากอีก ฿{((rank.next_rank.min_deposit || 0) - (rank.total_deposit || 0)).toLocaleString()} ถึงแรงค์ถัดไป
+              </p>
+            </div>
+          )}
         </div>
 
         {/* ← เพิ่มการ์ดตรงนี้ */}
