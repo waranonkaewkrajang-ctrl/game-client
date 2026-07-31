@@ -729,11 +729,6 @@ export default function LobbyPage() {
                             <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#4a5568", fontSize: "0.75rem" }}>No Image</div>
                           )}
 
-                          {/* ป้ายบอกค่ายเกมมุมล่าง */}
-                          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "15px 8px 6px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px", pointerEvents: "none" }}>
-                            <span style={{ fontSize: "0.6rem", color: "#f59e0b", fontWeight: 700, textTransform: "uppercase" }}>{game.product_id}</span>
-                          </div>
-
                           {/* ปุ่มเข้าเล่นตรงกลาง แสดงเฉพาะตอนเอาเมาส์ชี้ */}
                           <div 
                             style={{
