@@ -581,24 +581,19 @@ export default function LobbyPage() {
                       <div 
                         key={`room-${p}`} 
                         onClick={() => router.push(`/lobby/${p}`)}
-                        className="theme1-thumb-frame is-loading"
                         style={{ 
                           cursor: "pointer", 
                           overflow: "hidden", 
                           borderRadius: "14px", 
-                          background: "#121214",
                           position: "relative",
-                          border: "2px solid rgba(170, 0, 160, 0.15)",
                           transition: "all 0.3s ease"
                         }}
                         onMouseEnter={(e) => { 
-                          e.currentTarget.style.transform = "translateY(-4px)"; 
-                          e.currentTarget.style.borderColor = "#aa00a0"; 
-                          e.currentTarget.style.boxShadow = "0 8px 24px rgba(170, 0, 160, 0.35)"; 
+                          e.currentTarget.style.transform = "translateY(-4px) scale(1.03)"; 
+                          e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.5)"; 
                         }}
                         onMouseLeave={(e) => { 
                           e.currentTarget.style.transform = ""; 
-                          e.currentTarget.style.borderColor = "rgba(170, 0, 160, 0.15)"; 
                           e.currentTarget.style.boxShadow = ""; 
                         }}
                       >
@@ -704,24 +699,19 @@ export default function LobbyPage() {
                       <div 
                         key={game.id} 
                         onClick={() => router.push(`/lobby/${game.product_id}`)}
-                        className="theme1-thumb-frame is-loading"
                         style={{ 
                           cursor: "pointer", 
-                          position: "relative", 
                           overflow: "hidden", 
                           borderRadius: "14px", 
-                          background: "#121214",
-                          border: "2px solid rgba(170, 0, 160, 0.15)",
+                          position: "relative",
                           transition: "all 0.3s ease"
                         }}
                         onMouseEnter={(e) => { 
-                          e.currentTarget.style.transform = "translateY(-4px)"; 
-                          e.currentTarget.style.borderColor = "#aa00a0"; 
-                          e.currentTarget.style.boxShadow = "0 8px 24px rgba(170, 0, 160, 0.35)"; 
+                          e.currentTarget.style.transform = "translateY(-4px) scale(1.03)"; 
+                          e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.5)"; 
                         }}
                         onMouseLeave={(e) => { 
                           e.currentTarget.style.transform = ""; 
-                          e.currentTarget.style.borderColor = "rgba(170, 0, 160, 0.15)"; 
                           e.currentTarget.style.boxShadow = ""; 
                         }}
                       >
@@ -783,7 +773,7 @@ export default function LobbyPage() {
                         </div>
 
                         {/* ชื่อเกมด้านล่าง */}
-                        <div style={{ padding: "8px 6px", textAlign: "center", background: "#121214" }}>
+                        <div style={{ padding: "6px 4px", textAlign: "center", background: "transparent" }}>
                           <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "#e2e8f0", margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                             {game.game_name_th || game.game_name}
                           </p>
