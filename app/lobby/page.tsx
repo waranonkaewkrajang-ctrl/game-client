@@ -911,32 +911,31 @@ export default function LobbyPage() {
           <div className="-bg-bar"></div>
 
           <div className="-left-wrapper">
-            <a href="https://line.me/R/ti/p/@ODIN996" className="-item-wrapper -line" target="_blank" rel="noopener noreferrer nofollow">
-              <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-1.png" className="-ic-img" alt="Line" />
-              <span className="-text">Line</span>
-            </a>
             <Link href="/promotions" className="-item-wrapper -promotion">
-              <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชั่น" />
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชัน" />
               <span className="-text">โปรโมชัน</span>
+            </Link>
+            <Link href="/wallet" className="-item-wrapper -deposit">
+              <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" className="-ic-img" alt="ฝากเงิน" />
+              <span className="-text">ฝากเงิน</span>
             </Link>
           </div>
 
           <Link href="/" className="-center-wrapper" aria-label="หน้าแรก">
             <div className="-selected">
-              {/* โลโก้ตรงกลางปุ่ม */}
-              <img src="https://odin996.com/theme_1/img/logo.png" alt="Odin996" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
+              <img src="https://odin996.com/theme_1/img/logo.png" alt="Logo" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
               <span className="-text">หน้าแรก</span>
             </div>
           </Link>
 
           <div className="-right-wrapper">
-            <Link href="/deposits" className="-item-wrapper -deposit">
-              <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" className="-ic-img" alt="ฝากเงิน" />
-              <span className="-text">ฝากเงิน</span>
-            </Link>
-            <Link href="/withdrawals" className="-item-wrapper -withdraw">
+            <Link href="/wallet" className="-item-wrapper -withdraw">
               <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-2.png" className="-ic-img" alt="ถอนเงิน" />
               <span className="-text">ถอนเงิน</span>
+            </Link>
+            <Link href="/profile" className="-item-wrapper -line">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{color: "#a78bfa"}}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span className="-text">โปรไฟล์</span>
             </Link>
           </div>
         </div>
