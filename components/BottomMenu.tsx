@@ -40,40 +40,46 @@ export default function BottomMenu() {
 
       <style dangerouslySetInnerHTML={{__html: `
         .-outer-wrapper { 
-          position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
-          height: 75px; display: flex; align-items: flex-end; justify-content: center;
+          position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; 
+          z-index: 1000; filter: drop-shadow(0 -4px 10px rgba(0,0,0,0.5)); 
         }
         .-bg-bar {
-          position: absolute; bottom: 0; left: 0; right: 0; height: 60px;
-          background: linear-gradient(180deg, #2a0a3a 0%, #1a0525 100%);
-          border-top: 2px solid rgba(170, 0, 160, 0.4);
-          border-radius: 18px 18px 0 0;
+          position: absolute; bottom: 0; left: 0; width: 100%; height: 65px;
+          background: linear-gradient(to bottom, #aa00a0, #2b002b);
+          border-top-left-radius: 16px; border-top-right-radius: 16px;
+          mask-image: radial-gradient(circle 42px at 50% 0%, transparent 42px, black 43px);
+          -webkit-mask-image: radial-gradient(circle 42px at 50% 0%, transparent 42px, black 43px);
         }
         .-left-wrapper, .-right-wrapper {
-          position: absolute; bottom: 0; display: flex; align-items: center; height: 60px; gap: 0;
+          position: absolute; bottom: 0; width: 42%; height: 65px; display: flex;
+          justify-content: space-evenly; align-items: center; z-index: 10;
         }
         .-left-wrapper { left: 0; }
         .-right-wrapper { right: 0; }
-        .-item-wrapper {
-          display: flex; flex-direction: column; align-items: center; justify-content: center;
-          width: 70px; height: 60px; text-decoration: none; position: relative; z-index: 2;
+        .-item-wrapper { 
+          display: flex; flex-direction: column; align-items: center; 
+          text-decoration: none; gap: 4px; cursor: pointer; transition: transform 0.2s ease; 
         }
-        .-ic-img { width: 26px; height: 26px; margin-bottom: 2px; }
-        .-item-wrapper .-text { font-size: 10px; color: #e0c0ff; font-weight: 600; }
-        .-center-wrapper {
-          position: relative; z-index: 3; display: flex; flex-direction: column;
-          align-items: center; margin-bottom: 18px; text-decoration: none;
+        .-item-wrapper:hover { transform: translateY(-3px); }
+        .-ic-img { width: 30px; height: 30px; object-fit: contain; }
+        .-item-wrapper .-text { 
+          color: #ffffff; font-size: 0.75rem; font-weight: 700; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); 
         }
-        .-center-wrapper .-selected {
-          width: 65px; height: 65px; border-radius: 50%;
-          background: linear-gradient(135deg, #f59e0b, #f97316);
-          display: flex; flex-direction: column; align-items: center; justify-content: center;
-          box-shadow: 0 0 15px rgba(245,158,11,0.5), 0 4px 10px rgba(0,0,0,0.4);
-          border: 3px solid #1a0525;
+        .-center-wrapper { 
+          position: absolute; left: 50%; bottom: 12px; transform: translateX(-50%); 
+          z-index: 20; display: flex; justify-content: center; align-items: center; text-decoration: none; 
         }
-        .-center-icon { width: 30px; height: 30px; border-radius: 50%; object-fit: contain; }
-        .-center-wrapper .-text { font-size: 10px; color: #f59e0b; font-weight: 700; margin-top: 2px; }
-        @media (min-width: 769px) {
+        .-selected {
+          position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+          width: 76px; height: 76px; 
+          background: radial-gradient(circle at 50% 20%, #ffdf00, #ff8c00 50%, #cc3300); 
+          border-radius: 50%;
+          box-shadow: 0 5px 10px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.7);
+          border: 2px solid #ffb300;
+        }
+        .-center-icon { width: 42px; height: 42px; object-fit: contain; margin-bottom: -2px; }
+        .-selected .-text { color: #ffffff; font-size: 0.75rem; font-weight: 800; text-shadow: 1px 1px 3px rgba(0,0,0,0.8); }
+        @media (min-width: 1024px) {
           .-outer-wrapper { display: none !important; }
         }
       `}} />
