@@ -1,10 +1,11 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import GameSidebar from "@/components/GameSidebar";
 import Swal from "sweetalert2";
 import Link from "next/link";
+
 
 interface Game {
   id: number; product_id: string; game_code: string; game_name: string; game_name_th: string | null;
@@ -21,6 +22,7 @@ export default function LobbyPage() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("highlight");
+  const scrollRef = useRef<HTMLDivElement>(null);
   const [productImages, setProductImages] = useState<Record<string, any>>({});
   const [gameCategories, setGameCategories] = useState<{id: string; label: string; count: number}[]>([]);
 
@@ -49,6 +51,23 @@ export default function LobbyPage() {
 
     fetchGames();
   }, []);
+
+  // Auto slide เกมยอดนิยม
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    let scrollPos = 0;
+    const speed = 1;
+    const interval = setInterval(() => {
+      scrollPos += speed;
+      if (scrollPos >= el.scrollWidth - el.clientWidth) scrollPos = 0;
+      el.scrollLeft = scrollPos;
+    }, 30);
+    const handleTouch = () => { clearInterval(interval); };
+    el.addEventListener("touchstart", handleTouch);
+    el.addEventListener("mousedown", handleTouch);
+    return () => { clearInterval(interval); el.removeEventListener("touchstart", handleTouch); el.removeEventListener("mousedown", handleTouch); };
+  }, [allGames]);
 
   useEffect(() => {
     api.get("/games/product-images").then((res) => {
@@ -307,7 +326,7 @@ export default function LobbyPage() {
             </div>
 
             {/* ด้านขวา: รายการเกมแบบเลื่อนได้ */}
-            <div style={{ width: "70%", display: "flex", alignItems: "center", gap: "24px", overflowX: "auto", scrollbarWidth: "none", padding: "10px 10px 20px 24px" }}>
+            <div ref={scrollRef} style={{ width: "70%", display: "flex", alignItems: "center", gap: "24px", overflowX: "auto", scrollbarWidth: "none", padding: "10px 10px 20px 24px" }}>
               {allGames.slice(0, 6).map((game, i) => (
                 <div key={`highlight-${game.id}`} className="rank-card" onClick={() => router.push(`/lobby/${game.product_id}`)}>
                   
@@ -1001,8 +1020,8 @@ export default function LobbyPage() {
         .provider-name { font-size: 0.65rem; font-weight: 700; color: #e4e4e7; margin: 6px 0 0; }
         
         /* สไตล์ Game Card ทั่วไป */
-        .game-card { position: relative; background: #14142a; border-radius: 12px; overflow: hidden; cursor: pointer; transition: transform 0.3s ease; }
-        .game-card:hover { transform: translateY(-4px); box-shadow: 0 10px 20px rgba(0,0,0,0.4); }
+        .game-card { position: relative; background: linear-gradient(145deg, #1a1a3e, #14142a); border-radius: 14px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(124,58,237,0.15); }
+        .game-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 28px rgba(124,58,237,0.25), 0 4px 12px rgba(0,0,0,0.5); border-color: rgba(124,58,237,0.4); }
         .game-overlay { position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 1/1; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
         .game-card:hover .game-overlay { opacity: 1; }
 
