@@ -583,8 +583,6 @@ export default function LobbyPage() {
                         onClick={() => router.push(`/lobby/${p}`)}
                         style={{ 
                           cursor: "pointer", 
-                          overflow: "hidden", 
-                          borderRadius: "14px", 
                           position: "relative",
                           transition: "all 0.3s ease"
                         }}
@@ -699,10 +697,8 @@ export default function LobbyPage() {
                       <div 
                         key={game.id} 
                         onClick={() => router.push(`/lobby/${game.product_id}`)}
-                        style={{ 
+                       style={{ 
                           cursor: "pointer", 
-                          overflow: "hidden", 
-                          borderRadius: "14px", 
                           position: "relative",
                           transition: "all 0.3s ease"
                         }}
@@ -716,7 +712,7 @@ export default function LobbyPage() {
                         }}
                       >
                         {/* รูปเกม */}
-                        <div style={{ width: "100%", position: "relative", overflow: "hidden" }}>
+                        <div style={{ width: "100%", position: "relative", overflow: "hidden", borderRadius: "10px" }}>
                           {game.image_url ? (
                             <img 
                               src={game.image_url} 
