@@ -111,20 +111,37 @@ export default function ProfilePage() {
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "2.5rem" }}>
           {/* กรอบรูป + แรงค์ */}
           <div style={{ position: "relative", marginBottom: "1rem" }}>
-            <div className="spin-ring" style={{
-              width: "90px", height: "90px", borderRadius: "50%",
-              background: rank?.current_rank?.color ? `conic-gradient(${rank.current_rank.color}, #9333ea, ${rank.current_rank.color})` : "conic-gradient(#3b82f6, #9333ea, #ec4899, #f59e0b, #3b82f6)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <div style={{
-                width: "82px", height: "82px", borderRadius: "50%",
-                background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center",
+            <div className="flip-container" style={{ width: "90px", height: "90px", perspective: "500px" }}>
+              <div className="flip-inner" style={{
+                width: "100%", height: "100%", position: "relative",
+                transformStyle: "preserve-3d",
               }}>
-                {rank?.current_rank?.image_url ? (
-                  <img src={rank.current_rank.image_url} alt="rank" style={{ width: "60px", height: "60px", borderRadius: "50%", objectFit: "contain" }} />
-                ) : (
-                  <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=game&backgroundColor=09090b" alt="avatar" style={{ width: "60px", height: "60px", borderRadius: "50%" }} />
-                )}
+                {/* ด้านหน้า - การ์ตูน */}
+                <div style={{
+                  position: "absolute", width: "100%", height: "100%", backfaceVisibility: "hidden",
+                  borderRadius: "50%", padding: "3px",
+                  background: rank?.current_rank?.color ? `conic-gradient(${rank.current_rank.color}, #9333ea, ${rank.current_rank.color})` : "conic-gradient(#3b82f6, #9333ea, #ec4899, #f59e0b, #3b82f6)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <div style={{ width: "82px", height: "82px", borderRadius: "50%", background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <img src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${user?.username || 'game'}&backgroundColor=09090b`} alt="avatar" style={{ width: "60px", height: "60px", borderRadius: "50%" }} />
+                  </div>
+                </div>
+                {/* ด้านหลัง - รูปแรงค์ */}
+                <div style={{
+                  position: "absolute", width: "100%", height: "100%", backfaceVisibility: "hidden",
+                  transform: "rotateY(180deg)", borderRadius: "50%", padding: "3px",
+                  background: rank?.current_rank?.color ? `conic-gradient(${rank.current_rank.color}, #9333ea, ${rank.current_rank.color})` : "conic-gradient(#3b82f6, #9333ea, #ec4899, #f59e0b, #3b82f6)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                }}>
+                  <div style={{ width: "82px", height: "82px", borderRadius: "50%", background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {rank?.current_rank?.image_url ? (
+                      <img src={rank.current_rank.image_url} alt="rank" style={{ width: "60px", height: "60px", borderRadius: "50%", objectFit: "contain" }} />
+                    ) : (
+                      <span style={{ fontSize: "24px", fontWeight: 800, color: rank?.current_rank?.color || "#f59e0b" }}>{rank?.current_rank?.name?.charAt(0) || "?"}</span>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
             {/* ป้ายแรงค์ */}
@@ -275,14 +292,14 @@ export default function ProfilePage() {
 
       @keyframes flipCard {
           0% { transform: rotateY(0deg); }
-          25% { transform: rotateY(180deg); }
-          50% { transform: rotateY(180deg); }
-          75% { transform: rotateY(360deg); }
+          20% { transform: rotateY(0deg); }
+          30% { transform: rotateY(180deg); }
+          70% { transform: rotateY(180deg); }
+          80% { transform: rotateY(360deg); }
           100% { transform: rotateY(360deg); }
         }
-        .spin-ring {
-          animation: flipCard 4s ease-in-out infinite;
-          transform-style: preserve-3d;
+        .flip-inner {
+          animation: flipCard 5s ease-in-out infinite;
         }
   @keyframes spin { 100% { transform: rotate(360deg); } }
   @keyframes floatDice {
