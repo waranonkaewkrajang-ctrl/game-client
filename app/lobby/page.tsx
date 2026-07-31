@@ -716,13 +716,13 @@ export default function LobbyPage() {
                         }}
                       >
                         {/* รูปเกม */}
-                        <div style={{ width: "100%", aspectRatio: "1/1", position: "relative", overflow: "hidden" }}>
+                        <div style={{ width: "100%", position: "relative", overflow: "hidden" }}>
                           {game.image_url ? (
                             <img 
                               src={game.image_url} 
                               alt={game.game_name} 
                               className="-cover-img img-fluid"
-                              style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} 
+                              style={{ width: "100%", height: "auto", objectFit: "cover", display: "block" }}
                               loading="lazy" 
                             />
                           ) : (
