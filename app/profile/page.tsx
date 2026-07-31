@@ -106,26 +106,29 @@ export default function ProfilePage() {
       
       <div style={{ maxWidth: "480px", margin: "0 auto", padding: "2rem 1.5rem", position: "relative", zIndex: 10 }}>
         
-        {/* Profile Header - สไตล์ Premium */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", marginBottom: "2.5rem" }}>
-          {/* กรอบรูป Gradient ขอบบาง */}
-          <div style={{ 
-            padding: "3px", 
-            background: "linear-gradient(135deg, #3b82f6, #9333ea, #ec4899)", 
-            borderRadius: "50%", 
-            marginBottom: "1rem" 
-          }}>
-            <div style={{ 
-              width: "80px", height: "80px", 
-              background: "#09090b", 
-              borderRadius: "50%", 
-              display: "flex", alignItems: "center", justifyContent: "center" 
+          {/* กรอบรูป Gradient หมุน */}
+          <div style={{ position: "relative", marginBottom: "1rem" }}>
+            {/* วงแหวน gradient หมุน */}
+            <div className="spin-ring" style={{
+              width: "90px", height: "90px", borderRadius: "50%",
+              background: "conic-gradient(#3b82f6, #9333ea, #ec4899, #f59e0b, #3b82f6)",
+              display: "flex", alignItems: "center", justifyContent: "center",
             }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#d4d4d8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-              </svg>
+              <div style={{
+                width: "82px", height: "82px", borderRadius: "50%",
+                background: "#09090b", display: "flex", alignItems: "center", justifyContent: "center",
+              }}>
+                <img src="https://api.dicebear.com/7.x/adventurer/svg?seed=game&backgroundColor=09090b" alt="avatar" style={{ width: "60px", height: "60px", borderRadius: "50%" }} />
+              </div>
             </div>
+            {/* แรงค์ */}
+            <div style={{
+              position: "absolute", bottom: "-4px", left: "50%", transform: "translateX(-50%)",
+              background: "linear-gradient(135deg, #f59e0b, #f97316)", color: "#000",
+              fontSize: "9px", fontWeight: 800, padding: "2px 10px", borderRadius: "10px",
+              border: "2px solid #09090b", whiteSpace: "nowrap",
+            }}>VIP</div>
           </div>
           <h1 style={{ fontSize: "20px", fontWeight: 600, margin: "0 0 4px 0", letterSpacing: "0.5px" }}>{user.full_name || "สมาชิกทั่วไป"}</h1>
           <p style={{ color: "#a1a1aa", fontSize: "14px", margin: 0 }}>@{user.username}</p>
@@ -248,6 +251,14 @@ export default function ProfilePage() {
       </div>
       
       <style dangerouslySetInnerHTML={{__html: `
+
+      @keyframes spinRing {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        .spin-ring {
+          animation: spinRing 3s linear infinite;
+        }
   @keyframes spin { 100% { transform: rotate(360deg); } }
   @keyframes floatDice {
     0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
