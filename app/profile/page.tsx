@@ -196,7 +196,9 @@ export default function ProfilePage() {
               {/* ปุ่มรับยอดเสีย */}
               <a href="/rewards/cashback" style={{ textDecoration: "none", background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "16px 20px", border: "1px solid rgba(124,58,237,0.3)", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)", cursor: "pointer", transition: "all 0.2s" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.1))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>💰</div>
+                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.1))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <img src="https://i.postimg.cc/dVkrVmKp/Chat-GPT-Image-1-s-kh-2569-02-51-35.png" alt="cashback" style={{ width: "26px", height: "26px", objectFit: "contain" }} />
+                  </div>
                   <div>
                     <p style={{ margin: 0, fontSize: "14px", fontWeight: 600, color: "#fafafa" }}>รับยอดเสีย</p>
                     <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>คืนยอดเสียรายวัน</p>
@@ -215,7 +217,9 @@ export default function ProfilePage() {
               {/* ปุ่มรับค่าแนะนำ */}
               <a href="/rewards/referral" style={{ textDecoration: "none", background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "16px 20px", border: "1px solid rgba(124,58,237,0.3)", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)", cursor: "pointer", transition: "all 0.2s" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.1))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "20px" }}>👥</div>
+                 <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.1))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <img src="https://cdn-icons-png.flaticon.com/512/681/681494.png" alt="referral" style={{ width: "26px", height: "26px", objectFit: "contain" }} />
+                  </div>
                   <div>
                     <p style={{ margin: 0, fontSize: "14px", fontWeight: 600, color: "#fafafa" }}>แนะนำเพื่อน</p>
                     <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>รับค่าคอมจากเพื่อน</p>
