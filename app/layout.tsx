@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import NavbarWrapper from "@/components/NavbarWrapper";
+import BottomMenu from "@/components/BottomMenu";
 
 export const metadata: Metadata = {
   title: "Game Platform",
@@ -18,6 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <NavbarWrapper />
         <main>{children}</main>
+        <BottomMenu />
       </body>
     </html>
   );
