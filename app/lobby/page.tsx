@@ -788,12 +788,12 @@ export default function LobbyPage() {
                     <div 
                       key={`hot-${game.id}`} 
                       onClick={() => router.push(`/lobby/${game.product_id}`)}
-                      style={{ background: "#121214", borderRadius: "10px", border:ion: "relative", cursor: "pointer", transition: "all 0.3s ease", display: "flex", flexDirection: "column" }}
+                      style={{ background: "#121214", borderRadius: "10px", border: "1px solid rgba(245,158,11,0.2)", overflow: "visible", position: "relative", cursor: "pointer", transition: "all 0.3s ease", display: "flex", flexDirection: "column" }}
                       onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.6)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(245,158,11,0.15)"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.2)"; e.currentTarget.style.boxShadow = "none"; }}
                     >
                       
-                      {/* ไอคอนเกมแตก ย้ายมาไว้ระดับนี้เพื่อให้ทะลุกรอบขวาบนได้เต็มที่ */}
+                      {/* ไอคอนเกมแตก */}
                       {game.id % 3 === 0 && (
                         <img 
                           src="https://kingwin88.live/storage/images/wallet/hot.gif" 
@@ -802,8 +802,7 @@ export default function LobbyPage() {
                         />
                       )}
 
-                      <div style={{ width: "100%", paddingBottom: "125%", background: "#1a1a2e", position: "relative", overflow: "hidden", borderTopLeftRadius: "10px", borderTopRightRadius: "10px"
-                        
+                      <div style={{ width: "100%", paddingBottom: "125%", background: "#1a1a2e", position: "relative", overflow: "hidden", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>
                         {game.image_url ? (
                           <img 
                             src={game.image_url} 
