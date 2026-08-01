@@ -22,7 +22,7 @@ export default function RegisterPage() {
     { code: "CIMB",  name: "ซีไอเอ็มบี ไทย",  color: "#7B0E2F", logo: "/logos/CIMB.webp" },
     { code: "UOB",   name: "ยูโอบี",          color: "#0B3D91", logo: "/logos/UOB.webp" },
     { code: "TISCO", name: "ทิสโก้",          color: "#1A3B6B", logo: "/logos/TISCO.webp" },
-    { code: "KK",    name: "เกียรตินาคินภัทร",  color: "#004E2F", logo: "/logos/KK.webp" },
+    { code: "KK",    name: "เกียรตินาคินภัทร",  color: "#004E2F", logo: "/logos/KKP.webp" },
     { code: "TRUEWALLET", name: "TrueWallet", color: "#FF6F00", logo: "/logos/TRUEWALLET.webp" },
   ];
 
