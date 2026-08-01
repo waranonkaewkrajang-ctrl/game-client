@@ -10,9 +10,19 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
 
   const banks = [
-    { code: "SCB", name: "ไทยพาณิชย์" }, { code: "KBANK", name: "กสิกรไทย" }, { code: "BBL", name: "กรุงเทพ" },
-    { code: "KTB", name: "กรุงไทย" }, { code: "TMB", name: "ทหารไทยธนชาต" }, { code: "BAY", name: "กรุงศรี" },
-    { code: "GSB", name: "ออมสิน" }, { code: "TBANK", name: "ธนชาต" }, { code: "CIMB", name: "ซีไอเอ็มบี" },
+    { code: "SCB",   name: "ไทยพาณิชย์",     color: "#4E2A84" },
+    { code: "KBANK", name: "กสิกรไทย",       color: "#138F2D" },
+    { code: "BBL",   name: "กรุงเทพ",        color: "#1E3A8A" },
+    { code: "KTB",   name: "กรุงไทย",        color: "#1BA5E0" },
+    { code: "TTB",   name: "ทีทีบี",          color: "#FC6F21" },
+    { code: "BAY",   name: "กรุงศรี",        color: "#FEC52E" },
+    { code: "GSB",   name: "ออมสิน",         color: "#EB1188" },
+    { code: "LH",    name: "แลนด์ แอนด์ เฮ้าส์", color: "#6D9B34" },
+    { code: "CIMB",  name: "ซีไอเอ็มบี ไทย",  color: "#7B0E2F" },
+    { code: "UOB",   name: "ยูโอบี",          color: "#0B3D91" },
+    { code: "TISCO", name: "ทิสโก้",          color: "#1A3B6B" },
+    { code: "KK",    name: "เกียรตินาคินภัทร",  color: "#004E2F" },
+    { code: "TRUEWALLET", name: "TrueWallet", color: "#FF6F00" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -97,29 +107,57 @@ export default function RegisterPage() {
 
             {/* แถวที่ 3: ธนาคาร */}
             <div className="input-group">
-              <label>ธนาคาร</label>
+              <label>ธนาคาร / วอลเล็ท</label>
               <div style={{ position: "relative" }}>
-                <select value={form.bank_code} onChange={(e) => set("bank_code", e.target.value)} required>
-                  {banks.map((b) => <option key={b.code} value={b.code}>{b.name}</option>)}
+                <div
+                  style={{
+                    position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)",
+                    width: "14px", height: "14px", borderRadius: "50%", pointerEvents: "none",
+                    background: banks.find(b => b.code === form.bank_code)?.color || "#666",
+                    boxShadow: `0 0 6px ${banks.find(b => b.code === form.bank_code)?.color || "#666"}80`,
+                  }}
+                />
+                <select
+                  value={form.bank_code}
+                  onChange={(e) => set("bank_code", e.target.value)}
+                  required
+                  style={{ paddingLeft: "38px" }}
+                >
+                  <optgroup label="ธนาคาร">
+                    {banks.filter(b => b.code !== "TRUEWALLET").map((b) => (
+                      <option key={b.code} value={b.code}>{b.name}</option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="วอลเล็ท">
+                    {banks.filter(b => b.code === "TRUEWALLET").map((b) => (
+                      <option key={b.code} value={b.code}>{b.name}</option>
+                    ))}
+                  </optgroup>
                 </select>
-                {/* Custom Dropdown Arrow */}
                 <div style={{ position: "absolute", right: "16px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "#64748b" }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
               </div>
             </div>
 
-            {/* แถวที่ 4: เลขบัญชี & ชื่อบัญชี */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+            {/* แถวที่ 4: เลขบัญชี & ชื่อบัญชี (ซ่อนเมื่อเลือก TrueWallet) */}
+            {form.bank_code === "TRUEWALLET" ? (
               <div className="input-group">
-                <label>เลขบัญชี</label>
-                <input placeholder="1234567890" value={form.bank_account} onChange={(e) => set("bank_account", e.target.value)} required />
+                <label>เบอร์ TrueWallet</label>
+                <input placeholder="0812345678" value={form.bank_account} onChange={(e) => set("bank_account", e.target.value)} required />
               </div>
-              <div className="input-group">
-                <label>ชื่อบัญชี</label>
-                <input placeholder="ชื่อ-นามสกุล" value={form.bank_name} onChange={(e) => set("bank_name", e.target.value)} required />
+            ) : (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                <div className="input-group">
+                  <label>เลขบัญชี</label>
+                  <input placeholder="1234567890" value={form.bank_account} onChange={(e) => set("bank_account", e.target.value)} required />
+                </div>
+                <div className="input-group">
+                  <label>ชื่อบัญชี</label>
+                  <input placeholder="ชื่อ-นามสกุล" value={form.bank_name} onChange={(e) => set("bank_name", e.target.value)} required />
+                </div>
               </div>
-            </div>
+            )}
 
             {/* แถวที่ 5: รหัสแนะนำ */}
             <div className="input-group">
