@@ -11,19 +11,19 @@ export default function RegisterPage() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const banks = [
-    { code: "SCB",   name: "ไทยพาณิชย์",     color: "#4E2A84", logo: "/logos/scb.png" },
-    { code: "KBANK", name: "กสิกรไทย",       color: "#138F2D", logo: "/logos/kbank.png" },
-    { code: "BBL",   name: "กรุงเทพ",        color: "#1E3A8A", logo: "/logos/bbl.png" },
-    { code: "KTB",   name: "กรุงไทย",        color: "#1BA5E0", logo: "/logos/ktb.png" },
-    { code: "TTB",   name: "ทีทีบี",          color: "#FC6F21", logo: "/logos/ttb.png" },
-    { code: "BAY",   name: "กรุงศรี",        color: "#FEC52E", logo: "/logos/bay.png" },
-    { code: "GSB",   name: "ออมสิน",         color: "#EB1188", logo: "/logos/gsb.png" },
-    { code: "LH",    name: "แลนด์ แอนด์ เฮ้าส์", color: "#6D9B34", logo: "/logos/lh.png" },
-    { code: "CIMB",  name: "ซีไอเอ็มบี ไทย",  color: "#7B0E2F", logo: "/logos/cimb.png" },
-    { code: "UOB",   name: "ยูโอบี",          color: "#0B3D91", logo: "/logos/uob.png" },
-    { code: "TISCO", name: "ทิสโก้",          color: "#1A3B6B", logo: "/logos/tisco.png" },
-    { code: "KK",    name: "เกียรตินาคินภัทร",  color: "#004E2F", logo: "/logos/kk.png" },
-    { code: "TRUEWALLET", name: "TrueWallet", color: "#FF6F00", logo: "/logos/truewallet.png" },
+    { code: "SCB",   name: "ไทยพาณิชย์",     color: "#4E2A84", logo: "/logos/scb.webp" },
+    { code: "KBANK", name: "กสิกรไทย",       color: "#138F2D", logo: "/logos/kbank.webp" },
+    { code: "BBL",   name: "กรุงเทพ",        color: "#1E3A8A", logo: "/logos/bbl.webp" },
+    { code: "KTB",   name: "กรุงไทย",        color: "#1BA5E0", logo: "/logos/ktb.webp" },
+    { code: "TTB",   name: "ทีทีบี",          color: "#FC6F21", logo: "/logos/ttb.webp" },
+    { code: "BAY",   name: "กรุงศรี",        color: "#FEC52E", logo: "/logos/bay.webp" },
+    { code: "GSB",   name: "ออมสิน",         color: "#EB1188", logo: "/logos/gsb.webp" },
+    { code: "LH",    name: "แลนด์ แอนด์ เฮ้าส์", color: "#6D9B34", logo: "/logos/lh.webp" },
+    { code: "CIMB",  name: "ซีไอเอ็มบี ไทย",  color: "#7B0E2F", logo: "/logos/cimb.webp" },
+    { code: "UOB",   name: "ยูโอบี",          color: "#0B3D91", logo: "/logos/uob.webp" },
+    { code: "TISCO", name: "ทิสโก้",          color: "#1A3B6B", logo: "/logos/tisco.webp" },
+    { code: "KK",    name: "เกียรตินาคินภัทร",  color: "#004E2F", logo: "/logos/kk.webp" },
+    { code: "TRUEWALLET", name: "TrueWallet", color: "#FF6F00", logo: "/logos/truewallet.webp" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
