@@ -577,14 +577,16 @@ export default function LobbyPage() {
                     // แสดงเฉพาะค่ายที่มีเกมสล็อต
                     if (slotGames.length === 0 && pGames.length === 0) return null;
                     const firstImg = pGames.find((g) => g.image_url);
-                    return (
+                   return (
                       <div 
                         key={`room-${p}`} 
                         onClick={() => router.push(`/lobby/${p}`)}
                         style={{ 
                           cursor: "pointer", 
                           position: "relative",
-                          transition: "all 0.3s ease"
+                          transition: "all 0.3s ease",
+                          borderRadius: "10px",
+                          overflow: "hidden"
                         }}
                         onMouseEnter={(e) => { 
                           e.currentTarget.style.transform = "translateY(-4px) scale(1.03)"; 
