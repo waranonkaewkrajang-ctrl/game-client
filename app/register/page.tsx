@@ -43,7 +43,13 @@ export default function RegisterPage() {
     } finally { setLoading(false); }
   };
 
-  const set = (key: string, val: string) => setForm({ ...form, [key]: val });
+  const set = (key: string, val: string) => {
+  if (key === "bank_code" && val === "TRUEWALLET") {
+    setForm({ ...form, bank_code: val, bank_name: "TrueWallet" });
+  } else {
+    setForm({ ...form, [key]: val });
+  }
+};
 
   return (
     <div style={{ 
