@@ -104,7 +104,7 @@ export default function ProviderRoomPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
             {games.map((game) => (
               <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
-                <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
+               <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "10px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
                   onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.4)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
                   {game.image_url ? (
