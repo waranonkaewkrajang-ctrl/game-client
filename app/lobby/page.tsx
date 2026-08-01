@@ -263,7 +263,7 @@ export default function LobbyPage() {
                   style={{
                     background: isActive ? "linear-gradient(135deg, #aa00a0, #4b0082)" : "#14142a",
                     border: isActive ? "2px solid #ffb300" : "1px solid rgba(255,255,255,0.08)",
-                    borderRadius: "14px",
+                    borderRadius: "10px",
                     padding: "10px 4px",
                     display: "flex",
                     flexDirection: "column",
@@ -788,7 +788,7 @@ export default function LobbyPage() {
                     <div 
                       key={`hot-${game.id}`} 
                       onClick={() => router.push(`/lobby/${game.product_id}`)}
-                      style={{ background: "#121214", borderRadius: "14px", border: "1px solid rgba(245,158,11,0.2)", overflow: "visible", position: "relative", cursor: "pointer", transition: "all 0.3s ease", display: "flex", flexDirection: "column" }}
+                      style={{ background: "#121214", borderRadius: "10px", border:ion: "relative", cursor: "pointer", transition: "all 0.3s ease", display: "flex", flexDirection: "column" }}
                       onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.6)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(245,158,11,0.15)"; }}
                       onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.2)"; e.currentTarget.style.boxShadow = "none"; }}
                     >
@@ -802,7 +802,7 @@ export default function LobbyPage() {
                         />
                       )}
 
-                      <div style={{ width: "100%", paddingBottom: "125%", background: "#1a1a2e", position: "relative", overflow: "hidden", borderTopLeftRadius: "14px", borderTopRightRadius: "14px" }}>
+                      <div style={{ width: "100%", paddingBottom: "125%", background: "#1a1a2e", position: "relative", overflow: "hidden", borderTopLeftRadius: "10px", borderTopRightRadius: "10px"
                         
                         {game.image_url ? (
                           <img 
@@ -1005,7 +1005,7 @@ export default function LobbyPage() {
         .provider-name { font-size: 0.65rem; font-weight: 700; color: #e4e4e7; margin: 6px 0 0; }
         
         /* สไตล์ Game Card ทั่วไป */
-        .game-card { position: relative; background: linear-gradient(145deg, #1a1a3e, #14142a); border-radius: 14px; overflow: hidden; cursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(124,58,237,0.15); }
+        .game-card { position: relative; background: linear-gradient(145deg, #1a1a3e, #14142a); border-radius: 10px;ursor: pointer; transition: all 0.3s ease; border: 1px solid rgba(124,58,237,0.15); }
         .game-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 28px rgba(124,58,237,0.25), 0 4px 12px rgba(0,0,0,0.5); border-color: rgba(124,58,237,0.4); }
         .game-overlay { position: absolute; top: 0; left: 0; right: 0; aspect-ratio: 1/1; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease; }
         .game-card:hover .game-overlay { opacity: 1; }
