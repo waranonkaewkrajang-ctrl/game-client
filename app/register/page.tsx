@@ -45,8 +45,8 @@ export default function RegisterPage() {
   };
 
   const set = (key: string, val: string) => {
-  if (key === "bank_code" && val === "TRUEWALLET") {
-    setForm({ ...form, bank_code: val, bank_name: "TrueWallet" });
+    if (key === "bank_code" && val === "TRUEWALLET") {
+      setForm({ ...form, bank_code: val, bank_name: "" });
   } else {
     setForm({ ...form, [key]: val });
   }
@@ -184,9 +184,15 @@ export default function RegisterPage() {
 
             {/* แถวที่ 4: เลขบัญชี & ชื่อบัญชี (ซ่อนเมื่อเลือก TrueWallet) */}
             {form.bank_code === "TRUEWALLET" ? (
-              <div className="input-group">
-                <label>เบอร์ TrueWallet</label>
-                <input placeholder="0812345678" value={form.bank_account} onChange={(e) => set("bank_account", e.target.value)} required />
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                <div className="input-group">
+                  <label>เบอร์ TrueWallet</label>
+                  <input placeholder="0812345678" value={form.bank_account} onChange={(e) => set("bank_account", e.target.value)} required />
+                </div>
+                <div className="input-group">
+                  <label>ชื่อ-นามสกุล</label>
+                  <input placeholder="ชื่อจริง นามสกุล" value={form.bank_name} onChange={(e) => set("bank_name", e.target.value)} required />
+                </div>
               </div>
             ) : (
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
