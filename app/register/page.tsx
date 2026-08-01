@@ -8,21 +8,22 @@ export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ username: "", phone: "", password: "", password_confirmation: "", bank_code: "SCB", bank_account: "", bank_name: "", referral_code: "" });
   const [loading, setLoading] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const banks = [
-    { code: "SCB",   name: "ไทยพาณิชย์",     color: "#4E2A84" },
-    { code: "KBANK", name: "กสิกรไทย",       color: "#138F2D" },
-    { code: "BBL",   name: "กรุงเทพ",        color: "#1E3A8A" },
-    { code: "KTB",   name: "กรุงไทย",        color: "#1BA5E0" },
-    { code: "TTB",   name: "ทีทีบี",          color: "#FC6F21" },
-    { code: "BAY",   name: "กรุงศรี",        color: "#FEC52E" },
-    { code: "GSB",   name: "ออมสิน",         color: "#EB1188" },
-    { code: "LH",    name: "แลนด์ แอนด์ เฮ้าส์", color: "#6D9B34" },
-    { code: "CIMB",  name: "ซีไอเอ็มบี ไทย",  color: "#7B0E2F" },
-    { code: "UOB",   name: "ยูโอบี",          color: "#0B3D91" },
-    { code: "TISCO", name: "ทิสโก้",          color: "#1A3B6B" },
-    { code: "KK",    name: "เกียรตินาคินภัทร",  color: "#004E2F" },
-    { code: "TRUEWALLET", name: "TrueWallet", color: "#FF6F00" },
+    { code: "SCB",   name: "ไทยพาณิชย์",     color: "#4E2A84", logo: "/logos/scb.png" },
+    { code: "KBANK", name: "กสิกรไทย",       color: "#138F2D", logo: "/logos/kbank.png" },
+    { code: "BBL",   name: "กรุงเทพ",        color: "#1E3A8A", logo: "/logos/bbl.png" },
+    { code: "KTB",   name: "กรุงไทย",        color: "#1BA5E0", logo: "/logos/ktb.png" },
+    { code: "TTB",   name: "ทีทีบี",          color: "#FC6F21", logo: "/logos/ttb.png" },
+    { code: "BAY",   name: "กรุงศรี",        color: "#FEC52E", logo: "/logos/bay.png" },
+    { code: "GSB",   name: "ออมสิน",         color: "#EB1188", logo: "/logos/gsb.png" },
+    { code: "LH",    name: "แลนด์ แอนด์ เฮ้าส์", color: "#6D9B34", logo: "/logos/lh.png" },
+    { code: "CIMB",  name: "ซีไอเอ็มบี ไทย",  color: "#7B0E2F", logo: "/logos/cimb.png" },
+    { code: "UOB",   name: "ยูโอบี",          color: "#0B3D91", logo: "/logos/uob.png" },
+    { code: "TISCO", name: "ทิสโก้",          color: "#1A3B6B", logo: "/logos/tisco.png" },
+    { code: "KK",    name: "เกียรตินาคินภัทร",  color: "#004E2F", logo: "/logos/kk.png" },
+    { code: "TRUEWALLET", name: "TrueWallet", color: "#FF6F00", logo: "/logos/truewallet.png" },
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -111,39 +112,74 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            {/* แถวที่ 3: ธนาคาร */}
-            <div className="input-group">
+            {/* แถวที่ 3: ธนาคาร (ปรับใหม่ใส่โลโก้ได้) */}
+            <div className="input-group" style={{ position: "relative" }}>
               <label>ธนาคาร / วอลเล็ท</label>
-              <div style={{ position: "relative" }}>
-                <div
-                  style={{
-                    position: "absolute", left: "14px", top: "50%", transform: "translateY(-50%)",
-                    width: "14px", height: "14px", borderRadius: "50%", pointerEvents: "none",
-                    background: banks.find(b => b.code === form.bank_code)?.color || "#666",
-                    boxShadow: `0 0 6px ${banks.find(b => b.code === form.bank_code)?.color || "#666"}80`,
-                  }}
-                />
-                <select
-                  value={form.bank_code}
-                  onChange={(e) => set("bank_code", e.target.value)}
-                  required
-                  style={{ paddingLeft: "38px" }}
-                >
-                  <optgroup label="ธนาคาร">
-                    {banks.filter(b => b.code !== "TRUEWALLET").map((b) => (
-                      <option key={b.code} value={b.code}>{b.name}</option>
-                    ))}
-                  </optgroup>
-                  <optgroup label="วอลเล็ท">
-                    {banks.filter(b => b.code === "TRUEWALLET").map((b) => (
-                      <option key={b.code} value={b.code}>{b.name}</option>
-                    ))}
-                  </optgroup>
-                </select>
-                <div style={{ position: "absolute", right: "16px", top: "50%", transform: "translateY(-50%)", pointerEvents: "none", color: "#64748b" }}>
+              
+              {/* ปุ่มกดเปิด/ปิด Dropdown */}
+              <div 
+                className="custom-select-trigger"
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <img 
+                    src={banks.find(b => b.code === form.bank_code)?.logo} 
+                    alt="logo" 
+                    onError={(e) => {
+                      // ถ้าหารูปไม่เจอ ให้ใช้สีพื้นหลังแทน
+                      e.currentTarget.style.display = 'none';
+                      if(e.currentTarget.nextElementSibling) {
+                        (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'block';
+                      }
+                    }}
+                    style={{ width: "24px", height: "24px", borderRadius: "50%", objectFit: "cover" }} 
+                  />
+                  {/* กล่องสีสำรอง กรณีไม่มีรูป */}
+                  <div style={{ display: "none", width: "24px", height: "24px", borderRadius: "50%", background: banks.find(b => b.code === form.bank_code)?.color || "#666" }} />
+                  <span>{banks.find(b => b.code === form.bank_code)?.name}</span>
+                </div>
+                <div style={{ transform: isDropdownOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "0.3s", color: "#64748b" }}>
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
                 </div>
               </div>
+
+              {/* รายการตัวเลือกที่จะโผล่มาตอนกด */}
+              {isDropdownOpen && (
+                <>
+                  <div 
+                    style={{ position: "fixed", inset: 0, zIndex: 10 }} 
+                    onClick={() => setIsDropdownOpen(false)} 
+                  />
+                  
+                  <div className="custom-select-options">
+                    <div style={{ padding: "4px 12px", fontSize: "0.75rem", color: "#94a3b8", fontWeight: "bold" }}>เลือกธนาคาร/วอลเล็ท</div>
+                    {banks.map((b) => (
+                      <div 
+                        key={b.code} 
+                        className="custom-select-item"
+                        onClick={() => {
+                          set("bank_code", b.code);
+                          setIsDropdownOpen(false);
+                        }}
+                      >
+                        <img 
+                          src={b.logo} 
+                          alt={b.name} 
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            if(e.currentTarget.nextElementSibling) {
+                              (e.currentTarget.nextElementSibling as HTMLElement).style.display = 'block';
+                            }
+                          }}
+                          style={{ width: "24px", height: "24px", borderRadius: "50%", objectFit: "cover" }} 
+                        />
+                        <div style={{ display: "none", width: "24px", height: "24px", borderRadius: "50%", background: b.color }} />
+                        <span>{b.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
             </div>
 
             {/* แถวที่ 4: เลขบัญชี & ชื่อบัญชี (ซ่อนเมื่อเลือก TrueWallet) */}
@@ -210,14 +246,43 @@ export default function RegisterPage() {
           border-radius: 12px; padding: 0 16px; color: #fff; font-size: 1rem;
           transition: all 0.3s ease; box-sizing: border-box; outline: none;
         }
-        .input-group select {
-          appearance: none; /* ซ่อนลูกศรเดิมของเบราว์เซอร์ */
-          cursor: pointer;
+        /* สไตล์สำหรับ Dropdown ธนาคารแบบใหม่ */
+        .custom-select-trigger {
+          width: 100%; height: 50px;
+          background: rgba(15, 15, 26, 0.7);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px; padding: 0 16px;
+          display: flex; align-items: center; justify-content: space-between;
+          cursor: pointer; color: #fff; transition: all 0.3s ease;
+          box-sizing: border-box;
         }
-        .input-group select option {
-          background: #1a1a2e; /* สีพื้นหลังตอนกดเลือก dropdown */
-          color: white;
+        .custom-select-trigger:hover {
+          border-color: #a855f7;
+          background: rgba(15, 15, 26, 0.9);
         }
+        .custom-select-options {
+          position: absolute; top: calc(100% + 8px); left: 0; width: 100%;
+          background: rgba(26, 26, 46, 0.95);
+          backdrop-filter: blur(12px);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 12px; padding: 8px;
+          max-height: 260px; overflow-y: auto;
+          z-index: 20;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+        }
+        .custom-select-item {
+          display: flex; align-items: center; gap: 12px;
+          padding: 10px 12px; border-radius: 8px; cursor: pointer;
+          color: #fff; transition: background 0.2s;
+        }
+        .custom-select-item:hover {
+          background: rgba(168, 85, 247, 0.2);
+        }
+        /* Custom Scrollbar ให้ Dropdown ดูกลืนไปกับ UI */
+        .custom-select-options::-webkit-scrollbar { width: 6px; }
+        .custom-select-options::-webkit-scrollbar-track { background: transparent; }
+        .custom-select-options::-webkit-scrollbar-thumb { background: #475569; border-radius: 10px; }
+        .custom-select-options::-webkit-scrollbar-thumb:hover { background: #64748b; }
         .input-group input::placeholder { color: #475569; }
         .input-group input:focus, .input-group select:focus {
           border-color: #a855f7;
