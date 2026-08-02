@@ -220,7 +220,7 @@ export default function WalletPage() {
               <form onSubmit={tab === "deposit" ? handleDeposit : handleWithdraw} className="flex flex-col md:flex-row gap-3 md:gap-6 w-full">
 
                 {/* Left: Payment Methods */}
-                <div className="bg-[#181C31] flex flex-col gap-3 rounded-xl border border-[#2B3259] w-full md:w-[250px] shrink-0 p-3 md:p-4">
+                <div className="bg-[#181C31] flex flex-col gap-3 rounded-xl border border-[#2B3259] w-full md:w-[250px] shrink-0 p-4 md:p-5">
                   <div className="font-bold text-sm text-white">
                     {tab === "deposit" ? "เลือกวิธีการฝากเงิน" : "ช่องทางการถอนเงิน"}
                   </div>
