@@ -202,10 +202,10 @@ export default function WalletPage() {
               </button>
 
               <div className="p-[3px] inline-flex items-center justify-center w-full rounded-full h-10 bg-[#181C31]">
-                <button type="button" onClick={() => { setTab("deposit"); setAmount(""); }} className={`relative inline-flex h-full flex-1 items-center justify-center px-2 py-1 whitespace-nowrap transition-all font-bold text-base md:text-lg rounded-full ${tab === "deposit" ? "bg-[#7c3aed] text-white" : "text-[#717690]"}`}>
+                <button type="button" onClick={() => { setTab("deposit"); setAmount(""); }} className={`relative inline-flex h-full flex-1 items-center justify-center px-2 py-1 whitespace-nowrap transition-all font-bold text-base md:text-lg rounded-full ${tab === "deposit" ? "bg-[#ef4444] text-white" : "text-[#717690]"}`}>
                   ฝากเงิน
                 </button>
-                <button type="button" onClick={() => { setTab("withdraw"); setAmount(""); }} className={`relative inline-flex h-full flex-1 items-center justify-center px-2 py-1 whitespace-nowrap transition-all font-bold text-base md:text-lg rounded-full ${tab === "withdraw" ? "bg-[#7c3aed] text-white" : "text-[#717690]"}`}>
+                <button type="button" onClick={() => { setTab("withdraw"); setAmount(""); }} className={`relative inline-flex h-full flex-1 items-center justify-center px-2 py-1 whitespace-nowrap transition-all font-bold text-base md:text-lg rounded-full ${tab === "withdraw" ? "bg-[#ef4444] text-white" : "text-[#717690]"}`}>
                   ถอนเงิน
                 </button>
               </div>
