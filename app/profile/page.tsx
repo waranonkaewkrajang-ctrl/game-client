@@ -245,10 +245,10 @@ export default function ProfilePage() {
             <div style={{ background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: "16px", padding: "0 20px", border: "1px solid rgba(124,58,237,0.3)", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)" }}>
              <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "16px 0", borderBottom: "1px solid #27272a" }}>
   <img 
-    src={`https://fs.cdnrc.com/payment-layout/iconbank/${user.bank_code || 'BAY'}.png`}
+    src={`/logos/${user.bank_code || 'BAY'}.webp`}
     alt={user.bank_code}
     style={{ width: "40px", height: "40px", borderRadius: "8px", objectFit: "contain", background: "#fff", padding: "4px" }}
-    onError={(e) => { e.currentTarget.src = "https://fs.cdnrc.com/payment-layout/svg/bank.svg"; }}
+    onError={(e) => { e.currentTarget.src = "/logos/BBL.webp"; }}
   />
   <div style={{ flex: 1 }}>
     <p style={{ margin: 0, fontSize: "14px", color: "#a1a1aa" }}>{user.bank_code || "ธนาคาร"}</p>
