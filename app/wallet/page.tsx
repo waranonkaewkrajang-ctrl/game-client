@@ -182,205 +182,191 @@ export default function WalletPage() {
   const maxAmount = tab === "deposit" ? finance.max_deposit : finance.max_withdraw;
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", position: "relative", overflow: "hidden", fontFamily: "'Kanit', sans-serif" }} className="pb-24 md:pb-10">
+    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", position: "relative", overflow: "hidden", fontFamily: "'Kanit', sans-serif" }} className="pb-20 md:pb-10">
 
-      {/* Dice Background */}
+      {/* พื้นหลังลูกเต๋าเคลื่อนไหว */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
         {Array.from({ length: 20 }).map((_, i) => (
           <div key={i} style={{ position: "absolute", top: `${(i * 7) % 100}%`, left: `${(i * 11) % 100}%`, fontSize: `${18 + (i % 4) * 10}px`, opacity: 0.03 + (i % 3) * 0.015, animation: `floatDice ${22 + (i % 5) * 3}s ease-in-out infinite`, animationDelay: `${i * 1.2}s`, filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
         ))}
       </div>
 
-      <div className="page-content mt-4 md:mt-6" style={{ position: "relative", zIndex: 10 }}>
-        <div className="flex justify-center">
-          <div className="flex gap-2 flex-col w-full max-w-[860px] mx-auto px-3 md:px-4">
+      <div className="mt-4 md:mt-8" style={{ position: "relative", zIndex: 10 }}>
+        <div className="flex justify-center w-full">
+          <div className="flex flex-col gap-4 w-full max-w-[820px] mx-auto px-4">
 
-            {/* Header: Tabs */}
-            <div className="flex items-center gap-2">
-              <button onClick={() => router.push("/lobby")} className="cursor-pointer inline-flex items-center justify-center size-9 rounded-full border-2 border-[#2B3259] text-white bg-[#181C31]">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+            {/* --- 1. เมนู Tabs ฝาก/ถอน --- */}
+            <div className="flex items-center gap-3">
+              <button onClick={() => router.push("/lobby")} className="cursor-pointer flex items-center justify-center w-10 h-10 rounded-full border-2 border-[#2B3259] text-white bg-[#181C31] hover:bg-[#2B3259] transition-colors shrink-0">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
               </button>
 
-              <div className="p-[3px] inline-flex items-center justify-center w-full rounded-full h-10 bg-[#181C31]">
-                <button type="button" onClick={() => { setTab("deposit"); setAmount(""); }} className={`relative inline-flex h-full flex-1 items-center justify-center px-2 py-1 whitespace-nowrap transition-all font-bold text-base md:text-lg rounded-full ${tab === "deposit" ? "bg-[#7c3aed] text-white" : "text-[#717690]"}`}>
+              <div className="flex p-[4px] w-full rounded-full h-[46px] bg-[#181C31] border border-[#2B3259]">
+                <button type="button" onClick={() => { setTab("deposit"); setAmount(""); }} className={`flex-1 flex items-center justify-center rounded-full text-base font-bold transition-all ${tab === "deposit" ? "bg-[#7c3aed] text-white shadow-md shadow-purple-500/20" : "text-[#717690] hover:text-white"}`}>
                   ฝากเงิน
                 </button>
-                <button type="button" onClick={() => { setTab("withdraw"); setAmount(""); }} className={`relative inline-flex h-full flex-1 items-center justify-center px-2 py-1 whitespace-nowrap transition-all font-bold text-base md:text-lg rounded-full ${tab === "withdraw" ? "bg-[#7c3aed] text-white" : "text-[#717690]"}`}>
+                <button type="button" onClick={() => { setTab("withdraw"); setAmount(""); }} className={`flex-1 flex items-center justify-center rounded-full text-base font-bold transition-all ${tab === "withdraw" ? "bg-[#7c3aed] text-white shadow-md shadow-purple-500/20" : "text-[#717690] hover:text-white"}`}>
                   ถอนเงิน
                 </button>
               </div>
 
-              <button onClick={() => router.push("/history")} className="cursor-pointer inline-flex items-center justify-center size-9 rounded-full border-2 border-[#2B3259] text-white bg-[#181C31]">
+              <button onClick={() => router.push("/history")} className="cursor-pointer flex items-center justify-center w-10 h-10 rounded-full border-2 border-[#2B3259] text-white bg-[#181C31] hover:bg-[#2B3259] transition-colors shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </button>
             </div>
 
-            {/* Content */}
-            <div className="mt-3 md:mt-4 w-full">
-              <form onSubmit={tab === "deposit" ? handleDeposit : handleWithdraw} className="flex flex-col md:flex-row gap-3 md:gap-6 w-full">
+            {/* --- 2. ส่วนกล่องเนื้อหาหลัก (ฝั่งซ้าย: วิธีชำระ / ฝั่งขวา: จำนวนเงิน) --- */}
+            <form onSubmit={tab === "deposit" ? handleDeposit : handleWithdraw} className="flex flex-col lg:flex-row gap-4 w-full">
 
-                {/* Left: Payment Methods */}
-                <div className="bg-[#181C31] flex flex-col gap-3 rounded-xl border border-[#2B3259] w-full md:w-[250px] shrink-0 p-3 md:p-4">
-                  <div className="font-bold text-sm text-white">
-                    {tab === "deposit" ? "เลือกวิธีการฝากเงิน" : "ช่องทางการถอนเงิน"}
-                  </div>
-
-                  {tab === "deposit" ? (
-                    <div className={`grid grid-cols-${Math.min(finance.channels.length, 3)} md:grid-cols-2 gap-2 w-full`}>
-                      {finance.channels.map((ch) => (
-                        <div key={ch} onClick={() => {
-                          if (ch === "truewallet" && truewalletAccounts.length > 0) {
-                            const walletsHtml = truewalletAccounts.map((w, i) => `
-                              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
-                                <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:40px;height:40px;isolation:isolate;filter:none!important;" />
-                                <div style="flex:1;text-align:left">
-                                  <div style="font-size:13px;color:#166534">${w.name}</div>
-                                  <div style="font-size:18px;font-weight:700;color:#0f172a;letter-spacing:1px">${w.phone}</div>
-                                </div>
-                                <button type="button" class="tw-copy" data-phone="${w.phone}" style="background:#22c55e;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
-                              </div>
-                            `).join("");
-
-                            Swal.fire({
-                              html: `
-                                <div style="text-align:center;padding:8px 0">
-                                  <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:56px;height:56px;margin:0 auto 12px;display:block;isolation:isolate;filter:none!important;" />
-                                  <h2 style="font-size:18px;font-weight:700;color:#0f172a;margin:0 0 4px">ฝากผ่าน True Wallet</h2>
-                                  <p style="font-size:13px;color:#64748b;margin:0 0 16px">กรุณาโอนเงินไปที่บัญชีด้านล่าง</p>
-                                  ${walletsHtml}
-                                  <p style="font-size:12px;color:#ef4444;font-weight:500;margin-top:12px">โอนเสร็จแล้วเงินจะเข้าอัตโนมัติภายใน 5 นาที</p>
-                                  <p style="font-size:24px;color:#ef4444;font-weight:700;margin-top:8px" id="tw-timer">10:00</p>
-                                </div>
-                              `,
-                              showConfirmButton: true,
-                              confirmButtonText: "ปิด",
-                              confirmButtonColor: "#ef4444",
-                              background: "#fff",
-                              color: "#0f172a",
-                              didOpen: () => {
-                                // บังคับสีขาวกัน dark mode มือถือ
-                                const popup = document.querySelector('.swal2-popup') as HTMLElement;
-                                if (popup) {
-                                 popup.style.colorScheme = 'light';
-                                 popup.style.backgroundColor = '#ffffff';
-                                }
-                                document.querySelectorAll(".tw-copy").forEach((btn) => {
-                                  btn.addEventListener("click", () => {
-                                    const phone = btn.getAttribute("data-phone") || "";
-                                    navigator.clipboard.writeText(phone);
-                                    btn.textContent = "คัดลอกแล้ว ✓";
-                                    setTimeout(() => { btn.textContent = "คัดลอก"; }, 2000);
-                                  });
-                                });
-                                let twSeconds = 600;
-                                const twTimerEl = document.getElementById("tw-timer");
-                                const twInterval = setInterval(() => {
-                                  twSeconds--;
-                                  if (twSeconds <= 0) { clearInterval(twInterval); Swal.close(); return; }
-                                  const m = Math.floor(twSeconds / 60);
-                                  const s = twSeconds % 60;
-                                  if (twTimerEl) twTimerEl.textContent = m + ":" + (s < 10 ? "0" : "") + s;
-                                }, 1000);
-                              },
-                            });
-                          } else {
-                            setChannel(ch);
-                          }
-                        }} className={`cursor-pointer rounded-xl border w-full h-20 md:h-24 text-center p-2 flex items-center justify-center transition-all ${channel === ch ? "border-[#7c3aed] bg-[#7c3aed]/10" : "border-[#2B3259] hover:bg-[#2B3259]/50"}`}>
-                          <div className="flex flex-col justify-center items-center gap-1.5">
-                            <img className="w-7 h-7 md:w-8 md:h-8" alt={ch} src={channelIcons[ch]?.icon || channelIcons.bank_transfer.icon} />
-                            <span className="text-[10px] md:text-xs font-medium text-white">{channelIcons[ch]?.label || ch}</span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <div className="rounded-xl border border-[#7c3aed] bg-[#7c3aed]/10 text-center p-6 w-full flex flex-col items-center justify-center">
-                      <img className="w-10 h-10 mx-auto mb-3" alt="icon" src="https://fs.cdnrc.com/payment-layout/svg/bank.svg" />
-                      <span className="text-sm font-medium text-white">ถอนเข้าบัญชีธนาคาร<br/>ที่ลงทะเบียนไว้</span>
-                    </div>
-                  )}
+              {/* 🟢 ส่วนที่ 1: เลือกวิธีชำระเงิน (ช่องทาง) */}
+              <div className="bg-[#181C31] flex flex-col gap-3 rounded-[1.25rem] border border-[#2B3259] w-full lg:w-[260px] shrink-0 p-4">
+                <div className="font-bold text-sm text-white mb-1">
+                  {tab === "deposit" ? "เลือกช่องทางการฝากเงิน" : "ช่องทางการถอนเงิน"}
                 </div>
 
-                {/* Right: Amount & Action */}
-                <div className="flex flex-col w-full flex-1 gap-4 md:gap-6">
+                {tab === "deposit" ? (
+                  <div className="grid grid-cols-3 lg:grid-cols-2 gap-2">
+                    {finance.channels.map((ch) => (
+                      <div key={ch} onClick={() => {
+                        if (ch === "truewallet" && truewalletAccounts.length > 0) {
+                          // Logic เปิด Popup TrueWallet เดิม
+                          const walletsHtml = truewalletAccounts.map((w, i) => `
+                            <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
+                              <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:40px;height:40px;isolation:isolate;filter:none!important;" />
+                              <div style="flex:1;text-align:left">
+                                <div style="font-size:13px;color:#166534">${w.name}</div>
+                                <div style="font-size:18px;font-weight:700;color:#0f172a;letter-spacing:1px">${w.phone}</div>
+                              </div>
+                              <button type="button" class="tw-copy" data-phone="${w.phone}" style="background:#22c55e;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
+                            </div>
+                          `).join("");
 
-                  {/* บัญชีลูกค้า (ถอน) */}
-                  {tab === "withdraw" && userData && (
-                    <div>
-                      <label className="text-sm font-medium text-white mb-2 block">บัญชีรับเงิน</label>
-                      <div className="flex items-center gap-3 rounded-2xl border border-[#7c3aed] bg-[#7c3aed]/10 p-4">
-                        <img alt="Bank" width="32" height="32" className="shrink-0 rounded-md bg-white object-contain p-0.5" src={`https://fs.cdnrc.com/payment-layout/iconbank/${userData.bank_code || 'BAY'}.png`} onError={(e) => { e.currentTarget.src = "https://fs.cdnrc.com/payment-layout/svg/bank.svg"; }} />
-                        <div className="flex-1 min-w-0">
-                          <div className="text-white text-sm font-semibold truncate">{userData.bank_name || "บัญชีของฉัน"}</div>
-                          <div className="text-[#717690] text-xs">{userData.bank_code} — {userData.bank_account}</div>
-                        </div>
+                          Swal.fire({
+                            html: `
+                              <div style="text-align:center;padding:8px 0">
+                                <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:56px;height:56px;margin:0 auto 12px;display:block;isolation:isolate;filter:none!important;" />
+                                <h2 style="font-size:18px;font-weight:700;color:#0f172a;margin:0 0 4px">ฝากผ่าน True Wallet</h2>
+                                <p style="font-size:13px;color:#64748b;margin:0 0 16px">กรุณาโอนเงินไปที่บัญชีด้านล่าง</p>
+                                ${walletsHtml}
+                                <p style="font-size:12px;color:#ef4444;font-weight:500;margin-top:12px">โอนเสร็จแล้วเงินจะเข้าอัตโนมัติภายใน 5 นาที</p>
+                                <p style="font-size:24px;color:#ef4444;font-weight:700;margin-top:8px" id="tw-timer">10:00</p>
+                              </div>
+                            `,
+                            showConfirmButton: true, confirmButtonText: "ปิด", confirmButtonColor: "#ef4444",
+                            background: "#fff", color: "#0f172a",
+                            didOpen: () => {
+                              const popup = document.querySelector('.swal2-popup') as HTMLElement;
+                              if (popup) { popup.style.colorScheme = 'light'; popup.style.backgroundColor = '#ffffff'; }
+                              document.querySelectorAll(".tw-copy").forEach((btn) => {
+                                btn.addEventListener("click", () => {
+                                  const phone = btn.getAttribute("data-phone") || "";
+                                  navigator.clipboard.writeText(phone);
+                                  btn.textContent = "คัดลอกแล้ว ✓";
+                                  setTimeout(() => { btn.textContent = "คัดลอก"; }, 2000);
+                                });
+                              });
+                              let twSeconds = 600;
+                              const twTimerEl = document.getElementById("tw-timer");
+                              const twInterval = setInterval(() => {
+                                twSeconds--;
+                                if (twSeconds <= 0) { clearInterval(twInterval); Swal.close(); return; }
+                                const m = Math.floor(twSeconds / 60); const s = twSeconds % 60;
+                                if (twTimerEl) twTimerEl.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+                              }, 1000);
+                            },
+                          });
+                        } else {
+                          setChannel(ch);
+                        }
+                      }} 
+                      className={`cursor-pointer rounded-[14px] border h-[80px] lg:h-[90px] flex flex-col items-center justify-center transition-all ${channel === ch ? "border-[#7c3aed] bg-[#7c3aed]/20 shadow-inner" : "border-[#2B3259] bg-[#0F111A] hover:border-[#7c3aed]/50"}`}>
+                        <img className="w-7 h-7 lg:w-8 lg:h-8 mb-1" alt={ch} src={channelIcons[ch]?.icon || channelIcons.bank_transfer.icon} />
+                        <span className="text-[10px] lg:text-[11px] font-medium text-[#e2e8f0]">{channelIcons[ch]?.label || ch}</span>
                       </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="rounded-[14px] border border-[#7c3aed] bg-[#7c3aed]/10 flex flex-col items-center justify-center p-6 h-full min-h-[140px]">
+                    <img className="w-12 h-12 mb-3 drop-shadow-md" alt="icon" src="https://fs.cdnrc.com/payment-layout/svg/bank.svg" />
+                    <span className="text-sm font-medium text-white text-center leading-snug">โอนเข้าบัญชีธนาคาร<br/><span className="text-[#a855f7] text-xs">ที่ลงทะเบียนไว้เท่านั้น</span></span>
+                  </div>
+                )}
+              </div>
+
+              {/* 🟢 ส่วนที่ 2: กรอกจำนวนเงิน & ยืนยัน */}
+              <div className="flex flex-col flex-1 gap-4">
+
+                {/* แสดงกล่องบัญชีลูกค้า (เฉพาะตอนถอน) */}
+                {tab === "withdraw" && userData && (
+                  <div className="flex items-center gap-3 rounded-[1.25rem] border border-[#7c3aed] bg-[#181C31] p-4 shadow-lg shadow-[#7c3aed]/5">
+                    <img alt="Bank" width="40" height="40" className="shrink-0 rounded-[10px] bg-white object-contain p-1" src={`https://fs.cdnrc.com/payment-layout/iconbank/${userData.bank_code || 'BAY'}.png`} onError={(e) => { e.currentTarget.src = "https://fs.cdnrc.com/payment-layout/svg/bank.svg"; }} />
+                    <div className="flex-1 min-w-0">
+                      <div className="text-white text-[15px] font-semibold truncate leading-tight">{userData.bank_name || "บัญชีรับเงินของคุณ"}</div>
+                      <div className="text-[#94a3b8] text-[13px] font-mono mt-0.5">{userData.bank_code} — {userData.bank_account}</div>
                     </div>
-                  )}
+                  </div>
+                )}
 
-                  {/* กรอกจำนวนเงิน */}
-                  <div style={{ background: "#181C31", display: "flex", flexDirection: "column", gap: "12px", borderRadius: "16px", border: "1px solid #2B3259", padding: "20px 16px" }}>
+                {/* กล่องหลักสำหรับกรอกตัวเลข */}
+                <div className="bg-[#181C31] flex flex-col rounded-[1.25rem] border border-[#2B3259] p-4 lg:p-6 w-full">
+                  <div className="text-center font-medium text-white text-[15px] mb-3">
+                    ระบุยอดเงินที่ต้องการ{tab === "deposit" ? "ฝาก" : "ถอน"}
+                  </div>
 
-                    <div style={{ display: "flex", justifyContent: "center", width: "100%", paddingTop: "4px" }}>
-                      <label style={{ fontSize: "14px", fontWeight: 500, color: "white", textAlign: "center" }}>
-                        ระบุจำนวนเงิน{tab === "deposit" ? "ฝาก" : "ถอน"}
-                      </label>
-                    </div>
-
-                    {/* กล่องกรอกตัวเลข */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", borderRadius: "12px", border: "1px solid #2B3259", padding: "16px 12px", background: "#0F111A" }}>
-                      <span style={{ color: "#717690", fontSize: "11px", marginBottom: "8px" }}>
-                        ขั้นต่ำ: {minAmount.toLocaleString()} / สูงสุด {maxAmount.toLocaleString()}
-                      </span>
+                  {/* Input กล่องใหญ่ตรงกลาง */}
+                  <div className="bg-[#0F111A] flex flex-col items-center justify-center rounded-[1rem] border border-[#2B3259] p-4 mb-4 relative">
+                    <span className="text-[#717690] text-[11px] mb-1">
+                      ขั้นต่ำ {minAmount.toLocaleString()} / สูงสุด {maxAmount.toLocaleString()} ฿
+                    </span>
+                    <div className="flex items-center justify-center">
+                      <span className="text-[#a855f7] text-2xl font-bold mr-1">฿</span>
                       <input
                         inputMode="numeric"
-                        style={{ color: "#a855f7", background: "transparent", textAlign: "center", fontSize: "1.5rem", fontWeight: 700, outline: "none", border: "none", width: "100%", maxWidth: "200px" }}
+                        className="bg-transparent text-white text-[32px] font-bold text-center outline-none border-none w-full max-w-[200px] placeholder:text-[#333b5c]"
                         type="text"
                         placeholder="0"
                         value={amount}
                         onChange={(e) => setAmount(e.target.value.replace(/[^0-9.]/g, ''))}
                       />
                     </div>
-
-                    {/* ปุ่มยกเลิก / ยืนยัน */}
-                    <div className="flex gap-2 w-full">
-                      <button type="button" onClick={() => setAmount("")} className="inline-flex items-center justify-center rounded-xl text-xs md:text-sm font-medium transition-all border border-[#9f1239] bg-gradient-to-b from-[#e11d48] to-[#be123c] text-white h-10 md:h-11 flex-1 cursor-pointer">
-                        ยกเลิก
-                      </button>
-                      <button type="submit" disabled={loading || !amount} className="inline-flex items-center justify-center rounded-xl text-xs md:text-sm font-medium transition-all border border-[#047857] bg-gradient-to-b from-[#10b981] to-[#059669] text-white disabled:opacity-50 h-10 md:h-11 flex-1 cursor-pointer">
-                        {loading ? "กำลังทำรายการ..." : "ยืนยัน"}
-                      </button>
-                    </div>
-
-                    {/* ปุ่ม +จำนวนเงิน (จาก settings) */}
-                    <div className={`grid gap-1.5 md:gap-2 mt-1 ${finance.amounts.length <= 5 ? "grid-cols-5" : "grid-cols-4 md:grid-cols-5"}`}>
-                      {finance.amounts.map((val) => (
-                        <button key={val} type="button" onClick={() => addAmount(val)} className="cursor-pointer inline-flex items-center justify-center gap-0.5 md:gap-1.5 rounded-lg font-medium transition-all border border-[#2B3259] bg-[#0F111A] hover:bg-[#7c3aed]/20 hover:border-[#7c3aed] text-white h-10 md:h-11 px-1 md:px-2 text-[11px] md:text-sm">
-                          <img alt="coin" className="w-3.5 h-3.5 shrink-0 hidden md:block" src="https://fs.cdnrc.com/payment-layout/svg/coin.svg" />
-                          +{val >= 1000 ? `${(val/1000)}k` : val}
-                        </button>
-                      ))}
-                    </div>
-
-                    {/* ข้อความแจ้งเตือน */}
-                    <div className="flex flex-col items-center gap-1 text-center mt-1 px-2">
-                      {tab === "deposit" ? (
-                        <>
-                          <span className="text-[11px] md:text-sm text-red-500 font-medium">QR Code จะสามารถใช้สแกนได้เพียงครั้งเดียวเท่านั้น !</span>
-                          <span className="text-[11px] md:text-sm text-red-500 font-medium">หลังจากฝากเงินสำเร็จรอไม่เกิน 5 นาที เงินจะเข้ากระเป๋าอัตโนมัติ</span>
-                        </>
-                      ) : (
-                        <span className="text-[11px] md:text-xs text-[#fbbf24]">เงินจะโอนเข้าบัญชีที่ท่านลงทะเบียนไว้เท่านั้น</span>
-                      )}
-                    </div>
-
                   </div>
+
+                  {/* ปุ่มด่วน (100, 300, 500...) */}
+                  <div className={`grid gap-2 mb-5 ${finance.amounts.length <= 5 ? "grid-cols-5" : "grid-cols-4 md:grid-cols-5"}`}>
+                    {finance.amounts.map((val) => (
+                      <button key={val} type="button" onClick={() => addAmount(val)} className="flex items-center justify-center rounded-[10px] border border-[#2B3259] bg-[#0F111A] hover:border-[#a855f7] hover:text-[#a855f7] text-[#cbd5e1] h-[40px] text-[12px] font-semibold transition-all">
+                        +{val >= 1000 ? `${(val/1000)}k` : val}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* คำเตือนด้านล่าง */}
+                  <div className="bg-[#ef4444]/10 border border-[#ef4444]/20 rounded-xl p-3 text-center mb-5">
+                    {tab === "deposit" ? (
+                      <p className="text-[#fca5a5] text-[11px] md:text-[12px] leading-relaxed m-0">
+                        <strong className="text-[#ef4444]">คำเตือน:</strong> QR Code ใช้ได้ครั้งเดียว ห้ามโอนซ้ำยอดเดิม<br/>เงินจะเข้าอัตโนมัติภายใน 3-5 นาที
+                      </p>
+                    ) : (
+                      <p className="text-[#fca5a5] text-[11px] md:text-[12px] leading-relaxed m-0">
+                        กรุณาตรวจสอบชื่อ-นามสกุล และเลขบัญชีให้ถูกต้อง<br/>ระบบจะโอนเข้าบัญชีที่ลงทะเบียนไว้เท่านั้น
+                      </p>
+                    )}
+                  </div>
+
+                  {/* ปุ่มตกลง / ยกเลิก */}
+                  <div className="flex gap-3">
+                    <button type="button" onClick={() => setAmount("")} className="flex-1 h-[46px] rounded-xl font-bold text-white text-[14px] bg-[#333b5c] hover:bg-[#475569] transition-colors">
+                      ล้างยอด
+                    </button>
+                    <button type="submit" disabled={loading || !amount} className="flex-[2] h-[46px] rounded-xl font-bold text-white text-[15px] bg-gradient-to-r from-[#10b981] to-[#059669] hover:from-[#059669] hover:to-[#047857] shadow-lg shadow-[#10b981]/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+                      {loading ? "กำลังโหลด..." : tab === "deposit" ? "ยืนยันการฝากเงิน" : "ยืนยันการถอนเงิน"}
+                    </button>
+                  </div>
+
                 </div>
+              </div>
 
-              </form>
-            </div>
-
+            </form>
           </div>
         </div>
       </div>
