@@ -451,22 +451,22 @@ export default function SpinWheelPage() {
           </div>
         </div>
 
-      {/* 2. โซนปุ่มกด (จัดโลจิกใหม่: ให้ไอคอนอยู่ด้านหลัง และปุ่มสีแดงวางทับด้านหน้า) */}
+     {/* 2. โซนปุ่มกด (ดันไอคอนขึ้นไปสูงๆ ให้โผล่พ้นปุ่มแดงขึ้นมา) */}
         <div style={{ 
           display: "flex", 
           justifyContent: "space-between", 
-          marginTop: "20px", 
+          marginTop: "35px", // เพิ่มพื้นที่ด้านบนให้ไอคอนมีที่ลอย
           position: "relative", 
           zIndex: 20 
         }}>
           
           {/* ปุ่มทำภารกิจ (ซ้าย) */}
           <div style={{ position: "relative", width: "130px", height: "45px" }}>
-            {/* 1. ไอคอนอยู่ด้านหลัง (zIndex น้อยกว่า) */}
-            <div style={{ position: "absolute", top: "-35px", left: "-5px", zIndex: 1, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
-              <img src="/mission-icon.webp" alt="mission" style={{ width: "95px", height: "95px", objectFit: "contain" }} />
+            {/* 1. ไอคอนอยู่ด้านหลัง ดันขึ้นไปสูงๆ (top: -58px) */}
+            <div style={{ position: "absolute", top: "-58px", left: "-5px", zIndex: 1, filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.6))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
+              <img src="/mission-icon.webp" alt="mission" style={{ width: "100px", height: "100px", objectFit: "contain" }} />
             </div>
-            {/* 2. ปุ่มสีแดงอยู่ด้านหน้า (zIndex มากกว่า เพื่อมาทับไอคอนครึ่งนึงแบบในภาพ) */}
+            {/* 2. ปุ่มสีแดงอยู่ด้านหน้า */}
             <button style={{ 
               background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
               color: "#ffffff", border: "none", padding: "10px 20px", borderRadius: "50px", 
@@ -480,9 +480,9 @@ export default function SpinWheelPage() {
 
           {/* ปุ่มรางวัล (ขวา) */}
           <div style={{ position: "relative", width: "130px", height: "45px" }}>
-            {/* 1. ไอคอนอยู่ด้านหลัง */}
-            <div style={{ position: "absolute", top: "-35px", right: "-5px", zIndex: 1, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(10deg)" }}>
-              <img src="/reward-icon.webp" alt="reward" style={{ width: "95px", height: "95px", objectFit: "contain" }} />
+            {/* 1. ไอคอนอยู่ด้านหลัง ดันขึ้นไปสูงๆ (top: -58px) */}
+            <div style={{ position: "absolute", top: "-58px", right: "-5px", zIndex: 1, filter: "drop-shadow(0 4px 6px rgba(0,0,0,0.6))", pointerEvents: "none", transform: "rotate(10deg)" }}>
+              <img src="/reward-icon.webp" alt="reward" style={{ width: "100px", height: "100px", objectFit: "contain" }} />
             </div>
             {/* 2. ปุ่มสีแดงอยู่ด้านหน้า */}
             <button style={{ 
