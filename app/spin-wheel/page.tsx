@@ -86,7 +86,7 @@ export default function SpinWheelPage() {
     if (winners.length === 0) return;
     const interval = setInterval(() => {
       setWinnerScrollY((prev) => {
-        const maxScroll = winners.length * 40;
+        const maxScroll = winners.length * 50; // เปลี่ยนจาก 40 เป็น 50
         return prev >= maxScroll ? 0 : prev + 1;
       });
     }, 50);
@@ -384,22 +384,51 @@ export default function SpinWheelPage() {
         </div>
       </div>
 
-      {/* Recent Winners Feed */}
+     {/* Recent Winners Feed (สไตล์โปร่งใส ลอยตัว ไร้กรอบ มีเส้นคั่น) */}
       {winners.length > 0 && (
-        <div style={{ margin: "0 20px 12px", background: "rgba(0,0,0,0.3)", borderRadius: "12px", overflow: "hidden", height: "120px", position: "relative", zIndex: 10, border: "1px solid rgba(255,255,255,0.05)" }}>
+        <div style={{ 
+          margin: "8px 20px 16px", 
+          height: "150px", 
+          position: "relative", 
+          zIndex: 10, 
+          overflow: "hidden",
+          WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
+          maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)"
+        }}>
           <div style={{ position: "relative", height: "100%", overflow: "hidden" }}>
             <div style={{ transform: `translateY(-${winnerScrollY}px)`, transition: "transform 0.05s linear" }}>
               {[...winners, ...winners].map((w, i) => (
-                <div key={`${w.id}-${i}`} style={{ display: "flex", alignItems: "center", gap: "10px", padding: "8px 14px", height: "40px", boxSizing: "border-box" }}>
-                  <div style={{ width: "28px", height: "28px", borderRadius: "50%", background: "linear-gradient(135deg, #7c3aed, #2563eb)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.7rem", color: "#fff", fontWeight: 700, flexShrink: 0 }}>
-                    {w.username.slice(0, 2)}
+                <div key={`${w.id}-${i}`} style={{ 
+                  display: "flex", alignItems: "center", gap: "12px", 
+                  padding: "6px 4px", height: "50px", boxSizing: "border-box",
+                  borderBottom: "1px solid rgba(250, 204, 21, 0.2)" 
+                }}>
+                  
+                  {/* อวตาร (วงกลม) */}
+                  <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "linear-gradient(135deg, #7c3aed, #2563eb)", border: "1px solid rgba(250,204,21,0.5)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", color: "#fff", fontWeight: 700, flexShrink: 0 }}>
+                    {w.username.slice(0, 2).toUpperCase()}
                   </div>
-                  <span style={{ color: "#9ca3af", fontSize: "0.75rem", flex: 1 }}>
-                    {w.username}{w.phone_tail ? ` ****${w.phone_tail}` : ""}
-                  </span>
-                  <span style={{ color: "#facc15", fontSize: "0.75rem", fontWeight: 700, textAlign: "right" }}>
-                    {w.prize_label}
-                  </span>
+                  
+                  {/* ชื่อ และ เบอร์โทร (จัดเรียงแนวตั้งบนล่าง) */}
+                  <div style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center" }}>
+                    <span style={{ color: "#facc15", fontSize: "0.85rem", fontWeight: 700, lineHeight: 1.2 }}>
+                      {w.username}
+                    </span>
+                    <span style={{ color: "#fde047", fontSize: "0.7rem", opacity: 0.8 }}>
+                      {w.phone_tail ? `********${w.phone_tail}` : ""}
+                    </span>
+                  </div>
+                  
+                  {/* รูปภาพรางวัล และ ชื่อรางวัล */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", justifyContent: "flex-end" }}>
+                    {w.image_url && (
+                      <img src={w.image_url} alt="prize" style={{ width: "24px", height: "24px", objectFit: "contain", filter: "drop-shadow(0 2px 2px rgba(0,0,0,0.5))" }} />
+                    )}
+                    <span style={{ color: "#ffffff", fontSize: "0.8rem", fontWeight: 700, textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
+                      {w.prize_label}
+                    </span>
+                  </div>
+
                 </div>
               ))}
             </div>
