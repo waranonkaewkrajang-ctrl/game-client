@@ -374,14 +374,43 @@ export default function SpinWheelPage() {
         <div style={{ width: "32px" }} />
       </div>
 
-      {/* Ticket Bar */}
-      <div style={{ display: "flex", justifyContent: "center", padding: "0 20px 12px", position: "relative", zIndex: 10 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "rgba(255,255,255,0.08)", borderRadius: "25px", padding: "8px 24px", border: "1px solid rgba(250,204,21,0.2)" }}>
-          <span style={{ fontSize: "1rem" }}>🎫</span>
-          <span style={{ color: "#ccc", fontSize: "0.85rem" }}>ตั๋ว</span>
-          <span style={{ color: "#facc15", fontWeight: 800, fontSize: "1.2rem" }}>{ticketBalance}</span>
-          <span style={{ color: "#ccc", fontSize: "0.8rem" }}>ใบ</span>
+     {/* Ticket & Point Bars (แถบตั๋วและคะแนนซ้ายขวา สไตล์ 3D ทะลุกรอบ) */}
+      <div style={{ display: "flex", justifyContent: "center", gap: "24px", padding: "12px 20px 16px", position: "relative", zIndex: 10 }}>
+        
+        {/* แถบตั๋ว (ซ้าย) */}
+        <div style={{ 
+          position: "relative", flex: 1, maxWidth: "160px", height: "40px", 
+          background: "#3f3f46", // พื้นหลังสีเทาเข้มตามภาพ
+          borderRadius: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", 
+          padding: "0 16px 0 36px", // ดันข้อความไปทางขวาเพื่อให้มีที่วางไอคอน
+          boxShadow: "inset 0 2px 4px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)" // เงาด้านในให้ดูลึก
+        }}>
+          {/* ไอคอนตั๋ว (ลอยทับขอบซ้าย) */}
+          <div style={{ position: "absolute", left: "-20px", top: "50%", transform: "translateY(-50%)", zIndex: 2, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))" }}>
+            {/* 💡 หากมีไฟล์รูปภาพ 3D สามารถเปลี่ยน Emoji นี้เป็น <img src="url_รูปตั๋ว" style={{ width: "48px" }} /> ได้เลยครับ */}
+            <span style={{ fontSize: "2.5rem" }}>🎫</span>
+          </div>
+          <span style={{ color: "#a1a1aa", fontSize: "0.9rem" }}>ตั๋ว</span>
+          <span style={{ color: "#ffffff", fontSize: "1rem", fontWeight: 700 }}>{ticketBalance}</span>
         </div>
+
+        {/* แถบคะแนน (ขวา) */}
+        <div style={{ 
+          position: "relative", flex: 1, maxWidth: "160px", height: "40px", 
+          background: "#3f3f46", // พื้นหลังสีเทาเข้มตามภาพ
+          borderRadius: "20px", display: "flex", justifyContent: "space-between", alignItems: "center", 
+          padding: "0 16px 0 36px", // ดันข้อความไปทางขวาเพื่อให้มีที่วางไอคอน
+          boxShadow: "inset 0 2px 4px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)" 
+        }}>
+          {/* ไอคอนคะแนน (ลอยทับขอบซ้าย) */}
+          <div style={{ position: "absolute", left: "-20px", top: "50%", transform: "translateY(-50%)", zIndex: 2, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.6))" }}>
+            {/* 💡 หากมีไฟล์รูปภาพ 3D สามารถเปลี่ยน Emoji นี้เป็น <img src="url_รูปเพชร" style={{ width: "48px" }} /> ได้เลยครับ */}
+            <span style={{ fontSize: "2.5rem" }}>💎</span>
+          </div>
+          <span style={{ color: "#a1a1aa", fontSize: "0.9rem" }}>คะแนน</span>
+          <span style={{ color: "#ffffff", fontSize: "1rem", fontWeight: 700 }}>{pointBalance}</span>
+        </div>
+
       </div>
 
     {/* 🌟 โซนรายชื่อผู้ชนะ และ ปุ่มซ้าย-ขวา (มัดรวมกันเพื่อให้เกาะขอบพอดี) */}
