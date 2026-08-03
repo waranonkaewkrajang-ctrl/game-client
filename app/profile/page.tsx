@@ -234,6 +234,19 @@ export default function ProfilePage() {
                   )}
                 </div>
               </a>
+              {/* ปุ่มวงล้อเสี่ยงโชค */}
+              <a href="/spin-wheel" style={{ textDecoration: "none", background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "16px 20px", border: "1px solid rgba(124,58,237,0.3)", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)", cursor: "pointer", transition: "all 0.2s" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(250,204,21,0.2), rgba(245,158,11,0.1))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>
+                    🎡
+                  </div>
+                  <div>
+                    <p style={{ margin: 0, fontSize: "14px", fontWeight: 600, color: "#fafafa" }}>วงล้อเสี่ยงโชค</p>
+                    <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>หมุนลุ้นรางวัลทุกวัน</p>
+                  </div>
+                </div>
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#71717a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+              </a>
             </div>
           </div>
 
