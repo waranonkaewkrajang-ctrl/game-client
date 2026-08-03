@@ -268,23 +268,7 @@ export default function SpinWheelPage() {
     ctx.fillText("SPIN", cx, cy);
     ctx.shadowBlur = 0;
 
-    // === Pointer (top) ===
-    ctx.save();
-    ctx.translate(cx, cy - outerR + 6);
-    ctx.beginPath();
-    ctx.moveTo(0, 16);
-    ctx.lineTo(-13, -12);
-    ctx.lineTo(13, -12);
-    ctx.closePath();
-    ctx.fillStyle = "#f43f5e";
-    ctx.fill();
-    ctx.strokeStyle = "#fff";
-    ctx.lineWidth = 2;
-    ctx.shadowColor = "rgba(244,63,94,0.6)";
-    ctx.shadowBlur = 8;
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-    ctx.restore();
+    
 
   }, [prizes, multipliers, loadedImages]);
 
@@ -445,17 +429,59 @@ export default function SpinWheelPage() {
         </span>
       </div>
 
-      {/* Wheel Canvas */}
-      <div style={{ display: "flex", justifyContent: "center", padding: "8px 10px", position: "relative", zIndex: 10 }}>
-        <canvas
-          ref={canvasRef}
-          width={380}
-          height={380}
-          style={{ width: "min(90vw, 380px)", height: "min(90vw, 380px)", cursor: spinning ? "not-allowed" : "pointer" }}
-          onClick={() => {}}
-        />
-      </div>
+      {/* Wheel Canvas (ดีไซน์ใหม่) */}
+      <div style={{ display: "flex", justifyContent: "center", padding: "16px 10px", position: "relative", zIndex: 10 }}>
+        
+        {/* เข็มชี้ (ใช้ SVG เพื่อความคมชัด และใส่ Drop Shadow ให้เรืองแสง) */}
+        <svg
+          width="42" height="52" viewBox="0 0 40 50"
+          style={{
+            position: "absolute",
+            top: "-2px",
+            zIndex: 20,
+            filter: "drop-shadow(0 6px 6px rgba(0,0,0,0.6)) drop-shadow(0 0 12px rgba(244,63,94,0.8))"
+          }}
+        >
+          <defs>
+            <linearGradient id="pointer-grad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#fb7185" />
+              <stop offset="100%" stopColor="#e11d48" />
+            </linearGradient>
+          </defs>
+          <path 
+            d="M5.5 4 C4 4 3 5.5 3.5 7 L18.5 46 C19 47.5 21 47.5 21.5 46 L36.5 7 C37 5.5 36 4 34.5 4 Z" 
+            fill="url(#pointer-grad)" 
+            stroke="#ffffff" 
+            strokeWidth="2.5" 
+            strokeLinejoin="round" 
+          />
+        </svg>
 
+        {/* กรอบเรืองแสงรอบวงล้อ */}
+        <div style={{
+          position: "relative",
+          display: "inline-block",
+          padding: "10px",
+          background: "rgba(255, 255, 255, 0.02)",
+          borderRadius: "50%",
+          boxShadow: "0 0 40px rgba(139, 92, 246, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.05)",
+        }}>
+          <canvas
+            ref={canvasRef}
+            width={380}
+            height={380}
+            style={{ 
+              width: "min(90vw, 380px)", 
+              height: "min(90vw, 380px)", 
+              cursor: spinning ? "not-allowed" : "pointer",
+              borderRadius: "50%",
+              boxShadow: "0 10px 25px rgba(0,0,0,0.6)"
+            }}
+            onClick={() => {}}
+          />
+        </div>
+      </div>
+      
       {/* Spin Button — ตั๋วเท่านั้น */}
       <div style={{ display: "flex", justifyContent: "center", padding: "12px 20px 24px", position: "relative", zIndex: 10 }}>
         <button
