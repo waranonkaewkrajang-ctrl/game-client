@@ -238,14 +238,7 @@ export default function LobbyPage() {
           )}
         </div>
 
-        {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (แสดงเฉพาะหน้าจอเล็ก / ซ่อนบนคอม) 📱 */}
-        <div className="mobile-only" style={{ marginBottom: "20px" }}>
-          <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(4, 1fr)", 
-            gap: "10px" 
-          }}>
-            {[
+       {[
               { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
               { id: "LIVECASINO", label: "คาสิโน", icon: "https://odin996.com/theme_1/img/icons8-cards-48.png" },
               { id: "SLOT", label: "สล็อต", icon: "https://odin996.com/theme_1/img/ic-nav-menu-slot.png" },
@@ -261,8 +254,13 @@ export default function LobbyPage() {
                   key={`mob-cat-${cat.id}`}
                   onClick={() => handleCategoryFilter(cat.id)}
                   style={{
-                    background: isActive ? "linear-gradient(135deg, #aa00a0, #4b0082)" : "#14142a",
-                    border: isActive ? "2px solid #ffb300" : "1px solid rgba(255,255,255,0.08)",
+                    /* 🟢 1. พื้นหลัง: ตอนเลือกว่างๆ ให้ใสเหมือนแก้ว / ตอนเลือกให้เป็นเกรเดียนต์สีม่วง */
+                    background: isActive ? "linear-gradient(135deg, rgb(170, 0, 160), rgb(75, 0, 130))" : "rgba(20, 20, 42, 0.45)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                    
+                    /* 🟢 2. กรอบและเงา: สร้างมิติความนูน */
+                    border: isActive ? "1px solid rgb(255, 179, 0)" : "1px solid rgba(255, 255, 255, 0.1)",
                     borderRadius: "10px",
                     padding: "10px 4px",
                     display: "flex",
@@ -271,21 +269,27 @@ export default function LobbyPage() {
                     justifyContent: "center",
                     gap: "6px",
                     cursor: "pointer",
-                    boxShadow: isActive ? "0 4px 15px rgba(170,0,160,0.4)" : "0 4px 10px rgba(0,0,0,0.3)",
-                    transition: "all 0.2s ease"
+                    
+                    /* 🟢 3. เงาและอนิเมชัน: ตอนจิ้มให้ปุ่มลอยขึ้น (-3px) พร้อมแสงสะท้อน */
+                    boxShadow: isActive 
+                      ? "0 6px 15px rgba(170, 0, 160, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.2)" 
+                      : "0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)",
+                    transform: isActive ? "translateY(-3px) scale(1.02)" : "translateY(0) scale(1)",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                   }}
                 >
                   <img 
                     src={cat.icon} 
                     alt={cat.label} 
-                    style={{ width: "36px", height: "36px", objectFit: "contain" }} 
+                    style={{ width: "36px", height: "36px", objectFit: "contain", filter: isActive ? "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }} 
                   />
                   <span style={{ 
                     fontSize: "0.7rem", 
                     fontWeight: 700, 
                     color: isActive ? "#ffffff" : "#d1d5db",
                     textAlign: "center",
-                    whiteSpace: "nowrap" 
+                    whiteSpace: "nowrap",
+                    textShadow: isActive ? "0 1px 2px rgba(0,0,0,0.8)" : "none"
                   }}>
                     {cat.label}
                   </span>
