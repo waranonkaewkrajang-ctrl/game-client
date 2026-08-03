@@ -482,31 +482,29 @@ export default function SpinWheelPage() {
         </div>
       </div>
 
-      {/* Spin Button — ตั๋วเท่านั้น (สไตล์ 3D Bouncy) */}
-      <div style={{ display: "flex", justifyContent: "center", padding: "12px 20px 24px", position: "relative", zIndex: 10 }}>
+      {/* Spin Buttons (สไตล์ 3D แบบคู่ตามภาพ) */}
+      <div className="spin-btn-container">
+        {/* ปุ่มหมุนด้วยตั๋ว (สีฟ้า) */}
         <button
+          className="spin-btn spin-btn-blue"
           onClick={() => doSpin("ticket")}
           disabled={spinning || ticketBalance < ticketCost}
-          style={{
-            width: "100%", maxWidth: "320px", padding: "16px 8px",
-            borderRadius: "20px", border: "none",
-            background: spinning || ticketBalance < ticketCost 
-              ? "linear-gradient(180deg, #4b5563 0%, #374151 100%)" 
-              : "linear-gradient(180deg, #fcd34d 0%, #f59e0b 50%, #d97706 100%)",
-            color: spinning || ticketBalance < ticketCost ? "#9ca3af" : "#fff",
-            boxShadow: spinning || ticketBalance < ticketCost
-              ? "0 4px 0 #1f2937" 
-              : "0 8px 0 #92400e, 0 12px 20px rgba(0,0,0,0.4), inset 0 3px 0 rgba(255,255,255,0.4)",
-            cursor: spinning || ticketBalance < ticketCost ? "not-allowed" : "pointer",
-            transform: spinning || ticketBalance < ticketCost ? "translateY(4px)" : "translateY(0)",
-            transition: "all 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
-            display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
-            textShadow: spinning || ticketBalance < ticketCost ? "none" : "0 2px 2px rgba(0,0,0,0.3)"
-          }}
         >
-          <span style={{ fontSize: "1.1rem", fontWeight: 800 }}>หมุน 1 ครั้ง</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.85rem", opacity: 0.9 }}>
-            🎫 {ticketCost} ใบ
+          <span className="btn-text-main">หมุน 1 ครั้ง</span>
+          <span className="btn-text-sub">
+            <span style={{ fontSize: "1.1rem", filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.5))" }}>🎫</span> {ticketCost}
+          </span>
+        </button>
+
+        {/* ปุ่มหมุนด้วยพอยท์ (สีเหลือง) */}
+        <button
+          className="spin-btn spin-btn-yellow"
+          onClick={() => doSpin("points")}
+          disabled={spinning || pointBalance < pointCost}
+        >
+          <span className="btn-text-main">หมุน 1 ครั้ง</span>
+          <span className="btn-text-sub">
+            <span style={{ fontSize: "1.1rem", filter: "drop-shadow(0 1px 1px rgba(0,0,0,0.3))" }}>💎</span> {pointCost}
           </span>
         </button>
       </div>
@@ -515,6 +513,98 @@ export default function SpinWheelPage() {
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; transform: scale(1); }
           50% { opacity: 0.8; transform: scale(1.5); }
+        }
+
+        /* --- สไตล์ปุ่ม 3D คู่ (เหมือนในภาพเป๊ะ) --- */
+        .spin-btn-container {
+          display: flex;
+          justify-content: center;
+          gap: 16px;
+          padding: 12px 20px 36px;
+          position: relative;
+          z-index: 10;
+        }
+
+        .spin-btn {
+          position: relative;
+          flex: 1;
+          max-width: 160px;
+          height: 64px;
+          border-radius: 12px;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-family: inherit;
+          /* อนิเมชั่นเวลากด */
+          transition: transform 0.1s, box-shadow 0.1s, filter 0.2s;
+          outline: none;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        /* สถานะเมื่อปุ่มถูกล็อค (ตั๋ว/พอยท์ ไม่พอ หรือกำลังหมุน) */
+        .spin-btn:disabled {
+          cursor: not-allowed;
+          filter: grayscale(80%) brightness(0.7);
+          transform: translateY(6px);
+          box-shadow: 0 0 0 transparent, 0 6px 0 #2a2a35 !important;
+        }
+
+        /* สถานะตอนเอานิ้วกด (ปุ่มยุบตัว) */
+        .spin-btn:active:not(:disabled) {
+          transform: translateY(6px);
+          box-shadow: 0 0 0 transparent, 0 6px 0 #2a2a35 !important;
+        }
+
+        /* --- ปุ่มสีฟ้า (ตั๋ว) --- */
+        .spin-btn-blue {
+          background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
+          color: #ffffff;
+          /* เงา 2 ชั้น: ชั้นขอบสีน้ำเงินเข้ม + ชั้นฐานสีเทาเข้ม */
+          box-shadow: 0 6px 0 #0369a1, 0 12px 0 #2a2a35;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        /* ไฮไลท์แสงสะท้อนขอบบน */
+        .spin-btn-blue::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 12px;
+          box-shadow: inset 0 2px 0 rgba(255,255,255,0.3);
+          pointer-events: none;
+        }
+
+        /* --- ปุ่มสีเหลือง (พอยท์) --- */
+        .spin-btn-yellow {
+          background: linear-gradient(180deg, #fde047 0%, #eab308 100%);
+          color: #713f12; /* ข้อความสีน้ำตาลตามภาพ */
+          /* เงา 2 ชั้น: ชั้นขอบสีทองเข้ม + ชั้นฐานสีเทาเข้ม */
+          box-shadow: 0 6px 0 #a16207, 0 12px 0 #2a2a35;
+        }
+        /* ไฮไลท์แสงสะท้อนขอบบน */
+        .spin-btn-yellow::after {
+          content: "";
+          position: absolute;
+          inset: 0;
+          border-radius: 12px;
+          box-shadow: inset 0 2px 0 rgba(255,255,255,0.5);
+          pointer-events: none;
+        }
+
+        /* --- จัดระเบียบข้อความในปุ่ม --- */
+        .btn-text-main {
+          font-size: 1.1rem;
+          font-weight: 900;
+          line-height: 1.2;
+        }
+        .btn-text-sub {
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 0.95rem;
+          font-weight: 800;
         }
       `}} />
     </div>
