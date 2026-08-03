@@ -417,16 +417,36 @@ export default function SpinWheelPage() {
         </button>
       </div>
 
-      {/* LUCKY WHEEL Title */}
-      <div style={{ textAlign: "center", padding: "4px 0", position: "relative", zIndex: 10 }}>
-        <span style={{
-          fontSize: "1.5rem", fontWeight: 900, letterSpacing: "4px",
-          background: "linear-gradient(90deg, #facc15, #f59e0b, #facc15)",
-          WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent",
-          textShadow: "none", filter: "drop-shadow(0 2px 4px rgba(250,204,21,0.3))",
-        }}>
-          LUCKY WHEEL
-        </span>
+     {/* LUCKY WHEEL Title (ป้ายทองโค้ง 3 มิติ) */}
+      <div style={{ display: "flex", justifyContent: "center", position: "relative", zIndex: 15, marginBottom: "-50px", marginTop: "10px" }}>
+        <svg width="340" height="110" viewBox="0 0 340 110" style={{ filter: "drop-shadow(0 8px 6px rgba(0,0,0,0.6))" }}>
+          <defs>
+            {/* ไล่สีทองแบบในรูปภาพ */}
+            <linearGradient id="banner-gold" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#fef08a" />
+              <stop offset="30%" stopColor="#eab308" />
+              <stop offset="100%" stopColor="#854d0e" />
+            </linearGradient>
+            {/* เส้นโค้งซ่อนไว้สำหรับให้ข้อความวิ่งตาม (ปรับความโค้งให้รับกับวงล้อ) */}
+            <path id="text-arc" d="M 30,85 Q 170,10 310,85" />
+          </defs>
+
+          {/* ฐาน 3D (เงาความหนาด้านล่างของป้าย) */}
+          <path d="M 30,91 Q 170,16 310,91" fill="none" stroke="#451a03" strokeWidth="44" strokeLinecap="round" />
+          
+          {/* ตัวป้ายริบบิ้นสีทอง */}
+          <path d="M 30,85 Q 170,10 310,85" fill="none" stroke="url(#banner-gold)" strokeWidth="44" strokeLinecap="round" />
+
+          {/* ไฮไลท์แสงสะท้อนขอบบนของป้าย */}
+          <path d="M 30,64 Q 170,-11 310,64" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth="2" />
+
+          {/* ข้อความโค้งตามเส้น */}
+          <text fontSize="26" fontWeight="900" fill="#451a03" letterSpacing="5" fontFamily="sans-serif">
+            <textPath href="#text-arc" startOffset="50%" textAnchor="middle" dominantBaseline="middle">
+              LUCKY WHEEL
+            </textPath>
+          </text>
+        </svg>
       </div>
 
       {/* Wheel Canvas (ดีไซน์ใหม่) */}
