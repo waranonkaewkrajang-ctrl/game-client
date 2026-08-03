@@ -481,21 +481,30 @@ export default function SpinWheelPage() {
           />
         </div>
       </div>
-      
-      {/* Spin Button — ตั๋วเท่านั้น */}
+
+      {/* Spin Button — ตั๋วเท่านั้น (สไตล์ 3D Bouncy) */}
       <div style={{ display: "flex", justifyContent: "center", padding: "12px 20px 24px", position: "relative", zIndex: 10 }}>
         <button
           onClick={() => doSpin("ticket")}
           disabled={spinning || ticketBalance < ticketCost}
           style={{
-            width: "100%", maxWidth: "320px", padding: "16px 8px", borderRadius: "14px", border: "2px solid rgba(250,204,21,0.4)",
-            background: spinning || ticketBalance < ticketCost ? "rgba(30,30,50,0.5)" : "linear-gradient(135deg, #f59e0b, #d97706)",
-            color: "#fff", cursor: spinning || ticketBalance < ticketCost ? "not-allowed" : "pointer",
-            opacity: spinning || ticketBalance < ticketCost ? 0.5 : 1,
+            width: "100%", maxWidth: "320px", padding: "16px 8px",
+            borderRadius: "20px", border: "none",
+            background: spinning || ticketBalance < ticketCost 
+              ? "linear-gradient(180deg, #4b5563 0%, #374151 100%)" 
+              : "linear-gradient(180deg, #fcd34d 0%, #f59e0b 50%, #d97706 100%)",
+            color: spinning || ticketBalance < ticketCost ? "#9ca3af" : "#fff",
+            boxShadow: spinning || ticketBalance < ticketCost
+              ? "0 4px 0 #1f2937" 
+              : "0 8px 0 #92400e, 0 12px 20px rgba(0,0,0,0.4), inset 0 3px 0 rgba(255,255,255,0.4)",
+            cursor: spinning || ticketBalance < ticketCost ? "not-allowed" : "pointer",
+            transform: spinning || ticketBalance < ticketCost ? "translateY(4px)" : "translateY(0)",
+            transition: "all 0.15s cubic-bezier(0.4, 0, 0.2, 1)",
             display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
+            textShadow: spinning || ticketBalance < ticketCost ? "none" : "0 2px 2px rgba(0,0,0,0.3)"
           }}
         >
-          <span style={{ fontSize: "1rem", fontWeight: 700 }}>หมุน 1 ครั้ง</span>
+          <span style={{ fontSize: "1.1rem", fontWeight: 800 }}>หมุน 1 ครั้ง</span>
           <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.85rem", opacity: 0.9 }}>
             🎫 {ticketCost} ใบ
           </span>
