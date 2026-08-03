@@ -197,10 +197,10 @@ export default function ProfilePage() {
 
             {/* ฝั่งขวา: สวิตช์เปิด-ปิดโปร */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
-              <button 
+             <button 
                 onClick={() => setAcceptPromo(!acceptPromo)}
                 style={{ 
-                  position: "relative", width: "68px", height: "32px", borderRadius: "30px", border: "none", cursor: "pointer",
+                  position: "relative", width: "68px", height: "32px", borderRadius: "30px", cursor: "pointer",
                   /* เปลี่ยนสีปุ่ม 3D เขียว-แดง */
                   background: acceptPromo ? "linear-gradient(180deg, #16a34a, #15803d)" : "linear-gradient(180deg, #dc2626, #b91c1c)",
                   boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2)",
