@@ -184,117 +184,128 @@ export default function ProfilePage() {
           </p>
         </div>
 
-        {/* Sections */}
+       {/* Sections */}
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           
           {/* Card: รับรางวัล */}
           <div>
-            <h2 style={{ fontSize: "13px", color: "#71717a", fontWeight: 500, marginBottom: "8px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+            <h2 style={{ fontSize: "13px", color: "#a1a1aa", fontWeight: 600, marginBottom: "12px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "1px" }}>
               รับรางวัล
             </h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+              
               {/* ปุ่มรับยอดเสีย */}
-              <a href="/rewards/cashback" style={{ textDecoration: "none", background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "16px 20px", border: "1px solid rgba(124,58,237,0.3)", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)", cursor: "pointer", transition: "all 0.2s" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.1))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <a href="/rewards/cashback" className="designer-btn">
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  {/* กรอบไอคอนเดิมจากโค้ดของคุณเป๊ะๆ */}
+                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(245,158,11,0.2), rgba(217,119,6,0.1))", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(245,158,11,0.2)" }}>
                     <img src="https://i.ibb.co/R4kjVQcm/image.png" alt="cashback" style={{ width: "26px", height: "26px", objectFit: "contain" }} />
                   </div>
                   <div>
-                    <p style={{ margin: 0, fontSize: "14px", fontWeight: 600, color: "#fafafa" }}>รับยอดเสีย</p>
+                    <p style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: "#fafafa" }}>รับยอดเสีย</p>
                     <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>คืนยอดเสียรายวัน</p>
                   </div>
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: rewards?.cashback?.pending > 0 ? "#f59e0b" : "#71717a" }}>
-                    ฿{rewards?.cashback?.pending?.toLocaleString("th-TH", { minimumFractionDigits: 2 }) || "0.00"}
-                  </p>
-                  {rewards?.cashback?.pending > 0 && (
-                    <span style={{ fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "4px", background: "rgba(245,158,11,0.15)", color: "#f59e0b" }}>รอรับ</span>
-                  )}
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ textAlign: "right" }}>
+                    <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: rewards?.cashback?.pending > 0 ? "#f59e0b" : "#71717a" }}>
+                      ฿{rewards?.cashback?.pending?.toLocaleString("th-TH", { minimumFractionDigits: 2 }) || "0.00"}
+                    </p>
+                    {rewards?.cashback?.pending > 0 && (
+                      <span className="badge badge-orange">รอรับ</span>
+                    )}
+                  </div>
+                  <svg className="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
               </a>
 
               {/* ปุ่มรับค่าแนะนำ */}
-              <a href="/rewards/referral" style={{ textDecoration: "none", background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "16px 20px", border: "1px solid rgba(124,58,237,0.3)", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)", cursor: "pointer", transition: "all 0.2s" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                 <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.1))", display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <a href="/rewards/referral" className="designer-btn">
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  {/* กรอบไอคอนเดิมจากโค้ดของคุณเป๊ะๆ */}
+                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(16,185,129,0.2), rgba(5,150,105,0.1))", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(16,185,129,0.2)" }}>
                     <img src="https://i.ibb.co/rKmzVHgv/Chat-GPT-Image-1-2569-04-18-15.png" alt="referral" style={{ width: "26px", height: "26px", objectFit: "contain" }} />
                   </div>
                   <div>
-                    <p style={{ margin: 0, fontSize: "14px", fontWeight: 600, color: "#fafafa" }}>แนะนำเพื่อน</p>
+                    <p style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: "#fafafa" }}>แนะนำเพื่อน</p>
                     <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>รับค่าคอมจากเพื่อน</p>
                   </div>
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: rewards?.referral?.pending > 0 ? "#10b981" : "#71717a" }}>
-                    ฿{rewards?.referral?.pending?.toLocaleString("th-TH", { minimumFractionDigits: 2 }) || "0.00"}
-                  </p>
-                  {rewards?.referral?.pending > 0 && (
-                    <span style={{ fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "4px", background: "rgba(16,185,129,0.15)", color: "#10b981" }}>รอรับ</span>
-                  )}
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ textAlign: "right" }}>
+                    <p style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: rewards?.referral?.pending > 0 ? "#10b981" : "#71717a" }}>
+                      ฿{rewards?.referral?.pending?.toLocaleString("th-TH", { minimumFractionDigits: 2 }) || "0.00"}
+                    </p>
+                    {rewards?.referral?.pending > 0 && (
+                      <span className="badge badge-green">รอรับ</span>
+                    )}
+                  </div>
+                  <svg className="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
                 </div>
               </a>
+
               {/* ปุ่มวงล้อเสี่ยงโชค */}
-              <a href="/spin-wheel" style={{ textDecoration: "none", background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "16px 20px", border: "1px solid rgba(124,58,237,0.3)", display: "flex", alignItems: "center", justifyContent: "space-between", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)", cursor: "pointer", transition: "all 0.2s" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(250,204,21,0.2), rgba(245,158,11,0.1))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px" }}>
+              <a href="/spin-wheel" className="designer-btn">
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  {/* กรอบไอคอนเดิมจากโค้ดของคุณเป๊ะๆ */}
+                  <div style={{ width: "40px", height: "40px", borderRadius: "10px", background: "linear-gradient(135deg, rgba(250,204,21,0.2), rgba(245,158,11,0.1))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "22px", border: "1px solid rgba(250,204,21,0.2)" }}>
                     🎡
                   </div>
                   <div>
-                    <p style={{ margin: 0, fontSize: "14px", fontWeight: 600, color: "#fafafa" }}>วงล้อเสี่ยงโชค</p>
+                    <p style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: "#fafafa" }}>วงล้อเสี่ยงโชค</p>
                     <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>หมุนลุ้นรางวัลทุกวัน</p>
                   </div>
                 </div>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#71717a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                <svg className="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
               </a>
             </div>
           </div>
 
-          {/* Card 1: บัญชีธนาคาร (เอาไว้บนสุดเพราะลูกค้าใช้บ่อยสุด) */}
+          {/* Card 1: บัญชีธนาคาร */}
           <div>
-            <h2 style={{ fontSize: "13px", color: "#71717a", fontWeight: 500, marginBottom: "8px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+            <h2 style={{ fontSize: "13px", color: "#a1a1aa", fontWeight: 600, marginBottom: "12px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "1px" }}>
               การเงิน
             </h2>
-            <div style={{ background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: "16px", padding: "0 20px", border: "1px solid rgba(124,58,237,0.3)", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)" }}>
-             <div style={{ display: "flex", alignItems: "center", gap: "12px", padding: "16px 0", borderBottom: "1px solid #27272a" }}>
-  <img 
-    src={`/logos/${user.bank_code || 'BAY'}.webp`}
-    alt={user.bank_code}
-    style={{ width: "40px", height: "40px", borderRadius: "8px", objectFit: "contain", background: "#fff", padding: "4px" }}
-    onError={(e) => { e.currentTarget.src = "/logos/BBL.webp"; }}
-  />
-  <div style={{ flex: 1 }}>
-    <p style={{ margin: 0, fontSize: "14px", color: "#a1a1aa" }}>{user.bank_code || "ธนาคาร"}</p>
-    <p style={{ margin: "2px 0", fontSize: "16px", fontWeight: 600, color: "#fafafa", letterSpacing: "1px" }}>{user.bank_account || "-"}</p>
-    <p style={{ margin: 0, fontSize: "13px", color: "#a1a1aa" }}>{user.bank_name || "-"}</p>
-  </div>
-  <div style={{ padding: "4px 10px", borderRadius: "6px", fontSize: "11px", fontWeight: 600, background: "rgba(16,185,129,0.15)", color: "#10b981" }}>
-    อนุมัติ
-  </div>
-</div>
-<InfoRow label="คัดลอกเลขบัญชี" value={user.bank_account} canCopy={true} isLast={true} />
+            <div className="info-card">
+             <div style={{ display: "flex", alignItems: "center", gap: "14px", padding: "16px 0", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                <img 
+                  src={`/logos/${user.bank_code || 'BAY'}.webp`}
+                  alt={user.bank_code}
+                  style={{ width: "42px", height: "42px", borderRadius: "10px", objectFit: "contain", background: "#fff", padding: "4px", boxShadow: "0 4px 10px rgba(0,0,0,0.3)" }}
+                  onError={(e) => { e.currentTarget.src = "/logos/BBL.webp"; }}
+                />
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: "13px", color: "#a1a1aa", textTransform: "uppercase" }}>{user.bank_code || "ธนาคาร"}</p>
+                  <p style={{ margin: "2px 0", fontSize: "16px", fontWeight: 600, color: "#fafafa", letterSpacing: "1px" }}>{user.bank_account || "-"}</p>
+                  <p style={{ margin: 0, fontSize: "12px", color: "#a1a1aa" }}>{user.bank_name || "-"}</p>
+                </div>
+                <div className="badge badge-green">
+                  อนุมัติ
+                </div>
+              </div>
+              <InfoRow label="คัดลอกเลขบัญชี" value={user.bank_account} canCopy={true} isLast={true} />
             </div>
           </div>
 
           {/* Card 2: ข้อมูลส่วนตัว */}
           <div>
-            <h2 style={{ fontSize: "13px", color: "#71717a", fontWeight: 500, marginBottom: "8px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+            <h2 style={{ fontSize: "13px", color: "#a1a1aa", fontWeight: 600, marginBottom: "12px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "1px" }}>
               ข้อมูลส่วนตัว
             </h2>
-            <div style={{ background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: "16px", padding: "0 20px", border: "1px solid rgba(124,58,237,0.3)", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)" }}>
+            <div className="info-card">
               <InfoRow label="เบอร์โทรศัพท์" value={user.phone} />
               <InfoRow label="สถานะบัญชี" value={user.status === "active" ? "ปกติ" : user.status} />
               <InfoRow label="รหัสแนะนำเพื่อน" value={user.referral_code || "-"} canCopy={true} isLast={true} />
             </div>
           </div>
 
-          {/* Card 3: ความปลอดภัย */}
+          {/* Card 3: ระบบ */}
           <div>
-            <h2 style={{ fontSize: "13px", color: "#71717a", fontWeight: 500, marginBottom: "8px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "0.5px" }}>
+            <h2 style={{ fontSize: "13px", color: "#a1a1aa", fontWeight: 600, marginBottom: "12px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "1px" }}>
               ระบบ
             </h2>
-            <div style={{ background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: "16px", padding: "0 20px", border: "1px solid rgba(124,58,237,0.3)", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)" }}>
-                <InfoRow label="ใช้งานล่าสุด"
+            <div className="info-card">
+              <InfoRow label="ใช้งานล่าสุด"
                 value={user.last_login_at ? new Date(user.last_login_at).toLocaleDateString("th-TH", { day: '2-digit', month: 'short', year: 'numeric' }) : "-"} 
                 isLast={true} 
               />
@@ -307,6 +318,68 @@ export default function ProfilePage() {
       
       <style dangerouslySetInnerHTML={{__html: `
 
+      /* --- สไตล์ปุ่มแบบ UI/UX Designer --- */
+      .designer-btn {
+        text-decoration: none;
+        background: rgba(22, 22, 28, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 16px 20px;
+        border: 1px solid rgba(255,255,255,0.03);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02);
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .designer-btn:hover {
+        transform: translateY(-3px);
+        background: rgba(28, 28, 36, 0.8);
+        border-color: rgba(124,58,237,0.3);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 15px rgba(124,58,237,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+      }
+
+      /* ไอคอนลูกศรเลื่อนเมื่อ Hover */
+      .arrow-icon {
+        color: #52525b;
+        transition: all 0.3s ease;
+      }
+      .designer-btn:hover .arrow-icon {
+        color: #a78bfa;
+        transform: translateX(4px);
+      }
+
+      /* การ์ดข้อมูลทั่วไป (การเงิน, ข้อมูลส่วนตัว) */
+      .info-card {
+        background: rgba(22, 22, 28, 0.5);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-radius: 16px;
+        padding: 0 20px;
+        border: 1px solid rgba(255,255,255,0.03);
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02);
+      }
+
+      /* ป้ายกำกับ (รอรับ, อนุมัติ) */
+      .badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+      }
+      .badge-orange {
+        background: rgba(245,158,11,0.15);
+        color: #f59e0b;
+        border: 1px solid rgba(245,158,11,0.3);
+      }
+      .badge-green {
+        background: rgba(16,185,129,0.15);
+        color: #10b981;
+        border: 1px solid rgba(16,185,129,0.3);
+      }
+
+      /* --- อนิเมชั่นเดิม --- */
       @keyframes flipCard {
           0% { transform: rotateY(0deg); }
           20% { transform: rotateY(0deg); }
@@ -314,24 +387,22 @@ export default function ProfilePage() {
           70% { transform: rotateY(180deg); }
           80% { transform: rotateY(360deg); }
           100% { transform: rotateY(360deg); }
-        }
-        .flip-inner {
-          animation: flipCard 5s ease-in-out infinite;
-        }
-  @keyframes spin { 100% { transform: rotate(360deg); } }
-  @keyframes floatDice {
-    0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
-    15% { opacity: 0.05; }
-    50% { transform: translate(-10px, -15px) rotate(180deg) scale(1.8); opacity: 0.06; }
-    85% { opacity: 0.03; }
-    100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
-  }
-  div[style*="floatDice"] {
-    opacity: 0.15 !important;
-    filter: grayscale(1) brightness(1.2) !important;
-  }
-  @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
-`}} />
+      }
+      .flip-inner { animation: flipCard 5s ease-in-out infinite; }
+      @keyframes spin { 100% { transform: rotate(360deg); } }
+      @keyframes floatDice {
+        0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
+        15% { opacity: 0.05; }
+        50% { transform: translate(-10px, -15px) rotate(180deg) scale(1.8); opacity: 0.06; }
+        85% { opacity: 0.03; }
+        100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
+      }
+      div[style*="floatDice"] {
+        opacity: 0.15 !important;
+        filter: grayscale(1) brightness(1.2) !important;
+      }
+      @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap');
+      `}} />
     </div>
   );
 }
