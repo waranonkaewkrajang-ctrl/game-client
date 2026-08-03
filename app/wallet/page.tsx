@@ -217,11 +217,11 @@ export default function WalletPage() {
 
             {/* Content */}
             <div className="mt-3 md:mt-4 w-full">
-              <form onSubmit={tab === "deposit" ? handleDeposit : handleWithdraw} className="flex flex-col md:flex-row gap-3 md:gap-6 w-full">
+             <form onSubmit={tab === "deposit" ? handleDeposit : handleWithdraw} className="flex flex-col md:flex-row gap-3 md:gap-6 w-full">
 
-                {/* Left: Payment Methods */}
-                <div className="bg-[#181C31] flex flex-col gap-3 rounded-xl border border-[#2B3259] w-full md:w-[250px] shrink-0 p-4 md:p-5">
-                  <div className="font-bold text-sm text-white">
+                {/* Left: Payment Methods (เปลี่ยนเป็นกล่อง 3D) */}
+                <div className="finance-card flex flex-col gap-3 w-full md:w-[250px] shrink-0 p-4 md:p-5">
+                  <div className="font-bold text-sm text-white text-center tracking-wide">
                     {tab === "deposit" ? "เลือกวิธีการฝากเงิน" : "ช่องทางการถอนเงิน"}
                   </div>
 
@@ -258,7 +258,6 @@ export default function WalletPage() {
                               background: "#fff",
                               color: "#0f172a",
                               didOpen: () => {
-                                // บังคับสีขาวกัน dark mode มือถือ
                                 const popup = document.querySelector('.swal2-popup') as HTMLElement;
                                 if (popup) {
                                  popup.style.colorScheme = 'light';
@@ -286,17 +285,17 @@ export default function WalletPage() {
                           } else {
                             setChannel(ch);
                           }
-                        }} className={`cursor-pointer rounded-xl border w-full h-20 md:h-24 text-center p-2 flex items-center justify-center transition-all ${channel === ch ? "border-[#7c3aed] bg-[#7c3aed]/10" : "border-[#2B3259] hover:bg-[#2B3259]/50"}`}>
+                        }} className={`cursor-pointer w-full h-20 md:h-24 text-center p-2 flex items-center justify-center finance-btn ${channel === ch ? "active" : ""}`}>
                           <div className="flex flex-col justify-center items-center gap-1.5">
-                            <img className="w-7 h-7 md:w-8 md:h-8" alt={ch} src={channelIcons[ch]?.icon || channelIcons.bank_transfer.icon} />
+                            <img className="w-7 h-7 md:w-8 md:h-8 drop-shadow-md" alt={ch} src={channelIcons[ch]?.icon || channelIcons.bank_transfer.icon} />
                             <span className="text-[10px] md:text-xs font-medium text-white">{channelIcons[ch]?.label || ch}</span>
                           </div>
                         </div>
                       ))}
                     </div>
                   ) : (
-                    <div className="rounded-xl border border-[#7c3aed] bg-[#7c3aed]/10 text-center p-6 w-full flex flex-col items-center justify-center">
-                      <img className="w-10 h-10 mx-auto mb-3" alt="icon" src="https://fs.cdnrc.com/payment-layout/svg/bank.svg" />
+                    <div className="finance-inner-box text-center p-6 w-full flex flex-col items-center justify-center">
+                      <img className="w-10 h-10 mx-auto mb-3 drop-shadow-md" alt="icon" src="https://fs.cdnrc.com/payment-layout/svg/bank.svg" />
                       <span className="text-sm font-medium text-white">ถอนเข้าบัญชีธนาคาร<br/>ที่ลงทะเบียนไว้</span>
                     </div>
                   )}
@@ -305,37 +304,37 @@ export default function WalletPage() {
                 {/* Right: Amount & Action */}
                 <div className="flex flex-col w-full flex-1 gap-4 md:gap-6">
 
-                  {/* บัญชีลูกค้า (ถอน) */}
+                  {/* บัญชีลูกค้า (ถอน) - ปรับเป็นแบบบุ๋ม */}
                   {tab === "withdraw" && userData && (
                     <div>
-                      <label className="text-sm font-medium text-white mb-2 block">บัญชีรับเงิน</label>
-                      <div className="flex items-center gap-3 rounded-2xl border border-[#7c3aed] bg-[#7c3aed]/10 p-4">
-                        <img alt="Bank" width="32" height="32" className="shrink-0 rounded-md bg-white object-contain p-0.5" src={`https://fs.cdnrc.com/payment-layout/iconbank/${userData.bank_code || 'BAY'}.png`} onError={(e) => { e.currentTarget.src = "https://fs.cdnrc.com/payment-layout/svg/bank.svg"; }} />
+                      <label className="text-sm font-semibold text-white mb-2 block px-2 tracking-wide">บัญชีรับเงิน</label>
+                      <div className="flex items-center gap-3 p-4 finance-inner-box">
+                        <img alt="Bank" width="32" height="32" className="shrink-0 rounded-md bg-white object-contain p-0.5 shadow-md" src={`https://fs.cdnrc.com/payment-layout/iconbank/${userData.bank_code || 'BAY'}.png`} onError={(e) => { e.currentTarget.src = "https://fs.cdnrc.com/payment-layout/svg/bank.svg"; }} />
                         <div className="flex-1 min-w-0">
                           <div className="text-white text-sm font-semibold truncate">{userData.bank_name || "บัญชีของฉัน"}</div>
-                          <div className="text-[#717690] text-xs">{userData.bank_code} — {userData.bank_account}</div>
+                          <div className="text-[#fbcfe8] text-xs">{userData.bank_code} — {userData.bank_account}</div>
                         </div>
                       </div>
                     </div>
                   )}
 
-                  {/* กรอกจำนวนเงิน */}
-                  <div style={{ background: "#181C31", display: "flex", flexDirection: "column", gap: "12px", borderRadius: "16px", border: "1px solid #2B3259", padding: "20px 16px" }}>
+                  {/* กรอกจำนวนเงิน (เปลี่ยนเป็นกล่อง 3D) */}
+                  <div className="finance-card flex flex-col gap-3 p-4 md:p-5">
 
                     <div style={{ display: "flex", justifyContent: "center", width: "100%", paddingTop: "4px" }}>
-                      <label style={{ fontSize: "14px", fontWeight: 500, color: "white", textAlign: "center" }}>
+                      <label style={{ fontSize: "14px", fontWeight: 600, color: "white", textAlign: "center", letterSpacing: "0.5px" }}>
                         ระบุจำนวนเงิน{tab === "deposit" ? "ฝาก" : "ถอน"}
                       </label>
                     </div>
 
-                    {/* กล่องกรอกตัวเลข */}
-                    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", borderRadius: "12px", border: "1px solid #2B3259", padding: "16px 12px", background: "#0F111A" }}>
-                      <span style={{ color: "#717690", fontSize: "11px", marginBottom: "8px" }}>
+                    {/* กล่องกรอกตัวเลขแบบบุ๋ม */}
+                    <div className="finance-inner-box flex flex-col items-center justify-center p-4">
+                      <span style={{ color: "#fbcfe8", fontSize: "11px", marginBottom: "8px" }}>
                         ขั้นต่ำ: {minAmount.toLocaleString()} / สูงสุด {maxAmount.toLocaleString()}
                       </span>
                       <input
                         inputMode="numeric"
-                        style={{ color: "#a855f7", background: "transparent", textAlign: "center", fontSize: "1.5rem", fontWeight: 700, outline: "none", border: "none", width: "100%", maxWidth: "200px" }}
+                        style={{ color: "#fdf2f8", background: "transparent", textAlign: "center", fontSize: "1.8rem", fontWeight: 700, outline: "none", border: "none", width: "100%", maxWidth: "200px" }}
                         type="text"
                         placeholder="0"
                         value={amount}
@@ -343,35 +342,35 @@ export default function WalletPage() {
                       />
                     </div>
 
-                    {/* ปุ่มยกเลิก / ยืนยัน */}
-                    <div className="flex gap-2 w-full">
-                      <button type="button" onClick={() => setAmount("")} className="inline-flex items-center justify-center rounded-xl text-xs md:text-sm font-medium transition-all border border-[#9f1239] bg-gradient-to-b from-[#e11d48] to-[#be123c] text-white h-10 md:h-11 flex-1 cursor-pointer">
+                    {/* ปุ่มยกเลิก / ยืนยัน (ใส่แสงและเงาให้ดูน่ากด) */}
+                    <div className="flex gap-2 w-full mt-2">
+                      <button type="button" onClick={() => setAmount("")} className="inline-flex items-center justify-center rounded-xl text-xs md:text-sm font-bold transition-all border border-[#9f1239] bg-gradient-to-b from-[#e11d48] to-[#be123c] text-white h-10 md:h-12 flex-1 cursor-pointer shadow-[0_4px_10px_rgba(225,29,72,0.3)] hover:brightness-110">
                         ยกเลิก
                       </button>
-                      <button type="submit" disabled={loading || !amount} className="inline-flex items-center justify-center rounded-xl text-xs md:text-sm font-medium transition-all border border-[#047857] bg-gradient-to-b from-[#10b981] to-[#059669] text-white disabled:opacity-50 h-10 md:h-11 flex-1 cursor-pointer">
+                      <button type="submit" disabled={loading || !amount} className="inline-flex items-center justify-center rounded-xl text-xs md:text-sm font-bold transition-all border border-[#047857] bg-gradient-to-b from-[#10b981] to-[#059669] text-white disabled:opacity-50 h-10 md:h-12 flex-1 cursor-pointer shadow-[0_4px_10px_rgba(16,185,129,0.3)] hover:brightness-110">
                         {loading ? "กำลังทำรายการ..." : "ยืนยัน"}
                       </button>
                     </div>
 
-                    {/* ปุ่ม +จำนวนเงิน (จาก settings) */}
-                    <div className={`grid gap-1.5 md:gap-2 mt-1 ${finance.amounts.length <= 5 ? "grid-cols-5" : "grid-cols-4 md:grid-cols-5"}`}>
+                    {/* ปุ่ม +จำนวนเงิน */}
+                    <div className={`grid gap-1.5 md:gap-2 mt-2 ${finance.amounts.length <= 5 ? "grid-cols-5" : "grid-cols-4 md:grid-cols-5"}`}>
                       {finance.amounts.map((val) => (
-                        <button key={val} type="button" onClick={() => addAmount(val)} className="cursor-pointer inline-flex items-center justify-center gap-0.5 md:gap-1.5 rounded-lg font-medium transition-all border border-[#2B3259] bg-[#0F111A] hover:bg-[#7c3aed]/20 hover:border-[#7c3aed] text-white h-10 md:h-11 px-1 md:px-2 text-[11px] md:text-sm">
-                          <img alt="coin" className="w-3.5 h-3.5 shrink-0 hidden md:block" src="https://fs.cdnrc.com/payment-layout/svg/coin.svg" />
+                        <button key={val} type="button" onClick={() => addAmount(val)} className="finance-btn inline-flex items-center justify-center gap-0.5 md:gap-1.5 font-medium h-10 md:h-11 px-1 md:px-2 text-[11px] md:text-sm cursor-pointer">
+                          <img alt="coin" className="w-3.5 h-3.5 shrink-0 hidden md:block drop-shadow-sm" src="https://fs.cdnrc.com/payment-layout/svg/coin.svg" />
                           +{val >= 1000 ? `${(val/1000)}k` : val}
                         </button>
                       ))}
                     </div>
 
                     {/* ข้อความแจ้งเตือน */}
-                    <div className="flex flex-col items-center gap-1 text-center mt-1 px-2">
+                    <div className="flex flex-col items-center gap-1 text-center mt-2 px-2">
                       {tab === "deposit" ? (
                         <>
-                          <span className="text-[11px] md:text-sm text-red-500 font-medium">QR Code จะสามารถใช้สแกนได้เพียงครั้งเดียวเท่านั้น !</span>
-                          <span className="text-[11px] md:text-sm text-red-500 font-medium">หลังจากฝากเงินสำเร็จรอไม่เกิน 5 นาที เงินจะเข้ากระเป๋าอัตโนมัติ</span>
+                          <span className="text-[11px] md:text-xs text-[#fca5a5] font-medium">QR Code จะสามารถใช้สแกนได้เพียงครั้งเดียวเท่านั้น !</span>
+                          <span className="text-[11px] md:text-xs text-[#fca5a5] font-medium">หลังจากฝากเงินสำเร็จรอไม่เกิน 5 นาที เงินจะเข้ากระเป๋าอัตโนมัติ</span>
                         </>
                       ) : (
-                        <span className="text-[11px] md:text-xs text-[#fbbf24]">เงินจะโอนเข้าบัญชีที่ท่านลงทะเบียนไว้เท่านั้น</span>
+                        <span className="text-[11px] md:text-xs text-[#fde047]">เงินจะโอนเข้าบัญชีที่ท่านลงทะเบียนไว้เท่านั้น</span>
                       )}
                     </div>
 
@@ -386,6 +385,45 @@ export default function WalletPage() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
+
+      /* --- ธีมการ์ด 3D สีม่วงชมพู (เข้ากับหน้า Profile) --- */
+        .finance-card {
+          background: linear-gradient(180deg, rgba(88, 28, 135, 0.6) 0%, rgba(157, 23, 77, 0.7) 100%);
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          border-radius: 16px;
+          border: 1px solid rgba(236, 72, 153, 0.3);
+          box-shadow: 0 8px 16px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.1), inset 0 -4px 6px rgba(0,0,0,0.3);
+        }
+
+        /* กล่องด้านใน (ช่องกรอกเงิน, เลือกบัญชี) ให้ดูบุ๋มลึกลงไป */
+        .finance-inner-box {
+          background: rgba(0, 0, 0, 0.25);
+          border: 1px solid rgba(236, 72, 153, 0.2);
+          border-radius: 12px;
+          box-shadow: inset 0 4px 8px rgba(0,0,0,0.4);
+        }
+
+        /* ปุ่มกดต่างๆ (ช่องทางฝาก, ยอดเงินด่วน) */
+        .finance-btn {
+          background: rgba(0, 0, 0, 0.2);
+          border: 1px solid rgba(236, 72, 153, 0.2);
+          border-radius: 12px;
+          color: white;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .finance-btn:hover {
+          background: rgba(236, 72, 153, 0.15);
+          border-color: rgba(236, 72, 153, 0.5);
+        }
+        
+        /* สถานะเมื่อปุ่มถูกเลือก (Active) */
+        .finance-btn.active {
+          background: linear-gradient(180deg, rgba(236, 72, 153, 0.4) 0%, rgba(157, 23, 77, 0.5) 100%);
+          border-color: rgba(236, 72, 153, 0.8);
+          box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2);
+        }
+          
         @keyframes floatDice {
           0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
           15% { opacity: 0.05; }
