@@ -350,7 +350,8 @@ export default function SpinWheelPage() {
   };
 
   return (
-    <div style={{ minHeight: "100dvh", paddingBottom: "80px", background: "linear-gradient(180deg, #0a0a1a 0%, #1a1035 50%, #0a0a14 100%)", position: "relative", overflowX: "hidden" }}>
+   <div style={{ minHeight: "100dvh", paddingBottom: "80px", background: "linear-gradient(180deg, #0a0a1a 0%, #1a1035 50%, #0a0a14 100%)", position: "relative", overflowX: "hidden" }}>
+      <div style={{ maxWidth: "480px", margin: "0 auto", position: "relative" }}></div>
 
       {/* Sparkle stars background */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
@@ -611,7 +612,7 @@ export default function SpinWheelPage() {
         </button>
       </div>
 
-        <style dangerouslySetInnerHTML={{ __html: `
+       <style dangerouslySetInnerHTML={{ __html: `
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; transform: scale(1); }
           50% { opacity: 0.8; transform: scale(1.5); }
