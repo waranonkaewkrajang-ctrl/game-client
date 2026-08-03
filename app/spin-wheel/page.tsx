@@ -413,10 +413,10 @@ export default function SpinWheelPage() {
 
       </div>
 
-    {/* 🌟 โซนรายชื่อผู้ชนะ และ ปุ่มซ้าย-ขวา (มัดรวมกันเพื่อให้เกาะขอบพอดี) */}
+   {/* 🌟 โซนรายชื่อผู้ชนะ และ ปุ่มซ้าย-ขวา (จัดระเบียบใหม่ ให้อยู่ด้านล่างไม่ทับกัน) */}
       <div style={{ position: "relative", margin: "8px 20px 24px", zIndex: 10 }}>
         
-        {/* กรอบรายชื่อผู้ชนะ */}
+        {/* 1. กรอบรายชื่อผู้ชนะ (วางไว้ด้านบนสุด) */}
         <div style={{ 
           height: "150px", 
           position: "relative", 
@@ -451,51 +451,65 @@ export default function SpinWheelPage() {
           </div>
         </div>
 
-        {/* ปุ่มลอยเกาะมุมซ้าย-ขวา */}
+        {/* 2. โซนปุ่มกด (วางไว้ใต้รายชื่อ มีการเว้นระยะและขยายไอคอนเว็บพีให้ใหญ่ขึ้น พร้อมตัดพื้นหลังขาว) */}
         <div style={{ 
-          position: "absolute", 
-          bottom: "-10px", 
-          left: "-10px",   
-          right: "-10px",  
           display: "flex", 
           justifyContent: "space-between", 
-          zIndex: 20,
-          pointerEvents: "none" 
+          marginTop: "16px", 
+          position: "relative", 
+          zIndex: 20 
         }}>
           
-         {/* ปุ่มทำภารกิจ (ซ้าย) */}
-          <div style={{ position: "relative", pointerEvents: "auto" }}>
-            <div style={{ position: "absolute", top: "-45px", left: "15px", zIndex: 10, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
-              {/* เปลี่ยน src เป็นชื่อไฟล์รูปของคุณ เช่น /mission-icon.webp */}
-              <img src="/mission-icon.webp" alt="mission" style={{ width: "55px", height: "55px", objectFit: "contain" }} />
+          {/* ปุ่มทำภารกิจ (ซ้าย) */}
+          <div style={{ position: "relative" }}>
+            <div style={{ position: "absolute", top: "-55px", left: "10px", zIndex: 30, filter: "drop-shadow(0 6px 6px rgba(0,0,0,0.6))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
+              <img 
+                src="/mission-icon.webp" 
+                alt="mission" 
+                style={{ 
+                  width: "75px", 
+                  height: "75px", 
+                  objectFit: "contain",
+                  mixBlendMode: "screen" // ตัดพื้นหลังสีขาวของภาพออกเนียนๆ
+                }} 
+              />
             </div>
             <button style={{ 
               background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
-              color: "#ffffff", border: "none", padding: "10px 24px", borderRadius: "50px", 
+              color: "#ffffff", border: "none", padding: "10px 20px", paddingLeft: "30px", borderRadius: "50px", 
               fontSize: "0.95rem", fontWeight: 900, cursor: "pointer",
               boxShadow: "0 8px 12px rgba(0,0,0,0.6), inset 0 3px 2px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.5)",
-              textShadow: "0 2px 2px rgba(0,0,0,0.5)", width: "120px", position: "relative", zIndex: 20
+              textShadow: "0 2px 2px rgba(0,0,0,0.5)", width: "130px", position: "relative", zIndex: 20
             }}>
               ทำภารกิจ
             </button>
           </div>
 
           {/* ปุ่มรางวัล (ขวา) */}
-          <div style={{ position: "relative", pointerEvents: "auto" }}>
-            <div style={{ position: "absolute", top: "-45px", right: "15px", zIndex: 10, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(10deg)" }}>
-              {/* เปลี่ยน src เป็นชื่อไฟล์รูปรางวัลของคุณ เช่น /reward-icon.webp */}
-              <img src="/reward-icon.webp" alt="reward" style={{ width: "55px", height: "55px", objectFit: "contain" }} />
+          <div style={{ position: "relative" }}>
+            <div style={{ position: "absolute", top: "-55px", right: "10px", zIndex: 30, filter: "drop-shadow(0 6px 6px rgba(0,0,0,0.6))", pointerEvents: "none", transform: "rotate(10deg)" }}>
+              <img 
+                src="/reward-icon.webp" 
+                alt="reward" 
+                style={{ 
+                  width: "75px", 
+                  height: "75px", 
+                  objectFit: "contain",
+                  mixBlendMode: "screen" // ตัดพื้นหลังสีขาวของภาพออกเนียนๆ
+                }} 
+              />
             </div>
             <button style={{ 
               background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
-              color: "#ffffff", border: "none", padding: "10px 24px", borderRadius: "50px", 
+              color: "#ffffff", border: "none", padding: "10px 20px", paddingRight: "30px", borderRadius: "50px", 
               fontSize: "0.95rem", fontWeight: 900, cursor: "pointer",
               boxShadow: "0 8px 12px rgba(0,0,0,0.6), inset 0 3px 2px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.5)",
-              textShadow: "0 2px 2px rgba(0,0,0,0.5)", width: "120px", position: "relative", zIndex: 20
+              textShadow: "0 2px 2px rgba(0,0,0,0.5)", width: "130px", position: "relative", zIndex: 20
             }}>
               รางวัล
             </button>
           </div>
+
         </div>
       </div>
 
