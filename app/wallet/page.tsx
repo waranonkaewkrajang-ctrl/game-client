@@ -215,9 +215,9 @@ export default function WalletPage() {
               </button>
             </div>
 
-            {/* Content */}
-            <div className="mt-3 md:mt-4 w-full">
-             <form onSubmit={tab === "deposit" ? handleDeposit : handleWithdraw} className="flex flex-col md:flex-row gap-3 md:gap-6 w-full">
+           {/* Content */}
+            <div className="mt-5 md:mt-6 w-full">
+              <form onSubmit={tab === "deposit" ? handleDeposit : handleWithdraw} className="flex flex-col md:flex-row gap-5 md:gap-6 w-full">
 
                 {/* Left: Payment Methods (เปลี่ยนเป็นกล่อง 3D) */}
                 <div className="finance-card flex flex-col gap-3 w-full md:w-[250px] shrink-0 p-4 md:p-5">
