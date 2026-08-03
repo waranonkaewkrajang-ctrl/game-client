@@ -224,11 +224,38 @@ export default function ProfilePage() {
 
           {/* ส่วนล่าง: เครดิต และ คะแนน */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", textAlign: "center" }}>
-            <div>
+           <div>
               <p style={{ fontSize: "15px", color: "#fafafa", margin: "0 0 4px" }}>เครดิต</p>
-              <p style={{ fontSize: "20px", fontWeight: 700, color: "#eab308", margin: 0, textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>
-                {wallet?.balance ?? "0.00"} <span style={{ fontSize: "14px", fontWeight: 400 }}>฿</span>
-              </p>
+              
+              {/* ใช้ Flex ครอบตัวเลขและปุ่มรีเฟรชให้อยู่บรรทัดเดียวกัน */}
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
+                <p style={{ fontSize: "20px", fontWeight: 700, color: "#eab308", margin: 0, textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>
+                  {wallet?.balance ?? "0.00"} <span style={{ fontSize: "14px", fontWeight: 400 }}>฿</span>
+                </p>
+                
+                {/* 🔄 ปุ่มรีเฟรชเครดิต (อยู่หลัง ฿) */}
+                <button 
+                  onClick={() => {
+                    // เรียก API ดึงข้อมูลกระเป๋าเงินใหม่ทันทีเมื่อกด
+                    api.get("/wallet/balance").then((res) => setWallet(res.data.data)).catch(() => {});
+                  }}
+                  style={{ 
+                    background: "rgba(255,255,255,0.1)", border: "none", cursor: "pointer", 
+                    padding: "4px", borderRadius: "50%", color: "#eab308", display: "flex",
+                    boxShadow: "0 2px 4px rgba(0,0,0,0.2)"
+                  }}
+                  title="รีเฟรชยอดเงิน"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" 
+                       style={{ transition: "transform 0.4s ease-in-out" }} 
+                       onMouseEnter={(e) => e.currentTarget.style.transform = "rotate(180deg)"} 
+                       onMouseLeave={(e) => e.currentTarget.style.transform = "rotate(0deg)"}>
+                    <polyline points="23 4 23 10 17 10"></polyline>
+                    <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+                  </svg>
+                </button>
+              </div>
+
             </div>
             <div>
               <p style={{ fontSize: "15px", color: "#fafafa", margin: "0 0 4px" }}>คะแนน</p>
