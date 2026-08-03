@@ -191,11 +191,9 @@ export default function WalletPage() {
         ))}
       </div>
 
-     {/* เพิ่ม min-h-[80vh] และ justify-center เพื่อดันกล่องให้อยู่ตรงกลางจอพอดี */}
-      <div className="page-content flex flex-col justify-center min-h-[80vh] md:min-h-[85vh] py-6" style={{ position: "relative", zIndex: 10 }}>
-        <div className="flex justify-center items-center w-full">
-          {/* เปลี่ยน gap-2 เป็น gap-5 เพื่อเพิ่มระยะห่างระหว่างปุ่มเมนูกับกล่อง 3D */}
-          <div className="flex gap-5 flex-col w-full max-w-[860px] mx-auto px-3 md:px-4">
+      <div className="page-content mt-4 md:mt-6" style={{ position: "relative", zIndex: 10 }}>
+        <div className="flex justify-center">
+          <div className="flex gap-2 flex-col w-full max-w-[860px] mx-auto px-3 md:px-4">
 
             {/* Header: Tabs */}
             <div className="flex items-center gap-2">
