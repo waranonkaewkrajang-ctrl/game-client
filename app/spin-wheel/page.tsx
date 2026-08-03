@@ -349,9 +349,11 @@ export default function SpinWheelPage() {
     }
   };
 
-  return (
-   <div style={{ minHeight: "100dvh", paddingBottom: "80px", background: "linear-gradient(180deg, #0a0a1a 0%, #1a1035 50%, #0a0a14 100%)", position: "relative", overflowX: "hidden" }}>
-      <div style={{ maxWidth: "480px", margin: "0 auto", position: "relative" }}></div>
+ return (
+   <div style={{ minHeight: "100dvh", background: "linear-gradient(180deg, #0a0a1a 0%, #1a1035 50%, #0a0a14 100%)", position: "relative", overflowX: "hidden" }}>
+      
+      {/* 📌 จุดที่แก้: เอา </div> ตรงนี้ออก เพื่อให้มันคลุมเนื้อหาด้านล่าง */}
+      <div style={{ maxWidth: "480px", margin: "0 auto", position: "relative", minHeight: "100dvh", paddingBottom: "80px" }}>
 
       {/* Sparkle stars background */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
@@ -710,6 +712,7 @@ export default function SpinWheelPage() {
           font-weight: 800;
         }
       `}} />
+      </div>
     </div>
   );
 }
