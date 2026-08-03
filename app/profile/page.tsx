@@ -443,15 +443,18 @@ export default function ProfilePage() {
         transform: translateX(4px);
       }
 
-      /* การ์ดข้อมูลทั่วไป (การเงิน, ข้อมูลส่วนตัว) */
+     /* การ์ดข้อมูลทั่วไป (การเงิน, ข้อมูลส่วนตัว, ระบบ) - ธีมม่วงชมพู 3D */
       .info-card {
-        background: rgba(22, 22, 28, 0.5);
+        /* เปลี่ยนสีพื้นหลังเป็นไล่สีม่วงชมพู */
+        background: linear-gradient(180deg, rgba(88, 28, 135, 0.6) 0%, rgba(157, 23, 77, 0.7) 100%);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border-radius: 16px;
         padding: 0 20px;
-        border: 1px solid rgba(255,255,255,0.03);
-        box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02);
+        /* เปลี่ยนขอบเป็นสีชมพูเรืองแสง */
+        border: 1px solid rgba(236, 72, 153, 0.3);
+        /* สร้างความนูน 3D ด้วยเงาเหมือนกล่องด้านบน */
+        box-shadow: 0 8px 16px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.1), inset 0 -4px 6px rgba(0,0,0,0.3);
       }
 
       /* ป้ายกำกับ (รอรับ, อนุมัติ) */
