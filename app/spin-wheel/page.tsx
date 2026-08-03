@@ -436,14 +436,61 @@ export default function SpinWheelPage() {
         </div>
       )}
 
-      {/* Mission & Rewards Buttons */}
-      <div style={{ display: "flex", justifyContent: "space-between", padding: "0 20px 8px", position: "relative", zIndex: 10 }}>
-        <button style={{ background: "linear-gradient(135deg, #dc2626, #991b1b)", color: "#fff", border: "none", padding: "8px 20px", borderRadius: "20px", fontSize: "0.8rem", fontWeight: 700, cursor: "pointer" }}>
-          ทำภารกิจ
-        </button>
-        <button style={{ background: "linear-gradient(135deg, #d97706, #92400e)", color: "#fff", border: "none", padding: "8px 20px", borderRadius: "20px", fontSize: "0.8rem", fontWeight: 700, cursor: "pointer" }}>
-          รางวัล
-        </button>
+     {/* Mission & Rewards Buttons (สไตล์ 3D นูนเงา แบบในภาพ) */}
+      <div style={{ display: "flex", justifyContent: "space-between", padding: "20px 20px 8px", position: "relative", zIndex: 20 }}>
+        
+        {/* กลุ่มปุ่มทำภารกิจ (ซ้าย) */}
+        <div style={{ position: "relative" }}>
+          {/* ไอคอนที่ลอยอยู่เหนือปุ่ม (ใช้ Emoji แทนชั่วคราว ถ้ามีรูปสามารถเปลี่ยนเป็น <img src="..." /> ได้ครับ) */}
+          <div style={{ position: "absolute", top: "-28px", left: "10px", fontSize: "3rem", zIndex: 30, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
+            🎟️
+          </div>
+          <button style={{ 
+            background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
+            color: "#ffffff", 
+            border: "none", 
+            padding: "10px 24px",
+            paddingLeft: "36px", // ดันข้อความหลบไอคอนนิดหน่อย
+            borderRadius: "50px", 
+            fontSize: "0.95rem", 
+            fontWeight: 900, 
+            cursor: "pointer",
+            // สร้างเงาให้ปุ่มดูลอย และแสงสะท้อนขอบบนให้ดูมันวาวเหมือน 3D
+            boxShadow: "0 8px 12px rgba(0,0,0,0.6), inset 0 3px 2px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.5)",
+            textShadow: "0 2px 2px rgba(0,0,0,0.5)",
+            width: "120px",
+            position: "relative",
+            zIndex: 20
+          }}>
+            ทำภารกิจ
+          </button>
+        </div>
+
+        {/* กลุ่มปุ่มรางวัล (ขวา) */}
+        <div style={{ position: "relative" }}>
+          {/* ไอคอนที่ลอยอยู่เหนือปุ่ม */}
+          <div style={{ position: "absolute", top: "-28px", right: "10px", fontSize: "3rem", zIndex: 30, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(10deg)" }}>
+            🏆
+          </div>
+          <button style={{ 
+            background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
+            color: "#ffffff", 
+            border: "none", 
+            padding: "10px 24px", 
+            paddingRight: "36px", // ดันข้อความหลบไอคอนนิดหน่อย
+            borderRadius: "50px", 
+            fontSize: "0.95rem", 
+            fontWeight: 900, 
+            cursor: "pointer",
+            boxShadow: "0 8px 12px rgba(0,0,0,0.6), inset 0 3px 2px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.5)",
+            textShadow: "0 2px 2px rgba(0,0,0,0.5)",
+            width: "120px",
+            position: "relative",
+            zIndex: 20
+          }}>
+            รางวัล
+          </button>
+        </div>
       </div>
 
      {/* LUCKY WHEEL Title (ป้ายทองโค้ง 3 มิติ) */}
