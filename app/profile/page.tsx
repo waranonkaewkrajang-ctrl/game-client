@@ -383,26 +383,30 @@ export default function ProfilePage() {
         50% { opacity: 0.4; }
       }
 
-      /* --- สไตล์ปุ่มแบบ UI/UX Designer --- */
+     /* --- สไตล์ปุ่มแบบ UI/UX Designer (สีม่วงชมพู 3D) --- */
       .designer-btn {
         text-decoration: none;
-        background: rgba(22, 22, 28, 0.6);
+        /* เปลี่ยนพื้นหลังเป็น Gradient ม่วง-ชมพู */
+        background: linear-gradient(180deg, rgba(88, 28, 135, 0.6) 0%, rgba(157, 23, 77, 0.7) 100%);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border-radius: 16px;
         padding: 16px 20px;
-        border: 1px solid rgba(255,255,255,0.03);
+        /* ขอบสีชมพูอ่อนๆ */
+        border: 1px solid rgba(236, 72, 153, 0.3);
         display: flex;
         align-items: center;
         justify-content: space-between;
-        box-shadow: 0 4px 20px rgba(0,0,0,0.2), inset 0 1px 0 rgba(255,255,255,0.02);
+        /* สร้างความนูน 3D เหมือนกระเป๋าเงิน (เงาตกกระทบ + แสงสะท้อนขอบในบน-ล่าง) */
+        box-shadow: 0 8px 16px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.1), inset 0 -4px 6px rgba(0,0,0,0.3);
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       }
       .designer-btn:hover {
         transform: translateY(-3px);
-        background: rgba(28, 28, 36, 0.8);
-        border-color: rgba(124,58,237,0.3);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.4), 0 0 15px rgba(124,58,237,0.15), inset 0 1px 0 rgba(255,255,255,0.05);
+        /* สว่างขึ้นเมื่อเอาเมาส์ชี้ */
+        background: linear-gradient(180deg, rgba(107, 33, 168, 0.8) 0%, rgba(190, 24, 93, 0.9) 100%);
+        border-color: rgba(236, 72, 153, 0.6);
+        box-shadow: 0 12px 24px rgba(0,0,0,0.5), 0 0 15px rgba(236, 72, 153, 0.3), inset 0 2px 2px rgba(255,255,255,0.15), inset 0 -4px 6px rgba(0,0,0,0.4);
       }
 
       /* ไอคอนลูกศรเลื่อนเมื่อ Hover */
