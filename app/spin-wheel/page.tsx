@@ -330,17 +330,13 @@ export default function SpinWheelPage() {
         <div style={{ width: "32px" }} />
       </div>
 
-      {/* Ticket & Points Bar */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "16px", padding: "0 20px 12px", position: "relative", zIndex: 10 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "rgba(255,255,255,0.08)", borderRadius: "25px", padding: "8px 20px", border: "1px solid rgba(250,204,21,0.2)" }}>
+      {/* Ticket Bar */}
+      <div style={{ display: "flex", justifyContent: "center", padding: "0 20px 12px", position: "relative", zIndex: 10 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "rgba(255,255,255,0.08)", borderRadius: "25px", padding: "8px 24px", border: "1px solid rgba(250,204,21,0.2)" }}>
           <span style={{ fontSize: "1rem" }}>🎫</span>
-          <span style={{ color: "#ccc", fontSize: "0.8rem" }}>ตั๋ว</span>
-          <span style={{ color: "#facc15", fontWeight: 800, fontSize: "1.1rem" }}>{ticketBalance}</span>
-        </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "rgba(255,255,255,0.08)", borderRadius: "25px", padding: "8px 20px", border: "1px solid rgba(124,58,237,0.2)" }}>
-          <span style={{ fontSize: "1rem" }}>💎</span>
-          <span style={{ color: "#ccc", fontSize: "0.8rem" }}>คะแนน</span>
-          <span style={{ color: "#a78bfa", fontWeight: 800, fontSize: "1.1rem" }}>{pointBalance}</span>
+          <span style={{ color: "#ccc", fontSize: "0.85rem" }}>ตั๋ว</span>
+          <span style={{ color: "#facc15", fontWeight: 800, fontSize: "1.2rem" }}>{ticketBalance}</span>
+          <span style={{ color: "#ccc", fontSize: "0.8rem" }}>ใบ</span>
         </div>
       </div>
 
@@ -396,59 +392,31 @@ export default function SpinWheelPage() {
           width={380}
           height={380}
           style={{ width: "min(90vw, 380px)", height: "min(90vw, 380px)", cursor: spinning ? "not-allowed" : "pointer" }}
-          onClick={() => { if (!spinning && freeEnabled && remaining > 0) doSpin("free"); }}
+          onClick={() => {}}
         />
       </div>
 
-      {/* Spin Buttons */}
-      <div style={{ display: "flex", justifyContent: "center", gap: "16px", padding: "12px 20px 24px", position: "relative", zIndex: 10 }}>
-        {/* Ticket button */}
+      {/* Spin Button — ตั๋วเท่านั้น */}
+      <div style={{ display: "flex", justifyContent: "center", padding: "12px 20px 24px", position: "relative", zIndex: 10 }}>
         <button
           onClick={() => doSpin("ticket")}
           disabled={spinning || ticketBalance < ticketCost}
           style={{
-            flex: 1, maxWidth: "180px", padding: "14px 8px", borderRadius: "14px", border: "2px solid rgba(56,189,248,0.4)",
-            background: spinning || ticketBalance < ticketCost ? "rgba(30,30,50,0.5)" : "linear-gradient(135deg, #0ea5e9, #0284c7)",
+            width: "100%", maxWidth: "320px", padding: "16px 8px", borderRadius: "14px", border: "2px solid rgba(250,204,21,0.4)",
+            background: spinning || ticketBalance < ticketCost ? "rgba(30,30,50,0.5)" : "linear-gradient(135deg, #f59e0b, #d97706)",
             color: "#fff", cursor: spinning || ticketBalance < ticketCost ? "not-allowed" : "pointer",
             opacity: spinning || ticketBalance < ticketCost ? 0.5 : 1,
             display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
           }}
         >
-          <span style={{ fontSize: "0.85rem", fontWeight: 700 }}>หมุน 1 ครั้ง</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", opacity: 0.9 }}>
-            🎫 {ticketCost}
-          </span>
-        </button>
-
-        {/* Points button */}
-        <button
-          onClick={() => doSpin("points")}
-          disabled={spinning || pointBalance < pointCost}
-          style={{
-            flex: 1, maxWidth: "180px", padding: "14px 8px", borderRadius: "14px", border: "2px solid rgba(250,204,21,0.4)",
-            background: spinning || pointBalance < pointCost ? "rgba(30,30,50,0.5)" : "linear-gradient(135deg, #f59e0b, #d97706)",
-            color: "#fff", cursor: spinning || pointBalance < pointCost ? "not-allowed" : "pointer",
-            opacity: spinning || pointBalance < pointCost ? 0.5 : 1,
-            display: "flex", flexDirection: "column", alignItems: "center", gap: "4px",
-          }}
-        >
-          <span style={{ fontSize: "0.85rem", fontWeight: 700 }}>หมุน 1 ครั้ง</span>
-          <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.75rem", opacity: 0.9 }}>
-            💎 {pointCost}
+          <span style={{ fontSize: "1rem", fontWeight: 700 }}>หมุน 1 ครั้ง</span>
+          <span style={{ display: "flex", alignItems: "center", gap: "4px", fontSize: "0.85rem", opacity: 0.9 }}>
+            🎫 {ticketCost} ใบ
           </span>
         </button>
       </div>
 
-      {/* Free spin remaining */}
-      {freeEnabled && remaining > 0 && (
-        <div style={{ textAlign: "center", paddingBottom: "20px", position: "relative", zIndex: 10 }}>
-          <span style={{ color: "#9ca3af", fontSize: "0.8rem" }}>หมุนฟรีวันนี้เหลือ </span>
-          <span style={{ color: "#22c55e", fontWeight: 700, fontSize: "0.9rem" }}>{remaining}</span>
-          <span style={{ color: "#9ca3af", fontSize: "0.8rem" }}> ครั้ง (กดที่วงล้อ)</span>
-        </div>
-      )}
-
-      <style dangerouslySetInnerHTML={{ __html: `
+        <style dangerouslySetInnerHTML={{ __html: `
         @keyframes twinkle {
           0%, 100% { opacity: 0.2; transform: scale(1); }
           50% { opacity: 0.8; transform: scale(1.5); }
