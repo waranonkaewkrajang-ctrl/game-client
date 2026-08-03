@@ -598,6 +598,7 @@ export default function LobbyPage() {
                         }}
                       >
                         {/* รูปค่ายเกม */}
+                        <div className="skeleton-box" /> 
                         <img 
                           data-src={productImages[p]?.image_url || firstImg?.image_url} 
                           src={productImages[p]?.image_url || firstImg?.image_url} 
@@ -608,7 +609,9 @@ export default function LobbyPage() {
                           width="255" 
                           height="255"
                           style={{ width: "100%", height: "auto", objectFit: "cover", display: "block" }}
-                          onLoad={(e) => {
+                            onLoad={(e) => {
+                            const skel = e.currentTarget.previousElementSibling as HTMLElement;  
+                            if (skel) skel.classList.add('loaded'); 
                             const c = e.currentTarget.closest('.theme1-thumb-frame');
                             if (c) {
                               c.classList.remove('is-loading');
@@ -618,6 +621,8 @@ export default function LobbyPage() {
                           onError={(e) => {
                             e.currentTarget.onerror = null;
                             e.currentTarget.src = "/default-provider.png"; 
+                            const skel = e.currentTarget.previousElementSibling as HTMLElement;  
+                            if (skel) skel.classList.add('loaded');                               
                             const c = e.currentTarget.closest('.theme1-thumb-frame');
                             if (c) {
                               c.classList.remove('is-loading');
@@ -716,13 +721,24 @@ export default function LobbyPage() {
                         {/* รูปเกม */}
                         <div style={{ width: "100%", position: "relative", overflow: "hidden", borderRadius: "10px" }}>
                           {game.image_url ? (
-                            <img 
-                              src={game.image_url} 
-                              alt={game.game_name} 
-                              className="-cover-img img-fluid"
-                              style={{ width: "100%", height: "auto", objectFit: "cover", display: "block" }}
-                              loading="lazy" 
-                            />
+                            <>                                                                    
+                              <div className="skeleton-box" style={{ aspectRatio: "1/1" }} />     
+                              <img 
+                                src={game.image_url} 
+                                alt={game.game_name} 
+                                className="-cover-img img-fluid"
+                                style={{ width: "100%", height: "auto", objectFit: "cover", display: "block" }}
+                                loading="lazy"
+                                onLoad={(e) => {                                                  
+                                  const skel = e.currentTarget.previousElementSibling as HTMLElement; 
+                                  if (skel) skel.classList.add('loaded');                                                    
+                              }}
+                                onError={(e) => {
+                                  const skel = e.currentTarget.previousElementSibling as HTMLElement;
+                                  if (skel) skel.classList.add('loaded');
+                                }}
+                              />
+                            </>                                                                 
                           ) : (
                             <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#4a5568", fontSize: "0.75rem" }}>No Image</div>
                           )}
@@ -1017,7 +1033,22 @@ export default function LobbyPage() {
           .footer-bank-img { height: 32px; width: 32px; border-radius: 6px; }
           .footer-license-img { height: 28px; margin: 2px; }
         }
-      
+        
+        /* Skeleton Shimmer Loading */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton-box {
+  position: absolute; inset: 0; z-index: 5;
+  background: linear-gradient(90deg, #1a1a2e 25%, #2a2a4a 50%, #1a1a2e 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 10px;
+  transition: opacity 0.3s ease;
+}
+.skeleton-box.loaded { opacity: 0; pointer-events: none; }
+
         @keyframes floatDice {
           0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
           15% { opacity: 0.1; }
