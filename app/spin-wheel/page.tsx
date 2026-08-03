@@ -93,7 +93,7 @@ export default function SpinWheelPage() {
     return () => clearInterval(interval);
   }, [winners]);
 
-  // === Draw wheel ===
+  // === Draw wheel (Purple Neon Style) ===
   const drawWheel = useCallback((angle: number) => {
     const canvas = canvasRef.current;
     if (!canvas || prizes.length === 0) return;
@@ -103,13 +103,31 @@ export default function SpinWheelPage() {
     const size = canvas.width;
     const cx = size / 2;
     const cy = size / 2;
-    const outerR = size / 2 - 8;
-    const wheelR = outerR - 36;
+    const outerR = size / 2 - 6;
+    const wheelR = outerR - 38;
     const sliceAngle = (2 * Math.PI) / prizes.length;
 
     ctx.clearRect(0, 0, size, size);
 
-    // === Multiplier ring (outer) ===
+    // === Outer glow ring ===
+    const glowGrad = ctx.createRadialGradient(cx, cy, outerR - 10, cx, cy, outerR + 10);
+    glowGrad.addColorStop(0, "rgba(139,92,246,0.3)");
+    glowGrad.addColorStop(1, "rgba(139,92,246,0)");
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerR + 10, 0, 2 * Math.PI);
+    ctx.fillStyle = glowGrad;
+    ctx.fill();
+
+    // === Outer purple ring ===
+    ctx.beginPath();
+    ctx.arc(cx, cy, outerR, 0, 2 * Math.PI);
+    ctx.fillStyle = "#2d1b69";
+    ctx.fill();
+    ctx.strokeStyle = "#7c3aed";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    // === Multiplier ring ===
     if (multipliers.length > 0) {
       const multSlice = (2 * Math.PI) / multipliers.length;
       multipliers.forEach((m, i) => {
@@ -117,11 +135,14 @@ export default function SpinWheelPage() {
         const endA = startA + multSlice;
         ctx.beginPath();
         ctx.moveTo(cx, cy);
-        ctx.arc(cx, cy, outerR, startA, endA);
+        ctx.arc(cx, cy, outerR - 2, startA, endA);
         ctx.closePath();
-        ctx.fillStyle = m.color;
+        const mGrad = ctx.createRadialGradient(cx, cy, wheelR, cx, cy, outerR);
+        mGrad.addColorStop(0, "rgba(109,40,217,0.6)");
+        mGrad.addColorStop(1, "rgba(76,29,149,0.9)");
+        ctx.fillStyle = mGrad;
         ctx.fill();
-        ctx.strokeStyle = "rgba(0,0,0,0.3)";
+        ctx.strokeStyle = "rgba(139,92,246,0.3)";
         ctx.lineWidth = 1;
         ctx.stroke();
         // Label
@@ -130,47 +151,72 @@ export default function SpinWheelPage() {
         ctx.rotate(startA + multSlice / 2);
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillStyle = "#fff";
-        ctx.font = `bold ${size * 0.028}px sans-serif`;
-        ctx.shadowColor = "rgba(0,0,0,0.5)";
-        ctx.shadowBlur = 3;
-        ctx.fillText(m.label, outerR - 18, 0);
+        ctx.fillStyle = "#e9d5ff";
+        ctx.font = `bold ${size * 0.026}px sans-serif`;
+        ctx.shadowColor = "rgba(168,85,247,0.8)";
+        ctx.shadowBlur = 6;
+        ctx.fillText(m.label, outerR - 20, 0);
         ctx.shadowBlur = 0;
         ctx.restore();
       });
     }
 
-    // === Blue border ring ===
-    ctx.beginPath();
-    ctx.arc(cx, cy, wheelR + 4, 0, 2 * Math.PI);
-    ctx.strokeStyle = "#2563eb";
-    ctx.lineWidth = 8;
-    ctx.stroke();
+    // === LED dots around outer ring ===
+    const numDots = 16;
+    for (let i = 0; i < numDots; i++) {
+      const dotAngle = (i / numDots) * 2 * Math.PI + angle * 0.3;
+      const dotX = cx + Math.cos(dotAngle) * (outerR - 4);
+      const dotY = cy + Math.sin(dotAngle) * (outerR - 4);
+      // Glow
+      const dotGlow = ctx.createRadialGradient(dotX, dotY, 0, dotX, dotY, 8);
+      dotGlow.addColorStop(0, i % 2 === 0 ? "rgba(251,191,36,0.8)" : "rgba(236,72,153,0.8)");
+      dotGlow.addColorStop(1, "rgba(0,0,0,0)");
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 8, 0, 2 * Math.PI);
+      ctx.fillStyle = dotGlow;
+      ctx.fill();
+      // Dot
+      ctx.beginPath();
+      ctx.arc(dotX, dotY, 3, 0, 2 * Math.PI);
+      ctx.fillStyle = i % 2 === 0 ? "#fbbf24" : "#ec4899";
+      ctx.fill();
+    }
 
-    // === Gold border ring ===
+    // === Inner blue glow ring ===
     ctx.beginPath();
-    ctx.arc(cx, cy, wheelR + 1, 0, 2 * Math.PI);
-    ctx.strokeStyle = "#facc15";
-    ctx.lineWidth = 3;
+    ctx.arc(cx, cy, wheelR + 5, 0, 2 * Math.PI);
+    ctx.strokeStyle = "#38bdf8";
+    ctx.lineWidth = 4;
+    ctx.shadowColor = "rgba(56,189,248,0.6)";
+    ctx.shadowBlur = 12;
     ctx.stroke();
+    ctx.shadowBlur = 0;
 
     // === Prize slices ===
     prizes.forEach((p, i) => {
       const startA = i * sliceAngle + angle;
       const endA = startA + sliceAngle;
 
-      // Slice fill
+      // Slice fill — alternating purples
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, wheelR, startA, endA);
       ctx.closePath();
-      ctx.fillStyle = i % 2 === 0 ? "#ffffff" : "#ff1a1a";
+      const sliceGrad = ctx.createRadialGradient(cx, cy, size * 0.06, cx, cy, wheelR);
+      if (i % 2 === 0) {
+        sliceGrad.addColorStop(0, "#6d28d9");
+        sliceGrad.addColorStop(1, "#7c3aed");
+      } else {
+        sliceGrad.addColorStop(0, "#4c1d95");
+        sliceGrad.addColorStop(1, "#5b21b6");
+      }
+      ctx.fillStyle = sliceGrad;
       ctx.fill();
-      ctx.strokeStyle = "rgba(0,0,0,0.1)";
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(168,85,247,0.4)";
+      ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // Content (image or text)
+      // Content
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(startA + sliceAngle / 2);
@@ -181,49 +227,63 @@ export default function SpinWheelPage() {
         ctx.drawImage(imgObj, wheelR * 0.5 - imgSize / 2, -imgSize / 2, imgSize, imgSize);
       }
 
-      // Label text
-      ctx.fillStyle = i % 2 === 0 ? "#111" : "#fff";
-      ctx.font = `bold ${size * 0.025}px sans-serif`;
+      // Label
+      ctx.fillStyle = "#e9d5ff";
+      ctx.font = `bold ${size * 0.024}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
-      const labelY = imgObj ? -size * 0.07 : 0;
+      ctx.shadowColor = "rgba(0,0,0,0.5)";
+      ctx.shadowBlur = 3;
+      const labelY = imgObj ? -size * 0.065 : 0;
       ctx.fillText(p.label, wheelR * 0.55, labelY);
-
+      ctx.shadowBlur = 0;
       ctx.restore();
     });
 
     // === Center circle ===
-    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, size * 0.1);
-    grad.addColorStop(0, "#3b82f6");
-    grad.addColorStop(1, "#1d4ed8");
+    const centerR = size * 0.12;
+    const centerGrad = ctx.createRadialGradient(cx, cy - centerR * 0.3, 0, cx, cy, centerR);
+    centerGrad.addColorStop(0, "#7c3aed");
+    centerGrad.addColorStop(0.7, "#4c1d95");
+    centerGrad.addColorStop(1, "#2e1065");
     ctx.beginPath();
-    ctx.arc(cx, cy, size * 0.1, 0, 2 * Math.PI);
-    ctx.fillStyle = grad;
+    ctx.arc(cx, cy, centerR, 0, 2 * Math.PI);
+    ctx.fillStyle = centerGrad;
     ctx.fill();
-    ctx.strokeStyle = "#facc15";
+    // Center glow border
+    ctx.strokeStyle = "#a78bfa";
     ctx.lineWidth = 3;
+    ctx.shadowColor = "rgba(167,139,250,0.6)";
+    ctx.shadowBlur = 10;
     ctx.stroke();
+    ctx.shadowBlur = 0;
 
     // SPIN text
-    ctx.fillStyle = "#fff";
-    ctx.font = `bold ${size * 0.045}px sans-serif`;
+    ctx.fillStyle = "#f5f3ff";
+    ctx.font = `bold ${size * 0.042}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
+    ctx.shadowColor = "rgba(139,92,246,0.8)";
+    ctx.shadowBlur = 8;
     ctx.fillText("SPIN", cx, cy);
+    ctx.shadowBlur = 0;
 
     // === Pointer (top) ===
     ctx.save();
-    ctx.translate(cx, cy - outerR + 2);
+    ctx.translate(cx, cy - outerR + 6);
     ctx.beginPath();
-    ctx.moveTo(0, 14);
-    ctx.lineTo(-12, -10);
-    ctx.lineTo(12, -10);
+    ctx.moveTo(0, 16);
+    ctx.lineTo(-13, -12);
+    ctx.lineTo(13, -12);
     ctx.closePath();
-    ctx.fillStyle = "#facc15";
+    ctx.fillStyle = "#f43f5e";
     ctx.fill();
-    ctx.strokeStyle = "#b45309";
+    ctx.strokeStyle = "#fff";
     ctx.lineWidth = 2;
+    ctx.shadowColor = "rgba(244,63,94,0.6)";
+    ctx.shadowBlur = 8;
     ctx.stroke();
+    ctx.shadowBlur = 0;
     ctx.restore();
 
   }, [prizes, multipliers, loadedImages]);
@@ -306,7 +366,7 @@ export default function SpinWheelPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #0a0a1a 0%, #1a1035 50%, #0a0a14 100%)", position: "relative", overflow: "hidden" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #0a0a1a 0%, #1a1035 50%, #0a0a14 100%)", position: "relative", overflowX: "hidden", overflowY: "auto" }}>
 
       {/* Sparkle stars background */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
