@@ -369,7 +369,7 @@ export default function SpinWheelPage() {
     <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #0a0a1a 0%, #1a1035 50%, #0a0a14 100%)", position: "relative", overflowX: "hidden", overflowY: "auto" }}>
 
       {/* Sparkle stars background */}
-      <div style={{ position: "absolute", inset: 0, overflowX: "hidden", overflowY: "auto", pointerEvents: "none" }}>
+      <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none" }}>
         {[...Array(20)].map((_, i) => (
           <div key={i} style={{
             position: "absolute",
