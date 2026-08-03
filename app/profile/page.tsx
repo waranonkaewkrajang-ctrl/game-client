@@ -245,9 +245,6 @@ export default function ProfilePage() {
           
           {/* Card: รับรางวัล */}
           <div>
-            <h2 style={{ fontSize: "13px", color: "#a1a1aa", fontWeight: 600, marginBottom: "12px", paddingLeft: "12px", textTransform: "uppercase", letterSpacing: "1px" }}>
-              รับรางวัล
-            </h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               
               {/* ปุ่มรับยอดเสีย */}
