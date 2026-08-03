@@ -10,6 +10,7 @@ export default function ProfilePage() {
   const [wallet, setWallet] = useState<any>(null);
   const [rewards, setRewards] = useState<any>(null);
   const [rank, setRank] = useState<any>(null);
+  const [acceptPromo, setAcceptPromo] = useState(true); // เพิ่ม state สำหรับปุ่มรับโปร
 
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
@@ -172,16 +173,74 @@ export default function ProfilePage() {
           )}
         </div>
 
-        {/* ← เพิ่มการ์ดตรงนี้ */}
-        <div style={{ background: "rgba(26, 26, 46, 0.4)", backdropFilter: "blur(8px)", WebkitBackdropFilter: "blur(8px)", borderRadius: "16px", padding: "24px 20px", border: "1px solid rgba(124,58,237,0.3)", marginBottom: "1.5rem", textAlign: "center", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)" }}>
-          <p style={{ margin: "0 0 8px", fontSize: "13px", color: "#a1a1aa" }}>ยอดเงินในกระเป๋า</p>
-          <p style={{ margin: "0 0 6px", fontSize: "32px", fontWeight: 700, color: "#fafafa" }}>
-            <span style={{ fontSize: "18px", color: "#10b981", marginRight: "4px" }}>฿</span>
-            {wallet?.balance ?? "0.00"}
-          </p>
-          <p style={{ margin: 0, fontSize: "11px", color: "#71717a" }}>
-            ข้อมูล ณ เวลา {new Date().toLocaleDateString("th-TH", { day: "2-digit", month: "short" })} {new Date().toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })}
-          </p>
+       {/* 💳 Card: กระเป๋าเงินแบบใหม่ (นูน 3D + สวิตช์รับโปร) */}
+        <div style={{ 
+          background: "linear-gradient(180deg, rgba(34, 34, 50, 0.8) 0%, rgba(20, 20, 32, 0.9) 100%)", 
+          backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", 
+          borderRadius: "24px", padding: "24px 20px", marginBottom: "1.5rem",
+          border: "1px solid rgba(124,58,237,0.2)",
+          /* ✨ ไฮไลท์: สร้างมิติความนูนด้วย Inset Shadow */
+          boxShadow: "0 12px 24px rgba(0,0,0,0.5), inset 0 3px 2px rgba(255,255,255,0.08), inset 0 -4px 6px rgba(0,0,0,0.4)" 
+        }}>
+          
+          {/* ส่วนบน: ข้อมูล + ปุ่มสวิตช์ */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "20px" }}>
+            
+            {/* ฝั่งซ้าย: ข้อมูล */}
+            <div style={{ textAlign: "left" }}>
+              <span className="blink-text" style={{ fontSize: "15px", fontWeight: 700, color: "#eab308", letterSpacing: "0.5px" }}>ยินดีต้อนรับ !!</span>
+              <p style={{ fontSize: "16px", margin: "4px 0 10px", color: "#fafafa" }}>{user?.phone || "-"}</p>
+              
+              <span className="blink-text" style={{ fontSize: "13px", color: "#eab308" }}>เลขบัญชีธนาคาร</span>
+              <p style={{ fontSize: "16px", margin: "4px 0 0", color: "#fafafa", fontWeight: 500 }}>{user?.bank_account || "-"}</p>
+            </div>
+
+            {/* ฝั่งขวา: สวิตช์เปิด-ปิดโปร */}
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
+              <button 
+                onClick={() => setAcceptPromo(!acceptPromo)}
+                style={{ 
+                  position: "relative", width: "68px", height: "32px", borderRadius: "30px", border: "none", cursor: "pointer",
+                  /* เปลี่ยนสีปุ่ม 3D เขียว-แดง */
+                  background: acceptPromo ? "linear-gradient(180deg, #16a34a, #15803d)" : "linear-gradient(180deg, #dc2626, #b91c1c)",
+                  boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2)",
+                  transition: "background 0.3s",
+                  border: acceptPromo ? "2px solid #4ade80" : "2px solid #f87171"
+                }}
+              >
+                {/* ลูกปัดสวิตช์ 3D */}
+                <div style={{ 
+                  position: "absolute", top: "1px", left: acceptPromo ? "37px" : "1px", 
+                  width: "26px", height: "26px", borderRadius: "50%", background: "#fff", 
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.4), inset 0 -2px 2px rgba(0,0,0,0.1)",
+                  transition: "left 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                }} />
+              </button>
+              <span style={{ fontSize: "13px", fontWeight: 600, color: acceptPromo ? "#16a34a" : "#dc2626" }}>
+                {acceptPromo ? "รับโปร" : "ไม่รับโปร"}
+              </span>
+            </div>
+          </div>
+
+          {/* เส้นคั่นสีแดงอ่อนแบบในตัวอย่าง */}
+          <div style={{ height: "1px", background: "rgba(0,0,0,0.5)", borderBottom: "1px solid rgba(211, 121, 123, 0.5)", marginBottom: "20px" }} />
+
+          {/* ส่วนล่าง: เครดิต และ คะแนน */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", textAlign: "center" }}>
+            <div>
+              <p style={{ fontSize: "15px", color: "#fafafa", margin: "0 0 4px" }}>เครดิต</p>
+              <p style={{ fontSize: "20px", fontWeight: 700, color: "#eab308", margin: 0, textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>
+                {wallet?.balance ?? "0.00"} <span style={{ fontSize: "14px", fontWeight: 400 }}>฿</span>
+              </p>
+            </div>
+            <div>
+              <p style={{ fontSize: "15px", color: "#fafafa", margin: "0 0 4px" }}>คะแนน</p>
+              <p style={{ fontSize: "20px", fontWeight: 700, color: "#eab308", margin: 0, textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>
+                {user?.points ?? "200"} 
+              </p>
+            </div>
+          </div>
+          
         </div>
 
        {/* Sections */}
@@ -317,6 +376,15 @@ export default function ProfilePage() {
       </div>
       
       <style dangerouslySetInnerHTML={{__html: `
+
+      /* เพิ่ม Class กะพริบสำหรับตัวหนังสือ */
+      .blink-text {
+        animation: blink 2s linear infinite;
+      }
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
 
       /* --- สไตล์ปุ่มแบบ UI/UX Designer --- */
       .designer-btn {
