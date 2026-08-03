@@ -463,10 +463,11 @@ export default function SpinWheelPage() {
           pointerEvents: "none" 
         }}>
           
-          {/* ปุ่มทำภารกิจ (ซ้าย) */}
+         {/* ปุ่มทำภารกิจ (ซ้าย) */}
           <div style={{ position: "relative", pointerEvents: "auto" }}>
-            <div style={{ position: "absolute", top: "-45px", left: "15px", fontSize: "3rem", zIndex: 10, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
-              🎟️
+            <div style={{ position: "absolute", top: "-45px", left: "15px", zIndex: 10, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
+              {/* เปลี่ยน src เป็นชื่อไฟล์รูปของคุณ เช่น /mission-icon.webp */}
+              <img src="/mission-icon.webp" alt="mission" style={{ width: "55px", height: "55px", objectFit: "contain" }} />
             </div>
             <button style={{ 
               background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
@@ -481,8 +482,9 @@ export default function SpinWheelPage() {
 
           {/* ปุ่มรางวัล (ขวา) */}
           <div style={{ position: "relative", pointerEvents: "auto" }}>
-            <div style={{ position: "absolute", top: "-45px", right: "15px", fontSize: "3rem", zIndex: 10, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(10deg)" }}>
-              🏆
+            <div style={{ position: "absolute", top: "-45px", right: "15px", zIndex: 10, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(10deg)" }}>
+              {/* เปลี่ยน src เป็นชื่อไฟล์รูปรางวัลของคุณ เช่น /reward-icon.webp */}
+              <img src="/reward-icon.webp" alt="reward" style={{ width: "55px", height: "55px", objectFit: "contain" }} />
             </div>
             <button style={{ 
               background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
