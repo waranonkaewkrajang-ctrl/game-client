@@ -226,7 +226,7 @@ export default function WalletPage() {
                   </div>
 
                   {tab === "deposit" ? (
-                    <div className={`grid grid-cols-${Math.min(finance.channels.length, 3)} md:grid-cols-2 gap-2 w-full`}>
+                   <div className="grid grid-cols-3 gap-2 w-full">
                       {finance.channels.map((ch) => (
                         <div key={ch} onClick={() => {
                           if (ch === "truewallet" && truewalletAccounts.length > 0) {
@@ -353,7 +353,7 @@ export default function WalletPage() {
                     </div>
 
                     {/* ปุ่ม +จำนวนเงิน */}
-                    <div className={`grid gap-1.5 md:gap-2 mt-2 ${finance.amounts.length <= 5 ? "grid-cols-5" : "grid-cols-4 md:grid-cols-5"}`}>
+                   <div className="grid grid-cols-3 md:grid-cols-5 gap-2 mt-2 w-full">
                       {finance.amounts.map((val) => (
                         <button key={val} type="button" onClick={() => addAmount(val)} className="finance-btn inline-flex items-center justify-center gap-0.5 md:gap-1.5 font-medium h-10 md:h-11 px-1 md:px-2 text-[11px] md:text-sm cursor-pointer">
                           <img alt="coin" className="w-3.5 h-3.5 shrink-0 hidden md:block drop-shadow-sm" src="https://fs.cdnrc.com/payment-layout/svg/coin.svg" />
@@ -423,7 +423,7 @@ export default function WalletPage() {
           border-color: rgba(236, 72, 153, 0.8);
           box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.2);
         }
-          
+
         @keyframes floatDice {
           0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
           15% { opacity: 0.05; }
