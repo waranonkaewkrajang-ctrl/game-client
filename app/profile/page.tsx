@@ -173,13 +173,12 @@ export default function ProfilePage() {
           )}
         </div>
 
-       {/* 💳 Card: กระเป๋าเงินแบบใหม่ (นูน 3D + สวิตช์รับโปร) */}
+      {/* 💳 Card: กระเป๋าเงินแบบใหม่ (สีม่วงอมชมพู นูน 3D + สวิตช์รับโปร) */}
         <div style={{ 
-          background: "linear-gradient(180deg, rgba(34, 34, 50, 0.8) 0%, rgba(20, 20, 32, 0.9) 100%)", 
+          background: "linear-gradient(180deg, rgba(88, 28, 135, 0.85) 0%, rgba(157, 23, 77, 0.9) 100%)", 
           backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", 
           borderRadius: "24px", padding: "24px 20px", marginBottom: "1.5rem",
-          border: "1px solid rgba(124,58,237,0.2)",
-          /* ✨ ไฮไลท์: สร้างมิติความนูนด้วย Inset Shadow */
+          border: "1px solid rgba(236, 72, 153, 0.3)",
           boxShadow: "0 12px 24px rgba(0,0,0,0.5), inset 0 3px 2px rgba(255,255,255,0.08), inset 0 -4px 6px rgba(0,0,0,0.4)" 
         }}>
           
@@ -197,18 +196,16 @@ export default function ProfilePage() {
 
             {/* ฝั่งขวา: สวิตช์เปิด-ปิดโปร */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
-             <button 
+              <button 
                 onClick={() => setAcceptPromo(!acceptPromo)}
                 style={{ 
                   position: "relative", width: "68px", height: "32px", borderRadius: "30px", cursor: "pointer",
-                  /* เปลี่ยนสีปุ่ม 3D เขียว-แดง */
                   background: acceptPromo ? "linear-gradient(180deg, #16a34a, #15803d)" : "linear-gradient(180deg, #dc2626, #b91c1c)",
                   boxShadow: "inset 0 2px 4px rgba(0,0,0,0.4), 0 2px 4px rgba(0,0,0,0.2)",
                   transition: "background 0.3s",
                   border: acceptPromo ? "2px solid #4ade80" : "2px solid #f87171"
                 }}
               >
-                {/* ลูกปัดสวิตช์ 3D */}
                 <div style={{ 
                   position: "absolute", top: "1px", left: acceptPromo ? "37px" : "1px", 
                   width: "26px", height: "26px", borderRadius: "50%", background: "#fff", 
@@ -216,14 +213,14 @@ export default function ProfilePage() {
                   transition: "left 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                 }} />
               </button>
-              <span style={{ fontSize: "13px", fontWeight: 600, color: acceptPromo ? "#16a34a" : "#dc2626" }}>
+              <span style={{ fontSize: "13px", fontWeight: 600, color: acceptPromo ? "#4ade80" : "#f87171" }}>
                 {acceptPromo ? "รับโปร" : "ไม่รับโปร"}
               </span>
             </div>
           </div>
 
-          {/* เส้นคั่นสีแดงอ่อนแบบในตัวอย่าง */}
-          <div style={{ height: "1px", background: "rgba(0,0,0,0.5)", borderBottom: "1px solid rgba(211, 121, 123, 0.5)", marginBottom: "20px" }} />
+          {/* เส้นคั่นสีแดงอ่อน */}
+          <div style={{ height: "1px", background: "rgba(0,0,0,0.5)", borderBottom: "1px solid rgba(236, 72, 153, 0.4)", marginBottom: "20px" }} />
 
           {/* ส่วนล่าง: เครดิต และ คะแนน */}
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", textAlign: "center" }}>
