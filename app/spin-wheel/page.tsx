@@ -451,7 +451,7 @@ export default function SpinWheelPage() {
           </div>
         </div>
 
-        {/* 2. โซนปุ่มกด (วางไว้ใต้รายชื่อ มีการเว้นระยะและขยายไอคอนเว็บพีให้ใหญ่ขึ้น พร้อมตัดพื้นหลังขาว) */}
+       {/* 2. โซนปุ่มกด (ปรับไอคอนให้ใหญ่ 95px และเกาะติดขอบบนปุ่มพอดี) */}
         <div style={{ 
           display: "flex", 
           justifyContent: "space-between", 
@@ -462,17 +462,8 @@ export default function SpinWheelPage() {
           
           {/* ปุ่มทำภารกิจ (ซ้าย) */}
           <div style={{ position: "relative" }}>
-            <div style={{ position: "absolute", top: "-55px", left: "10px", zIndex: 30, filter: "drop-shadow(0 6px 6px rgba(0,0,0,0.6))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
-              <img 
-                src="/mission-icon.webp" 
-                alt="mission" 
-                style={{ 
-                  width: "75px", 
-                  height: "75px", 
-                  objectFit: "contain",
-                  mixBlendMode: "screen" // ตัดพื้นหลังสีขาวของภาพออกเนียนๆ
-                }} 
-              />
+            <div style={{ position: "absolute", top: "-42px", left: "5px", zIndex: 30, filter: "drop-shadow(0 6px 6px rgba(0,0,0,0.6))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
+              <img src="/mission-icon.webp" alt="mission" style={{ width: "95px", height: "95px", objectFit: "contain" }} />
             </div>
             <button style={{ 
               background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
@@ -487,17 +478,8 @@ export default function SpinWheelPage() {
 
           {/* ปุ่มรางวัล (ขวา) */}
           <div style={{ position: "relative" }}>
-            <div style={{ position: "absolute", top: "-55px", right: "10px", zIndex: 30, filter: "drop-shadow(0 6px 6px rgba(0,0,0,0.6))", pointerEvents: "none", transform: "rotate(10deg)" }}>
-              <img 
-                src="/reward-icon.webp" 
-                alt="reward" 
-                style={{ 
-                  width: "75px", 
-                  height: "75px", 
-                  objectFit: "contain",
-                  mixBlendMode: "screen" // ตัดพื้นหลังสีขาวของภาพออกเนียนๆ
-                }} 
-              />
+            <div style={{ position: "absolute", top: "-42px", right: "5px", zIndex: 30, filter: "drop-shadow(0 6px 6px rgba(0,0,0,0.6))", pointerEvents: "none", transform: "rotate(10deg)" }}>
+              <img src="/reward-icon.webp" alt="reward" style={{ width: "95px", height: "95px", objectFit: "contain" }} />
             </div>
             <button style={{ 
               background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
