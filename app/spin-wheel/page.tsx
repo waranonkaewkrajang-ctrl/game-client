@@ -384,13 +384,13 @@ export default function SpinWheelPage() {
         </div>
       </div>
 
-     {/* Recent Winners Feed (สไตล์โปร่งใส ลอยตัว ไร้กรอบ มีเส้นคั่น) */}
-      {winners.length > 0 && (
+    {/* 🌟 โซนรายชื่อผู้ชนะ และ ปุ่มซ้าย-ขวา (มัดรวมกันเพื่อให้เกาะขอบพอดี) */}
+      <div style={{ position: "relative", margin: "8px 20px 24px", zIndex: 10 }}>
+        
+        {/* กรอบรายชื่อผู้ชนะ */}
         <div style={{ 
-          margin: "8px 20px 16px", 
           height: "150px", 
           position: "relative", 
-          zIndex: 10, 
           overflow: "hidden",
           WebkitMaskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)",
           maskImage: "linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)"
@@ -403,93 +403,68 @@ export default function SpinWheelPage() {
                   padding: "6px 4px", height: "50px", boxSizing: "border-box",
                   borderBottom: "1px solid rgba(250, 204, 21, 0.2)" 
                 }}>
-                  
-                  {/* อวตาร (วงกลม) */}
                   <div style={{ width: "32px", height: "32px", borderRadius: "50%", background: "linear-gradient(135deg, #7c3aed, #2563eb)", border: "1px solid rgba(250,204,21,0.5)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.75rem", color: "#fff", fontWeight: 700, flexShrink: 0 }}>
                     {w.username.slice(0, 2).toUpperCase()}
                   </div>
-                  
-                  {/* ชื่อ และ เบอร์โทร (จัดเรียงแนวตั้งบนล่าง) */}
                   <div style={{ display: "flex", flexDirection: "column", flex: 1, justifyContent: "center" }}>
-                    <span style={{ color: "#facc15", fontSize: "0.85rem", fontWeight: 700, lineHeight: 1.2 }}>
-                      {w.username}
-                    </span>
-                    <span style={{ color: "#fde047", fontSize: "0.7rem", opacity: 0.8 }}>
-                      {w.phone_tail ? `********${w.phone_tail}` : ""}
-                    </span>
+                    <span style={{ color: "#facc15", fontSize: "0.85rem", fontWeight: 700, lineHeight: 1.2 }}>{w.username}</span>
+                    <span style={{ color: "#fde047", fontSize: "0.7rem", opacity: 0.8 }}>{w.phone_tail ? `********${w.phone_tail}` : ""}</span>
                   </div>
-                  
-                  {/* รูปภาพรางวัล และ ชื่อรางวัล */}
                   <div style={{ display: "flex", alignItems: "center", gap: "6px", justifyContent: "flex-end" }}>
                     {w.image_url && (
                       <img src={w.image_url} alt="prize" style={{ width: "24px", height: "24px", objectFit: "contain", filter: "drop-shadow(0 2px 2px rgba(0,0,0,0.5))" }} />
                     )}
-                    <span style={{ color: "#ffffff", fontSize: "0.8rem", fontWeight: 700, textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
-                      {w.prize_label}
-                    </span>
+                    <span style={{ color: "#ffffff", fontSize: "0.8rem", fontWeight: 700, textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>{w.prize_label}</span>
                   </div>
-
                 </div>
               ))}
             </div>
           </div>
         </div>
-      )}
 
-     {/* Mission & Rewards Buttons (สไตล์ 3D นูนเงา แบบในภาพ) */}
-      <div style={{ display: "flex", justifyContent: "space-between", padding: "20px 20px 8px", position: "relative", zIndex: 20 }}>
-        
-        {/* กลุ่มปุ่มทำภารกิจ (ซ้าย) */}
-        <div style={{ position: "relative" }}>
-          {/* ไอคอนที่ลอยอยู่เหนือปุ่ม (ใช้ Emoji แทนชั่วคราว ถ้ามีรูปสามารถเปลี่ยนเป็น <img src="..." /> ได้ครับ) */}
-          <div style={{ position: "absolute", top: "-28px", left: "10px", fontSize: "3rem", zIndex: 30, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
-            🎟️
+        {/* ปุ่มลอยเกาะมุมซ้าย-ขวา */}
+        <div style={{ 
+          position: "absolute", 
+          bottom: "-10px", 
+          left: "-10px",   
+          right: "-10px",  
+          display: "flex", 
+          justifyContent: "space-between", 
+          zIndex: 20,
+          pointerEvents: "none" 
+        }}>
+          
+          {/* ปุ่มทำภารกิจ (ซ้าย) */}
+          <div style={{ position: "relative", pointerEvents: "auto" }}>
+            <div style={{ position: "absolute", top: "-45px", left: "15px", fontSize: "3rem", zIndex: 10, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(-10deg)" }}>
+              🎟️
+            </div>
+            <button style={{ 
+              background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
+              color: "#ffffff", border: "none", padding: "10px 24px", borderRadius: "50px", 
+              fontSize: "0.95rem", fontWeight: 900, cursor: "pointer",
+              boxShadow: "0 8px 12px rgba(0,0,0,0.6), inset 0 3px 2px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.5)",
+              textShadow: "0 2px 2px rgba(0,0,0,0.5)", width: "120px", position: "relative", zIndex: 20
+            }}>
+              ทำภารกิจ
+            </button>
           </div>
-          <button style={{ 
-            background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
-            color: "#ffffff", 
-            border: "none", 
-            padding: "10px 24px",
-            paddingLeft: "36px", // ดันข้อความหลบไอคอนนิดหน่อย
-            borderRadius: "50px", 
-            fontSize: "0.95rem", 
-            fontWeight: 900, 
-            cursor: "pointer",
-            // สร้างเงาให้ปุ่มดูลอย และแสงสะท้อนขอบบนให้ดูมันวาวเหมือน 3D
-            boxShadow: "0 8px 12px rgba(0,0,0,0.6), inset 0 3px 2px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.5)",
-            textShadow: "0 2px 2px rgba(0,0,0,0.5)",
-            width: "120px",
-            position: "relative",
-            zIndex: 20
-          }}>
-            ทำภารกิจ
-          </button>
-        </div>
 
-        {/* กลุ่มปุ่มรางวัล (ขวา) */}
-        <div style={{ position: "relative" }}>
-          {/* ไอคอนที่ลอยอยู่เหนือปุ่ม */}
-          <div style={{ position: "absolute", top: "-28px", right: "10px", fontSize: "3rem", zIndex: 30, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(10deg)" }}>
-            🏆
+          {/* ปุ่มรางวัล (ขวา) */}
+          <div style={{ position: "relative", pointerEvents: "auto" }}>
+            <div style={{ position: "absolute", top: "-45px", right: "15px", fontSize: "3rem", zIndex: 10, filter: "drop-shadow(0 4px 4px rgba(0,0,0,0.5))", pointerEvents: "none", transform: "rotate(10deg)" }}>
+              🏆
+            </div>
+            <button style={{ 
+              background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
+              color: "#ffffff", border: "none", padding: "10px 24px", borderRadius: "50px", 
+              fontSize: "0.95rem", fontWeight: 900, cursor: "pointer",
+              boxShadow: "0 8px 12px rgba(0,0,0,0.6), inset 0 3px 2px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.5)",
+              textShadow: "0 2px 2px rgba(0,0,0,0.5)", width: "120px", position: "relative", zIndex: 20
+            }}>
+              รางวัล
+            </button>
           </div>
-          <button style={{ 
-            background: "linear-gradient(180deg, #f87171 0%, #dc2626 40%, #7f1d1d 100%)", 
-            color: "#ffffff", 
-            border: "none", 
-            padding: "10px 24px", 
-            paddingRight: "36px", // ดันข้อความหลบไอคอนนิดหน่อย
-            borderRadius: "50px", 
-            fontSize: "0.95rem", 
-            fontWeight: 900, 
-            cursor: "pointer",
-            boxShadow: "0 8px 12px rgba(0,0,0,0.6), inset 0 3px 2px rgba(255,255,255,0.4), inset 0 -2px 4px rgba(0,0,0,0.5)",
-            textShadow: "0 2px 2px rgba(0,0,0,0.5)",
-            width: "120px",
-            position: "relative",
-            zIndex: 20
-          }}>
-            รางวัล
-          </button>
         </div>
       </div>
 
