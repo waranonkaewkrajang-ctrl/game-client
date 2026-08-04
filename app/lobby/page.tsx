@@ -456,7 +456,7 @@ export default function LobbyPage() {
           </div>
         </div>
         
-        {/* Tab Menu */}
+       {/* Tab Menu */}
         <div style={{ display: "flex", gap: "8px", marginBottom: "14px", overflowX: "auto", scrollbarWidth: "none" }}>
           {[
             { id: "highlight", label: "ไฮไลท์", href: "" },
@@ -465,12 +465,22 @@ export default function LobbyPage() {
             { id: "news", label: "ข่าวสาร", href: "/history" },
           ].map((tab) => (
             <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.href) router.push(tab.href); }} style={{
-              height: "34px", padding: "0 20px", borderRadius: "6px", border: "none", cursor: "pointer",
-              display: "flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap",
-              fontSize: "0.8rem", fontWeight: 700, transition: "all 0.2s",
-             background: activeTab === tab.id ? "linear-gradient(165deg, #7c3aed, #a855f7)" : "transparent",
-              color: activeTab === tab.id ? "white" : "#a855f7",
-              boxShadow: activeTab === tab.id ? "0 0 7.5px rgba(124,58,237,0.5)" : "none",
+              height: "38px", padding: "0 22px", borderRadius: "10px", border: "none", cursor: "pointer",
+              display: "flex", alignItems: "center", gap: "8px", whiteSpace: "nowrap",
+              fontSize: "0.82rem", fontWeight: 800, transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+              /* ✨ ดีไซน์ใหม่: เมื่อเลือก (Active) จะเป็นปุ่ม 3D นูนหนาสีม่วงพรีเมียม / ถ้าไม่ได้เลือกจะโปร่งแสงสวยงาม */
+              background: activeTab === tab.id 
+                ? "linear-gradient(180deg, #9333ea 0%, #7c3aed 50%, #6d28d9 100%)" 
+                : "rgba(20, 20, 42, 0.55)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+              color: activeTab === tab.id ? "#ffffff" : "#c084fc",
+              border: activeTab === tab.id ? "1.5px solid #f59e0b" : "1px solid rgba(168, 85, 247, 0.25)",
+              boxShadow: activeTab === tab.id 
+                ? "0 6px 16px rgba(124, 58, 237, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.4), inset 0 -3px 3px rgba(76, 29, 149, 0.9)" 
+                : "0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)",
+              textShadow: activeTab === tab.id ? "0 1px 2px rgba(0,0,0,0.8)" : "none",
+              transform: activeTab === tab.id ? "translateY(-2px)" : "translateY(0)",
             }}>
              {tab.id === "highlight" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>}
               {tab.id === "promotion" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v13M4 14.5A3.5 3.5 0 0 1 7.5 11H12m0 0h4.5A3.5 3.5 0 0 1 20 14.5M4 14.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4.5M4 14.5h16M12 11V8m0 0a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1 5 0zm0 0a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0-5 0z" /></svg>}
