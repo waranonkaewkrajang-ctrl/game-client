@@ -31,6 +31,31 @@ export default function LobbyPage() {
   const [currentBanner, setCurrentBanner] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
 
+  // === Auto-slide rank carousel ===
+  const [activeRank, setActiveRank] = useState(0);
+  const rankScrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const total = Math.min(products.length, 10);
+    if (total === 0) return;
+    const interval = setInterval(() => {
+      setActiveRank((prev) => {
+        const next = (prev + 1) % total;
+        if (rankScrollRef.current) {
+          const card = rankScrollRef.current.children[next] as HTMLElement;
+          if (card) {
+            rankScrollRef.current.scrollTo({
+              left: card.offsetLeft - rankScrollRef.current.offsetWidth / 2 + card.offsetWidth / 2,
+              behavior: "smooth",
+            });
+          }
+        }
+        return next;
+      });
+    }, 2500);
+    return () => clearInterval(interval);
+  }, [products]);
+
   // หมวดที่ต้องเข้าห้องค่ายก่อน (ไม่เปิดเกมตรง)
   const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS"];
   const isRoomMode = ROOM_CATEGORIES.includes(selectedCategory.toUpperCase());
@@ -405,12 +430,12 @@ export default function LobbyPage() {
   </div>
   
   {/* ใช้ Class rank-scroll-container เพื่อให้เลื่อนได้แบบเดียวกัน */}
-  <div className="rank-scroll-container">
+ <div className="rank-scroll-container" ref={rankScrollRef}>
     {products.slice(0, 10).map((p, i) => {
       const pGames = allGames.filter((g) => g.product_id === p);
       const firstImg = pGames.find((g) => g.image_url);
       return (
-        <div key={`provider-${p}`} className="rank-card" onClick={() => router.push(`/lobby/${p}`)}>
+       <div key={`provider-${p}`} className={`rank-card ${activeRank === i ? "rank-active" : ""}`} onClick={() => router.push(`/lobby/${p}`)}>
           
           {/* ตัวเลข Rank (ใช้สีส้มให้เข้ากับค่ายเกม) */}
           <div className="rank-number-svg">
@@ -1020,6 +1045,9 @@ export default function LobbyPage() {
         .rank-scroll-container::-webkit-scrollbar { display: none; }
 
         .rank-card { position: relative; width: 126px; flex-shrink: 0; cursor: pointer; margin-left: 30px; overflow: visible; }
+        .rank-card { transition: transform 0.5s ease, width 0.5s ease; }
+        .rank-active { transform: scale(1.25); z-index: 10; }
+        .rank-active .rank-img-wrapper { box-shadow: 0 0 20px rgba(124, 58, 237, 0.6), 0 0 40px rgba(124, 58, 237, 0.3); }
 
         .rank-img-wrapper {
           position: relative; width: 100%; padding-bottom: 142.857%; 
