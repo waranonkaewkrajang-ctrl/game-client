@@ -145,13 +145,20 @@ export default function ProfilePage() {
                 </div>
               </div>
             </div>
-            {/* ป้ายแรงค์ */}
+            {/* ป้ายแรงค์แบบนูนหนา 3D */}
             <div style={{
-              position: "absolute", bottom: "-4px", left: "50%", transform: "translateX(-50%)",
-              background: rank?.current_rank?.color ? `linear-gradient(135deg, ${rank.current_rank.color}, ${rank.current_rank.color}dd)` : "linear-gradient(135deg, #71717a, #52525b)",
-              color: "#fff", fontSize: "9px", fontWeight: 800, padding: "2px 10px", borderRadius: "10px",
-              border: "2px solid #09090b", whiteSpace: "nowrap",
-            }}>{rank?.current_rank?.name || "ไม่มีแรงค์"}</div>
+              position: "absolute", bottom: "-6px", left: "50%", transform: "translateX(-50%)",
+              background: rank?.current_rank?.color 
+                ? `linear-gradient(180deg, #fff 0%, ${rank.current_rank.color} 50%, #000 100%)` 
+                : "linear-gradient(180deg, #fef08a 0%, #eab308 50%, #ca8a04 100%)",
+              color: "#ffffff", fontSize: "10px", fontWeight: 900, padding: "3px 12px", borderRadius: "12px",
+              border: "1.5px solid rgba(255, 255, 255, 0.6)", whiteSpace: "nowrap",
+              letterSpacing: "0.5px",
+              boxShadow: "0 6px 12px rgba(0, 0, 0, 0.7), inset 0 2px 3px rgba(255, 255, 255, 0.9), inset 0 -3px 4px rgba(0, 0, 0, 0.6)",
+              textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)"
+            }}>
+              {rank?.current_rank?.name || "ไม่มีแรงค์"}
+            </div>
           </div>
           <h1 style={{ fontSize: "20px", fontWeight: 600, margin: "0 0 4px 0", letterSpacing: "0.5px" }}>{user.full_name || "สมาชิกทั่วไป"}</h1>
           <p style={{ color: "#a1a1aa", fontSize: "14px", margin: 0 }}>@{user.username}</p>
