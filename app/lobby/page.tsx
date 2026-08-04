@@ -238,7 +238,7 @@ export default function LobbyPage() {
           )}
         </div>
 
-       {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (แสดงเฉพาะหน้าจอเล็ก / ซ่อนบนคอม) 📱 */}
+      {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
         <div className="mobile-only" style={{ marginBottom: "20px" }}>
           <div style={{ 
             display: "grid", 
@@ -261,37 +261,48 @@ export default function LobbyPage() {
                   key={`mob-cat-${cat.id}`}
                   onClick={() => handleCategoryFilter(cat.id)}
                   style={{
-                    background: isActive ? "linear-gradient(135deg, rgb(170, 0, 160), rgb(75, 0, 130))" : "rgba(20, 20, 42, 0.45)",
-                    backdropFilter: "blur(8px)",
-                    WebkitBackdropFilter: "blur(8px)",
-                    border: isActive ? "1px solid rgb(255, 179, 0)" : "1px solid rgba(255, 255, 255, 0.1)",
-                    borderRadius: "10px",
-                    padding: "10px 4px",
+                    background: isActive ? "linear-gradient(135deg, rgb(170, 0, 160), rgb(75, 0, 130))" : "rgba(20, 20, 42, 0.55)",
+                    backdropFilter: "blur(10px)",
+                    WebkitBackdropFilter: "blur(10px)",
+                    border: isActive ? "1px solid rgb(255, 179, 0)" : "1px solid rgba(255, 255, 255, 0.08)",
+                    borderRadius: "12px",
+                    padding: "12px 6px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
                     justifyContent: "center",
-                    gap: "6px",
+                    gap: "8px",
                     cursor: "pointer",
                     boxShadow: isActive 
-                      ? "0 6px 15px rgba(170, 0, 160, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.2)" 
-                      : "0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)",
-                    transform: isActive ? "translateY(-3px) scale(1.02)" : "translateY(0) scale(1)",
+                      ? "0 8px 20px rgba(170, 0, 160, 0.5), inset 0 2px 3px rgba(255, 255, 255, 0.25)" 
+                      : "0 4px 10px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05)",
+                    transform: isActive ? "translateY(-3px) scale(1.03)" : "translateY(0) scale(1)",
                     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                   }}
                 >
+                  {/* ไอคอนพร้อมเอฟเฟกต์เรืองแสงเมื่อถูกเลือก */}
                   <img 
                     src={cat.icon} 
                     alt={cat.label} 
-                    style={{ width: "36px", height: "36px", objectFit: "contain", filter: isActive ? "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none" }} 
+                    style={{ 
+                      width: "38px", 
+                      height: "38px", 
+                      objectFit: "contain", 
+                      filter: isActive ? "drop-shadow(0 4px 8px rgba(255, 179, 0, 0.5))" : "drop-shadow(0 2px 4px rgba(0,0,0,0.4))",
+                      transition: "transform 0.3s ease"
+                    }} 
                   />
+                  
+                  {/* 🌟 ปรับปรุงฟอนต์ตรงนี้ให้ดูสวยงาม เป็นมืออาชีพ 🌟 */}
                   <span style={{ 
-                    fontSize: "0.7rem", 
+                    fontSize: "0.72rem", 
                     fontWeight: 700, 
-                    color: isActive ? "#ffffff" : "#d1d5db",
+                    color: isActive ? "#ffffff" : "#cbd5e1",
                     textAlign: "center",
                     whiteSpace: "nowrap",
-                    textShadow: isActive ? "0 1px 2px rgba(0,0,0,0.8)" : "none"
+                    letterSpacing: "0.3px", // เพิ่มการเว้นระยะตัวอักษรให้อ่านง่ายและดูแพงขึ้น
+                    fontFamily: "'Kanit', sans-serif", // บังคับใช้ฟอนต์ Kanit 
+                    textShadow: isActive ? "0 2px 4px rgba(0,0,0,0.8)" : "0 1px 2px rgba(0,0,0,0.5)" // ใส่เงาตัวหนังสือให้มิติเด่นชัดขึ้น
                   }}>
                     {cat.label}
                   </span>
