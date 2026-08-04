@@ -453,10 +453,14 @@ export default function LobbyPage() {
               height: "34px", padding: "0 20px", borderRadius: "6px", border: "none", cursor: "pointer",
               display: "flex", alignItems: "center", gap: "6px", whiteSpace: "nowrap",
               fontSize: "0.8rem", fontWeight: 700, transition: "all 0.2s",
-              background: activeTab === tab.id ? "linear-gradient(165deg, #e62200, #ff0000)" : "transparent",
-              color: activeTab === tab.id ? "white" : "#f62a00",
-              boxShadow: activeTab === tab.id ? "0 0 7.5px rgba(255,4,4,0.5)" : "none",
+             background: activeTab === tab.id ? "linear-gradient(165deg, #7c3aed, #a855f7)" : "transparent",
+              color: activeTab === tab.id ? "white" : "#a855f7",
+              boxShadow: activeTab === tab.id ? "0 0 7.5px rgba(124,58,237,0.5)" : "none",
             }}>
+             {tab.id === "highlight" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>}
+              {tab.id === "promotion" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v13M4 14.5A3.5 3.5 0 0 1 7.5 11H12m0 0h4.5A3.5 3.5 0 0 1 20 14.5M4 14.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4.5M4 14.5h16M12 11V8m0 0a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1 5 0zm0 0a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0-5 0z" /></svg>}
+              {tab.id === "event" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" /></svg>}
+              {tab.id === "news" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" /></svg>}
               {tab.label}
             </button>
           ))}
