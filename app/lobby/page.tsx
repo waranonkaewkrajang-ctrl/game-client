@@ -465,7 +465,7 @@ export default function LobbyPage() {
             { id: "news", label: "ข่าวสาร", href: "/history" },
           ].map((tab) => (
             <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.href) router.push(tab.href); }} style={{
-              height: "38px", padding: "0 22px", borderRadius: "10px", border: "none", cursor: "pointer",
+             height: "38px", padding: "0 22px", borderRadius: "10px", cursor: "pointer",
               display: "flex", alignItems: "center", gap: "8px", whiteSpace: "nowrap",
               fontSize: "0.82rem", fontWeight: 800, transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
               /* ✨ ดีไซน์ใหม่: เมื่อเลือก (Active) จะเป็นปุ่ม 3D นูนหนาสีม่วงพรีเมียม / ถ้าไม่ได้เลือกจะโปร่งแสงสวยงาม */
