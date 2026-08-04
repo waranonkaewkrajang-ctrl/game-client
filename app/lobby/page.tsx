@@ -653,7 +653,6 @@ export default function LobbyPage() {
 
                         {/* 🟢 ปุ่มเข้าเล่นแบบซ่อนไว้ และจะโผล่มาตรงกลางเมื่อเอาเมาส์ชี้ 🟢 */}
                         <div 
-                         <div 
                           style={{
                             position: "absolute",
                             inset: "0",
