@@ -598,12 +598,15 @@ export default function LobbyPage() {
                       <div 
                         key={`room-${p}`} 
                         onClick={() => router.push(`/lobby/${p}`)}
-                        style={{ 
+                       style={{ 
                           cursor: "pointer", 
                           position: "relative",
-                          transition: "all 0.3s ease",
-                          borderRadius: "10px",
-                          overflow: "hidden"
+                          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                          borderRadius: "12px",
+                          overflow: "hidden",
+                          background: "#14142a",
+                          border: "1px solid rgba(255, 255, 255, 0.12)",
+                          boxShadow: "0 6px 16px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15)"
                         }}
                         onMouseEnter={(e) => { 
                           e.currentTarget.style.transform = "translateY(-4px) scale(1.03)"; 
@@ -650,38 +653,44 @@ export default function LobbyPage() {
 
                         {/* 🟢 ปุ่มเข้าเล่นแบบซ่อนไว้ และจะโผล่มาตรงกลางเมื่อเอาเมาส์ชี้ 🟢 */}
                         <div 
+                         <div 
                           style={{
                             position: "absolute",
-                            inset: "0", /* คลุมทับเต็มรูป */
-                            background: "rgba(0, 0, 0, 0.45)", /* ฉากหลังมืดลงนิดหน่อยเพื่อให้ปุ่มเด่นขึ้น */
+                            inset: "0",
+                            background: "rgba(0, 0, 0, 0.6)",
+                            backdropFilter: "blur(4px)",
+                            WebkitBackdropFilter: "blur(4px)",
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            opacity: 0, /* ซ่อนปุ่มไว้ตอนปกติ */
-                            transition: "opacity 0.3s ease" /* ความนุ่มนวลเวลาfade in/out */
+                            opacity: 0,
+                            transition: "opacity 0.3s ease"
                           }}
                           onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
                           onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}
                         >
-                          <div style={{
-                            background: "linear-gradient(to right, #aa00a0, #4b0082)",
-                            border: "1px solid #f59e0b",
+                          <div
+                           style={{
+                            background: "linear-gradient(180deg, #d946ef 0%, #a855f7 50%, #7e22ce 100%)",
+                            border: "1.5px solid #f59e0b",
                             color: "white",
-                            padding: "8px 22px",
-                            borderRadius: "20px",
+                            padding: "10px 24px",
+                            borderRadius: "24px",
                             fontSize: "0.85rem",
-                            fontWeight: 800,
+                            fontWeight: 900,
                             display: "flex",
                             alignItems: "center",
                             gap: "6px",
-                            boxShadow: "0 4px 15px rgba(170, 0, 160, 0.8)",
+                            letterSpacing: "0.5px",
+                            boxShadow: "0 8px 20px rgba(0, 0, 0, 0.7), inset 0 2px 3px rgba(255, 255, 255, 0.5), inset 0 -3px 4px rgba(74, 4, 78, 0.9)",
+                            textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)",
                             transform: "scale(0.95)",
-                            transition: "transform 0.3s ease"
+                            transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                           }}
                           onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
                           onMouseLeave={(e) => e.currentTarget.style.transform = "scale(0.95)"}
                           >
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.5))" }}>
                               <path d="M8 5v14l11-7z"/>
                             </svg>
                             เข้าเล่น
