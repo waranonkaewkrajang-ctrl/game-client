@@ -475,7 +475,7 @@ export default function LobbyPage() {
               backdropFilter: "blur(10px)",
               WebkitBackdropFilter: "blur(10px)",
               color: activeTab === tab.id ? "#ffffff" : "#c084fc",
-              border: activeTab === tab.id ? "1.5px solid #f59e0b" : "1px solid rgba(168, 85, 247, 0.25)",
+             border: activeTab === tab.id ? "1.5px solid rgba(168, 85, 247, 0.5)" : "1px solid rgba(168, 85, 247, 0.25)",
               boxShadow: activeTab === tab.id 
                 ? "0 6px 16px rgba(124, 58, 237, 0.6), inset 0 2px 2px rgba(255, 255, 255, 0.4), inset 0 -3px 3px rgba(76, 29, 149, 0.9)" 
                 : "0 4px 10px rgba(0, 0, 0, 0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)",
