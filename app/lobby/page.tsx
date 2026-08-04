@@ -1046,8 +1046,7 @@ export default function LobbyPage() {
 
         .rank-card { position: relative; width: 126px; flex-shrink: 0; cursor: pointer; margin-left: 30px; overflow: visible; }
         .rank-card { transition: transform 0.5s ease, width 0.5s ease; }
-        .rank-active { transform: scale(1.25); z-index: 10; }
-        .rank-active .rank-img-wrapper { box-shadow: 0 0 20px rgba(124, 58, 237, 0.6), 0 0 40px rgba(124, 58, 237, 0.3); }
+       .rank-active { transform: scale(1.25); z-index: 10; }
 
         .rank-img-wrapper {
           position: relative; width: 100%; padding-bottom: 142.857%; 
