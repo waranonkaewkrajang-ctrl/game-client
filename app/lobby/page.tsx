@@ -359,40 +359,13 @@ export default function LobbyPage() {
           <div style={{ display: "flex", gap: "20px", alignItems: "stretch" }}>
             
             {/* ด้านซ้าย: แบนเนอร์โปรโมต */}
-            <div style={{ width: "30%", flexShrink: 0 }}>
+            <div style={{ width: "100%", flexShrink: 0 }}>
               <img 
                 src="https://cdn.zabbet.com/T6WF/highlight/1775292485579-7ee0b7c4-1e20-4f31-84fb-66d0ac36c9a3.webp" 
                 alt="Highlight Banner" 
                 style={{ width: "100%", height: "100%", minHeight: "180px", borderRadius: "12px", objectFit: "cover", boxShadow: "0 10px 25px rgba(0,0,0,0.5)" }} 
               />
-            </div>
-
-            {/* ด้านขวา: สไลด์ไฮไลท์ */}
-<div style={{ width: "70%", display: "flex", gap: "12px", overflowX: "auto", scrollbarWidth: "none", padding: "10px" }}>
-  {[
-    "https://cdn.zabbet.com/T6WF/highlight/1775292444078-1c48ef6e-5795-4eee-a7bf-24e6e0cd7603.webp",
-    "https://cdn.zabbet.com/T6WF/highlight/1775292485579-7ee0b7c4-1e20-4f31-84fb-66d0ac36c9a3.webp",
-    "https://cdn.zabbet.com/T6WF/highlight/1775292527041-6587d4ab-8b09-49d7-a0a3-3a6568123d16.webp",
-    "https://cdn.zabbet.com/T6WF/highlight/1775292564291-3510d3e2-4938-4771-8ecd-ee7893017078.webp",
-  ].map((url, i) => (
-    <img
-      key={`hl-${i}`}
-      src={url}
-      alt={`Highlight ${i + 1}`}
-      loading="lazy"
-      style={{
-        width: "200px",
-        height: "100%",
-        minHeight: "180px",
-        borderRadius: "12px",
-        objectFit: "cover",
-        flexShrink: 0,
-        boxShadow: "0 8px 16px rgba(0,0,0,0.5)",
-        cursor: "pointer",
-      }}
-    />
-  ))}
-</div>
+            </div>         
           </div>
         </div>
 
