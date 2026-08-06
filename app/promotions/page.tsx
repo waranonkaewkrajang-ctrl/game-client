@@ -63,7 +63,7 @@ export default function PromotionsPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", position: "relative", overflow: "hidden", fontFamily: "'Kanit', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", position: "relative", overflowX: "hidden", paddingBottom: "100px", fontFamily: "'Kanit', sans-serif" }}>
 
       {/* เนื้อหาหลัก */}
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem 1rem", position: "relative", zIndex: 10 }}>
@@ -238,6 +238,8 @@ export default function PromotionsPage() {
           font-size: 0.95rem;
           color: #cbd5e1;
           line-height: 1.7;
+          /* หากเนื้อหายาวไปจริงๆ สามารถเพิ่ม max-height ได้ แต่ถ้าอยากให้เลื่อนดูได้อิสระ ไม่ต้องใส่ */
+          margin-bottom: 10px;
         }
         .promo-html-content h1, 
         .promo-html-content h2, 
