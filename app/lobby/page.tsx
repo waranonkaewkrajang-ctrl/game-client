@@ -1074,7 +1074,7 @@ export default function LobbyPage() {
       <style dangerouslySetInnerHTML={{__html: `
         /* 🟢 สไตล์แบนเนอร์ (เปลี่ยนชื่อคลาสใหม่หนีแคชมือถือ) 🟢 */
         .hero-banner-track { --bw: 100%; }
-        @media (min-width: 768px) { .hero-banner-track { --bw: 33.333%; } }
+        @media (min-width: 768px) { .hero-banner-track { --bw: 100%; } }
 
         .provider-grid-container, .game-grid-container {
           grid-template-columns: repeat(3, 1fr) !important;
@@ -1105,6 +1105,8 @@ export default function LobbyPage() {
         .hero-banner-img {
           width: 100%;
           height: auto;
+          max-height: 450px; /* จำกัดความสูงบนคอมพิวเตอร์ ปรับตัวเลขได้ตามต้องการ */
+          object-fit: cover; /* ให้ภาพเต็มพื้นที่พอดี (ถ้าไม่อยากให้ภาพโดนตัดขอบเลยให้เปลี่ยนจาก cover เป็น contain) */
           display: block;
           border-radius: 12px;
         }
