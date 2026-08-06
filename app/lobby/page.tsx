@@ -364,7 +364,7 @@ export default function LobbyPage() {
           </div>
 
           {/* สไลด์ไฮไลท์ auto-slide */}
-          <div style={{ position: "relative", width: "100%", overflow: "hidden", borderRadius: "12px" }}>
+          <div style={{ position: "relative", width: "100%", maxWidth: "900px", maxHeight: "300px", margin: "0 auto", overflow: "hidden", borderRadius: "12px" }}>
             <div style={{
               display: "flex",
               transition: "transform 0.5s ease-in-out",
