@@ -1134,6 +1134,12 @@ export default function LobbyPage() {
           display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none;
           padding: 10px 16px 20px 32px; 
         }
+        /* 🟢 เพิ่มคำสั่งจัดกึ่งกลางเฉพาะหน้าจอคอมพิวเตอร์ (จอใหญ่) */
+        @media (min-width: 1024px) {
+          .rank-scroll-container {
+            justify-content: center; 
+          }
+        }
         .rank-scroll-container::-webkit-scrollbar { display: none; }
 
         .rank-card { position: relative; width: 126px; flex-shrink: 0; cursor: pointer; margin-left: 30px; overflow: visible; }
