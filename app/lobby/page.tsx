@@ -391,7 +391,7 @@ export default function LobbyPage() {
                   "https://cdn.zabbet.com/T6WF/highlight/1775292564291-3510d3e2-4938-4771-8ecd-ee7893017078.webp",
                 ].map((url, i) => (
                   <img key={`hl-${i}`} src={url} alt={`Highlight ${i + 1}`} loading="lazy"
-                    style={{ width: "100%", height: "300px", borderRadius: "12px", objectFit: "cover", flexShrink: 0 }}
+                    style={{ width: "100%", height: "auto", maxHeight: "300px", borderRadius: "12px", objectFit: "contain", flexShrink: 0 }}
                   />
                 ))}
               </div>
@@ -1073,8 +1073,8 @@ export default function LobbyPage() {
       {/* 🔴 หัวใจสำคัญคือตรงนี้ครับ CSS ที่จะจัดหน้าให้ตรงตามภาพเป๊ะๆ 🔴 */}
       <style dangerouslySetInnerHTML={{__html: `
         /* 🟢 สไตล์แบนเนอร์ (เปลี่ยนชื่อคลาสใหม่หนีแคชมือถือ) 🟢 */
-        .hero-banner-track { --bw: 100%; }
-        @media (min-width: 768px) { .hero-banner-track { --bw: 100%; } }
+         .hero-banner-track { --bw: 100%; }
+         @media (min-width: 768px) { .hero-banner-track { --bw: 33.333%; } }
 
         .provider-grid-container, .game-grid-container {
           grid-template-columns: repeat(3, 1fr) !important;
@@ -1105,8 +1105,8 @@ export default function LobbyPage() {
         .hero-banner-img {
           width: 100%;
           height: auto;
-          max-height: 450px; /* จำกัดความสูงบนคอมพิวเตอร์ ปรับตัวเลขได้ตามต้องการ */
-          object-fit: cover; /* ให้ภาพเต็มพื้นที่พอดี (ถ้าไม่อยากให้ภาพโดนตัดขอบเลยให้เปลี่ยนจาก cover เป็น contain) */
+          max-height: 350px; /* ลดความสูงลงมานิดนึงจะได้ไม่ล้นจอ */
+          object-fit: contain; /* 🟢 เปลี่ยนจาก cover เป็น contain */
           display: block;
           border-radius: 12px;
         }
