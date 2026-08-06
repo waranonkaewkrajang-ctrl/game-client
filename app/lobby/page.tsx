@@ -433,10 +433,18 @@ export default function LobbyPage() {
   {/* ใช้ Class rank-scroll-container เพื่อให้เลื่อนได้แบบเดียวกัน */}
  <div className="rank-scroll-container" ref={rankScrollRef}>
     {products
-  .filter((p) => allGames.some((g) => g.product_id === p && (g.category === "SLOT" || g.category === "EGAMES" || g.type === "SLOT")))
+  .filter((p) => {
+    const isSlot = (g: Game) => ["SLOT","SLOTS","EGAMES"].includes(g.category?.toUpperCase() || "") || ["SLOT","SLOTS","EGAMES"].includes(g.type?.toUpperCase() || "");
+    return allGames.some((g) => g.product_id === p && isSlot(g));
+  })
+  .sort((a, b) => {
+    if (a.toUpperCase().includes("PG")) return -1;
+    if (b.toUpperCase().includes("PG")) return 1;
+    return 0;
+  })
   .slice(0, 10)
   .map((p, i) => {
-  const pGames = allGames.filter((g) => g.product_id === p && (g.category === "SLOT" || g.category === "EGAMES" || g.type === "SLOT"));
+  const pGames = allGames.filter((g) => g.product_id === p && (["SLOT","SLOTS","EGAMES"].includes(g.category?.toUpperCase() || "") || ["SLOT","SLOTS","EGAMES"].includes(g.type?.toUpperCase() || "")));
       const firstImg = pGames.find((g) => g.image_url);
       return (
        <div key={`provider-${p}`} className={`rank-card ${activeRank === i ? "rank-active" : ""}`} onClick={() => router.push(`/lobby/${p}`)}>
