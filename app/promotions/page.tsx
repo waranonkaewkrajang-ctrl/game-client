@@ -253,36 +253,62 @@ export default function PromotionsPage() {
           margin-bottom: 8px;
         }
 
-        /* 🟢 สไตล์ปุ่มกดด้านล่าง */
+        /* 🟢 สไตล์ปุ่มกดด้านล่าง (เพิ่มมิติ 3D) */
         .btn-claim-action {
-          background: linear-gradient(135deg, #7c3aed, #a855f7);
+          background: linear-gradient(180deg, #a855f7 0%, #7c3aed 100%);
           color: white;
           padding: 10px 24px;
-          border-radius: 8px;
-          border: none;
-          font-size: 0.9rem;
-          font-weight: 700;
+          border-radius: 12px;
+          border: 1px solid rgba(168, 85, 247, 0.8);
+          font-size: 0.95rem;
+          font-weight: 800;
           cursor: pointer;
-          transition: all 0.3s;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          /* ✨ ไฮไลต์: สร้างมิตินูนด้วยเงาด้านในขาว (บน) และเงามืด (ล่าง) */
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 
+                      inset 0 2px 2px rgba(255, 255, 255, 0.4), 
+                      inset 0 -4px 6px rgba(88, 28, 135, 0.8);
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
         .btn-claim-action:hover { 
           transform: translateY(-2px); 
-          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.5); 
+          box-shadow: 0 8px 16px rgba(124, 58, 237, 0.5), 
+                      inset 0 2px 2px rgba(255, 255, 255, 0.5), 
+                      inset 0 -4px 6px rgba(88, 28, 135, 0.9);
+        }
+        .btn-claim-action:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 
+                      inset 0 2px 6px rgba(88, 28, 135, 0.9);
         }
 
         .btn-deposit-action {
-          background: transparent;
+          background: linear-gradient(180deg, #1e1e38 0%, #0a0a14 100%);
           color: #f59e0b;
           padding: 10px 24px;
-          border-radius: 8px;
+          border-radius: 12px;
           border: 1px solid #f59e0b;
-          font-size: 0.9rem;
-          font-weight: 700;
+          font-size: 0.95rem;
+          font-weight: 800;
           cursor: pointer;
-          transition: all 0.3s;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          /* ✨ ไฮไลต์: ปุ่มมืดมีขอบทอง พร้อมมิติบุ๋มและเงาสะท้อน */
+          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 
+                      inset 0 2px 2px rgba(255, 255, 255, 0.08), 
+                      inset 0 -4px 6px rgba(0, 0, 0, 0.6);
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
         }
         .btn-deposit-action:hover { 
-          background: rgba(245, 158, 11, 0.1); 
+          background: linear-gradient(180deg, #2a2a4a 0%, #14142a 100%);
+          box-shadow: 0 8px 16px rgba(245, 158, 11, 0.25), 
+                      inset 0 2px 2px rgba(255, 255, 255, 0.15), 
+                      inset 0 -4px 6px rgba(0, 0, 0, 0.6);
+          transform: translateY(-2px);
+        }
+        .btn-deposit-action:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 
+                      inset 0 2px 6px rgba(0, 0, 0, 0.8);
         }
       `}} />
     </div>
