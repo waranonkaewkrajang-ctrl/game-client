@@ -364,13 +364,13 @@ export default function LobbyPage() {
           </div>
 
           {/* สไลด์ไฮไลท์ auto-slide */}
-          <div style={{ position: "relative", width: "100%", maxWidth: "900px", maxHeight: "300px", margin: "0 auto", overflow: "hidden", borderRadius: "12px" }}>
+          <div style={{ position: "relative", width: "100%", maxWidth: "900px", aspectRatio: "16/7", margin: "0 auto", overflow: "hidden", borderRadius: "12px" }}>
             <div style={{
               display: "flex",
               transition: "transform 0.5s ease-in-out",
               transform: `translateX(-${highlightIndex * 100}%)`,
             }}>
-              {[
+              {[  
                 "https://cdn.zabbet.com/T6WF/highlight/1775292444078-1c48ef6e-5795-4eee-a7bf-24e6e0cd7603.webp",
                 "https://cdn.zabbet.com/T6WF/highlight/1775292485579-7ee0b7c4-1e20-4f31-84fb-66d0ac36c9a3.webp",
                 "https://cdn.zabbet.com/T6WF/highlight/1775292527041-6587d4ab-8b09-49d7-a0a3-3a6568123d16.webp",
