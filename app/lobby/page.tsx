@@ -374,49 +374,98 @@ export default function LobbyPage() {
             </div>
           </div>
 
-          {/* สไลด์ไฮไลท์ auto-slide */}
-          <div style={{ position: "relative", width: "100%", maxWidth: "900px", margin: "0 auto", overflow: "hidden", borderRadius: "12px" }}>
-            <div style={{
-              display: "flex",
-              transition: "transform 0.5s ease-in-out",
-              transform: `translateX(-${highlightIndex * 100}%)`,
+          {/* Layout: สไลด์ซ้าย + Leaderboard ขวา */}
+          <div style={{ display: "flex", gap: "16px", alignItems: "stretch" }}>
+
+            {/* ซ้าย: สไลด์ไฮไลท์ */}
+            <div style={{ flex: 1, position: "relative", overflow: "hidden", borderRadius: "12px", minWidth: 0 }}>
+              <div style={{
+                display: "flex",
+                transition: "transform 0.5s ease-in-out",
+                transform: `translateX(-${highlightIndex * 100}%)`,
+              }}>
+                {[
+                  "https://cdn.zabbet.com/T6WF/highlight/1775292444078-1c48ef6e-5795-4eee-a7bf-24e6e0cd7603.webp",
+                  "https://cdn.zabbet.com/T6WF/highlight/1775292485579-7ee0b7c4-1e20-4f31-84fb-66d0ac36c9a3.webp",
+                  "https://cdn.zabbet.com/T6WF/highlight/1775292527041-6587d4ab-8b09-49d7-a0a3-3a6568123d16.webp",
+                  "https://cdn.zabbet.com/T6WF/highlight/1775292564291-3510d3e2-4938-4771-8ecd-ee7893017078.webp",
+                ].map((url, i) => (
+                  <img key={`hl-${i}`} src={url} alt={`Highlight ${i + 1}`} loading="lazy"
+                    style={{ width: "100%", minHeight: "180px", borderRadius: "12px", objectFit: "contain", flexShrink: 0 }}
+                  />
+                ))}
+              </div>
+              <div style={{ position: "absolute", bottom: "10px", left: 0, right: 0, display: "flex", justifyContent: "center", gap: "6px" }}>
+                {[0,1,2,3].map((i) => (
+                  <div key={i} onClick={() => setHighlightIndex(i)} style={{
+                    width: highlightIndex === i ? "20px" : "8px", height: "8px", borderRadius: "4px",
+                    background: highlightIndex === i ? "#a855f7" : "rgba(255,255,255,0.5)",
+                    cursor: "pointer", transition: "all 0.3s ease",
+                  }} />
+                ))}
+              </div>
+            </div>
+
+            {/* ขวา: Leaderboard ผู้ชนะล่าสุด (ซ่อนบนมือถือ) */}
+            <div className="desktop-only" style={{
+              width: "320px", flexShrink: 0, background: "rgba(10,7,21,0.8)",
+              borderRadius: "12px", border: "1px solid rgba(168,85,247,0.2)",
+              overflow: "hidden", display: "flex", flexDirection: "column",
             }}>
-              {[  
-                "https://cdn.zabbet.com/T6WF/highlight/1775292444078-1c48ef6e-5795-4eee-a7bf-24e6e0cd7603.webp",
-                "https://cdn.zabbet.com/T6WF/highlight/1775292485579-7ee0b7c4-1e20-4f31-84fb-66d0ac36c9a3.webp",
-                "https://cdn.zabbet.com/T6WF/highlight/1775292527041-6587d4ab-8b09-49d7-a0a3-3a6568123d16.webp",
-                "https://cdn.zabbet.com/T6WF/highlight/1775292564291-3510d3e2-4938-4771-8ecd-ee7893017078.webp",
-              ].map((url, i) => (
-                <img
-                  key={`hl-${i}`}
-                  src={url}
-                  alt={`Highlight ${i + 1}`}
-                  loading="lazy"
-                  style={{
-                    width: "100%",
-                    minHeight: "180px",
-                    borderRadius: "12px",
-                    objectFit: "contain",
-                    flexShrink: 0,
-                  }}
-                />
-              ))}
-            </div>
-            <div style={{ position: "absolute", bottom: "10px", left: 0, right: 0, display: "flex", justifyContent: "center", gap: "6px" }}>
-              {[0,1,2,3].map((i) => (
-                <div key={i} onClick={() => setHighlightIndex(i)} style={{
-                  width: highlightIndex === i ? "20px" : "8px",
-                  height: "8px",
-                  borderRadius: "4px",
-                  background: highlightIndex === i ? "#a855f7" : "rgba(255,255,255,0.5)",
-                  cursor: "pointer",
-                  transition: "all 0.3s ease",
-                }} />
-              ))}
-            </div>
+              {/* หัวตาราง */}
+              <div style={{
+                padding: "10px 14px", display: "flex", alignItems: "center", gap: "8px",
+                background: "linear-gradient(90deg, rgba(168,85,247,0.3), rgba(124,58,237,0.1))",
+                borderBottom: "1px solid rgba(168,85,247,0.2)",
+              }}>
+                <span style={{ fontSize: "1rem" }}>🏆</span>
+                <span style={{ color: "#c084fc", fontSize: "0.85rem", fontWeight: 800 }}>ผู้ชนะล่าสุด</span>
+              </div>
+
+              {/* รายการ */}
+              <div style={{ flex: 1, overflowY: "auto", padding: "6px" }}>
+                {[
+                  { rank: 1, name: "Treasures of Aztec", user: "095XXXX351", amount: "9,700", img: "https://cdn.zabbet.com/games/pgslot/vertical/treasures_of_aztec.jpg", provider: "PG" },
+                  { rank: 2, name: "Reel Royale Showdown", user: "061XXXX596", amount: "9,396", img: "https://cdn.zabbet.com/games/1779074287562-ae970860-2fff-4912-8603-42633cacfbc0.png", provider: "PG" },
+                  { rank: 3, name: "Mahjong Ways", user: "093XXXX257", amount: "4,080", img: "https://cdn.zabbet.com/games/pgslot/vertical/mahjong_ways.jpg", provider: "PG" },
+                  { rank: 4, name: "Wild Bounty Showdown", user: "094XXXX471", amount: "3,686", img: "https://cdn.zabbet.com/games/1670387059235-83ad96bd-1709-4920-bf64-c2efb450d4d3.png", provider: "PG" },
+                  { rank: 5, name: "Treasures of Aztec", user: "063XXXX809", amount: "3,114", img: "https://cdn.zabbet.com/games/pgslot/vertical/treasures_of_aztec.jpg", provider: "PG" },
+                ].map((item) => (
+                  <div key={`lb-${item.rank}`} style={{
+                    display: "flex", alignItems: "center", gap: "10px",
+                    padding: "8px 10px", borderRadius: "8px", marginBottom: "4px",
+                    background: item.rank % 2 === 1 ? "rgba(168,85,247,0.08)" : "transparent",
+                  }}>
+                    {/* อันดับ */}
+                    <span style={{
+                      width: "22px", height: "22px", borderRadius: "50%", display: "flex",
+                      alignItems: "center", justifyContent: "center", flexShrink: 0,
+                      fontSize: "0.7rem", fontWeight: 900, color: "white",
+                      background: item.rank <= 3
+                        ? "linear-gradient(135deg, #f59e0b, #dc2626)"
+                        : "rgba(255,255,255,0.1)",
+                    }}>{item.rank}</span>
+
+                    {/* รูปเกม */}
+                    <img src={item.img} alt={item.name} style={{
+                      width: "32px", height: "44px", borderRadius: "4px", objectFit: "cover", flexShrink: 0,
+                    }} />
+
+                    {/* ข้อมูล */}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "white", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</div>
+                      <div style={{ fontSize: "0.6rem", color: "#94a3b8" }}>{item.user}</div>
+                    </div>
+
+                    {/* จำนวนเงิน */}
+                    <span style={{ fontSize: "0.78rem", fontWeight: 800, color: "#f87171", flexShrink: 0 }}>+{item.amount}</span>
+                  </div>
+                ))}
+              </div>
+          </div>
           </div>
         </div>
-
+        
         {/* 10 ค่ายเกมสล็อต ปล่อยแรกแตก - ปรับสไตล์ใหม่ให้เหมือนโซน PG */}
 <div style={{ marginBottom: "24px" }}>
   {/* ส่วนหัวข้อ Highlight ใหม่ */}
