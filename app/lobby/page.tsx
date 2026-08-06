@@ -367,41 +367,32 @@ export default function LobbyPage() {
               />
             </div>
 
-            {/* ด้านขวา: รายการเกมแบบเลื่อนได้ */}
-            <div ref={scrollRef} style={{ width: "70%", display: "flex", alignItems: "center", gap: "24px", overflowX: "auto", scrollbarWidth: "none", padding: "10px 10px 20px 24px" }}>
-              {allGames.slice(0, 6).map((game, i) => (
-                <div key={`highlight-${game.id}`} className="rank-card" onClick={() => router.push(`/lobby/${game.product_id}`)}>
-                  
-                  {/* 🔴 แก้จุดนี้: ปรับ bottom ให้ดันขึ้นไปทับรูปภาพ และขยายขนาดตัวเลขให้เท่าโซน PG */}
-                  <div className="rank-number-svg" style={{ left: "-28px", bottom: "26px" }}>
-                    <svg width="70" height="85" viewBox="0 0 70 85">
-                      <text x="50%" y="55%" dominantBaseline="central" textAnchor="middle" fill="#0a0a14" stroke="#1298FF" strokeWidth="3" fontSize="80" fontWeight="900" fontFamily="Arial, sans-serif" paintOrder="stroke">
-                        {i + 1}
-                      </text>
-                    </svg>
-                  </div>
-
-                  <div className="rank-img-wrapper" style={{ boxShadow: "0 8px 16px rgba(0,0,0,0.6)" }}>
-                    {game.image_url && <img src={game.image_url} className="rank-glow" alt="" />}
-                    {game.image_url ? (
-                      <img src={game.image_url} className="rank-main-img" alt={game.game_name} loading="lazy" />
-                    ) : (
-                      <div className="rank-no-img">No Image</div>
-                    )}
-                    
-                    <div style={{ position: "absolute", top: "6px", right: "6px", zIndex: 20, background: "linear-gradient(135deg, rgb(244, 86, 67), rgb(252, 58, 133))", padding: "3px 8px", borderRadius: "10px", fontSize: "0.55rem", fontWeight: 800, color: "white", boxShadow: "0 2px 5px rgba(243, 45, 120, 0.7)" }}>
-                      HOT
-                    </div>
-
-                    <div className="rank-provider-badge">
-                      <span style={{ fontSize: "10px", fontWeight: 800, color: "rgba(255,255,255,0.9)" }}>{game.product_id}</span>
-                    </div>
-                  </div>
-
-                  <div className="rank-title">{game.game_name_th || game.game_name}</div>
-                </div>
-              ))}
-            </div>
+            {/* ด้านขวา: สไลด์ไฮไลท์ */}
+<div style={{ width: "70%", display: "flex", gap: "12px", overflowX: "auto", scrollbarWidth: "none", padding: "10px" }}>
+  {[
+    "https://cdn.zabbet.com/T6WF/highlight/1775292444078-1c48ef6e-5795-4eee-a7bf-24e6e0cd7603.webp",
+    "https://cdn.zabbet.com/T6WF/highlight/1775292485579-7ee0b7c4-1e20-4f31-84fb-66d0ac36c9a3.webp",
+    "https://cdn.zabbet.com/T6WF/highlight/1775292527041-6587d4ab-8b09-49d7-a0a3-3a6568123d16.webp",
+    "https://cdn.zabbet.com/T6WF/highlight/1775292564291-3510d3e2-4938-4771-8ecd-ee7893017078.webp",
+  ].map((url, i) => (
+    <img
+      key={`hl-${i}`}
+      src={url}
+      alt={`Highlight ${i + 1}`}
+      loading="lazy"
+      style={{
+        width: "200px",
+        height: "100%",
+        minHeight: "180px",
+        borderRadius: "12px",
+        objectFit: "cover",
+        flexShrink: 0,
+        boxShadow: "0 8px 16px rgba(0,0,0,0.5)",
+        cursor: "pointer",
+      }}
+    />
+  ))}
+</div>
           </div>
         </div>
 
