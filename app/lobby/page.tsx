@@ -390,17 +390,27 @@ export default function LobbyPage() {
                   "https://cdn.zabbet.com/T6WF/highlight/1775292527041-6587d4ab-8b09-49d7-a0a3-3a6568123d16.webp",
                   "https://cdn.zabbet.com/T6WF/highlight/1775292564291-3510d3e2-4938-4771-8ecd-ee7893017078.webp",
                 ].map((url, i) => (
-                  <img key={`hl-${i}`} src={url} alt={`Highlight ${i + 1}`} loading="lazy"
-                    style={{ 
-                      flex: "0 0 100%", /* ล็อกให้ 1 รูปกางเต็ม 100% ของความกว้างสไลด์เสมอ */
-                      width: "100%", 
-                      height: "350px", /* ล็อกความสูงกรอบให้เท่ากับตารางขวามือ */
-                      borderRadius: "12px", 
-                      objectFit: "contain", /* 🟢 คีย์หลัก: ย่อภาพให้แสดงเต็มใบ 100% ไม่มีการตัดขอบใดๆ ทิ้ง */
-                      objectPosition: "center", /* จัดให้อยู่ตรงกลางกล่องพอดี */
-                      flexShrink: 0 
-                   }}
-                  />
+                  /* 🟢 กล่องครอบ (คุมขนาด 100% ของสไลด์ และจัดรูปให้อยู่ตรงกลาง) */
+                  <div key={`hl-${i}`} style={{ 
+                    flex: "0 0 100%", 
+                    width: "100%", 
+                    height: "350px", 
+                    display: "flex", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    flexShrink: 0 
+                  }}>
+                    {/* 🟢 ตัวรูปภาพ (จะถูกตัดมุมมนได้พอดีกับตัวภาพเป๊ะๆ) */}
+                    <img src={url} alt={`Highlight ${i + 1}`} loading="lazy"
+                      style={{ 
+                        maxWidth: "100%", 
+                        maxHeight: "100%", 
+                        borderRadius: "16px", /* 🟢 ปรับความมนของขอบภาพได้ที่นี่ (ยิ่งเลขเยอะยิ่งโค้ง) */
+                        objectFit: "contain",
+                        boxShadow: "0 6px 15px rgba(0,0,0,0.4)" /* ✨ แถม: ใส่เงาบางๆ ให้ภาพดูมีมิติลอยขึ้นมา ไม่กลืนกับพื้นหลัง */
+                      }}
+                    />
+                  </div>
                 ))}
               </div>
               <div style={{ position: "absolute", bottom: "10px", left: 0, right: 0, display: "flex", justifyContent: "center", gap: "6px" }}>
