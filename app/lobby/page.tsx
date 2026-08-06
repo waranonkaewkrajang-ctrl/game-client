@@ -166,13 +166,26 @@ export default function LobbyPage() {
     }).catch(() => setLoading(false));
   };
 
+  const categoryMap: Record<string, string[]> = {
+    "SLOT": ["SLOT", "SLOTS", "EGAMES"],
+    "LIVECASINO": ["LIVECASINO", "LIVE", "CASINO"],
+    "FISHING": ["FISHING", "FISH"],
+    "CARD": ["CARD", "TABLE"],
+    "SPORT": ["SPORT", "SPORTS", "ESPORT"],
+  };
+
   const handleCategoryFilter = (catId: string) => {
     setSelectedCategory(catId);
     setSelectedProduct("");
     if (!catId) {
       setGames(allGames);
     } else {
-      setGames(allGames.filter((g) => g.category === catId || g.type === catId));
+      const matches = categoryMap[catId] || [catId];
+      setGames(allGames.filter((g) => {
+        const cat = (g.category || "").toUpperCase();
+        const typ = (g.type || "").toUpperCase();
+        return matches.some((m) => cat === m || typ === m);
+      }));
     }
   };
 
@@ -285,8 +298,6 @@ export default function LobbyPage() {
               { id: "FISHING", label: "ยิงปลา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-fishing-game.png" },
               { id: "CARD", label: "เกมไพ่", icon: "https://odin996.com/theme_1/img/ic-nav-menu-casino.png" },
               { id: "SPORT", label: "กีฬา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-sport.png" },
-              { id: "LOTTO", label: "หวย", icon: "https://odin996.com/theme_1/img/ic-nav-menu-lotto.png" },
-              { id: "SKILL", label: "สกิล", icon: "https://odin996.com/theme_1/img/ic-nav-menu-skill-game.png" },
             ].map((cat) => {
               const isActive = selectedCategory === cat.id;
               return (
