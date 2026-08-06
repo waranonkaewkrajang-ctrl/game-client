@@ -8,16 +8,29 @@ export default function PromotionsPage() {
   const router = useRouter();
   const [promotions, setPromotions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  
+  // 🟢 State สำหรับจัดการหมวดหมู่โปรโมชัน
+  const [activeCategory, setActiveCategory] = useState("all");
 
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
     api.get("/promotions").then((res) => { setPromotions(res.data.data || []); setLoading(false); }).catch(() => setLoading(false));
   }, []);
 
-  const typeLabels: Record<string, string> = {
-    welcome_bonus: "โบนัสต้อนรับ", deposit_bonus: "โบนัสฝากเงิน",
-    cashback: "คืนยอดเสีย", free_credit: "เครดิตฟรี", referral_bonus: "ชวนเพื่อน",
-  };
+  // 🟢 รายการหมวดหมู่โปรโมชัน
+  const categories = [
+    { id: "all", label: "ทั้งหมด" },
+    { id: "welcome_bonus", label: "สมาชิกใหม่" },
+    { id: "deposit_bonus", label: "โบนัสฝากเงิน" },
+    { id: "cashback", label: "คืนยอดเสีย" },
+    { id: "free_credit", label: "เครดิตฟรี" },
+    { id: "referral_bonus", label: "ชวนเพื่อน" },
+  ];
+
+  // 🟢 กรองโปรโมชันตามหมวดหมู่ที่เลือก
+  const filteredPromotions = activeCategory === "all" 
+    ? promotions 
+    : promotions.filter(p => p.type === activeCategory);
 
   const handleClaim = async (promo: any) => {
     try {
@@ -52,81 +65,60 @@ export default function PromotionsPage() {
   return (
     <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", position: "relative", overflow: "hidden", fontFamily: "'Kanit', sans-serif" }}>
 
-      {/* Animated Background Dice */}
-      <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
-        {Array.from({ length: 20 }).map((_, i) => (
-          <div key={i} style={{ position: "absolute", top: `${(i * 7) % 100}%`, left: `${(i * 11) % 100}%`, fontSize: `${18 + (i % 4) * 10}px`, opacity: 0.03 + (i % 3) * 0.015, animation: `floatDice ${22 + (i % 5) * 3}s ease-in-out infinite`, animationDelay: `${i * 1.2}s`, filter: "grayscale(1) brightness(0.4)" }}>🎲</div>
-        ))}
-      </div>
-
       {/* เนื้อหาหลัก */}
-      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "1.5rem", position: "relative", zIndex: 10 }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem 1rem", position: "relative", zIndex: 10 }}>
 
         {/* หัวข้อ */}
-        <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "1.5rem" }}>
-          <span style={{ fontSize: "1.5rem" }}>🎁</span>
-          <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#e2e8f0", margin: 0 }}>โปรโมชัน</h1>
+        <div style={{ marginBottom: "1.5rem" }}>
+          <h1 style={{ fontSize: "1.8rem", fontWeight: 800, color: "#e2e8f0", margin: 0, borderLeft: "4px solid #f59e0b", paddingLeft: "12px" }}>
+            โปรโมชัน
+          </h1>
+        </div>
+
+        {/* 🟢 เมนูคัดกรองโปรโมชัน (แบบปุ่มโค้งมนตามแบบที่คุณต้องการ) */}
+        <div className="promo-filter-grid">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setActiveCategory(cat.id)}
+              className={`promo-filter-btn ${activeCategory === cat.id ? "active" : ""}`}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
 
         {loading ? (
           <p style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>กำลังโหลด...</p>
-        ) : promotions.length === 0 ? (
-          <p style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>ยังไม่มีโปรโมชัน</p>
+        ) : filteredPromotions.length === 0 ? (
+          <p style={{ textAlign: "center", padding: "3rem", color: "#64748b" }}>ไม่พบโปรโมชันในหมวดหมู่นี้</p>
         ) : (
           <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-            {promotions.map((promo) => (
-              <div key={promo.id} className="promo-card">
-
-                {/* ซ้าย: รูปภาพ */}
-                <div className="promo-img-wrap">
-                  {promo.image_url ? (
-                    <img src={promo.image_url} alt={promo.title} className="promo-img" />
-                  ) : (
-                    <div className="promo-img-placeholder">
-                      <span style={{ fontSize: "2.5rem" }}>🎰</span>
-                      <span style={{ fontSize: "2rem", fontWeight: 900, color: "white" }}>{promo.bonus_percent}%</span>
-                    </div>
-                  )}
-                  <div className="promo-type-badge">
-                    {typeLabels[promo.type] || promo.type}
-                  </div>
+            {filteredPromotions.map((promo) => (
+              
+              /* 🟢 โครงสร้าง Card แบบใหม่ (Grid ซ้ายรูป-ขวาข้อความ) */
+              <div key={promo.id} className="promo-layout-card">
+                
+                {/* ฝั่งซ้าย: รูปภาพ */}
+                <div className="promo-img-section">
+                  <img src={promo.image_url || "/banner.jpg"} alt={promo.title} className="promo-image-full" loading="lazy" />
                 </div>
 
-                {/* ขวา: รายละเอียด */}
-                <div className="promo-detail">
-                  <h3 className="promo-title">{promo.title}</h3>
-
+                {/* ฝั่งขวา: รายละเอียดข้อความ (HTML) */}
+                <div className="promo-text-section">
+                  <h2 className="promo-heading">{promo.title}</h2>
+                  
                   {promo.description && (
-                    <div className="promo-desc" dangerouslySetInnerHTML={{ __html: promo.description }} />
+                    <div className="promo-html-content" dangerouslySetInnerHTML={{ __html: promo.description }} />
                   )}
 
-                  {/* เงื่อนไข 4 ช่อง */}
-                  <div className="promo-conditions">
-                    <div className="promo-cond-item">
-                      <span className="promo-cond-label">ฝากขั้นต่ำ</span>
-                      <span className="promo-cond-value">฿{parseFloat(promo.min_deposit).toLocaleString()}</span>
-                    </div>
-                    <div className="promo-cond-item">
-                      <span className="promo-cond-label">โบนัส</span>
-                      <span className="promo-cond-value" style={{ color: "#a855f7", fontSize: "1.1rem" }}>{promo.bonus_percent}%</span>
-                    </div>
-                    <div className="promo-cond-item">
-                      <span className="promo-cond-label">สูงสุด</span>
-                      <span className="promo-cond-value">฿{parseFloat(promo.max_bonus).toLocaleString()}</span>
-                    </div>
-                    <div className="promo-cond-item">
-                      <span className="promo-cond-label">Turnover</span>
-                      <span className="promo-cond-value">{promo.turnover_multiplier}x</span>
-                    </div>
-                  </div>
-
-                  {/* ปุ่ม */}
-                  <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
-                    <button onClick={() => handleClaim(promo)} className="promo-btn-claim">
-                      🎁 รับโปรนี้
+                  {/* ปุ่มกดรับโปรและฝากเงิน */}
+                  <div style={{ display: "flex", gap: "10px", marginTop: "24px" }}>
+                    <button onClick={() => handleClaim(promo)} className="btn-claim-action">
+                      รับโปรโมชัน
                     </button>
-                    <button onClick={() => router.push(`/wallet?promo=${promo.id}`)} className="promo-btn-deposit">
-                      ฝากเลย →
+                    <button onClick={() => router.push(`/wallet?promo=${promo.id}`)} className="btn-deposit-action">
+                      ฝากเงิน
                     </button>
                   </div>
                 </div>
@@ -138,163 +130,157 @@ export default function PromotionsPage() {
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes floatDice {
-          0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
-          15% { opacity: 0.05; }
-          50% { transform: translate(-10px, -15px) rotate(180deg) scale(1.8); opacity: 0.06; }
-          85% { opacity: 0.03; }
-          100% { transform: translate(0, 0) rotate(360deg) scale(0.3); opacity: 0; }
+        /* 🟢 สไตล์เมนูคัดกรอง (Filter Buttons) */
+        .promo-filter-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+          margin-bottom: 24px;
+        }
+        @media (min-width: 768px) {
+          .promo-filter-grid {
+            grid-template-columns: repeat(3, 1fr);
+          }
+        }
+        @media (min-width: 1024px) {
+          .promo-filter-grid {
+            grid-template-columns: repeat(6, 1fr);
+          }
         }
 
-        .promo-card {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          background: linear-gradient(135deg, rgba(88,28,135,0.5) 0%, rgba(30,10,60,0.8) 100%);
-          border: 1px solid rgba(168,85,247,0.25);
-          border-radius: 16px;
-          overflow: hidden;
+        .promo-filter-btn {
+          width: 100%;
+          padding: 10px;
+          border-radius: 30px; /* มุมโค้งมนตามเรฟเฟอเรนซ์ */
+          font-size: 0.95rem;
+          font-weight: 700;
+          cursor: pointer;
           transition: all 0.3s ease;
-          box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          color: #d1d5db;
         }
-        .promo-card:hover {
-          border-color: rgba(168,85,247,0.5);
-          box-shadow: 0 12px 32px rgba(124,58,237,0.25);
-          transform: translateY(-2px);
+        .promo-filter-btn.active {
+          background: linear-gradient(90deg, #aa00a0, #4b0082); /* สีโทนเว็บคุณ */
+          border: 1px solid #f59e0b;
+          color: #ffffff;
+          box-shadow: 0 4px 15px rgba(170, 0, 160, 0.4);
         }
-        .promo-img-wrap {
-          position: relative;
-          min-height: 200px;
-          overflow: hidden;
+        .promo-filter-btn:hover:not(.active) {
+          background: rgba(255, 255, 255, 0.1);
         }
-        .promo-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
+
+        /* 🟢 สไตล์การ์ดโปรโมชัน (ซ้ายรูป-ขวาข้อความ) */
+        .promo-layout-card {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 20px;
+          background: #14142a; /* พื้นหลังสีเข้ม */
+          border-radius: 24px;
+          padding: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.05);
+          transition: transform 0.3s ease;
         }
-        .promo-img-placeholder {
-          width: 100%;
-          height: 100%;
-          min-height: 200px;
-          background: linear-gradient(135deg, #7c3aed, #a855f7);
+        .promo-layout-card:hover {
+          border-color: rgba(168, 85, 247, 0.3);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        @media (min-width: 768px) {
+          .promo-layout-card {
+            grid-template-columns: 1fr 1fr; /* แบ่ง 2 คอลัมน์บน PC */
+            padding: 0;
+          }
+        }
+
+        .promo-img-section {
+          padding: 10px;
           display: flex;
-          flex-direction: column;
           align-items: center;
           justify-content: center;
-          gap: 8px;
         }
-        .promo-type-badge {
-          position: absolute;
-          top: 12px;
-          left: 12px;
-          background: linear-gradient(135deg, #7c3aed, #a855f7);
-          color: white;
-          font-size: 0.65rem;
-          font-weight: 700;
-          padding: 4px 12px;
-          border-radius: 20px;
-          box-shadow: 0 2px 8px rgba(124,58,237,0.5);
+        @media (min-width: 768px) {
+          .promo-img-section {
+            padding: 24px;
+          }
         }
-        .promo-detail {
-          padding: 20px;
+
+        .promo-image-full {
+          width: 100%;
+          height: auto;
+          border-radius: 16px;
+          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .promo-text-section {
+          padding: 10px 10px 20px;
+          color: #ffffff;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          gap: 12px;
         }
-        .promo-title {
-          font-size: 1.1rem;
-          font-weight: 800;
-          color: #e2e8f0;
-          margin: 0;
-          line-height: 1.4;
-        }
-        .promo-desc {
-          font-size: 0.75rem;
-          color: #94a3b8;
-          line-height: 1.7;
-          max-height: 120px;
-          overflow-y: auto;
-          scrollbar-width: thin;
-        }
-        .promo-desc h1, .promo-desc h2, .promo-desc h3 {
-          font-size: 0.75rem;
-          font-weight: 400;
-          margin: 0;
-        }
-        .promo-conditions {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 8px;
-        }
-        .promo-cond-item {
-          background: rgba(0,0,0,0.2);
-          border: 1px solid rgba(168,85,247,0.15);
-          border-radius: 10px;
-          padding: 8px 10px;
-          text-align: center;
-        }
-        .promo-cond-label {
-          display: block;
-          font-size: 0.6rem;
-          color: #94a3b8;
-          margin-bottom: 2px;
-        }
-        .promo-cond-value {
-          display: block;
-          font-size: 0.85rem;
-          font-weight: 800;
-          color: #e2e8f0;
-        }
-        .promo-btn-claim {
-          flex: 1;
-          padding: 10px;
-          border-radius: 10px;
-          border: none;
-          cursor: pointer;
-          background: linear-gradient(135deg, #7c3aed, #a855f7);
-          color: white;
-          font-size: 0.85rem;
-          font-weight: 700;
-          font-family: inherit;
-          box-shadow: 0 4px 12px rgba(124,58,237,0.4);
-          transition: all 0.3s;
-        }
-        .promo-btn-claim:hover {
-          transform: translateY(-1px);
-          box-shadow: 0 6px 16px rgba(124,58,237,0.5);
-        }
-        .promo-btn-deposit {
-          padding: 10px 16px;
-          border-radius: 10px;
-          border: 1px solid rgba(168,85,247,0.3);
-          cursor: pointer;
-          background: rgba(124,58,237,0.1);
-          color: #c084fc;
-          font-size: 0.85rem;
-          font-weight: 700;
-          font-family: inherit;
-          transition: all 0.3s;
-        }
-        .promo-btn-deposit:hover {
-          background: rgba(124,58,237,0.2);
-          border-color: rgba(168,85,247,0.5);
+        @media (min-width: 768px) {
+          .promo-text-section {
+            padding: 24px 24px 24px 0;
+          }
         }
 
-        @media (max-width: 768px) {
-          .promo-card {
-            grid-template-columns: 1fr;
-          }
-          .promo-img-wrap {
-            min-height: 160px;
-            max-height: 200px;
-          }
-          .promo-detail {
-            padding: 16px;
-          }
-          .promo-title {
-            font-size: 1rem;
-          }
+        .promo-heading {
+          font-size: 1.3rem;
+          font-weight: 800;
+          margin: 0 0 12px 0;
+          color: #f59e0b; /* สีเหลือง/ส้ม */
+          line-height: 1.4;
+        }
+
+        /* จัดการหน้าตาของเนื้อหา HTML ดั้งเดิมของคุณ */
+        .promo-html-content {
+          font-size: 0.95rem;
+          color: #cbd5e1;
+          line-height: 1.7;
+        }
+        .promo-html-content h1, 
+        .promo-html-content h2, 
+        .promo-html-content h3 {
+          font-size: 0.95rem;
+          font-weight: 400;
+          margin-bottom: 8px;
+          color: #e2e8f0;
+        }
+        .promo-html-content p {
+          margin-bottom: 8px;
+        }
+
+        /* 🟢 สไตล์ปุ่มกดด้านล่าง */
+        .btn-claim-action {
+          background: linear-gradient(135deg, #7c3aed, #a855f7);
+          color: white;
+          padding: 10px 24px;
+          border-radius: 8px;
+          border: none;
+          font-size: 0.9rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.3s;
+        }
+        .btn-claim-action:hover { 
+          transform: translateY(-2px); 
+          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.5); 
+        }
+
+        .btn-deposit-action {
+          background: transparent;
+          color: #f59e0b;
+          padding: 10px 24px;
+          border-radius: 8px;
+          border: 1px solid #f59e0b;
+          font-size: 0.9rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: all 0.3s;
+        }
+        .btn-deposit-action:hover { 
+          background: rgba(245, 158, 11, 0.1); 
         }
       `}} />
     </div>
