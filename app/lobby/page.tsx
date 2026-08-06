@@ -392,6 +392,7 @@ export default function LobbyPage() {
                 ].map((url, i) => (
                   <img key={`hl-${i}`} src={url} alt={`Highlight ${i + 1}`} loading="lazy"
                     style={{ 
+                    flex: "0 0 100%",
                     width: "100%", 
                     height: "350px", 
                     borderRadius: "12px", 
