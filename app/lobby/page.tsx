@@ -432,8 +432,11 @@ export default function LobbyPage() {
   
   {/* ใช้ Class rank-scroll-container เพื่อให้เลื่อนได้แบบเดียวกัน */}
  <div className="rank-scroll-container" ref={rankScrollRef}>
-    {products.slice(0, 10).map((p, i) => {
-      const pGames = allGames.filter((g) => g.product_id === p);
+    {products
+  .filter((p) => allGames.some((g) => g.product_id === p && (g.category === "SLOT" || g.category === "EGAMES" || g.type === "SLOT")))
+  .slice(0, 10)
+  .map((p, i) => {
+  const pGames = allGames.filter((g) => g.product_id === p && (g.category === "SLOT" || g.category === "EGAMES" || g.type === "SLOT"));
       const firstImg = pGames.find((g) => g.image_url);
       return (
        <div key={`provider-${p}`} className={`rank-card ${activeRank === i ? "rank-active" : ""}`} onClick={() => router.push(`/lobby/${p}`)}>
