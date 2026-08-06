@@ -391,7 +391,14 @@ export default function LobbyPage() {
                   "https://cdn.zabbet.com/T6WF/highlight/1775292564291-3510d3e2-4938-4771-8ecd-ee7893017078.webp",
                 ].map((url, i) => (
                   <img key={`hl-${i}`} src={url} alt={`Highlight ${i + 1}`} loading="lazy"
-                    style={{ width: "100%", height: "auto", maxHeight: "300px", borderRadius: "12px", objectFit: "contain", flexShrink: 0 }}
+                    style={{ 
+                    width: "100%", 
+                    height: "360px", /* 🟢 เพิ่มความสูงให้มากขึ้น (เช่นจาก 300 เป็น 360) กรอบจะสูงขึ้นและภาพไม่ต้องโดนบีบซูมลึกเกินไป */
+                    borderRadius: "12px", 
+                    objectFit: "cover", /* 🟢 ให้ภาพขยายเต็มกรอบซ้าย-ขวา */
+                    objectPosition: "center 10%", /* 🟢 สำคัญมาก! บังคับให้โฟกัสจาก "ด้านบนสุด" ของภาพ (ป้องกันโลโก้เกมโดนตัดหัวขาด) */
+                    flexShrink: 0 
+                   }}
                   />
                 ))}
               </div>
