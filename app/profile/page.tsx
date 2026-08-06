@@ -207,10 +207,20 @@ export default function ProfilePage() {
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
               <button 
                 onClick={() => {
-                  const newVal = !acceptPromo;
-                  setAcceptPromo(newVal);
-                  localStorage.setItem("accept_promo", newVal ? "1" : "0");
-                }}
+  const newVal = !acceptPromo;
+  setAcceptPromo(newVal);
+  localStorage.setItem("accept_promo", newVal ? "1" : "0");
+  Swal.fire({
+    text: newVal ? "เปิดรับโปรโมชันแล้ว" : "ปิดรับโปรโมชันแล้ว",
+    icon: newVal ? "success" : "info",
+    toast: true,
+    position: "top",
+    showConfirmButton: false,
+    timer: 2000,
+    background: "#27272a",
+    color: "#fafafa",
+  });
+}}
                 style={{ 
                   position: "relative", width: "68px", height: "32px", borderRadius: "30px", cursor: "pointer",
                   background: acceptPromo ? "linear-gradient(180deg, #16a34a, #15803d)" : "linear-gradient(180deg, #dc2626, #b91c1c)",
