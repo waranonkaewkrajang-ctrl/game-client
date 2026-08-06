@@ -187,3 +187,16 @@ select.input {
   .sidebar-desktop { display: none !important; }
   .sidebar-mobile { display: flex !important; }
 }
+.app-bg {
+  min-height: 100vh;
+  background-image: url('/bg-mobile.webp');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+@media (min-width: 1024px) {
+  .app-bg {
+    background-image: url('/bg-desktop.webp');
+  }
+}
