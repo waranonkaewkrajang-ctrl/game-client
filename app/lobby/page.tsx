@@ -393,10 +393,10 @@ export default function LobbyPage() {
                   <img key={`hl-${i}`} src={url} alt={`Highlight ${i + 1}`} loading="lazy"
                     style={{ 
                     width: "100%", 
-                    height: "360px", /* 🟢 เพิ่มความสูงให้มากขึ้น (เช่นจาก 300 เป็น 360) กรอบจะสูงขึ้นและภาพไม่ต้องโดนบีบซูมลึกเกินไป */
+                    height: "350px", 
                     borderRadius: "12px", 
-                    objectFit: "cover", /* 🟢 ให้ภาพขยายเต็มกรอบซ้าย-ขวา */
-                    objectPosition: "center 10%", /* 🟢 สำคัญมาก! บังคับให้โฟกัสจาก "ด้านบนสุด" ของภาพ (ป้องกันโลโก้เกมโดนตัดหัวขาด) */
+                    objectFit: "cover", 
+                    objectPosition: "center", /* 🟢 แก้ตรงนี้จาก center 10% ให้เหลือแค่ center */
                     flexShrink: 0 
                    }}
                   />
