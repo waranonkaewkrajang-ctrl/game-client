@@ -375,7 +375,7 @@ export default function LobbyPage() {
           </div>
 
           {/* Layout: สไลด์ซ้าย + Leaderboard ขวา */}
-          <div style={{ display: "flex", gap: "16px", alignItems: "stretch" }}>
+          <div className="highlight-layout" style={{ display: "flex", gap: "16px", alignItems: "stretch", maxHeight: "280px" }}>
 
             {/* ซ้าย: สไลด์ไฮไลท์ */}
             <div style={{ flex: 1, position: "relative", overflow: "hidden", borderRadius: "12px", minWidth: 0 }}>
@@ -465,7 +465,7 @@ export default function LobbyPage() {
           </div>
           </div>
         </div>
-        
+
         {/* 10 ค่ายเกมสล็อต ปล่อยแรกแตก - ปรับสไตล์ใหม่ให้เหมือนโซน PG */}
 <div style={{ marginBottom: "24px" }}>
   {/* ส่วนหัวข้อ Highlight ใหม่ */}
@@ -1186,6 +1186,13 @@ export default function LobbyPage() {
           .footer-bank-img { height: 32px; width: 32px; border-radius: 6px; }
           .footer-license-img { height: 28px; margin: 2px; }
         }
+
+        @media (max-width: 1023px) {
+  .highlight-layout {
+    flex-direction: column !important;
+    max-height: none !important;
+  }
+}
         
         /* Skeleton Shimmer Loading */
 @keyframes shimmer {
