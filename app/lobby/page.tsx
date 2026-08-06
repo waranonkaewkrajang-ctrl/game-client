@@ -375,7 +375,7 @@ export default function LobbyPage() {
           </div>
 
           {/* Layout: สไลด์ซ้าย + Leaderboard ขวา */}
-          <div className="highlight-layout" style={{ display: "flex", gap: "16px", alignItems: "stretch", maxHeight: "280px" }}>
+          <div className="highlight-layout" style={{ display: "flex", gap: "16px", alignItems: "stretch" }}>
 
             {/* ซ้าย: สไลด์ไฮไลท์ */}
             <div style={{ flex: 1, position: "relative", overflow: "hidden", borderRadius: "12px", minWidth: 0 }}>
@@ -391,7 +391,7 @@ export default function LobbyPage() {
                   "https://cdn.zabbet.com/T6WF/highlight/1775292564291-3510d3e2-4938-4771-8ecd-ee7893017078.webp",
                 ].map((url, i) => (
                   <img key={`hl-${i}`} src={url} alt={`Highlight ${i + 1}`} loading="lazy"
-                    style={{ width: "100%", minHeight: "180px", borderRadius: "12px", objectFit: "contain", flexShrink: 0 }}
+                    style={{ width: "100%", height: "300px", borderRadius: "12px", objectFit: "cover", flexShrink: 0 }}
                   />
                 ))}
               </div>
