@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
@@ -14,7 +14,7 @@ interface FinanceSettings {
   amounts: number[];
 }
 
-export default function WalletPage() {
+function WalletContent() {
   const router = useRouter();
   const [wallet, setWallet] = useState<any>(null);
   const [tab, setTab] = useState<"deposit" | "withdraw">("deposit");
@@ -482,5 +482,13 @@ export default function WalletPage() {
         }
       `}} />
     </div>
+  );
+}
+
+export default function WalletPage() {
+  return (
+    <Suspense fallback={<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b" }}>กำลังโหลด...</div>}>
+      <WalletContent />
+    </Suspense>
   );
 }
