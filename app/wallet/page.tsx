@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
 
@@ -31,6 +31,9 @@ export default function WalletPage() {
   const [selectedBank, setSelectedBank] = useState<number>(0);
   const [truewalletAccounts, setTruewalletAccounts] = useState<{phone: string; name: string; is_active: boolean}[]>([]);
 
+  const searchParams = useSearchParams();
+  const [selectedPromo, setSelectedPromo] = useState<any>(null);
+
   useEffect(() => {
     const token = localStorage.getItem("user_token");
     const storedUser = localStorage.getItem("user_data");
@@ -38,6 +41,15 @@ export default function WalletPage() {
     if (storedUser) setUserData(JSON.parse(storedUser));
     fetchWallet();
     fetchFinanceSettings();
+
+    // โหลดโปรถ้ามี ?promo=ID และเปิดรับโปรอยู่
+    const promoId = searchParams.get("promo");
+    const acceptPromo = localStorage.getItem("accept_promo");
+    if (promoId && acceptPromo !== "0") {
+      api.get(`/promotions/${promoId}`).then((res) => {
+        if (res.data.data) setSelectedPromo(res.data.data);
+      }).catch(() => {});
+    }
   }, []);
 
   const fetchWallet = () => {
@@ -69,6 +81,12 @@ export default function WalletPage() {
     }
     setLoading(true);
     try {
+      await api.post("/deposits", {
+        amount: val,
+        channel,
+        promotion_id: selectedPromo?.id || null,
+      });
+
       if (finance.banks.length > 0) {
         const minutesLimit = 15;
         let secondsLeft = minutesLimit * 60;
@@ -214,6 +232,37 @@ export default function WalletPage() {
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               </button>
             </div>
+
+            {/* แสดงโปรที่เลือก */}
+            {selectedPromo && tab === "deposit" && (
+              <div style={{
+                background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(168,85,247,0.15))",
+                border: "1px solid rgba(168,85,247,0.4)",
+                borderRadius: "12px", padding: "12px 16px",
+                display: "flex", alignItems: "center", gap: "12px",
+                marginTop: "8px",
+              }}>
+                <div style={{
+                  width: "44px", height: "44px", borderRadius: "10px",
+                  background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  fontSize: "1rem", fontWeight: 800, color: "white", flexShrink: 0,
+                }}>
+                  {selectedPromo.bonus_percent}%
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ color: "#e2e8f0", fontSize: "0.85rem", fontWeight: 700 }}>{selectedPromo.title}</div>
+                  <div style={{ color: "#c084fc", fontSize: "0.72rem" }}>
+                    ฝากขั้นต่ำ ฿{parseFloat(selectedPromo.min_deposit).toLocaleString()} | โบนัสสูงสุด ฿{parseFloat(selectedPromo.max_bonus).toLocaleString()} | Turnover {selectedPromo.turnover_multiplier}x
+                  </div>
+                </div>
+                <button onClick={() => setSelectedPromo(null)} style={{
+                  background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.3)",
+                  borderRadius: "8px", padding: "4px 10px", cursor: "pointer",
+                  color: "#fca5a5", fontSize: "0.7rem", fontWeight: 600,
+                }}>ยกเลิก</button>
+              </div>
+            )}
 
            {/* Content */}
             <div className="mt-5 md:mt-6 w-full">

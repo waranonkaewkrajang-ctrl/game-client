@@ -18,6 +18,8 @@ export default function ProfilePage() {
     api.get("/wallet/balance").then((res) => setWallet(res.data.data)).catch(() => {});
     api.get("/rewards/summary").then((res) => setRewards(res.data.data)).catch(() => {});
     api.get("/user/rank").then((res) => setRank(res.data.data)).catch(() => {});
+    const savedPromo = localStorage.getItem("accept_promo");
+    if (savedPromo !== null) setAcceptPromo(savedPromo === "1");
   }, []);
 
   // ฟังก์ชันคัดลอก + แจ้งเตือนสไตล์ Minimal Toast
@@ -204,7 +206,11 @@ export default function ProfilePage() {
             {/* ฝั่งขวา: สวิตช์เปิด-ปิดโปร */}
             <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "10px" }}>
               <button 
-                onClick={() => setAcceptPromo(!acceptPromo)}
+                onClick={() => {
+                  const newVal = !acceptPromo;
+                  setAcceptPromo(newVal);
+                  localStorage.setItem("accept_promo", newVal ? "1" : "0");
+                }}
                 style={{ 
                   position: "relative", width: "68px", height: "32px", borderRadius: "30px", cursor: "pointer",
                   background: acceptPromo ? "linear-gradient(180deg, #16a34a, #15803d)" : "linear-gradient(180deg, #dc2626, #b91c1c)",
