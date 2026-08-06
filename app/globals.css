@@ -4,11 +4,22 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  background: #0a0a14;
+  background-color: #0a0a14;
+  background-image: url('/bg-mobile.webp');
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #e2e8f0;
   font-family: 'Inter', -apple-system, sans-serif;
   min-height: 100vh;
   overflow-x: clip;
+}
+
+@media (min-width: 1024px) {
+  body {
+    background-image: url('/bg-desktop.webp');
+  }
 }
 
 ::-webkit-scrollbar { width: 6px; }
