@@ -682,37 +682,6 @@ export default function LobbyPage() {
                   </div>
                 </a>
               </li>
-
-              <li className="nav-item">
-                <a className={`nav-link -hot-game nav-id-6 ${selectedCategory === "LOTTO" ? "active" : ""}`} onClick={(e) => { e.preventDefault(); handleCategoryFilter("LOTTO"); }} style={{ display: "flex", alignItems: "center", background: selectedCategory === "LOTTO" ? "linear-gradient(90deg, #aa00a0, #4b0082)" : "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", textDecoration: "none" }}>
-                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-lotto.png" alt="หวย ล็อตเตอรี่" className="img-fluid -ic-menu" width="55" height="55" />
-                  <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
-                    <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>LOTTO</h2>
-                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>หวย ล็อตเตอรี่</div>
-                  </div>
-                </a>
-              </li>
-
-              <li className="nav-item">
-                <a className={`nav-link -hot-game nav-id-7 ${selectedCategory === "SKILL" ? "active" : ""}`} onClick={(e) => { e.preventDefault(); handleCategoryFilter("SKILL"); }} style={{ display: "flex", alignItems: "center", background: selectedCategory === "SKILL" ? "linear-gradient(90deg, #aa00a0, #4b0082)" : "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", textDecoration: "none" }}>
-                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-skill-game.png" alt="สกิลเกมส์" className="img-fluid -ic-menu" width="55" height="55" />
-                  <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
-                    <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>SKILL</h2>
-                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>สกิลเกมส์</div>
-                  </div>
-                </a>
-              </li>
-
-              <li className="nav-item">
-                <a className={`nav-link -hot-game nav-id-8 ${selectedCategory === "TRADE" ? "active" : ""}`} onClick={(e) => { e.preventDefault(); handleCategoryFilter("TRADE"); }} style={{ display: "flex", alignItems: "center", background: selectedCategory === "TRADE" ? "linear-gradient(90deg, #aa00a0, #4b0082)" : "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", textDecoration: "none" }}>
-                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-trade-game.png" alt="เทรด" className="img-fluid -ic-menu" width="55" height="55" />
-                  <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
-                    <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>TRADE</h2>
-                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>เทรด</div>
-                  </div>
-                </a>
-              </li>
-
             </ul>
           </div>
 
