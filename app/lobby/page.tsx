@@ -392,13 +392,13 @@ export default function LobbyPage() {
                 ].map((url, i) => (
                   <img key={`hl-${i}`} src={url} alt={`Highlight ${i + 1}`} loading="lazy"
                     style={{ 
-                    flex: "0 0 100%",
-                    width: "100%", 
-                    height: "350px", 
-                    borderRadius: "12px", 
-                    objectFit: "cover", 
-                    objectPosition: "center", /* 🟢 แก้ตรงนี้จาก center 10% ให้เหลือแค่ center */
-                    flexShrink: 0 
+                      flex: "0 0 100%", /* ล็อกให้ 1 รูปกางเต็ม 100% ของความกว้างสไลด์เสมอ */
+                      width: "100%", 
+                      height: "350px", /* ล็อกความสูงกรอบให้เท่ากับตารางขวามือ */
+                      borderRadius: "12px", 
+                      objectFit: "contain", /* 🟢 คีย์หลัก: ย่อภาพให้แสดงเต็มใบ 100% ไม่มีการตัดขอบใดๆ ทิ้ง */
+                      objectPosition: "center", /* จัดให้อยู่ตรงกลางกล่องพอดี */
+                      flexShrink: 0 
                    }}
                   />
                 ))}
