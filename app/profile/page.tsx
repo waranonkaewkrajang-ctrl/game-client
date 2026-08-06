@@ -217,8 +217,8 @@ export default function ProfilePage() {
     position: "top",
     showConfirmButton: false,
     timer: 2000,
-    background: "#27272a",
-    color: "#fafafa",
+    background: "#ffffff",
+    color: "#0f172a",
   });
 }}
                 style={{ 
