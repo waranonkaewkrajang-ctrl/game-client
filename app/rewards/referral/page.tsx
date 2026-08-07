@@ -103,15 +103,52 @@ export default function ReferralPage() {
         </div>
 
         {/* รหัสแนะนำ */}
-        <div style={{ background: "rgba(26, 26, 46, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "20px", border: "1px solid rgba(124,58,237,0.3)", marginBottom: "1rem", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)" }}>
-          <p style={{ margin: "0 0 8px", fontSize: "12px", color: "#a1a1aa", textAlign: "center" }}>รหัสแนะนำของคุณ</p>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "10px", marginBottom: "12px" }}>
-            <span style={{ fontSize: "24px", fontWeight: 700, color: "#a78bfa", letterSpacing: "3px" }}>{user?.referral_code || "-"}</span>
-            <button onClick={copyCode} style={{ background: "rgba(167,139,250,0.15)", border: "1px solid rgba(167,139,250,0.3)", borderRadius: "6px", padding: "6px 10px", cursor: "pointer", color: "#a78bfa", fontSize: "12px", fontWeight: 600 }}>
+        <div style={{ 
+          background: "rgba(10, 10, 20, 0.75)", 
+          backdropFilter: "blur(16px)", 
+          WebkitBackdropFilter: "blur(16px)", 
+          borderRadius: "20px", 
+          padding: "24px 20px", 
+          border: "1px solid rgba(255, 255, 255, 0.2)", 
+          marginBottom: "1rem", 
+          boxShadow: "0 8px 24px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.1)" 
+        }}>
+          <p style={{ margin: "0 0 12px", fontSize: "14px", color: "#ffffff", textAlign: "center", fontWeight: 700, letterSpacing: "0.5px", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
+            รหัสแนะนำของคุณ
+          </p>
+          
+          {/* กล่องใส่รหัสแบบยุบตัว (Inset) ให้รหัสดูเด่น */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "12px", marginBottom: "16px", background: "rgba(0,0,0,0.5)", padding: "12px 16px", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "inset 0 4px 8px rgba(0,0,0,0.6)" }}>
+            <span style={{ fontSize: "28px", fontWeight: 800, color: "#10b981", letterSpacing: "4px", textShadow: "0 2px 4px rgba(0,0,0,0.9), 0 0 15px rgba(16,185,129,0.4)" }}>
+              {user?.referral_code || "-"}
+            </span>
+            <button onClick={copyCode} style={{ 
+              background: "linear-gradient(180deg, #34d399 0%, #10b981 100%)", 
+              border: "1px solid #6ee7b7", 
+              borderRadius: "8px", padding: "8px 14px", cursor: "pointer", 
+              color: "#022c22", fontSize: "13px", fontWeight: 800,
+              boxShadow: "0 4px 8px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.4)",
+              transition: "transform 0.1s" 
+            }}
+            onMouseDown={(e) => e.currentTarget.style.transform = "translateY(2px)"}
+            onMouseUp={(e) => e.currentTarget.style.transform = "translateY(0)"}
+            onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
+            >
               คัดลอก
             </button>
           </div>
-          <button onClick={copyLink} style={{ width: "100%", padding: "10px", borderRadius: "8px", border: "1px solid rgba(124,58,237,0.3)", background: "rgba(124,58,237,0.1)", color: "#a78bfa", fontSize: "13px", fontWeight: 600, cursor: "pointer", transition: "all 0.2s" }}>
+
+          <button onClick={copyLink} style={{ 
+            width: "100%", padding: "14px", borderRadius: "12px", 
+            border: "1px solid rgba(16, 185, 129, 0.5)", 
+            background: "rgba(16, 185, 129, 0.15)", 
+            color: "#34d399", fontSize: "14px", fontWeight: 800, cursor: "pointer", 
+            transition: "all 0.2s",
+            boxShadow: "0 4px 10px rgba(0,0,0,0.3)" 
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.background = "rgba(16, 185, 129, 0.25)"}
+          onMouseLeave={(e) => e.currentTarget.style.background = "rgba(16, 185, 129, 0.15)"}
+          >
             คัดลอกลิงก์แนะนำเพื่อน
           </button>
         </div>
