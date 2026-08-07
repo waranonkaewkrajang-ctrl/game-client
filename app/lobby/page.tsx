@@ -1109,20 +1109,28 @@ export default function LobbyPage() {
           transition: transform 0.4s ease, opacity 0.4s ease;
         }
         
+        /* 🟢 สไตล์แบนเนอร์ให้ Auto ปรับตามอุปกรณ์ (มือถือ, ไอแพด, คอม) */
         .hero-banner-img {
           width: 100%;
-          height: auto; /* 🟢 ปล่อยให้ความสูงคำนวณตามสัดส่วนภาพดั้งเดิม 100% */
-          max-height: none; /* 🟢 ปลดล็อกการจำกัดความสูงบนมือถือ รูปจะไม่โดนบีบแล้ว */
-          object-fit: contain; /* 🟢 บังคับให้โชว์ภาพครบทุกส่วน ไม่มีการตัดขอบ */
+          height: auto;
+          max-height: 240px; /* 📱 ล็อกความสูงบน "มือถือ" ไม่ให้รูปแนวตั้งล้นจอ */
+          object-fit: contain; /* 🟢 บังคับย่อภาพให้โชว์เต็มใบ 100% ไม่มีการตัดขอบ */
           display: block;
           border-radius: 12px;
+          margin: 0 auto; /* จัดให้อยู่กึ่งกลางเสมอ */
         }
 
-        /* 🟢 สำหรับหน้าจอคอมพิวเตอร์ (ล็อกความสูงไว้นิดนึง ป้องกันภาพใหญ่ล้นจอ) */
+        /* 💻 สำหรับแท็บเล็ต / iPad แนวตั้ง */
         @media (min-width: 768px) {
           .hero-banner-img {
-            max-height: 380px; 
-            object-fit: contain;
+            max-height: 320px; /* ขยายเพดานความสูงให้พอดีจอกลาง */
+          }
+        }
+
+        /* 🖥️ สำหรับหน้าจอคอมพิวเตอร์ / แล็ปท็อป */
+        @media (min-width: 1024px) {
+          .hero-banner-img {
+            max-height: 400px; /* ขยายเพดานความสูงให้พอดีจอใหญ่ */
           }
         }
 
