@@ -101,8 +101,7 @@ export default function CashbackPage() {
           border: "1px solid rgba(236, 72, 153, 0.3)",
           boxShadow: "0 12px 30px rgba(0,0,0,0.5), inset 0 3px 2px rgba(255,255,255,0.1), inset 0 -4px 6px rgba(0,0,0,0.4)" 
         }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", background: "rgba(0,0,0,0.3)", padding: "4px 14px", borderRadius: "20px", marginBottom: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
-            <span style={{ fontSize: "16px" }}>🎁</span>
+          <div style={{ display: "inline-flex", alignItems: "center", background: "rgba(0,0,0,0.3)", padding: "4px 14px", borderRadius: "20px", marginBottom: "12px", border: "1px solid rgba(255,255,255,0.05)" }}>
             <span style={{ fontSize: "12px", color: "#cbd5e1", fontWeight: 600, letterSpacing: "0.5px" }}>ยอดเสียที่สามารถรับได้</span>
           </div>
           
