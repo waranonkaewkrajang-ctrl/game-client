@@ -55,7 +55,8 @@ export default function ProfilePage() {
   // คอมโพเนนต์แถวข้อมูลแบบ Minimal (ใช้ซ้ำได้)
   const InfoRow = ({ label, value, isLast = false, canCopy = false, highlight = false, isBank = false }: any) => (
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "18px 0", borderBottom: isLast ? "none" : "1px solid #27272a" }}>
-      <span style={{ fontSize: "14px", color: "#a1a1aa", fontWeight: 400 }}>{label}</span>
+      {/* 🟢 ปรับสีฟอนต์ให้สว่างขึ้น (ขาวอมเทา), เพิ่มความหนา (600), และใส่เงาบางๆ ให้ตัวอักษรตัดกับพื้นหลัง */}
+      <span style={{ fontSize: "14px", color: "#f1f5f9", fontWeight: 600, letterSpacing: "0.3px", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>{label}</span>
       <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
         
         {/* --- ส่วนที่เพิ่มเข้ามาใหม่: โลโก้ธนาคาร --- */}
