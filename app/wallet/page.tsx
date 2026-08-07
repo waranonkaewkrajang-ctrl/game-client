@@ -258,8 +258,6 @@ function WalletContent() {
                       objectFit: "contain", 
                       /* 🟢 ใส่พื้นหลังสีมืดรองรับกรณีสัดส่วนภาพไม่เต็ม 65x45 */
                       backgroundColor: "rgba(0, 0, 0, 0.4)", 
-                      /* 🟢 บังคับเรนเดอร์ภาพความคมชัดสูงสุดเวลาย่อขนาด */
-                      imageRendering: "high-quality", 
                       /* 🟢 ใส่กรอบสว่างบางๆ ให้ภาพดูคมและป๊อปอัพขึ้นมา */
                       border: "1px solid rgba(255, 255, 255, 0.15)",
                       boxShadow: "0 2px 8px rgba(0,0,0,0.5)" 
