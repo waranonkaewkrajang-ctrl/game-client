@@ -488,24 +488,45 @@ export default function LobbyPage() {
 <div style={{ marginBottom: "24px" }}>
   {/* ส่วนหัวข้อ Highlight ใหม่ */}
   <div style={{
-    background: "linear-gradient(90deg, rgba(245, 158, 11, 0.2) 0%, rgba(26, 26, 46, 0) 100%)",
+    /* 🟢 ปรับพื้นหลังให้ทึบตรงกลาง และสว่างหัวท้ายนิดๆ ดันให้กรอบเด่นขึ้น */
+    background: "linear-gradient(90deg, rgba(20, 20, 42, 0.95) 0%, rgba(245, 158, 11, 0.15) 50%, rgba(20, 20, 42, 0.95) 100%)",
     padding: "12px 20px",
     borderLeft: "4px solid #f59e0b",
+    borderTop: "1px solid rgba(245, 158, 11, 0.15)", /* 🟢 เพิ่มขอบเรืองแสงด้านบน */
+    borderBottom: "1px solid rgba(245, 158, 11, 0.15)", /* 🟢 เพิ่มขอบเรืองแสงด้านล่าง */
     borderRadius: "8px",
     marginBottom: "16px",
     display: "flex",
     alignItems: "center",
     gap: "10px",
     marginLeft: "16px",
-    marginRight: "16px"
+    marginRight: "16px",
+    /* 🟢 ใส่เงาสีดำหนาๆ ให้กรอบลอยขึ้นมาจากพื้นหลัง และใส่เงาสะท้อนด้านใน */
+    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(245, 158, 11, 0.05)",
+    backdropFilter: "blur(6px)"
   }}>
-    {/* 🔴 แทนที่จรวดด้วยรูป GIF ไฟ (ปรับขนาด width/height ให้พอดีกับตัวอักษร) */}
+    {/* 🔴 รูป GIF ไฟ */}
     <img 
       src="https://kingwin88.live/storage/images/wallet/hot.gif" 
       alt="Hot" 
-      style={{ width: "35px", height: "35px", objectFit: "contain", margin: "-8px 0" }} 
+      style={{ 
+        width: "35px", 
+        height: "35px", 
+        objectFit: "contain", 
+        margin: "-8px 0",
+        filter: "drop-shadow(0 2px 4px rgba(245, 158, 11, 0.5))" /* 🟢 เพิ่มแสงเรืองรองใต้รูปไฟ */
+      }} 
     />
-    <h3 style={{ fontSize: "1rem", fontWeight: 800, color: "#f59e0b", margin: 0 }}>10 ค่ายเกมสล็อต ปล่อยแรกแตก!!!</h3>
+    <h3 style={{ 
+      fontSize: "1.05rem", 
+      fontWeight: 800, 
+      color: "#f59e0b", 
+      margin: 0,
+      /* 🟢 ใส่เงาสีดำทับด้วยเรืองแสงสีส้มบางๆ ให้ตัวหนังสือตัดกับพื้นหลังชัดเจน */
+      textShadow: "0 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(245, 158, 11, 0.4)" 
+    }}>
+      10 ค่ายเกมสล็อต ปล่อยแรกแตก!!!
+    </h3>
   </div>
   
   {/* ใช้ Class rank-scroll-container เพื่อให้เลื่อนได้แบบเดียวกัน */}
