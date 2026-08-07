@@ -236,31 +236,71 @@ function WalletContent() {
             {/* แสดงโปรที่เลือก */}
             {selectedPromo && tab === "deposit" && (
               <div style={{
-                background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(168,85,247,0.15))",
-                border: "1px solid rgba(168,85,247,0.4)",
-                borderRadius: "12px", padding: "12px 16px",
-                display: "flex", alignItems: "center", gap: "12px",
+                background: "linear-gradient(135deg, rgba(88, 28, 135, 0.7), rgba(30, 10, 60, 0.85))", /* 🟢 พื้นหลังสีม่วงเข้มขึ้น ช่วยขับให้ตัวหนังสือสว่างและคลีน */
+                border: "1px solid rgba(168,85,247,0.5)",
+                borderRadius: "16px", padding: "12px 14px",
+                display: "flex", alignItems: "center", gap: "14px",
                 marginTop: "8px",
+                boxShadow: "0 8px 20px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.1)",
+                backdropFilter: "blur(10px)"
               }}>
-                <div style={{
-                  width: "44px", height: "44px", borderRadius: "10px",
-                  background: "linear-gradient(135deg, #7c3aed, #a855f7)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  fontSize: "1rem", fontWeight: 800, color: "white", flexShrink: 0,
-                }}>
-                  {selectedPromo.bonus_percent}%
-                </div>
+                
+                {/* 🟢 เปลี่ยนเป็นโชว์รูปภาพ ถ้าไม่มีรูปถึงจะโชว์ตัวเลขสำรอง */}
+                {selectedPromo.image_url ? (
+                  <img 
+                    src={selectedPromo.image_url} 
+                    alt={selectedPromo.title} 
+                    style={{ 
+                      width: "65px", height: "45px", 
+                      borderRadius: "8px", 
+                      objectFit: "cover", 
+                      boxShadow: "0 2px 8px rgba(0,0,0,0.5)" 
+                    }} 
+                  />
+                ) : (
+                  <div style={{
+                    width: "44px", height: "44px", borderRadius: "10px",
+                    background: "linear-gradient(135deg, #7c3aed, #a855f7)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "1rem", fontWeight: 800, color: "white", flexShrink: 0,
+                    boxShadow: "0 2px 8px rgba(0,0,0,0.5)"
+                  }}>
+                    {selectedPromo.bonus_percent}%
+                  </div>
+                )}
+
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ color: "#e2e8f0", fontSize: "0.85rem", fontWeight: 700 }}>{selectedPromo.title}</div>
-                  <div style={{ color: "#c084fc", fontSize: "0.72rem" }}>
-                    ฝากขั้นต่ำ ฿{parseFloat(selectedPromo.min_deposit).toLocaleString()} | โบนัสสูงสุด ฿{parseFloat(selectedPromo.max_bonus).toLocaleString()} | Turnover {selectedPromo.turnover_multiplier}x
+                  {/* 🟢 ปรับฟอนต์ให้สว่างสุด มีความหนา และมีเงาให้ดูน่าตื่นเต้น */}
+                  <div style={{ 
+                    color: "#ffffff", 
+                    fontSize: "0.95rem", 
+                    fontWeight: 800, 
+                    letterSpacing: "0.3px",
+                    textShadow: "0 1px 3px rgba(0,0,0,0.8)" 
+                  }}>
+                    {selectedPromo.title}
+                  </div>
+                  <div style={{ color: "#cbd5e1", fontSize: "0.72rem", fontWeight: 500, marginTop: "2px" }}>
+                    ฝากขั้นต่ำ ฿{parseFloat(selectedPromo.min_deposit).toLocaleString()} | รับโบนัส ฿{parseFloat(selectedPromo.max_bonus).toLocaleString()} | เทิร์น {selectedPromo.turnover_multiplier}x
                   </div>
                 </div>
+                
+                {/* 🟢 ปุ่มยกเลิก 3D สีแดง */}
                 <button onClick={() => setSelectedPromo(null)} style={{
-                  background: "rgba(239,68,68,0.2)", border: "1px solid rgba(239,68,68,0.3)",
-                  borderRadius: "8px", padding: "4px 10px", cursor: "pointer",
-                  color: "#fca5a5", fontSize: "0.7rem", fontWeight: 600,
-                }}>ยกเลิก</button>
+                  background: "linear-gradient(180deg, #ef4444 0%, #b91c1c 100%)",
+                  border: "1px solid #9f1239",
+                  borderRadius: "10px", padding: "6px 14px", cursor: "pointer",
+                  color: "#ffffff", fontSize: "0.75rem", fontWeight: 800,
+                  boxShadow: "0 4px 8px rgba(0,0,0,0.4), inset 0 2px 2px rgba(255,255,255,0.3), inset 0 -3px 4px rgba(159, 18, 57, 0.8)",
+                  textShadow: "0 1px 2px rgba(0,0,0,0.6)",
+                  transition: "transform 0.1s"
+                }}
+                onMouseDown={(e) => e.currentTarget.style.transform = "translateY(2px)"}
+                onMouseUp={(e) => e.currentTarget.style.transform = "translateY(0)"}
+                onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
+                >
+                  ยกเลิก
+                </button>
               </div>
             )}
 
