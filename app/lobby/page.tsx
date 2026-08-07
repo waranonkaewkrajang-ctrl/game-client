@@ -556,16 +556,36 @@ export default function LobbyPage() {
   </div>
 </div>
         {/* Highlight Marquee Bar */}
-        <div style={{ display: "flex", alignItems: "center", height: "34px", borderRadius: "6px", overflow: "hidden", marginBottom: "10px", border: "1px solid #242424", background: "transparent" }}>
+        <div style={{ 
+          display: "flex", 
+          alignItems: "center", 
+          height: "38px", /* 🟢 เพิ่มความสูงนิดนึงให้ดูไม่อึดอัด */
+          borderRadius: "8px", 
+          overflow: "hidden", 
+          marginBottom: "14px", 
+          border: "1px solid rgba(168, 85, 247, 0.4)", /* 🟢 เปลี่ยนขอบสีดำเป็นสีม่วงอ่อนๆ ให้เข้ากับธีม */
+          background: "linear-gradient(90deg, rgba(20, 20, 42, 0.9) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(20, 20, 42, 0.9) 100%)", /* 🟢 ใส่พื้นหลังไล่สีทึบๆ ช่วยดันตัวหนังสือให้เด่น */
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)", /* 🟢 ใส่เงาให้กรอบดูลอยมีมิติ */
+          backdropFilter: "blur(4px)" 
+        }}>
           <div style={{ padding: "0 12px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}>
               <path d="M18 8C19.1 8 20 8.9 20 10V14C20 15.1 19.1 16 18 16" stroke="#a855f7" strokeWidth="2" strokeLinecap="round"/>
               <path d="M13 6L7 10H3V14H7L13 18V6Z" fill="#a855f7" stroke="#a855f7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               <path d="M21.5 7.5C22.9 9.4 22.9 14.6 21.5 16.5" stroke="#c084fc" strokeWidth="2" strokeLinecap="round"/>
             </svg>
           </div>
           <div style={{ flex: 1, overflow: "hidden", whiteSpace: "nowrap" }}>
-            <div className="marquee-scroll" style={{ display: "inline-block", animation: "marquee 20s linear infinite", fontSize: "0.8rem", color: "rgba(255,255,255,0.9)" }}>
+            <div className="marquee-scroll" style={{ 
+              display: "inline-block", 
+              animation: "marquee 20s linear infinite", 
+              fontSize: "0.85rem", /* 🟢 ปรับฟอนต์ให้ใหญ่ขึ้นนิดนึง */
+              fontWeight: 600, /* 🟢 เพิ่มความหนาให้ตัวหนังสือ */
+              color: "#ffffff", /* 🟢 ขาวสว่างสุด */
+              letterSpacing: "0.5px",
+              /* ✨ ไฮไลต์: ใส่เงาสีดำเข้มๆ รองหลังตัวอักษร ตามด้วยเงาเรืองแสงสีม่วง */
+              textShadow: "0 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(168, 85, 247, 0.8)" 
+            }}>
               ยินดีต้อนรับสมาชิกทุกท่าน ให้ความลื่นไหลในการเล่นไม่มีสะดุด พร้อมดูแลทุกเวลา รองรับผู้เล่นนับแสนจากทั่วโลก ด้วยเซิร์ฟเวอร์ประสิทธิภาพสูงระดับสากล
             </div>
           </div>
