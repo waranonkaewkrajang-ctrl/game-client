@@ -5,7 +5,7 @@ import BottomMenu from "@/components/BottomMenu";
 
 export const metadata: Metadata = {
   title: "SNAKE168",
-  description: "SNAKE168 Admin Management System",
+  description: "SNAKE168 Online Gaming Platform",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
