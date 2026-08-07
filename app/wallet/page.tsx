@@ -200,7 +200,7 @@ function WalletContent() {
   const maxAmount = tab === "deposit" ? finance.max_deposit : finance.max_withdraw;
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", position: "relative", overflow: "hidden", fontFamily: "'Kanit', sans-serif" }} className="pb-24 md:pb-10">
+    <div style={{ minHeight: "100vh", background: "transparent", position: "relative", overflow: "hidden", fontFamily: "'Kanit', sans-serif" }} className="pb-24 md:pb-10">
 
       {/* Dice Background */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>

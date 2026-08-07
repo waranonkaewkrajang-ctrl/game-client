@@ -45,7 +45,7 @@ export default function ProfilePage() {
   };
 
   if (!user) return (
-    <div style={{ minHeight: "100vh", background: "#09090b" }}>
+    <div style={{ minHeight: "100vh", background: "transparent" }}>
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
         <div style={{ width: "24px", height: "24px", border: "2px solid #27272a", borderTopColor: "#fafafa", borderRadius: "50%", animation: "spin 1s linear infinite" }} />
       </div>
@@ -92,7 +92,7 @@ export default function ProfilePage() {
   );
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", color: "#fafafa", paddingBottom: "4rem", fontFamily: "'Kanit', sans-serif", position: "relative", overflow: "hidden" }}>
+    <div style={{ minHeight: "100vh", background: "transparent", color: "#fafafa", paddingBottom: "4rem", fontFamily: "'Kanit', sans-serif", position: "relative", overflow: "hidden" }}>
       {/* เอฟเฟกต์แสงจางๆ ด้านบน (Subtle Glow) */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
   {Array.from({ length: 20 }).map((_, i) => (

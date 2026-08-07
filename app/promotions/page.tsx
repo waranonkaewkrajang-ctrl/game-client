@@ -63,7 +63,7 @@ export default function PromotionsPage() {
   };
 
   return (
-    <div style={{ minHeight: "100vh", background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", position: "relative", overflowX: "hidden", paddingBottom: "100px", fontFamily: "'Kanit', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "transparent", position: "relative", overflowX: "hidden", paddingBottom: "100px", fontFamily: "'Kanit', sans-serif" }}>
 
       {/* เนื้อหาหลัก */}
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "2rem 1rem", position: "relative", zIndex: 10 }}>

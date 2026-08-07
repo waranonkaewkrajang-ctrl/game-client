@@ -19,7 +19,7 @@ export default function HistoryPage() {
   const fmt = (n: number) => n?.toLocaleString("th-TH", { minimumFractionDigits: 2 });
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0f0f1a" }}>
+    <div style={{ minHeight: "100vh", background: "transparent" }}>
       <div style={{ maxWidth: "800px", margin: "0 auto", padding: "1.5rem" }}>
         <h1 style={{ fontSize: "1.5rem", fontWeight: 800, color: "#e2e8f0", marginBottom: "1rem" }}>ประวัติ</h1>
 
