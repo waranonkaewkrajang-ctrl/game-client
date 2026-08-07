@@ -284,7 +284,7 @@ export default function ProfilePage() {
             <div>
               <p style={{ fontSize: "15px", color: "#fafafa", margin: "0 0 4px" }}>คะแนน</p>
               <p style={{ fontSize: "20px", fontWeight: 700, color: "#eab308", margin: 0, textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>
-                {user?.points ?? "200"} 
+                {wallet?.point_balance ?? 0}
               </p>
             </div>
           </div>
