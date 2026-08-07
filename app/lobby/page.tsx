@@ -1111,17 +1111,17 @@ export default function LobbyPage() {
         
         .hero-banner-img {
           width: 100%;
-          height: auto;
-          /* 🟢 บนมือถือปล่อยความสูงออโต้ ให้ภาพขยายเต็มซ้ายขวา 100% เสมอ */
-          object-fit: cover; 
+          height: auto; /* 🟢 ปล่อยให้ความสูงคำนวณตามสัดส่วนภาพดั้งเดิม 100% */
+          max-height: none; /* 🟢 ปลดล็อกการจำกัดความสูงบนมือถือ รูปจะไม่โดนบีบแล้ว */
+          object-fit: contain; /* 🟢 บังคับให้โชว์ภาพครบทุกส่วน ไม่มีการตัดขอบ */
           display: block;
           border-radius: 12px;
         }
 
-        /* 🟢 แยกลอจิก: ล็อกความสูง 350px และโชว์ภาพเต็มใบแบบไม่ตัดขอบ เฉพาะบนคอมพิวเตอร์/แท็บเล็ต */
+        /* 🟢 สำหรับหน้าจอคอมพิวเตอร์ (ล็อกความสูงไว้นิดนึง ป้องกันภาพใหญ่ล้นจอ) */
         @media (min-width: 768px) {
           .hero-banner-img {
-            max-height: 350px;
+            max-height: 380px; 
             object-fit: contain;
           }
         }
