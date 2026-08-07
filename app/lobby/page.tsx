@@ -1112,10 +1112,18 @@ export default function LobbyPage() {
         .hero-banner-img {
           width: 100%;
           height: auto;
-          max-height: 350px; /* ลดความสูงลงมานิดนึงจะได้ไม่ล้นจอ */
-          object-fit: contain; /* 🟢 เปลี่ยนจาก cover เป็น contain */
+          /* 🟢 บนมือถือปล่อยความสูงออโต้ ให้ภาพขยายเต็มซ้ายขวา 100% เสมอ */
+          object-fit: cover; 
           display: block;
           border-radius: 12px;
+        }
+
+        /* 🟢 แยกลอจิก: ล็อกความสูง 350px และโชว์ภาพเต็มใบแบบไม่ตัดขอบ เฉพาะบนคอมพิวเตอร์/แท็บเล็ต */
+        @media (min-width: 768px) {
+          .hero-banner-img {
+            max-height: 350px;
+            object-fit: contain;
+          }
         }
 
         /* สไตล์ 10 อันดับเกมมาแรง */
