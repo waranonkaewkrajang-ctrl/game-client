@@ -88,7 +88,7 @@ export default function CashbackPage() {
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
           </button>
           <div>
-            <h1 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#ffffff", margin: 0, letterSpacing: "0.5px", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>รับยอดเสีย (Cashback)</h1>
+            <h1 style={{ fontSize: "1.2rem", fontWeight: 800, color: "#ffffff", margin: 0, letterSpacing: "0.5px", textShadow: "0 2px 4px rgba(0,0,0,0.5)" }}>รับยอดเสีย</h1>
             <p style={{ fontSize: "0.75rem", color: "#a1a1aa", margin: 0 }}>คำนวณจากยอดเสียที่เล่นในแต่ละวัน</p>
           </div>
         </div>
