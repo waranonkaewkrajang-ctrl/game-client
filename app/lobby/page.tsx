@@ -666,7 +666,7 @@ export default function LobbyPage() {
               
               <li className="nav-item">
                 <a className={`nav-link -hot-game nav-id-0 ${selectedCategory === "" ? "active" : ""}`} onClick={(e) => { e.preventDefault(); handleCategoryFilter(""); }} style={{ display: "flex", alignItems: "center", background: selectedCategory === "" ? "linear-gradient(90deg, #aa00a0, #4b0082)" : "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", textDecoration: "none" }}>
-                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" alt="ยอดนิยม" className="img-fluid -ic-menu" width="55" height="55" />
+                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" alt="ยอดนิยม" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>HOT GAME</h2>
                     <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>ยอดนิยม</div>
@@ -676,7 +676,7 @@ export default function LobbyPage() {
 
               <li className="nav-item">
                 <a className={`nav-link -hot-game nav-id-1 ${selectedCategory === "LIVECASINO" ? "active" : ""}`} onClick={(e) => { e.preventDefault(); handleCategoryFilter("LIVECASINO"); }} style={{ display: "flex", alignItems: "center", background: selectedCategory === "LIVECASINO" ? "linear-gradient(90deg, #aa00a0, #4b0082)" : "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", textDecoration: "none" }}>
-                  <img src="https://odin996.com/theme_1/img/icons8-cards-48.png" alt="คาสิโนสด" className="img-fluid -ic-menu" width="55" height="55" />
+                  <img src="https://odin996.com/theme_1/img/icons8-cards-48.png" alt="คาสิโนสด" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>CASINO</h2>
                     <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>คาสิโนสด</div>
@@ -686,7 +686,7 @@ export default function LobbyPage() {
 
               <li className="nav-item">
                 <a className={`nav-link -hot-game nav-id-2 ${selectedCategory === "SLOT" ? "active" : ""}`} onClick={(e) => { e.preventDefault(); handleCategoryFilter("SLOT"); }} style={{ display: "flex", alignItems: "center", background: selectedCategory === "SLOT" ? "linear-gradient(90deg, #aa00a0, #4b0082)" : "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", textDecoration: "none" }}>
-                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-slot.png" alt="สล็อตเกมส์" className="img-fluid -ic-menu" width="55" height="55" />
+                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-slot.png" alt="สล็อตเกมส์" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>SLOT</h2>
                     <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>สล็อตเกมส์</div>
@@ -696,7 +696,7 @@ export default function LobbyPage() {
 
               <li className="nav-item">
                 <a className={`nav-link -hot-game nav-id-3 ${selectedCategory === "FISHING" ? "active" : ""}`} onClick={(e) => { e.preventDefault(); handleCategoryFilter("FISHING"); }} style={{ display: "flex", alignItems: "center", background: selectedCategory === "FISHING" ? "linear-gradient(90deg, #aa00a0, #4b0082)" : "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", textDecoration: "none" }}>
-                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-fishing-game.png" alt="ยิงปลา" className="img-fluid -ic-menu" width="55" height="55" />
+                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-fishing-game.png" alt="ยิงปลา" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>FISHING</h2>
                     <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>ยิงปลา</div>
@@ -706,7 +706,7 @@ export default function LobbyPage() {
 
               <li className="nav-item">
                 <a className={`nav-link -hot-game nav-id-4 ${selectedCategory === "CARD" ? "active" : ""}`} onClick={(e) => { e.preventDefault(); handleCategoryFilter("CARD"); }} style={{ display: "flex", alignItems: "center", background: selectedCategory === "CARD" ? "linear-gradient(90deg, #aa00a0, #4b0082)" : "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", textDecoration: "none" }}>
-                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-casino.png" alt="เกมไพ่" className="img-fluid -ic-menu" width="55" height="55" />
+                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-casino.png" alt="เกมไพ่" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>CARD</h2>
                     <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>เกมไพ่</div>
@@ -716,7 +716,7 @@ export default function LobbyPage() {
 
               <li className="nav-item">
                 <a className={`nav-link -hot-game nav-id-5 ${selectedCategory === "SPORT" ? "active" : ""}`} onClick={(e) => { e.preventDefault(); handleCategoryFilter("SPORT"); }} style={{ display: "flex", alignItems: "center", background: selectedCategory === "SPORT" ? "linear-gradient(90deg, #aa00a0, #4b0082)" : "rgba(255,255,255,0.05)", padding: "10px", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer", textDecoration: "none" }}>
-                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-sport.png" alt="กีฬา" className="img-fluid -ic-menu" width="55" height="55" />
+                  <img src="https://odin996.com/theme_1/img/ic-nav-menu-sport.png" alt="กีฬา" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>SPORT</h2>
                     <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>กีฬา</div>
