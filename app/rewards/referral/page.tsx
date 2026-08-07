@@ -153,9 +153,9 @@ export default function ReferralPage() {
           </button>
         </div>
 
-        {/* 🌟 Hero Card: ยอดรอรับ (3D นูน สีเขียวมรกต) */}
+        {/* 🌟 Hero Card: ยอดรอรับ (3D นูน สีม่วงอมชมพู) */}
         <div style={{ 
-          background: "linear-gradient(180deg, rgba(6, 78, 59, 0.95) 0%, rgba(2, 44, 34, 0.98) 100%)", 
+          background: "linear-gradient(180deg, rgba(88, 28, 135, 0.95) 0%, rgba(157, 23, 77, 0.98) 100%)", 
           backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", 
           borderRadius: "24px", padding: "28px 20px", marginBottom: "1.5rem", textAlign: "center",
           border: "1px solid rgba(255, 255, 255, 0.15)",
@@ -166,8 +166,8 @@ export default function ReferralPage() {
           </div>
           
           <div style={{ marginBottom: "24px", display: "flex", justifyContent: "center", alignItems: "baseline", gap: "6px" }}>
-            <span style={{ fontSize: "24px", color: "#10b981", fontWeight: 700, textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>฿</span>
-            <span style={{ fontSize: "42px", fontWeight: 800, color: "#ffffff", textShadow: "0 4px 8px rgba(0,0,0,0.9), 0 0 20px rgba(16, 185, 129, 0.6)", letterSpacing: "1px" }}>
+            <span style={{ fontSize: "24px", color: "#eab308", fontWeight: 700, textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>฿</span>
+            <span style={{ fontSize: "42px", fontWeight: 800, color: "#ffffff", textShadow: "0 4px 8px rgba(0,0,0,0.9), 0 0 20px rgba(234, 179, 8, 0.6)", letterSpacing: "1px" }}>
               {fmt(summary?.referral?.pending || 0)}
             </span>
           </div>
@@ -271,17 +271,17 @@ export default function ReferralPage() {
           background: rgba(20, 20, 30, 0.85);
         }
 
-        /* 🟢 ปุ่มกดรับค่าแนะนำ (สีเขียวสว่าง 3D) */
+        /* 🟢 ปุ่มกดรับค่าแนะนำ (สีทอง 3D เพื่อให้เข้ากับกล่องสีม่วง) */
         .btn-claim-active {
-          background: linear-gradient(180deg, #6ee7b7 0%, #10b981 50%, #047857 100%);
-          color: #022c22;
-          border: 1px solid #6ee7b7 !important;
-          box-shadow: 0 8px 16px rgba(16, 185, 129, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.8), inset 0 -4px 5px rgba(6, 78, 59, 0.8);
+          background: linear-gradient(180deg, #fef08a 0%, #eab308 50%, #ca8a04 100%);
+          color: #422006;
+          border: 1px solid #fef08a !important;
+          box-shadow: 0 8px 16px rgba(202, 138, 4, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.8), inset 0 -4px 5px rgba(133, 77, 14, 0.8);
           text-shadow: 0 1px 1px rgba(255,255,255,0.4);
         }
         .btn-claim-active:active {
           transform: translateY(4px);
-          box-shadow: 0 2px 4px rgba(16, 185, 129, 0.4), inset 0 2px 6px rgba(6, 78, 59, 0.9);
+          box-shadow: 0 2px 4px rgba(202, 138, 4, 0.4), inset 0 2px 6px rgba(133, 77, 14, 0.9);
         }
         .btn-claim-active:hover {
           filter: brightness(1.1);
