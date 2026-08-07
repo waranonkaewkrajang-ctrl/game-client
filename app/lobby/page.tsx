@@ -1102,7 +1102,8 @@ export default function LobbyPage() {
       <style dangerouslySetInnerHTML={{__html: `
         /* 🟢 สไตล์แบนเนอร์ (เปลี่ยนชื่อคลาสใหม่หนีแคชมือถือ) 🟢 */
          .hero-banner-track { --bw: 100%; }
-         @media (min-width: 768px) { .hero-banner-track { --bw: 33.333%; } }
+         /* 🟢 แก้ตรงนี้: ให้เป็น 100% เสมอ ป้องกันการคำนวณสไลด์บนจอคอมเพี้ยน */
+         @media (min-width: 768px) { .hero-banner-track { --bw: 100%; } }
 
         .provider-grid-container, .game-grid-container {
           grid-template-columns: repeat(3, 1fr) !important;
@@ -1124,9 +1125,10 @@ export default function LobbyPage() {
         }
         
         .hero-banner-item {
-          min-width: var(--bw);
-          flex-shrink: 0;
+          flex: 0 0 var(--bw);
+          width: var(--bw);
           padding: 0 4px;
+          box-sizing: border-box; /* 🟢 หัวใจสำคัญ: ป้องกัน padding ดันกรอบจนภาพเหลื่อมกัน */
           transition: transform 0.4s ease, opacity 0.4s ease;
         }
         
