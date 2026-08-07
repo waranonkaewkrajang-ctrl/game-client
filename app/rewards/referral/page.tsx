@@ -116,25 +116,43 @@ export default function ReferralPage() {
           </button>
         </div>
 
-        {/* ยอดรอรับ */}
-        <div style={{ background: "rgba(26, 26, 46, 0.4)", backdropFilter: "blur(8px)", borderRadius: "16px", padding: "24px 20px", border: "1px solid rgba(124,58,237,0.3)", marginBottom: "1rem", textAlign: "center", boxShadow: "0 8px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05), 0 0 20px rgba(124,58,237,0.1)" }}>
-          <p style={{ margin: "0 0 4px", fontSize: "13px", color: "#a1a1aa" }}>ค่าแนะนำรอรับ</p>
-          <p style={{ margin: "0 0 16px", fontSize: "36px", fontWeight: 700, color: "#fafafa" }}>
-            <span style={{ fontSize: "18px", color: "#10b981", marginRight: "4px" }}>฿</span>
-            {fmt(summary?.referral?.pending || 0)}
-          </p>
+        {/* 🌟 Hero Card: ยอดรอรับ (3D นูน สีเขียวมรกต) */}
+        <div style={{ 
+          background: "linear-gradient(180deg, rgba(6, 78, 59, 0.95) 0%, rgba(2, 44, 34, 0.98) 100%)", 
+          backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)", 
+          borderRadius: "24px", padding: "28px 20px", marginBottom: "1.5rem", textAlign: "center",
+          border: "1px solid rgba(255, 255, 255, 0.15)",
+          boxShadow: "0 12px 30px rgba(0,0,0,0.7), inset 0 3px 2px rgba(255,255,255,0.15), inset 0 -4px 6px rgba(0,0,0,0.5)" 
+        }}>
+          <div style={{ display: "inline-flex", alignItems: "center", background: "rgba(0,0,0,0.5)", padding: "6px 18px", borderRadius: "20px", marginBottom: "12px", border: "1px solid rgba(255,255,255,0.15)", boxShadow: "0 4px 8px rgba(0,0,0,0.4)" }}>
+            <span style={{ fontSize: "13px", color: "#ffffff", fontWeight: 700, letterSpacing: "0.5px" }}>ค่าแนะนำที่สามารถรับได้</span>
+          </div>
+          
+          <div style={{ marginBottom: "24px", display: "flex", justifyContent: "center", alignItems: "baseline", gap: "6px" }}>
+            <span style={{ fontSize: "24px", color: "#10b981", fontWeight: 700, textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>฿</span>
+            <span style={{ fontSize: "42px", fontWeight: 800, color: "#ffffff", textShadow: "0 4px 8px rgba(0,0,0,0.9), 0 0 20px rgba(16, 185, 129, 0.6)", letterSpacing: "1px" }}>
+              {fmt(summary?.referral?.pending || 0)}
+            </span>
+          </div>
+
           <button
             onClick={handleClaim}
             disabled={claiming || !(summary?.referral?.pending > 0)}
+            className={summary?.referral?.pending > 0 ? "btn-claim-active" : "btn-claim-disabled"}
             style={{
-              width: "100%", padding: "14px", borderRadius: "12px", border: "none", cursor: summary?.referral?.pending > 0 ? "pointer" : "not-allowed",
-              background: summary?.referral?.pending > 0 ? "linear-gradient(135deg, #10b981, #059669)" : "rgba(255,255,255,0.08)",
-              color: summary?.referral?.pending > 0 ? "#000" : "#71717a",
-              fontSize: "1rem", fontWeight: 700, transition: "all 0.2s",
-              opacity: claiming ? 0.6 : 1,
+              width: "100%", padding: "16px", borderRadius: "16px", border: "none", 
+              cursor: summary?.referral?.pending > 0 ? "pointer" : "not-allowed",
+              fontSize: "1.1rem", fontWeight: 800, transition: "all 0.2s cubic-bezier(0.4, 0, 0.2, 1)",
+              display: "flex", justifyContent: "center", alignItems: "center", gap: "8px"
             }}
           >
-            {claiming ? "กำลังรับ..." : summary?.referral?.pending > 0 ? "กดรับค่าแนะนำ" : "ไม่มียอดรอรับ"}
+            {claiming ? (
+              "กำลังดำเนินการ..."
+            ) : summary?.referral?.pending > 0 ? (
+              <>รับค่าแนะนำเข้ากระเป๋า <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></>
+            ) : (
+              "ไม่มียอดรอรับ"
+            )}
           </button>
         </div>
 
@@ -182,6 +200,30 @@ export default function ReferralPage() {
       </div>
 
       <style dangerouslySetInnerHTML={{__html: `
+        /* 🟢 ปุ่มกดรับค่าแนะนำ (สีเขียวสว่าง 3D) */
+        .btn-claim-active {
+          background: linear-gradient(180deg, #6ee7b7 0%, #10b981 50%, #047857 100%);
+          color: #022c22;
+          border: 1px solid #6ee7b7 !important;
+          box-shadow: 0 8px 16px rgba(16, 185, 129, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.8), inset 0 -4px 5px rgba(6, 78, 59, 0.8);
+          text-shadow: 0 1px 1px rgba(255,255,255,0.4);
+        }
+        .btn-claim-active:active {
+          transform: translateY(4px);
+          box-shadow: 0 2px 4px rgba(16, 185, 129, 0.4), inset 0 2px 6px rgba(6, 78, 59, 0.9);
+        }
+        .btn-claim-active:hover {
+          filter: brightness(1.1);
+        }
+
+        /* 🔴 ปุ่มกดไม่ได้ (สีเทาจม) */
+        .btn-claim-disabled {
+          background: rgba(0, 0, 0, 0.4);
+          color: #94a3b8;
+          border: 1px solid rgba(255, 255, 255, 0.2) !important;
+          box-shadow: inset 0 4px 8px rgba(0,0,0,0.6);
+        }
+
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes floatDice {
           0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
