@@ -193,40 +193,57 @@ export default function ReferralPage() {
           </button>
         </div>
 
-        {/* สรุป */}
-        <div style={{ background: "rgba(18, 18, 20, 0.4)", backdropFilter: "blur(8px)", borderRadius: "12px", padding: "16px 20px", border: "1px solid rgba(124,58,237,0.2)", marginBottom: "1.5rem", display: "flex", justifyContent: "space-between" }}>
-          <div style={{ textAlign: "center" }}>
-            <p style={{ margin: 0, fontSize: "11px", color: "#71717a" }}>รับแล้วทั้งหมด</p>
-            <p style={{ margin: "4px 0 0", fontSize: "16px", fontWeight: 600, color: "#10b981" }}>฿{fmt(summary?.referral?.claimed || 0)}</p>
+        {/* สรุป (สีเข้ม ขอบชัด ตัวหนังสือขาว แบบหน้ารับยอดเสีย) */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "1.5rem" }}>
+          <div className="glass-card" style={{ padding: "16px", textAlign: "center" }}>
+            <p style={{ margin: 0, fontSize: "13px", color: "#ffffff", fontWeight: 700, letterSpacing: "0.5px", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>รับแล้วทั้งหมด</p>
+            <p style={{ margin: "6px 0 0", fontSize: "20px", fontWeight: 800, color: "#10b981", textShadow: "0 2px 4px rgba(0,0,0,0.9)" }}>
+              ฿{fmt(summary?.referral?.claimed || 0)}
+            </p>
           </div>
-          <div style={{ width: "1px", background: "#27272a" }} />
-          <div style={{ textAlign: "center" }}>
-            <p style={{ margin: 0, fontSize: "11px", color: "#71717a" }}>รอรับ</p>
-            <p style={{ margin: "4px 0 0", fontSize: "16px", fontWeight: 600, color: "#f59e0b" }}>฿{fmt(summary?.referral?.pending || 0)}</p>
+          <div className="glass-card" style={{ padding: "16px", textAlign: "center" }}>
+            <p style={{ margin: 0, fontSize: "13px", color: "#ffffff", fontWeight: 700, letterSpacing: "0.5px", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>ยอดรอรับ</p>
+            <p style={{ margin: "6px 0 0", fontSize: "20px", fontWeight: 800, color: "#eab308", textShadow: "0 2px 4px rgba(0,0,0,0.9)" }}>
+              ฿{fmt(summary?.referral?.pending || 0)}
+            </p>
           </div>
         </div>
 
         {/* ประวัติ */}
-        <h2 style={{ fontSize: "13px", color: "#71717a", fontWeight: 500, marginBottom: "8px", paddingLeft: "4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>ประวัติค่าแนะนำ</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+        <h2 style={{ fontSize: "15px", color: "#ffffff", fontWeight: 800, marginBottom: "12px", paddingLeft: "8px", display: "flex", alignItems: "center", gap: "6px", textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f472b6" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ประวัติค่าแนะนำล่าสุด
+        </h2>
+        
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
           {history.length === 0 ? (
-            <div style={{ background: "rgba(18,18,20,0.4)", borderRadius: "12px", padding: "24px", border: "1px solid rgba(124,58,237,0.2)", textAlign: "center" }}>
-              <p style={{ margin: 0, fontSize: "14px", color: "#71717a" }}>ยังไม่มีประวัติ</p>
+            <div className="glass-card" style={{ padding: "30px", textAlign: "center" }}>
+              <p style={{ margin: 0, fontSize: "15px", color: "#ffffff", fontWeight: 600, textShadow: "0 1px 2px rgba(0,0,0,0.9)" }}>ยังไม่มีประวัติการรับค่าแนะนำ</p>
             </div>
           ) : (
             history.map((item: any) => (
-              <div key={item.id} style={{ background: "rgba(18,18,20,0.4)", backdropFilter: "blur(8px)", borderRadius: "12px", padding: "14px 16px", border: "1px solid rgba(124,58,237,0.2)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <p style={{ margin: 0, fontSize: "13px", color: "#fafafa", fontWeight: 500 }}>
-                    {item.description || "ค่าแนะนำเพื่อน"}
-                  </p>
-                  <p style={{ margin: "4px 0 0", fontSize: "11px", color: "#71717a" }}>
-                    {new Date(item.created_at).toLocaleDateString("th-TH", { day: "2-digit", month: "short", year: "numeric" })} {new Date(item.created_at).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })}
-                  </p>
+              <div key={item.id} className="glass-card history-item" style={{ padding: "16px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                  <div style={{ width: "36px", height: "36px", borderRadius: "10px", background: "rgba(255,255,255,0.1)", display: "flex", alignItems: "center", justifyContent: "center", border: "1px solid rgba(255,255,255,0.2)" }}>
+                    💸
+                  </div>
+                  <div>
+                    <p style={{ margin: 0, fontSize: "14px", color: "#ffffff", fontWeight: 700, textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>{item.description || "ค่าแนะนำเพื่อน"}</p>
+                    <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#cbd5e1" }}>
+                      {new Date(item.created_at).toLocaleDateString("th-TH", { day: "2-digit", month: "short", year: "numeric" })} • {new Date(item.created_at).toLocaleTimeString("th-TH", { hour: "2-digit", minute: "2-digit" })}
+                    </p>
+                  </div>
                 </div>
                 <div style={{ textAlign: "right" }}>
-                  <p style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: "#10b981" }}>+฿{fmt(item.amount)}</p>
-                  <span style={{ fontSize: "10px", fontWeight: 600, padding: "2px 8px", borderRadius: "4px", background: item.status === "claimed" ? "rgba(16,185,129,0.15)" : "rgba(245,158,11,0.15)", color: item.status === "claimed" ? "#10b981" : "#f59e0b" }}>
+                  <p style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: item.status === "claimed" ? "#10b981" : "#eab308", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
+                    +฿{fmt(item.amount)}
+                  </p>
+                  <span style={{ 
+                    display: "inline-block", marginTop: "4px", fontSize: "11px", fontWeight: 800, padding: "2px 10px", borderRadius: "6px", 
+                    background: item.status === "claimed" ? "rgba(16,185,129,0.2)" : "rgba(234,179,8,0.2)", 
+                    color: item.status === "claimed" ? "#4ade80" : "#fde047",
+                    border: `1px solid ${item.status === "claimed" ? "rgba(16,185,129,0.4)" : "rgba(234,179,8,0.4)"}`
+                  }}>
                     {item.status === "claimed" ? "รับแล้ว" : "รอรับ"}
                   </span>
                 </div>
@@ -237,6 +254,23 @@ export default function ReferralPage() {
       </div>
 
       <style dangerouslySetInnerHTML={{__html: `
+        /* 🟢 ธีมกระจกใส ปรับให้ดำทึบขึ้น เพื่อตัดกับพื้นหลังที่สว่างจัด */
+        .glass-card {
+          background: rgba(10, 10, 20, 0.75);
+          backdrop-filter: blur(16px);
+          -webkit-backdrop-filter: blur(16px);
+          border-radius: 16px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 24px rgba(0,0,0,0.6), inset 0 1px 2px rgba(255,255,255,0.1);
+          transition: transform 0.3s ease, border-color 0.3s ease;
+        }
+
+        .history-item:hover {
+          transform: translateY(-2px);
+          border-color: rgba(168, 85, 247, 0.8);
+          background: rgba(20, 20, 30, 0.85);
+        }
+
         /* 🟢 ปุ่มกดรับค่าแนะนำ (สีเขียวสว่าง 3D) */
         .btn-claim-active {
           background: linear-gradient(180deg, #6ee7b7 0%, #10b981 50%, #047857 100%);
