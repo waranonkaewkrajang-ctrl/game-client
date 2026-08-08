@@ -156,9 +156,9 @@ export default function PromotionsPage() {
           font-weight: 700;
           cursor: pointer;
           transition: all 0.3s ease;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: #d1d5db;
+          background: rgba(255, 255, 255, 0.12);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          color: #f1f5f9;
         }
         .promo-filter-btn.active {
           background: linear-gradient(90deg, #aa00a0, #4b0082); /* สีโทนเว็บคุณ */
@@ -167,7 +167,7 @@ export default function PromotionsPage() {
           box-shadow: 0 4px 15px rgba(170, 0, 160, 0.4);
         }
         .promo-filter-btn:hover:not(.active) {
-          background: rgba(255, 255, 255, 0.1);
+          background: rgba(255, 255, 255, 0.2);
         }
 
         /* 🟢 สไตล์การ์ดโปรโมชัน (ซ้ายรูป-ขวาข้อความ) */
@@ -175,7 +175,7 @@ export default function PromotionsPage() {
           display: grid;
           grid-template-columns: 1fr;
           gap: 20px;
-          background: #14142a; /* พื้นหลังสีเข้ม */
+          background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); /* พื้นหลัง blur */
           border-radius: 24px;
           padding: 10px;
           border: 1px solid rgba(255, 255, 255, 0.05);
