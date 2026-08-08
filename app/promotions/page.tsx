@@ -159,12 +159,15 @@ export default function PromotionsPage() {
           background: rgba(255, 255, 255, 0.12);
           border: 1px solid rgba(255, 255, 255, 0.2);
           color: #f1f5f9;
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4), inset 0 2px 2px rgba(255, 255, 255, 0.15), inset 0 -3px 5px rgba(0, 0, 0, 0.3);
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
         }
         .promo-filter-btn.active {
           background: linear-gradient(90deg, #aa00a0, #4b0082); /* สีโทนเว็บคุณ */
           border: 1px solid #f59e0b;
           color: #ffffff;
-          box-shadow: 0 4px 15px rgba(170, 0, 160, 0.4);
+          backgrobox-shadow: 0 8px 20px rgba(170, 0, 160, 0.5), inset 0 3px 2px rgba(255, 255, 255, 0.25), inset 0 -4px 6px rgba(0, 0, 0, 0.4);
+          text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);;
         }
         .promo-filter-btn:hover:not(.active) {
           background: rgba(255, 255, 255, 0.2);
