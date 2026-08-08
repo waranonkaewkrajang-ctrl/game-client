@@ -559,8 +559,8 @@ export default function LobbyPage() {
 
           {/* กล่องรูปภาพ (ใช้สไตล์ rank-img-wrapper เดิม) */}
           <div className="rank-img-wrapper">
-             {productImages[p]?.image_url || firstImg?.image_url ? (
-               <img src={productImages[p]?.image_url || firstImg?.image_url} className="rank-main-img" alt={p} loading="lazy" />
+             {productImages[p]?.image_url ? (
+               <img src={productImages[p]?.image_url} className="rank-main-img" alt={p} loading="lazy" />
              ) : (
                <div className="rank-no-img">{p.charAt(0)}</div>
              )}
