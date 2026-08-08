@@ -65,7 +65,7 @@ export default function LoginPage() {
       minHeight: "100vh", 
       display: "flex", alignItems: "center", justifyContent: "center",
       padding: "1rem", 
-      background: "linear-gradient(180deg, #1c1c2d 0%, #2a2a4a 100%)", 
+      background: "url('/bg-desktop.webp') center/cover no-repeat",
       position: "relative", overflow: "hidden", fontFamily: "sans-serif" 
     }}>
       
