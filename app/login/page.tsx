@@ -265,7 +265,7 @@ export default function LoginPage() {
 
         /* 2. ดีไซน์กล่องแก้ว (Glassmorphism Card) */
         .glass-card {
-          background: rgba(26, 26, 46, 0.15); /* ปรับความทึบลงเหลือ 0.15 */
+          background: rgba(15, 15, 30, 0.75); /* ทึบขึ้นให้อ่านง่าย */
           backdrop-filter: blur(6px); /* ลดเบลอลงให้มองทะลุเห็นลูกเต๋า */
           -webkit-backdrop-filter: blur(6px);
           border-radius: 24px;
@@ -280,15 +280,15 @@ export default function LoginPage() {
         }
         .input-group input {
           width: 100%; height: 50px;
-          background: rgba(15, 15, 26, 0.7); /* สี #0f0f1a โปร่งแสง */
+          background: rgba(30, 30, 50, 0.9); /* ทึบขึ้นเห็นชัด */
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 12px; padding: 0 16px; color: #fff; font-size: 1rem;
           transition: all 0.3s ease; box-sizing: border-box; outline: none;
         }
-        .input-group input::placeholder { color: #475569; }
+        .input-group input::placeholder { color: #94a3b8; }
         .input-group input:focus {
           border-color: #a855f7;
-          background: rgba(15, 15, 26, 0.9);
+          background: rgba(40, 40, 60, 1);
           box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
         }
 
