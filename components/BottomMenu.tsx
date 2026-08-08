@@ -22,7 +22,7 @@ export default function BottomMenu() {
         </div>
         <Link href="/" className="-center-wrapper" aria-label="หน้าแรก">
           <div className="-selected">
-            <img src="https://odin996.com/theme_1/img/logo.png" alt="Logo" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
+            <img src="/logo.png" alt="Logo" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
             <span className="-text">หน้าแรก</span>
           </div>
         </Link>

@@ -111,7 +111,7 @@ export default function Navbar() {
         <Link href="/lobby" className="-center-wrapper" aria-label="หน้าแรก">
           <div className="-selected">
             {/* โลโก้ตรงกลางปุ่ม */}
-            <img src="https://odin996.com/theme_1/img/logo.png" alt="Odin996" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
+            <img src="/logo.png" alt="Odin996" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
             <span className="-text">หน้าแรก</span>
           </div>
         </Link>
