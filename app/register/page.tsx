@@ -57,7 +57,7 @@ export default function RegisterPage() {
       minHeight: "100vh", 
       display: "flex", alignItems: "center", justifyContent: "center", 
       padding: "2rem 1rem", 
-      background: "linear-gradient(180deg, #0f0f1a 0%, #1a1a2e 100%)",
+      background: "url('/bg-desktop.webp') center/cover no-repeat",
       position: "relative", overflow: "hidden", fontFamily: "sans-serif" 
     }}>
       
@@ -232,7 +232,7 @@ export default function RegisterPage() {
       <style dangerouslySetInnerHTML={{__html: `
         /* ดีไซน์กล่องแก้ว (Glassmorphism Card) */
         .glass-card {
-          background: rgba(26, 26, 46, 0.5);
+          background: rgba(15, 15, 30, 0.75);
           backdrop-filter: blur(16px);
           -webkit-backdrop-filter: blur(16px);
           border-radius: 24px;
@@ -247,7 +247,7 @@ export default function RegisterPage() {
         }
         .input-group input, .input-group select {
           width: 100%; height: 50px;
-          background: rgba(15, 15, 26, 0.7);
+          background: rgba(30, 30, 50, 0.9);
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 12px; padding: 0 16px; color: #fff; font-size: 1rem;
           transition: all 0.3s ease; box-sizing: border-box; outline: none;
@@ -255,7 +255,7 @@ export default function RegisterPage() {
         /* สไตล์สำหรับ Dropdown ธนาคารแบบใหม่ */
         .custom-select-trigger {
           width: 100%; height: 50px;
-          background: rgba(15, 15, 26, 0.7);
+          background: rgba(30, 30, 50, 0.9);
           border: 1px solid rgba(255, 255, 255, 0.1);
           border-radius: 12px; padding: 0 16px;
           display: flex; align-items: center; justify-content: space-between;
@@ -264,7 +264,7 @@ export default function RegisterPage() {
         }
         .custom-select-trigger:hover {
           border-color: #a855f7;
-          background: rgba(15, 15, 26, 0.9);
+          background: rgba(40, 40, 60, 1);
         }
         .custom-select-options {
           position: absolute; top: calc(100% + 8px); left: 0; width: 100%;
@@ -292,7 +292,7 @@ export default function RegisterPage() {
         .input-group input::placeholder { color: #475569; }
         .input-group input:focus, .input-group select:focus {
           border-color: #a855f7;
-          background: rgba(15, 15, 26, 0.9);
+          background: rgba(40, 40, 60, 1);
           box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.2);
         }
 
