@@ -214,6 +214,8 @@ export default function PromotionsPage() {
 
         .promo-text-section {
           padding: 10px 10px 20px;
+          background: rgba(10, 10, 20, 0.7);
+          border-radius: 12px;
           color: #ffffff;
           display: flex;
           flex-direction: column;
@@ -236,8 +238,9 @@ export default function PromotionsPage() {
         /* จัดการหน้าตาของเนื้อหา HTML ดั้งเดิมของคุณ */
         .promo-html-content {
           font-size: 0.95rem;
-          color: #cbd5e1;
+          color: #ffffff;
           line-height: 1.7;
+          font-weight: 500;
           /* หากเนื้อหายาวไปจริงๆ สามารถเพิ่ม max-height ได้ แต่ถ้าอยากให้เลื่อนดูได้อิสระ ไม่ต้องใส่ */
           margin-bottom: 10px;
         }
