@@ -141,7 +141,7 @@ export default function LoginPage() {
                   />
                   <button type="button" onClick={() => setShowPassword(!showPassword)} style={{
                     position: "absolute", right: "12px", top: "50%", transform: "translateY(-50%)",
-                    background: "none", border: "none", cursor: "pointer", color: "#64748b",
+                    background: "none", border: "none", cursor: "pointer", color: "#a855f7",
                   }}>
                     {showPassword ? (
                       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
