@@ -247,7 +247,7 @@ export default function PromotionsPage() {
           font-size: 0.95rem;
           font-weight: 400;
           margin-bottom: 8px;
-          color: #e2e8f0;
+          color: #ffffff; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
         .promo-html-content p {
           margin-bottom: 8px;
