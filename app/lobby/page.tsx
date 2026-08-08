@@ -357,7 +357,7 @@ export default function LobbyPage() {
         </div>
 
         {/* 🟢 นำเกมไฮไลท์ (กล่องแดง) มาวางตรงนี้ 🟢 */}
-        <div style={{ marginBottom: "24px", background: "radial-gradient(57.87% 93.51% at 50% 6.49%, rgb(124, 58, 237) -60%, rgb(10, 7, 21) 40%)", backdropFilter: "blur(10px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
+        <div style={{ marginBottom: "24px", background: "rgba(15, 10, 30, 0.5)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
           
           {/* เส้นแสงสีแดงเรืองแสงด้านบน */}
           <div style={{ position: "absolute", top: 0, left: 0, width: "100%", display: "flex", justifyContent: "center" }}>
@@ -426,7 +426,7 @@ export default function LobbyPage() {
 
             {/* ขวา: Leaderboard ผู้ชนะล่าสุด (ซ่อนบนมือถือ) */}
             <div className="desktop-only" style={{
-              width: "320px", flexShrink: 0, background: "rgba(10,7,21,0.8)",
+              width: "320px", flexShrink: 0, background: "rgba(20,15,40,0.6)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
               borderRadius: "12px", border: "1px solid rgba(168,85,247,0.2)",
               overflow: "hidden", display: "flex", flexDirection: "column",
             }}>
