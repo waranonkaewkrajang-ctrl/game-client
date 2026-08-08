@@ -216,9 +216,9 @@ export default function PromotionsPage() {
         }
 
         .promo-text-section {
-          padding: 10px 10px 20px;
-          background: rgba(10, 10, 20, 0.7);
-          border-radius: 12px;
+          padding: 20px;
+          background: rgba(10, 10, 20, 0.85);
+          border-radius: 16px;
           color: #ffffff;
           display: flex;
           flex-direction: column;
@@ -231,19 +231,23 @@ export default function PromotionsPage() {
         }
 
         .promo-heading {
-          font-size: 1.3rem;
+          font-size: 1.1rem;
           font-weight: 800;
-          margin: 0 0 12px 0;
-          color: #f59e0b; /* สีเหลือง/ส้ม */
+          margin: 0 0 16px 0;
+          color: #f59e0b;
+          border-bottom: 1px solid rgba(245, 158, 11, 0.3);
+          padding-bottom: 12px; /* สีเหลือง/ส้ม */
           line-height: 1.4;
         }
 
         /* จัดการหน้าตาของเนื้อหา HTML ดั้งเดิมของคุณ */
         .promo-html-content {
           font-size: 0.95rem;
-          color: #ffffff;
-          line-height: 1.7;
-          font-weight: 500;
+          color: #e2e8f0;
+          line-height: 2;
+          font-weight: 400;
+          font-size: 0.85rem;
+          white-space: pre-line;
           /* หากเนื้อหายาวไปจริงๆ สามารถเพิ่ม max-height ได้ แต่ถ้าอยากให้เลื่อนดูได้อิสระ ไม่ต้องใส่ */
           margin-bottom: 10px;
         }
