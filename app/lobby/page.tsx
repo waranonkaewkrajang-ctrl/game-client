@@ -426,7 +426,7 @@ export default function LobbyPage() {
 
             {/* ขวา: Leaderboard ผู้ชนะล่าสุด (ซ่อนบนมือถือ) */}
             <div className="desktop-only" style={{
-              width: "320px", flexShrink: 0, background: "rgba(20,15,40,0.6)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
+              width: "100%", maxWidth: "320px", flexShrink: 0, minWidth: 0, background: "rgba(20,15,40,0.6)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
               borderRadius: "12px", border: "1px solid rgba(168,85,247,0.2)",
               overflow: "hidden", display: "flex", flexDirection: "column",
             }}>
@@ -1245,6 +1245,8 @@ export default function LobbyPage() {
   .highlight-layout {
     flex-direction: column !important;
     max-height: none !important;
+    width: 100% !important;
+    overflow: hidden;
   }
 }
         
