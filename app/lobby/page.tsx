@@ -401,7 +401,7 @@ export default function LobbyPage() {
                     flexShrink: 0 
                   }}>
                     {/* 🟢 ตัวรูปภาพ (จะถูกตัดมุมมนได้พอดีกับตัวภาพเป๊ะๆ) */}
-                    <img src={url} alt={`Highlight ${i + 1}`} loading="lazy"
+                    <img src={Math.abs(highlightIndex - i) <= 1 ? url : undefined} data-src={url} alt={`Highlight ${i + 1}`} loading="lazy"
                       style={{ 
                         maxWidth: "100%", 
                         maxHeight: "100%", 
