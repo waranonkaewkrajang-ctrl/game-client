@@ -285,24 +285,12 @@ export default function LobbyPage() {
         </div>
 
       {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
-        <div className="mobile-only" style={{ 
-          position: "sticky",         /* 📌 ล็อกเมนูให้เลื่อนตามเวลาไถจอ */
-          top: "0px",                 /* 📌 ให้ล็อกติดขอบบนสุด (ถ้ามี Header ให้บวก px เพิ่มไป) */
-          zIndex: 100,                /* 📌 ให้อยู่เหนือเนื้อหาอื่นๆ */
-          background: "#0a0a14",      /* 📌 ใส่สีพื้นหลังทึบ เพื่อไม่ให้โปร่งแสงลอยทับตัวหนังสือ (ทำหน้าที่เหมือนแยก Section) */
-          padding: "12px 24px",       /* 📌 จัดระยะห่างภายใน */
-          margin: "0 -24px 20px -24px", /* 📌 ขยายกรอบซ้ายขวาให้ชิดขอบจอพอดี */
-          borderBottom: "1px solid rgba(255, 255, 255, 0.05)" /* 📌 เส้นกั้นบางๆ ด้านล่างให้ดูมีมิติแยกส่วนชัดเจน */
-        }}>
+        <div className="mobile-only" style={{ marginBottom: "20px" }}>
           <div style={{ 
-            display: "flex",          /* 📌 เปลี่ยนเป็น Flex เพื่อให้ชิดซ้ายเสมอ */
-            overflowX: "auto",        /* 📌 เปิดให้ปัดเลื่อนซ้าย-ขวาได้ */
-            gap: "10px", 
-            scrollbarWidth: "none",   /* 📌 ซ่อน Scrollbar ของ Firefox */
-            paddingBottom: "4px"
-          }} 
-          className="hide-scrollbar"  /* 📌 ซ่อน Scrollbar ของ Chrome/Safari (ต้องไปใส่ CSS เพิ่มด้านล่าง) */
-          >
+            display: "grid", 
+            gridTemplateColumns: "repeat(4, 1fr)", 
+            gap: "10px" 
+          }}>
             {[
               { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
               { id: "LIVECASINO", label: "คาสิโน", icon: "https://odin996.com/theme_1/img/icons8-cards-48.png" },
@@ -317,8 +305,6 @@ export default function LobbyPage() {
                   key={`mob-cat-${cat.id}`}
                   onClick={() => handleCategoryFilter(cat.id)}
                   style={{
-                    minWidth: "75px", /* 📌 บังคับขนาดขั้นต่ำให้ปุ่ม ไม่ให้บีบกันเอง */
-                    flex: "0 0 auto", /* 📌 ป้องกันไม่ให้ปุ่มหดตัว */
                     background: isActive ? "linear-gradient(135deg, rgb(170, 0, 160), rgb(75, 0, 130))" : "rgba(20, 20, 42, 0.55)",
                     backdropFilter: "blur(10px)",
                     WebkitBackdropFilter: "blur(10px)",
@@ -338,6 +324,7 @@ export default function LobbyPage() {
                     transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
                   }}
                 >
+                  {/* ไอคอนพร้อมเอฟเฟกต์เรืองแสงเมื่อถูกเลือก */}
                   <img 
                     src={cat.icon} 
                     alt={cat.label} 
@@ -349,15 +336,17 @@ export default function LobbyPage() {
                       transition: "transform 0.3s ease"
                     }} 
                   />
+                  
+                  {/* 🌟 ปรับปรุงฟอนต์ตรงนี้ให้ดูสวยงาม เป็นมืออาชีพ 🌟 */}
                   <span style={{ 
                     fontSize: "0.72rem", 
                     fontWeight: 700, 
                     color: isActive ? "#ffffff" : "#cbd5e1",
                     textAlign: "center",
                     whiteSpace: "nowrap",
-                    letterSpacing: "0.3px",
-                    fontFamily: "'Kanit', sans-serif",
-                    textShadow: isActive ? "0 2px 4px rgba(0,0,0,0.8)" : "0 1px 2px rgba(0,0,0,0.5)" 
+                    letterSpacing: "0.3px", // เพิ่มการเว้นระยะตัวอักษรให้อ่านง่ายและดูแพงขึ้น
+                    fontFamily: "'Kanit', sans-serif", // บังคับใช้ฟอนต์ Kanit 
+                    textShadow: isActive ? "0 2px 4px rgba(0,0,0,0.8)" : "0 1px 2px rgba(0,0,0,0.5)" // ใส่เงาตัวหนังสือให้มิติเด่นชัดขึ้น
                   }}>
                     {cat.label}
                   </span>
@@ -1294,12 +1283,6 @@ export default function LobbyPage() {
           0% { transform: translateX(100%); }
           100% { transform: translateX(-100%); }
         }
-
-        /* 🟢 🟢 เพิ่ม CSS ซ่อน Scrollbar ของเมนูมือถือตรงนี้ 🟢 🟢 */
-        .hide-scrollbar::-webkit-scrollbar { 
-          display: none; 
-        }
-        
       `}} />
       </div>
     </div>
