@@ -230,7 +230,7 @@ export default function LobbyPage() {
     }}>🎲</div>
   ))}
 </div>
-      <div style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
+      <div className="lobby-content" style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
 
         {/* Banner (อัปเดตใหม่ ล็อกสัดส่วนแนวนอนแก้ภาพยืด 100%) */}
         <div className="banner-main-wrapper" style={{ marginBottom: "14px", position: "relative", overflow: "visible" }}>
@@ -1276,7 +1276,7 @@ export default function LobbyPage() {
         .desktop-only { display: none; }
         .mobile-only { display: block; }
         @media (max-width: 1023px) {
-          body { padding-left: 72px !important; }
+          .lobby-content { margin-left: 72px; }
         }
         @media (min-width: 1024px) { .mobile-sidebar { display: none !important; } }
         @media (min-width: 1024px) {
