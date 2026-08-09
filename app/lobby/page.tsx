@@ -230,7 +230,7 @@ export default function LobbyPage() {
     }}>🎲</div>
   ))}
 </div>
-      <div className="lobby-main-content" style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
+      <div style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 12px" }}>
 
         {/* Banner (อัปเดตใหม่ ล็อกสัดส่วนแนวนอนแก้ภาพยืด 100%) */}
         <div className="banner-main-wrapper" style={{ marginBottom: "14px", position: "relative", overflow: "visible" }}>
@@ -284,78 +284,6 @@ export default function LobbyPage() {
           )}
         </div>
 
-      {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
-        <div className="mobile-only hide-scrollbar" style={{ position: "fixed", left: 0, top: "56px", bottom: "75px", zIndex: 100, padding: "12px 6px", overflowY: "auto", width: "72px" }}>
-          <div style={{ 
-            display: "flex", 
-            flexDirection: "column", 
-            gap: "8px" 
-          }}>
-            {[
-              { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
-              { id: "LIVECASINO", label: "คาสิโน", icon: "https://odin996.com/theme_1/img/icons8-cards-48.png" },
-              { id: "SLOT", label: "สล็อต", icon: "https://odin996.com/theme_1/img/ic-nav-menu-slot.png" },
-              { id: "FISHING", label: "ยิงปลา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-fishing-game.png" },
-              { id: "CARD", label: "เกมไพ่", icon: "https://odin996.com/theme_1/img/ic-nav-menu-casino.png" },
-              { id: "SPORT", label: "กีฬา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-sport.png" },
-            ].map((cat) => {
-              const isActive = selectedCategory === cat.id;
-              return (
-                <div 
-                  key={`mob-cat-${cat.id}`}
-                  onClick={() => handleCategoryFilter(cat.id)}
-                  style={{
-                    width: "100%",
-                    background: isActive ? "linear-gradient(135deg, rgb(170, 0, 160), rgb(75, 0, 130))" : "rgba(20, 20, 42, 0.55)",
-                    backdropFilter: "blur(10px)",
-                    WebkitBackdropFilter: "blur(10px)",
-                    border: isActive ? "1px solid rgb(255, 179, 0)" : "1px solid rgba(255, 255, 255, 0.08)",
-                    borderRadius: "12px",
-                    padding: "12px 6px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                    cursor: "pointer",
-                    boxShadow: isActive 
-                      ? "0 8px 20px rgba(170, 0, 160, 0.5), inset 0 2px 3px rgba(255, 255, 255, 0.25)" 
-                      : "0 4px 10px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05)",
-                    transform: isActive ? "translateY(-3px) scale(1.03)" : "translateY(0) scale(1)",
-                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
-                  }}
-                >
-                  {/* ไอคอนพร้อมเอฟเฟกต์เรืองแสงเมื่อถูกเลือก */}
-                  <img 
-                    src={cat.icon} 
-                    alt={cat.label} 
-                    style={{ 
-                      width: "38px", 
-                      height: "38px", 
-                      objectFit: "contain", 
-                      filter: isActive ? "drop-shadow(0 4px 8px rgba(255, 179, 0, 0.5))" : "drop-shadow(0 2px 4px rgba(0,0,0,0.4))",
-                      transition: "transform 0.3s ease"
-                    }} 
-                  />
-                  
-                  {/* 🌟 ปรับปรุงฟอนต์ตรงนี้ให้ดูสวยงาม เป็นมืออาชีพ 🌟 */}
-                  <span style={{ 
-                    fontSize: "0.72rem", 
-                    fontWeight: 700, 
-                    color: isActive ? "#ffffff" : "#cbd5e1",
-                    textAlign: "center",
-                    whiteSpace: "nowrap",
-                    letterSpacing: "0.3px", // เพิ่มการเว้นระยะตัวอักษรให้อ่านง่ายและดูแพงขึ้น
-                    fontFamily: "'Kanit', sans-serif", // บังคับใช้ฟอนต์ Kanit 
-                    textShadow: isActive ? "0 2px 4px rgba(0,0,0,0.8)" : "0 1px 2px rgba(0,0,0,0.5)" // ใส่เงาตัวหนังสือให้มิติเด่นชัดขึ้น
-                  }}>
-                    {cat.label}
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </div>
 
         {/* 🟢 นำเกมไฮไลท์ (กล่องแดง) มาวางตรงนี้ 🟢 */}
         <div style={{ marginBottom: "24px", background: "rgba(15, 10, 30, 0.5)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
@@ -649,7 +577,33 @@ export default function LobbyPage() {
         </div>
 
         {/* Main Layout: Sidebar + Games */}
-        <div style={{ display: "flex", gap: "12px", alignItems: "flex-start" }}>
+        <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+
+          {/* 📱 เมนูมือถือด้านซ้าย (sticky ในส่วนเกมเท่านั้น) 📱 */}
+          <div className="mobile-only" style={{ width: "64px", flexShrink: 0, position: "sticky", top: "56px", maxHeight: "calc(100vh - 131px)", overflowY: "auto", display: "flex", flexDirection: "column", gap: "8px" }}>
+            {[
+              { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
+              { id: "LIVECASINO", label: "คาสิโน", icon: "https://odin996.com/theme_1/img/icons8-cards-48.png" },
+              { id: "SLOT", label: "สล็อต", icon: "https://odin996.com/theme_1/img/ic-nav-menu-slot.png" },
+              { id: "FISHING", label: "ยิงปลา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-fishing-game.png" },
+              { id: "CARD", label: "เกมไพ่", icon: "https://odin996.com/theme_1/img/ic-nav-menu-casino.png" },
+              { id: "SPORT", label: "กีฬา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-sport.png" },
+            ].map((cat) => {
+              const isActive = selectedCategory === cat.id;
+              return (
+                <div key={`mob-cat-${cat.id}`} onClick={() => handleCategoryFilter(cat.id)}
+                  style={{
+                    background: isActive ? "linear-gradient(135deg, rgb(170, 0, 160), rgb(75, 0, 130))" : "rgba(20, 20, 42, 0.55)",
+                    border: isActive ? "1px solid rgb(255, 179, 0)" : "1px solid rgba(255, 255, 255, 0.08)",
+                    borderRadius: "10px", padding: "8px 4px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "5px", cursor: "pointer",
+                    transition: "all 0.3s ease"
+                  }}>
+                  <img src={cat.icon} alt={cat.label} style={{ width: "30px", height: "30px", objectFit: "contain" }} />
+                  <span style={{ fontSize: "0.55rem", fontWeight: 700, color: isActive ? "#fff" : "#cbd5e1", textAlign: "center", whiteSpace: "nowrap" }}>{cat.label}</span>
+                </div>
+              );
+            })}
+          </div>
 
           {/* Sidebar (แท็บข้างสไตล์ใหม่ - โชว์เฉพาะบนคอมพิวเตอร์) */}
           <div className="desktop-only" style={{ 
@@ -1276,9 +1230,7 @@ export default function LobbyPage() {
 
         .desktop-only { display: none; }
         .mobile-only { display: block; }
-        @media (max-width: 1023px) {
-          .lobby-main-content { padding-left: 72px !important; }
-        }
+
         @media (min-width: 1024px) {
           .desktop-only { display: block; }
           .mobile-only { display: none; }
@@ -1289,6 +1241,6 @@ export default function LobbyPage() {
         }
       `}} />
       </div>
-    </div>
+      </div>
   );
 }
