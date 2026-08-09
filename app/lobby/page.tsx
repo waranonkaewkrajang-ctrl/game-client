@@ -230,7 +230,8 @@ export default function LobbyPage() {
     }}>🎲</div>
   ))}
 </div>
-      <div className="lobby-content" style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
+      <div style={{ display: "flex", width: "100%" }}>
+      <div className="lobby-content" style={{ flex: 1, minWidth: 0, margin: "0", padding: "16px 12px" }}>
 
         {/* Banner (อัปเดตใหม่ ล็อกสัดส่วนแนวนอนแก้ภาพยืด 100%) */}
         <div className="banner-main-wrapper" style={{ marginBottom: "14px", position: "relative", overflow: "visible" }}>
@@ -285,7 +286,7 @@ export default function LobbyPage() {
         </div>
 
       {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
-        <div className="mobile-only mobile-sidebar" style={{ position: "fixed", left: 0, top: "56px", bottom: "75px", width: "72px", zIndex: 100, overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", padding: "8px 4px", background: "transparent", borderRight: "none" }}>
+        <div className="mobile-only mobile-sidebar" style={{ width: "72px", flexShrink: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", padding: "8px 4px" }}>
           <div style={{ 
             display: "flex", 
             flexDirection: "column", 
@@ -1275,8 +1276,8 @@ export default function LobbyPage() {
 
         .desktop-only { display: none; }
         .mobile-only { display: block; }
-        @media (max-width: 1023px) {
-          .lobby-content { margin-left: 72px; }
+        @media (min-width: 1024px) {
+          .mobile-sidebar { display: none !important; }
         }
         @media (min-width: 1024px) { .mobile-sidebar { display: none !important; } }
         @media (min-width: 1024px) {
@@ -1288,6 +1289,7 @@ export default function LobbyPage() {
           100% { transform: translateX(-100%); }
         }
       `}} />
+      </div>
       </div>
     </div>
   );
