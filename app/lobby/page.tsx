@@ -1287,6 +1287,7 @@ export default function LobbyPage() {
         }
       `}} />
       </div>
-    </div>
+      </div>
+      </div>
   );
 }
