@@ -284,12 +284,12 @@ export default function LobbyPage() {
           )}
         </div>
 
-     
-
+      {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
+        <div className="mobile-only" style={{ marginBottom: "20px" }}>
           <div style={{ 
-            display: "flex", 
-            flexDirection: "column", 
-            gap: "6px" 
+            display: "grid", 
+            gridTemplateColumns: "repeat(4, 1fr)", 
+            gap: "10px" 
           }}>
             {[
               { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
@@ -1285,5 +1285,6 @@ export default function LobbyPage() {
         }
       `}} />
       </div>
+    </div>
   );
 }
