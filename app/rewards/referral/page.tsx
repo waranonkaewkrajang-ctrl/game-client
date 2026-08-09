@@ -193,6 +193,13 @@ export default function ReferralPage() {
           </button>
         </div>
 
+        {/* การ์ดจำนวนเพื่อนที่แนะนำ */}
+        <div className="glass-card" style={{ padding: "18px", textAlign: "center", marginBottom: "12px" }}>
+          <p style={{ margin: 0, fontSize: "13px", color: "#ffffff", fontWeight: 700, letterSpacing: "0.5px", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>👥 แนะนำเพื่อนไปแล้ว</p>
+          <p style={{ margin: "6px 0 0", fontSize: "32px", fontWeight: 800, color: "#a855f7", textShadow: "0 2px 8px rgba(168,85,247,0.5)" }}>
+            {user?.referral_count || 0} <span style={{ fontSize: "16px", color: "#cbd5e1" }}>คน</span>
+          </p>
+        </div>
         {/* สรุป (สีเข้ม ขอบชัด ตัวหนังสือขาว แบบหน้ารับยอดเสีย) */}
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "1.5rem" }}>
           <div className="glass-card" style={{ padding: "16px", textAlign: "center" }}>
