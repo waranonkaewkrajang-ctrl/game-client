@@ -452,7 +452,7 @@ function WalletContent() {
                       {finance.amounts.map((val) => (
                         <button key={val} type="button" onClick={() => addAmount(val)} className="finance-btn inline-flex items-center justify-center gap-0.5 md:gap-1.5 font-medium h-10 md:h-11 px-1 md:px-2 text-[11px] md:text-sm cursor-pointer">
                           <img alt="coin" className="w-3.5 h-3.5 shrink-0 hidden md:block drop-shadow-sm" src="https://fs.cdnrc.com/payment-layout/svg/coin.svg" />
-                          +{val >= 1000 ? `${(val/1000)}k` : val}
+                          +{val.toLocaleString()}
                         </button>
                       ))}
                     </div>
