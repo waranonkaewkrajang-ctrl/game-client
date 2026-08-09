@@ -562,7 +562,7 @@ export default function LobbyPage() {
           <div style={{ flex: 1, minWidth: 0 }}>
 
             {/* ===== โหมด 2: เลือกหมวดสล็อต → แสดงรายการค่ายเกม ===== */}
-            {isRoomMode ? (
+            {(isRoomMode || selectedCategory === "") ? (
               <>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
                   <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
@@ -576,9 +576,15 @@ export default function LobbyPage() {
                <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }} className="provider-grid-container">
                   {products.map((p) => {
                     const pGames = allGames.filter((g) => g.product_id === p);
-                    const slotGames = pGames.filter((g) => ROOM_CATEGORIES.includes((g.category || g.type || "").toUpperCase()));
-                    // แสดงเฉพาะค่ายที่มีเกมสล็อต
-                    if (slotGames.length === 0 && pGames.length === 0) return null;
+                    // ยอดนิยม = แสดงทุกค่าย, สล็อต = เฉพาะค่ายที่มีเกมสล็อต
+                    if (selectedCategory === "SLOT") {
+                      const slotGames = pGames.filter((g) => (g.category || "").toUpperCase() === "EGAMES");
+                      if (slotGames.length === 0) return null;
+                    } else if (selectedCategory !== "") {
+                      const catGames = pGames.filter((g) => (g.category || "").toUpperCase() === selectedCategory.toUpperCase());
+                      if (catGames.length === 0) return null;
+                    }
+                    if (pGames.length === 0) return null;
                     const firstImg = pGames.find((g) => g.image_url);
                    return (
                       <div 
