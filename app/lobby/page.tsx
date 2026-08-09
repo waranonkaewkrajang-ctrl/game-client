@@ -1275,7 +1275,9 @@ export default function LobbyPage() {
 
         .desktop-only { display: none; }
         .mobile-only { display: block; }
-        .mobile-sidebar ~ * { margin-left: 72px; }
+        @media (max-width: 1023px) {
+          body { padding-left: 72px !important; }
+        }
         @media (min-width: 1024px) { .mobile-sidebar { display: none !important; } }
         @media (min-width: 1024px) {
           .desktop-only { display: block; }
