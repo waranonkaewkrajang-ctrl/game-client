@@ -562,7 +562,7 @@ export default function LobbyPage() {
           <div style={{ flex: 1, minWidth: 0 }}>
 
             {/* ===== โหมด 2: เลือกหมวดสล็อต → แสดงรายการค่ายเกม ===== */}
-            {(isRoomMode || selectedCategory === "") ? (
+            {isRoomMode ? (
               <>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
                   <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
