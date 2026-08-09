@@ -284,12 +284,18 @@ export default function LobbyPage() {
           )}
         </div>
 
-      {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
-        <div className="mobile-only" style={{ marginBottom: "20px" }}>
+      {/* 🟢 1. เปิด Flex Container หลักเพื่อแบ่งจอเป็น ซ้าย-ขวา */}
+      <div style={{ display: "flex", gap: "10px", alignItems: "flex-start", width: "100%" }}>
+
+        {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (แถบด้านซ้ายแนวตั้ง) 📱 */}
+        <div className="mobile-only" style={{ 
+          width: "76px", flexShrink: 0, position: "sticky", top: "16px", zIndex: 40, 
+          maxHeight: "calc(100vh - 120px)", overflowY: "auto", scrollbarWidth: "none"
+        }}>
           <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(4, 1fr)", 
-            gap: "10px" 
+            display: "flex", 
+            flexDirection: "column", /* เปลี่ยนเป็นแนวตั้ง */
+            gap: "8px" 
           }}>
             {[
               { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
@@ -354,7 +360,10 @@ export default function LobbyPage() {
               );
             })}
           </div>
-        </div>
+        </div> {/* ปิด Sidebar ซ้าย */}
+
+        {/* 🟢 2. เปิดกล่องเนื้อหาฝั่งขวา (ให้ขยายเต็มพื้นที่ที่เหลือ) */}
+        <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
 
         {/* 🟢 นำเกมไฮไลท์ (กล่องแดง) มาวางตรงนี้ 🟢 */}
         <div style={{ marginBottom: "24px", background: "rgba(15, 10, 30, 0.5)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
@@ -1032,6 +1041,9 @@ export default function LobbyPage() {
           )}
           </div>
         </div>
+
+        </div> {/* ปิดกล่องเนื้อหาฝั่งขวา */}
+      </div> {/* ปิด Flex Container หลัก (แบ่งซ้าย-ขวา) */}
 
         {/* === Footer ค่ายเกม + ช่องทางชำระเงิน + ใบอนุญาต === */}
         <div style={{ marginTop: "30px", padding: "40px 24px 80px", textAlign: "center", background: "#0a0a14", borderTop: "1px solid rgba(124,58,237,0.2)", marginLeft: "-24px", marginRight: "-24px", position: "relative", zIndex: 2, paddingBottom: "100px" }}>
