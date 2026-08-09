@@ -568,7 +568,12 @@ export default function LobbyPage() {
                   <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
                     เลือกค่ายเกม
                   </h2>
-                  <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem" }}>({products.length} ค่าย)</span>
+                  <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem" }}>({products.filter((p) => {
+                    const pGames = allGames.filter((g) => g.product_id === p);
+                    if (selectedCategory === "SLOT") return pGames.some((g) => (g.category || "").toUpperCase() === "EGAMES");
+                    if (selectedCategory !== "") return pGames.some((g) => (g.category || "").toUpperCase() === selectedCategory.toUpperCase());
+                    return pGames.length > 0;
+                  }).length} ค่าย)</span>
                 </div>
 
     
