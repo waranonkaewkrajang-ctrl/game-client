@@ -230,7 +230,7 @@ export default function LobbyPage() {
     }}>🎲</div>
   ))}
 </div>
-      <div style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
+      <div className="lobby-main-content" style={{ maxWidth: "100%", width: "100%", margin: "0", padding: "16px 24px" }}>
 
         {/* Banner (อัปเดตใหม่ ล็อกสัดส่วนแนวนอนแก้ภาพยืด 100%) */}
         <div className="banner-main-wrapper" style={{ marginBottom: "14px", position: "relative", overflow: "visible" }}>
@@ -285,11 +285,11 @@ export default function LobbyPage() {
         </div>
 
       {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
-        <div className="mobile-only" style={{ marginBottom: "20px" }}>
+        <div className="mobile-only hide-scrollbar" style={{ position: "fixed", left: 0, top: "56px", bottom: "75px", zIndex: 100, padding: "12px 6px", overflowY: "auto", width: "72px" }}>
           <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(4, 1fr)", 
-            gap: "10px" 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: "8px" 
           }}>
             {[
               { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
@@ -305,6 +305,7 @@ export default function LobbyPage() {
                   key={`mob-cat-${cat.id}`}
                   onClick={() => handleCategoryFilter(cat.id)}
                   style={{
+                    width: "100%",
                     background: isActive ? "linear-gradient(135deg, rgb(170, 0, 160), rgb(75, 0, 130))" : "rgba(20, 20, 42, 0.55)",
                     backdropFilter: "blur(10px)",
                     WebkitBackdropFilter: "blur(10px)",
@@ -1275,6 +1276,9 @@ export default function LobbyPage() {
 
         .desktop-only { display: none; }
         .mobile-only { display: block; }
+        @media (max-width: 1023px) {
+          .lobby-main-content { padding-left: 72px !important; }
+        }
         @media (min-width: 1024px) {
           .desktop-only { display: block; }
           .mobile-only { display: none; }
