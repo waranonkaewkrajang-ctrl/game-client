@@ -167,11 +167,11 @@ export default function LobbyPage() {
   };
 
   const categoryMap: Record<string, string[]> = {
-    "SLOT": ["SLOT", "SLOTS", "EGAMES"],
-    "LIVECASINO": ["LIVECASINO", "LIVE", "CASINO"],
-    "FISHING": ["FISHING", "FISH"],
-    "CARD": ["CARD", "TABLE"],
-    "SPORT": ["SPORT", "SPORTS", "ESPORT"],
+    "SLOT": ["EGAMES"],
+    "LIVECASINO": ["LIVECASINO"],
+    "FISHING": ["FISHING"],
+    "CARD": ["CARD"],
+    "SPORT": ["SPORT"],
   };
 
   const handleCategoryFilter = (catId: string) => {
@@ -184,7 +184,8 @@ export default function LobbyPage() {
       setGames(allGames.filter((g) => {
         const cat = (g.category || "").toUpperCase();
         const typ = (g.type || "").toUpperCase();
-        return matches.some((m) => cat === m || typ === m);
+        if (catId === "FISHING") return typ === "FISHING";
+        return matches.some((m) => cat === m);
       }));
     }
   };
@@ -991,7 +992,7 @@ export default function LobbyPage() {
           </div>
           </div>
         </div>
-        
+
         {/* === Footer ค่ายเกม + ช่องทางชำระเงิน + ใบอนุญาต === */}
         <div style={{ marginTop: "30px", padding: "40px 24px 80px", textAlign: "center", background: "#0a0a14", borderTop: "1px solid rgba(124,58,237,0.2)", marginLeft: "-24px", marginRight: "-24px", position: "relative", zIndex: 2, paddingBottom: "100px" }}>
 
