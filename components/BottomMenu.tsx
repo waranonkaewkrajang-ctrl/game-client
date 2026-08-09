@@ -15,10 +15,6 @@ export default function BottomMenu() {
             <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชัน" />
             <span className="-text">โปรโมชัน</span>
           </Link>
-          <Link href="/wallet" className="-item-wrapper -deposit">
-            <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" className="-ic-img" alt="ฝากเงิน" />
-            <span className="-text">ฝากเงิน</span>
-          </Link>
         </div>
         <Link href="/" className="-center-wrapper" aria-label="หน้าแรก">
           <div className="-selected">
@@ -29,7 +25,7 @@ export default function BottomMenu() {
         <div className="-right-wrapper">
           <Link href="/wallet" className="-item-wrapper -withdraw">
             <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-2.png" className="-ic-img" alt="ถอนเงิน" />
-            <span className="-text">ถอนเงิน</span>
+            <span className="-text">กระเป๋าเงิน</span>
           </Link>
           <Link href="/profile" className="-item-wrapper -line">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{color: "#a78bfa"}}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
