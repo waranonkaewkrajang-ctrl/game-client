@@ -580,7 +580,7 @@ export default function LobbyPage() {
         <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
 
           {/* 📱 เมนูมือถือด้านซ้าย (sticky ในส่วนเกมเท่านั้น) 📱 */}
-          <div className="mobile-only" style={{ width: "78px", flexShrink: 0, position: "sticky", top: "56px", maxHeight: "calc(100vh - 131px)", overflowY: "auto", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div className="mobile-only" style={{ width: "78px", flexShrink: 0, alignSelf: "stretch", display: "flex", flexDirection: "column", gap: "8px" }}>
             {[
               { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
               { id: "LIVECASINO", label: "คาสิโน", icon: "https://odin996.com/theme_1/img/icons8-cards-48.png" },
