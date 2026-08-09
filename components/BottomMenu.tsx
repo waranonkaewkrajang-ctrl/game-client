@@ -22,7 +22,7 @@ export default function BottomMenu() {
         </div>
         <Link href="/wallet" className="-center-wrapper" aria-label="กระเป๋าเงิน">
           <div className="-selected">
-            <img src="/logo.png" alt="Logo" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
+            <img src="https://fs.cdnrc.com/payment-layout/svg/coin.svg" alt="Wallet" className="-center-icon" />
             <span className="-text">กระเป๋าเงิน</span>
           </div>
         </Link>
