@@ -230,7 +230,7 @@ export default function LobbyPage() {
     }}>🎲</div>
   ))}
 </div>
-      <div className="lobby-flex" style={{ display: "flex", width: "100%" }}>
+      <div className="lobby-flex">
 
       {/* 📱 เมนูหมวดหมู่มือถือ ด้านซ้าย 📱 */}
         <div className="mobile-only mobile-sidebar" style={{ width: "72px", flexShrink: 0, overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", padding: "60px 4px 80px", position: "sticky", top: "56px", height: "calc(100vh - 56px)" }}>
@@ -1253,7 +1253,8 @@ export default function LobbyPage() {
 
         .desktop-only { display: none; }
         .mobile-only { display: block; }
-        @media (min-width: 1024px) { .mobile-sidebar { display: none !important; } }
+        .lobby-flex { display: flex; width: 100%; }
+        @media (min-width: 1024px) { .mobile-sidebar { display: none !important; } .lobby-flex { display: block; } }
         @media (min-width: 1024px) {
           .desktop-only { display: block; }
           .mobile-only { display: none; }
