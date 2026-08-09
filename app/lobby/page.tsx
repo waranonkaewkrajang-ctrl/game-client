@@ -285,11 +285,11 @@ export default function LobbyPage() {
         </div>
 
       {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
-        <div className="mobile-only" style={{ marginBottom: "20px" }}>
+        <div className="mobile-only mobile-sidebar" style={{ position: "fixed", left: 0, top: "56px", bottom: "75px", width: "60px", zIndex: 100, overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", padding: "8px 4px", background: "rgba(10, 10, 20, 0.9)", backdropFilter: "blur(10px)", borderRight: "1px solid rgba(255,255,255,0.08)" }}>
           <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(4, 1fr)", 
-            gap: "10px" 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: "6px" 
           }}>
             {[
               { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
@@ -310,7 +310,7 @@ export default function LobbyPage() {
                     WebkitBackdropFilter: "blur(10px)",
                     border: isActive ? "1px solid rgb(255, 179, 0)" : "1px solid rgba(255, 255, 255, 0.08)",
                     borderRadius: "12px",
-                    padding: "12px 6px",
+                    padding: "8px 4px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
@@ -329,8 +329,8 @@ export default function LobbyPage() {
                     src={cat.icon} 
                     alt={cat.label} 
                     style={{ 
-                      width: "38px", 
-                      height: "38px", 
+                      width: "28px", 
+                      height: "28px", 
                       objectFit: "contain", 
                       filter: isActive ? "drop-shadow(0 4px 8px rgba(255, 179, 0, 0.5))" : "drop-shadow(0 2px 4px rgba(0,0,0,0.4))",
                       transition: "transform 0.3s ease"
@@ -339,7 +339,7 @@ export default function LobbyPage() {
                   
                   {/* 🌟 ปรับปรุงฟอนต์ตรงนี้ให้ดูสวยงาม เป็นมืออาชีพ 🌟 */}
                   <span style={{ 
-                    fontSize: "0.72rem", 
+                    fontSize: "0.5rem", 
                     fontWeight: 700, 
                     color: isActive ? "#ffffff" : "#cbd5e1",
                     textAlign: "center",
@@ -471,7 +471,7 @@ export default function LobbyPage() {
 
                     {/* ข้อมูล */}
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ fontSize: "0.72rem", fontWeight: 700, color: "white", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</div>
+                      <div style={{ fontSize: "0.5rem", fontWeight: 700, color: "white", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.name}</div>
                       <div style={{ fontSize: "0.6rem", color: "#94a3b8" }}>{item.user}</div>
                     </div>
 
@@ -1275,6 +1275,8 @@ export default function LobbyPage() {
 
         .desktop-only { display: none; }
         .mobile-only { display: block; }
+        .mobile-sidebar ~ * { margin-left: 60px; }
+        @media (min-width: 1024px) { .mobile-sidebar { display: none !important; } }
         @media (min-width: 1024px) {
           .desktop-only { display: block; }
           .mobile-only { display: none; }
