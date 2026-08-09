@@ -284,12 +284,13 @@ export default function LobbyPage() {
           )}
         </div>
 
-      {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
-        <div className="mobile-only" style={{ marginBottom: "20px" }}>
+      <div className="mobile-game-layout" style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
+      {/* 📱 เมนูหมวดหมู่สำหรับมือถือ 📱 */}
+        <div className="mobile-only" style={{ width: "65px", flexShrink: 0, position: "sticky", top: "56px" }}></div>
           <div style={{ 
-            display: "grid", 
-            gridTemplateColumns: "repeat(4, 1fr)", 
-            gap: "10px" 
+            display: "flex", 
+            flexDirection: "column", 
+            gap: "6px" 
           }}>
             {[
               { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
@@ -356,6 +357,7 @@ export default function LobbyPage() {
           </div>
         </div>
 
+        <div style={{ flex: 1, minWidth: 0 }}>
         {/* 🟢 นำเกมไฮไลท์ (กล่องแดง) มาวางตรงนี้ 🟢 */}
         <div style={{ marginBottom: "24px", background: "rgba(15, 10, 30, 0.5)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
           
