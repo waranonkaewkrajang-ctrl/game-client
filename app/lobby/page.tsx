@@ -457,7 +457,7 @@ export default function LobbyPage() {
         <div style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
 
           {/* 📱 เมนูมือถือด้านซ้าย (sticky ในส่วนเกมเท่านั้น) 📱 */}
-          <div className="mobile-only" style={{ width: "78px", flexShrink: 0, alignSelf: "stretch", display: "flex", flexDirection: "column", gap: "8px" }}>
+          <div className="mobile-menu-col" style={{ width: "78px", flexShrink: 0, alignSelf: "stretch", flexDirection: "column", gap: "8px" }}>
             {[
               { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
               { id: "LIVECASINO", label: "คาสิโน", icon: "https://odin996.com/theme_1/img/icons8-cards-48.png" },
@@ -1246,10 +1246,11 @@ export default function LobbyPage() {
 
         .desktop-only { display: none; }
         .mobile-only { display: block; }
-
+        .mobile-menu-col { display: flex; }
         @media (min-width: 1024px) {
           .desktop-only { display: block; }
           .mobile-only { display: none; }
+          .mobile-menu-col { display: none; }
         }
           @keyframes marquee {
           0% { transform: translateX(100%); }
