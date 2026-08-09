@@ -284,9 +284,8 @@ export default function LobbyPage() {
           )}
         </div>
 
-      <div className="mobile-game-layout" style={{ display: "flex", gap: "8px", alignItems: "flex-start" }}>
-      {/* 📱 เมนูหมวดหมู่สำหรับมือถือ 📱 */}
-        <div className="mobile-only" style={{ width: "65px", flexShrink: 0, position: "sticky", top: "56px" }}></div>
+     
+
           <div style={{ 
             display: "flex", 
             flexDirection: "column", 
@@ -357,7 +356,6 @@ export default function LobbyPage() {
           </div>
         </div>
 
-        <div style={{ flex: 1, minWidth: 0 }}>
         {/* 🟢 นำเกมไฮไลท์ (กล่องแดง) มาวางตรงนี้ 🟢 */}
         <div style={{ marginBottom: "24px", background: "rgba(15, 10, 30, 0.5)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
           
@@ -1286,8 +1284,6 @@ export default function LobbyPage() {
           100% { transform: translateX(-100%); }
         }
       `}} />
-      </div>
-      </div>
       </div>
   );
 }
