@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
@@ -14,6 +14,11 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const [contactLinks, setContactLinks] = useState({ line: "#", telegram: "#" });
+  useEffect(() => {
+    api.get("/contact-links").then((res) => setContactLinks(res.data)).catch(() => {});
+  }, []);
 
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -212,7 +217,7 @@ export default function LoginPage() {
             <div style={{ display: "flex", gap: "12px", justifyContent: "center" }}>
               
               {/* ปุ่ม Line */}
-              <a href="https://lin.ee/UbpbDVFT" className="btn-line" target="_blank" rel="noopener noreferrer">
+              <a href={contactLinks.line} className="btn-line" target="_blank" rel="noopener noreferrer">
                 <svg className="me-1" width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path d="M20.4811 0.000347137H4.55729C2.05693 -0.00299835 0.00356961 2.01479 3.662e-06 4.50732V20.3764C-0.00314276 22.8691 2.02169 24.9156 4.52236 24.9189H20.4464C22.9472 24.9221 24.9997 22.9044 25.0035 20.4114V4.54192C25.0071 2.04929 22.9824 0.00369453 20.4811 0.000244141" fill="#00B900"></path>
                   <path d="M21.5645 11.3638C21.5645 7.30419 17.4809 4.00141 12.4609 4.00141C7.44169 4.00141 3.35742 7.30419 3.35742 11.3637C3.35742 15.0032 6.59614 18.051 10.9709 18.6274C11.2674 18.6911 11.6709 18.8223 11.773 19.0748C11.8647 19.3041 11.8331 19.6635 11.8023 19.8951C11.8023 19.8951 11.6955 20.5353 11.6725 20.6717C11.6328 20.9011 11.4896 21.5688 12.4609 21.1607C13.4326 20.7527 17.7038 18.0842 19.6136 15.8935H19.6133C20.9326 14.4517 21.5645 12.9885 21.5645 11.3637" fill="#FFF"></path>
@@ -222,7 +227,7 @@ export default function LoginPage() {
               </a>
 
               {/* ปุ่ม Telegram */}
-              <a href="https://lin.ee/pE8Lf6j" className="btn-telegram" target="_blank" rel="noopener noreferrer">
+              <a href={contactLinks.telegram} className="btn-telegram" target="_blank" rel="noopener noreferrer">
                 <img width="24" height="24" src="https://fs.cdnrc.com/lsm-layout3/images/telegram-logo.png" alt="telegram logo" />
                 Telegram
               </a>
