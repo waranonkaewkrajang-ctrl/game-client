@@ -285,7 +285,7 @@ export default function LobbyPage() {
         </div>
 
       {/* 📱 เมนูหมวดหมู่สำหรับมือถือ (ดีไซน์พรีเมียมระดับมืออาชีพ) 📱 */}
-        <div className="mobile-only mobile-sidebar" style={{ position: "fixed", left: 0, top: "56px", bottom: "75px", width: "72px", zIndex: 100, overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", padding: "8px 4px", background: "rgba(10, 10, 20, 0.9)", backdropFilter: "blur(10px)", borderRight: "1px solid rgba(255,255,255,0.08)" }}>
+        <div className="mobile-only mobile-sidebar" style={{ position: "fixed", left: 0, top: "56px", bottom: "75px", width: "72px", zIndex: 100, overflowY: "auto", display: "flex", flexDirection: "column", gap: "6px", padding: "8px 4px", background: "rgba(10, 10, 20, 0.3)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRight: "1px solid rgba(255,255,255,0.05)" }}>
           <div style={{ 
             display: "flex", 
             flexDirection: "column", 
