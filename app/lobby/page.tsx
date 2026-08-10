@@ -65,7 +65,7 @@ export default function LobbyPage() {
   }, [products]);
 
   // หมวดที่ต้องเข้าห้องค่ายก่อน (ไม่เปิดเกมตรง)
-  const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS"];
+  const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS", "LIVECASINO", "FISHING", "CARD", "SPORT"];
   const isRoomMode = ROOM_CATEGORIES.includes(selectedCategory.toUpperCase());
 
   useEffect(() => {
