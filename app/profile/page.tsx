@@ -14,6 +14,7 @@ export default function ProfilePage() {
   const [showBankModal, setShowBankModal] = useState(false);
   const [bankForm, setBankForm] = useState({ new_bank_code: "KBANK", new_bank_account: "", new_bank_name: "" });
   const [submitting, setSubmitting] = useState(false);
+  const [bankDropdownOpen, setBankDropdownOpen] = useState(false);
 
 
   const bankList = [
@@ -464,9 +465,23 @@ export default function ProfilePage() {
             <p style={{ fontSize: "12px", color: "#e9d5ff", margin: "0 0 20px", textAlign: "center" }}>กรอกข้อมูลบัญชีใหม่ รอแอดมินตรวจสอบ</p>
 
             <label style={{ display: "block", fontSize: "13px", color: "#f5d0fe", marginBottom: "6px", fontWeight: 600 }}>ธนาคาร</label>
-            <select value={bankForm.new_bank_code} onChange={(e) => setBankForm({ ...bankForm, new_bank_code: e.target.value })} style={{ width: "100%", boxSizing: "border-box", padding: "12px", borderRadius: "12px", background: "rgba(0,0,0,0.35)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", fontSize: "14px", marginBottom: "16px", fontFamily: "'Kanit', sans-serif" }}>
-              {bankList.map((b) => (<option key={b.code} value={b.code} style={{ background: "#2b1055" }}>{b.name}</option>))}
-            </select>
+            <div style={{ position: "relative", marginBottom: "16px" }}>
+              <div onClick={() => setBankDropdownOpen(!bankDropdownOpen)} style={{ width: "100%", boxSizing: "border-box", padding: "12px", borderRadius: "12px", background: "rgba(0,0,0,0.35)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", fontSize: "14px", cursor: "pointer", display: "flex", alignItems: "center", gap: "10px" }}>
+                <img src={`/logos/${bankForm.new_bank_code}.webp`} alt="" style={{ width: "24px", height: "24px", borderRadius: "5px", objectFit: "contain", background: "#fff", padding: "2px" }} onError={(e) => e.currentTarget.style.display = 'none'} />
+                <span style={{ flex: 1 }}>{bankList.find((b) => b.code === bankForm.new_bank_code)?.name || "เลือกธนาคาร"}</span>
+                <span style={{ transform: bankDropdownOpen ? "rotate(180deg)" : "none", transition: "0.2s" }}>▾</span>
+              </div>
+              {bankDropdownOpen && (
+                <div style={{ position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, background: "#2b1055", borderRadius: "12px", border: "1px solid rgba(255,255,255,0.2)", maxHeight: "240px", overflowY: "auto", zIndex: 10, boxShadow: "0 10px 30px rgba(0,0,0,0.6)" }}>
+                  {bankList.map((b) => (
+                    <div key={b.code} onClick={() => { setBankForm({ ...bankForm, new_bank_code: b.code }); setBankDropdownOpen(false); }} style={{ padding: "10px 12px", display: "flex", alignItems: "center", gap: "10px", cursor: "pointer", color: "#fff", fontSize: "14px", borderBottom: "1px solid rgba(255,255,255,0.05)" }} onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.1)"} onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}>
+                      <img src={`/logos/${b.code}.webp`} alt="" style={{ width: "24px", height: "24px", borderRadius: "5px", objectFit: "contain", background: "#fff", padding: "2px" }} onError={(e) => e.currentTarget.style.display = 'none'} />
+                      {b.name}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
             <label style={{ display: "block", fontSize: "13px", color: "#f5d0fe", marginBottom: "6px", fontWeight: 600 }}>เลขบัญชีใหม่</label>
             <input value={bankForm.new_bank_account} onChange={(e) => setBankForm({ ...bankForm, new_bank_account: e.target.value })} placeholder="กรอกเลขบัญชี" style={{ width: "100%", boxSizing: "border-box", padding: "12px", borderRadius: "12px", background: "rgba(0,0,0,0.35)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", fontSize: "14px", marginBottom: "16px", fontFamily: "'Kanit', sans-serif" }} />
