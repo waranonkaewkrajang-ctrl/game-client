@@ -27,15 +27,15 @@ export default function ProfilePage() {
       title: "แจ้งเปลี่ยนเลขบัญชี",
       html:
         `<div style="text-align:left;font-size:14px">` +
-        `<label style="display:block;margin:8px 0 4px;color:#94a3b8">ธนาคาร</label>` +
+        `<label style="display:block;margin:8px 0 4px;color:#475569">ธนาคาร</label>` +
         `<select id="swal-bank" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;background:#0f0f1e;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:14px">${bankOptions}</select>` +
-        `<label style="display:block;margin:12px 0 4px;color:#94a3b8">เลขบัญชี</label>` +
+        `<label style="display:block;margin:12px 0 4px;color:#475569">เลขบัญชี</label>` +
         `<input id="swal-account" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;background:#0f0f1e;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:14px" placeholder="เลขบัญชีใหม่">` +
-        `<label style="display:block;margin:12px 0 4px;color:#94a3b8">ชื่อบัญชี (ตามสมัคร)</label>` +
+        `<label style="display:block;margin:12px 0 4px;color:#475569">ชื่อบัญชี (ตามสมัคร)</label>` +
         `<input id="swal-name" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;background:#0f0f1e;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:14px" placeholder="ชื่อ-นามสกุล" value="${user?.full_name || ''}">` +
         `</div>`,
-      background: "#1a1a2e",
-      color: "#e2e8f0",
+      background: "#ffffff",
+      color: "#0f172a",
       showCancelButton: true,
       confirmButtonText: "ส่งคำขอ",
       cancelButtonText: "ยกเลิก",
@@ -45,9 +45,9 @@ export default function ProfilePage() {
         ["swal-bank", "swal-account", "swal-name"].forEach((id) => {
           const el = document.getElementById(id);
           if (el) {
-            el.style.setProperty("background", "#0f0f1e", "important");
-            el.style.setProperty("color", "#ffffff", "important");
-            el.style.setProperty("border", "1px solid rgba(255,255,255,0.15)", "important");
+            el.style.setProperty("background", "#ffffff", "important");
+            el.style.setProperty("color", "#0f172a", "important");
+            el.style.setProperty("border", "1px solid #cbd5e1", "important");
           }
         });
       },
