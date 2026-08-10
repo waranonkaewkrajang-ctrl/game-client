@@ -55,12 +55,26 @@ function WalletContent() {
 
   // 🆕 ฟัง WebSocket — ฝากเงินสำเร็จ (auto approve)
   useEffect(() => {
-    if (!userData?.id) return;
-    const echo = getEcho();
-    if (!echo) return;
+    console.log("🔍 [Echo useEffect] userData:", userData);
+    if (!userData?.id) {
+      console.log("⏸️ [Echo useEffect] userData ยังไม่พร้อม, skip");
+      return;
+    }
 
-    echo.private(`App.Models.User.${userData.id}`)
+    const uid = userData.id;
+    console.log("🚀 [Echo useEffect] Starting Echo for user:", uid);
+
+    const echo = getEcho();
+    if (!echo) {
+      console.error("❌ [Echo useEffect] getEcho() returned null");
+      return;
+    }
+
+    console.log("✅ [Echo useEffect] Subscribing to App.Models.User." + uid);
+
+    echo.private(`App.Models.User.${uid}`)
       .listen(".deposit.approved", (data: any) => {
+        console.log("🎉 [Echo] Received deposit.approved:", data);
         Swal.fire({
           icon: "success",
           title: "ฝากเงินสำเร็จ! 🎉",
@@ -77,14 +91,14 @@ function WalletContent() {
           background: "#14142a",
           color: "#e2e8f0",
         });
-        // Refresh balance ใหม่
         fetchWallet();
       });
 
     return () => {
-      echo.leave(`App.Models.User.${userData.id}`);
+      console.log("🧹 [Echo useEffect] Cleanup — leaving App.Models.User." + uid);
+      echo.leave(`App.Models.User.${uid}`);
     };
-  }, [userData?.id]);
+  }, [userData]);
 
   const fetchWallet = () => {
     api.get("/wallet/balance").then((res) => setWallet(res.data.data)).catch(() => {});
