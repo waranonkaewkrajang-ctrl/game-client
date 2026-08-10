@@ -43,6 +43,18 @@ export default function LobbyPage() {
     return () => clearInterval(timer);
   }, []);
 
+  // 🆕 ออนไลน์มากที่สุด — ตัวเลขขยับเอง
+  const [onlineCounts, setOnlineCounts] = useState<number[]>([9333, 11115, 7452, 7322, 6891, 5624, 4780, 3912]);
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setOnlineCounts((prev) => prev.map((n) => {
+        const delta = Math.floor(Math.random() * 8) - 3; // -3 ถึง +4
+        return Math.max(1000, n + delta);
+      }));
+    }, 3000);
+    return () => clearInterval(timer);
+  }, []);
+
   useEffect(() => {
     const total = Math.min(products.length, 10);
     if (total === 0) return;
@@ -1007,6 +1019,75 @@ export default function LobbyPage() {
           </div>
         </div>
 
+        {/* 🟢 ออนไลน์มากที่สุดในขณะนี้ 🟢 */}
+        <div style={{ marginBottom: "24px", background: "rgba(15, 10, 30, 0.5)", backdropFilter: "blur(16px)", WebkitBackdropFilter: "blur(16px)", borderRadius: "16px", padding: "20px", position: "relative", overflow: "hidden" }}>
+
+          {/* เส้นแสงเรืองด้านบน */}
+          <div style={{ position: "absolute", top: 0, left: 0, width: "100%", display: "flex", justifyContent: "center" }}>
+            <div style={{ width: "90%", height: "2px", borderRadius: "50%", background: "radial-gradient(50% 50% at 50% 50%, rgb(168, 85, 247) 0%, rgba(7, 29, 70, 0) 100%)", boxShadow: "0 0 10px rgb(168,85,247)" }}></div>
+          </div>
+
+          {/* หัวข้อ */}
+          <div style={{ position: "relative", width: "100%", height: "40px", marginBottom: "20px", borderRadius: "6px", overflow: "hidden" }}>
+            <div style={{ position: "absolute", inset: 0, opacity: 0.48, background: "linear-gradient(90deg, rgba(22, 4, 4, 0.6) -6.21%, rgb(168, 85, 247) 6.41%, rgba(22, 4, 4, 0.6) 80.01%)" }}></div>
+            <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "2px", opacity: 0.44, background: "linear-gradient(90deg, rgba(22, 4, 4, 0.6) -6.21%, rgb(168, 85, 247) 4.41%, rgba(22, 4, 4, 0.6) 83.01%)" }}></div>
+            <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", gap: "10px", paddingLeft: "16px" }}>
+              <span style={{ fontSize: "1.2rem", filter: "drop-shadow(0 0 5px rgba(255,255,255,0.5))" }}>🔥</span>
+              <span style={{ color: "white", fontSize: "1.1rem", fontWeight: 700 }}>ออนไลน์มากที่สุดในขณะนี้</span>
+            </div>
+          </div>
+
+          {/* Horizontal scroll ค่ายเกม */}
+          <div className="online-scroll" style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "8px" }}>
+            {[
+              { name: "PG Soft",   slug: "pgsoft",       img: "slot/pgslot_menu.png" },
+              { name: "Sexy",      slug: "sexy",         img: "casino/sexy_menu.png" },
+              { name: "JILI",      slug: "jili",         img: "slot/jili_menu.png" },
+              { name: "SA Gaming", slug: "sagaming",     img: "casino/sa_menu.png" },
+              { name: "Joker",     slug: "joker",        img: "slot/joker_menu.png" },
+              { name: "Pragmatic", slug: "pragmaticplay",img: "slot/pragmaticplay_menu.png" },
+              { name: "Evolution", slug: "evolution",    img: "casino/evolution_menu.png" },
+              { name: "Dream",     slug: "dreamgaming",  img: "casino/dreamgaming_menu.png" },
+            ].map((item, i) => (
+              <div key={`online-${i}`}
+                onClick={() => router.push(`/games/${item.slug}`)}
+                style={{ flex: "0 0 128px", width: "128px", cursor: "pointer", transition: "transform 0.2s ease" }}
+                onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
+                onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
+              >
+                {/* รูปค่าย */}
+                <div style={{
+                  width: "128px", height: "180px", borderRadius: "12px",
+                  background: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(124,58,237,0.05))",
+                  border: "1px solid rgba(168,85,247,0.3)",
+                  display: "flex", alignItems: "center", justifyContent: "center",
+                  overflow: "hidden", boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                }}>
+                  <img src={`https://imagex-game.image-etc.co/_tempura/provider/${item.img}`} alt={item.name} loading="lazy"
+                    style={{ maxWidth: "80%", maxHeight: "80%", objectFit: "contain" }} />
+                </div>
+
+                {/* Badge จำนวนคนออนไลน์ */}
+                <div style={{
+                  marginTop: "8px", height: "36px", borderRadius: "10px",
+                  background: "radial-gradient(90.16% 77.79% at 92.58% 91.67%, rgba(168,85,247,0.25) 0%, rgba(124,58,237,0.25) 100%)",
+                  backdropFilter: "blur(21px)", border: "1px solid rgba(168,85,247,0.5)",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                }}>
+                  <svg width="12" height="14" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5.99935 7.41081C6.8834 7.41081 7.73125 7.05962 8.35637 6.4345C8.98149 5.80937 9.33268 4.96153 9.33268 4.07747C9.33268 3.19342 8.98149 2.34557 8.35637 1.72045C7.73125 1.09533 6.8834 0.744141 5.99935 0.744141C5.11529 0.744141 4.26745 1.09533 3.64233 1.72045C3.01721 2.34557 2.66602 3.19342 2.66602 4.07747C2.66602 4.96153 3.01721 5.80937 3.64233 6.4345C4.26745 7.05962 5.11529 7.41081 5.99935 7.41081Z" fill="#c084fc"/>
+                    <path d="M0 14.8047C0 13.1974 0.632141 11.6558 1.75736 10.5193C2.88258 9.38267 4.4087 8.74414 6 8.74414C7.5913 8.74414 9.11742 9.38267 10.2426 10.5193C11.3679 11.6558 12 13.1974 12 14.8047C12 14.9655 11.9368 15.1196 11.8243 15.2333C11.7117 15.347 11.5591 15.4108 11.4 15.4108H0.6C0.44087 15.4108 0.288258 15.347 0.175736 15.2333C0.0632141 15.1196 0 14.9655 0 14.8047Z" fill="#c084fc"/>
+                  </svg>
+                  <span style={{ color: "#c084fc", fontSize: "0.75rem", fontWeight: 800 }}>
+                    {(onlineCounts[i] ?? 0).toLocaleString()}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        {/* 🟢 จบ ออนไลน์มากที่สุดในขณะนี้ 🟢 */}
+
         {/* === Footer ค่ายเกม + ช่องทางชำระเงิน + ใบอนุญาต === */}
         <div style={{ marginTop: "30px", padding: "40px 24px 80px", textAlign: "center", background: "#0a0a14", borderTop: "1px solid rgba(124,58,237,0.2)", marginLeft: "-24px", marginRight: "-24px", position: "relative", zIndex: 2, paddingBottom: "100px" }}>
 
@@ -1215,10 +1296,13 @@ export default function LobbyPage() {
           .footer-license-img { height: 28px; margin: 2px; }
         }
 
+
+        .online-scroll::-webkit-scrollbar { display: none; }
+        .online-scroll { -ms-overflow-style: none; scrollbar-width: none; }
         @media (max-width: 1023px) {
-  .highlight-layout {
+    .highlight-layout {
     flex-direction: column !important;
-    max-height: none !important;
+    max-height: none !important;  
     width: 100% !important;
     overflow: hidden;
   }
