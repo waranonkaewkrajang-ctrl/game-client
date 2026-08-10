@@ -55,47 +55,34 @@ function WalletContent() {
 
   // 🆕 ฟัง WebSocket — ฝากเงินสำเร็จ (auto approve)
   useEffect(() => {
-    console.log("🔍 [Echo useEffect] userData:", userData);
-    if (!userData?.id) {
-      console.log("⏸️ [Echo useEffect] userData ยังไม่พร้อม, skip");
-      return;
-    }
+    if (!userData?.id) return;
 
     const uid = userData.id;
-    console.log("🚀 [Echo useEffect] Starting Echo for user:", uid);
-
     const echo = getEcho();
-    if (!echo) {
-      console.error("❌ [Echo useEffect] getEcho() returned null");
-      return;
-    }
-
-    console.log("✅ [Echo useEffect] Subscribing to App.Models.User." + uid);
+    if (!echo) return;
 
     echo.private(`App.Models.User.${uid}`)
       .listen(".deposit.approved", (data: any) => {
-        console.log("🎉 [Echo] Received deposit.approved:", data);
         Swal.fire({
           icon: "success",
           title: "ฝากเงินสำเร็จ! 🎉",
           html: `
-            <div style="font-size:1.8rem;font-weight:900;color:#22c55e;margin:10px 0;">
+            <div style="font-size:2rem;font-weight:900;color:#16a34a;margin:12px 0;">
               +${Number(data.amount).toLocaleString()} บาท
             </div>
-            <div style="color:#94a3b8;font-size:0.75rem;margin-top:6px;">
+            <div style="color:#64748b;font-size:0.8rem;margin-top:6px;">
               ${data.reference_id}
             </div>
           `,
-          confirmButtonColor: "#22c55e",
+          confirmButtonColor: "#16a34a",
           confirmButtonText: "ตกลง",
-          background: "#14142a",
-          color: "#e2e8f0",
+          background: "#ffffff",
+          color: "#1e293b",
         });
         fetchWallet();
       });
 
     return () => {
-      console.log("🧹 [Echo useEffect] Cleanup — leaving App.Models.User." + uid);
       echo.leave(`App.Models.User.${uid}`);
     };
   }, [userData]);
