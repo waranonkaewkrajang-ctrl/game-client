@@ -15,6 +15,15 @@ export default function ProfilePage() {
   const [bankForm, setBankForm] = useState({ new_bank_code: "KBANK", new_bank_account: "", new_bank_name: "" });
   const [submitting, setSubmitting] = useState(false);
 
+
+  const bankList = [
+    { code: "KBANK", name: "กสิกรไทย" }, { code: "SCB", name: "ไทยพาณิชย์" },
+    { code: "KTB", name: "กรุงไทย" }, { code: "BBL", name: "กรุงเทพ" },
+    { code: "BAY", name: "กรุงศรี" }, { code: "GSB", name: "ออมสิน" },
+    { code: "TTB", name: "ทีทีบี" }, { code: "KKP", name: "เกียรตินาคิน" },
+    { code: "CIMBT", name: "ซีไอเอ็มบี" }, { code: "TISCO", name: "ทิสโก้" },
+    { code: "UOBT", name: "ยูโอบี" }, { code: "BAAC", name: "ธ.ก.ส." },
+  ];
   const openBankModal = () => {
     setBankForm({ new_bank_code: user?.bank_code || "KBANK", new_bank_account: "", new_bank_name: user?.full_name || "" });
     setShowBankModal(true);
