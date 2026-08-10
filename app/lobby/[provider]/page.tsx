@@ -221,15 +221,17 @@ e.currentTarget.style.boxShadow = "0 2px 0 #450a0a, 0 3px 5px rgba(0,0,0,0.4), i
           0%, 100% { opacity: 0.3; }
           50% { opacity: 0.6; }
         }
-      `}} />
 
-    /* 🆕 บังคับ 2 คอลัมน์บนมือถือ */
+        /* 🆕 บังคับ 2 คอลัมน์บนมือถือ */
         @media (max-width: 768px) {
           .games-grid {
             grid-template-columns: repeat(2, 1fr) !important;
             gap: 10px !important;
           }
         }
+      `}} />
+
+    
     </div>
   );
 }
