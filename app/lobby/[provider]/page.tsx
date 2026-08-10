@@ -69,19 +69,99 @@ export default function ProviderRoomPage() {
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "12px 16px", position: "relative", zIndex: 1 }}>
 
         {/* Room Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "18px", padding: "12px 16px", background: "linear-gradient(90deg, rgba(124,58,237,0.15), transparent)"
-            , borderRadius: "10px", borderLeft: "3px solid #7c3aed" }}>
-          <button onClick={() => router.push("/lobby")} style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.15)", borderRadius: "8px", color: "#e2e8f0", padding: "8px 16px", cursor: "pointer", fontSize: "0.8rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "6px", transition: "all 0.2s" }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(124,58,237,0.2)"; e.currentTarget.style.borderColor = "#7c3aed"; }}
-            onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.08)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.15)"; }}>
-            ← กลับ
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "16px",
+          marginBottom: "20px",
+          padding: "14px 18px",
+          background: "linear-gradient(135deg, rgba(124,58,237,0.25), rgba(88,28,135,0.15) 60%, transparent)",
+          borderRadius: "14px",
+          borderLeft: "3px solid #a855f7",
+          boxShadow: "0 6px 20px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08)",
+          position: "relative",
+          overflow: "hidden",
+        }}>
+          {/* เส้นแสงเรืองด้านบน */}
+          <div style={{
+            position: "absolute", top: 0, left: 0, right: 0, height: "1px",
+            background: "linear-gradient(90deg, transparent, rgba(168,85,247,0.6), transparent)",
+          }}></div>
+
+          {/* ปุ่มกลับ 3D */}
+          <button
+            onClick={() => router.push("/lobby")}
+            style={{
+              background: "linear-gradient(180deg, #a855f7 0%, #7e22ce 50%, #581c87 100%)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              borderRadius: "10px",
+              color: "#fff",
+              padding: "9px 18px",
+              cursor: "pointer",
+              fontSize: "0.82rem",
+              fontWeight: 800,
+              display: "flex",
+              alignItems: "center",
+              gap: "6px",
+              letterSpacing: "0.3px",
+              boxShadow: "0 4px 0 #3b0764, 0 6px 10px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(59,7,100,0.6)",
+              textShadow: "0 1px 2px rgba(0,0,0,0.4)",
+              transition: "all 0.15s ease",
+              flexShrink: 0,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow = "0 6px 0 #3b0764, 0 8px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(59,7,100,0.6)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "0 4px 0 #3b0764, 0 6px 10px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(59,7,100,0.6)";
+            }}
+            onMouseDown={(e) => {
+              e.currentTarget.style.transform = "translateY(2px)";
+              e.currentTarget.style.boxShadow = "0 2px 0 #3b0764, 0 3px 5px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(59,7,100,0.6)";
+            }}
+            onMouseUp={(e) => {
+              e.currentTarget.style.transform = "translateY(-2px)";
+            }}
+          >
+            <span style={{ fontSize: "1rem", lineHeight: 1 }}>←</span>
+            <span>กลับ</span>
           </button>
-          <div>
-            <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "#a78bfa", margin: 0 }}>
+
+          {/* ข้อความ 3D */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <h2 style={{
+              fontSize: "1.25rem",
+              fontWeight: 900,
+              margin: 0,
+              lineHeight: 1.2,
+              letterSpacing: "0.5px",
+              background: "linear-gradient(180deg, #ffffff 0%, #e9d5ff 50%, #a855f7 100%)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              backgroundClip: "text",
+              filter: "drop-shadow(0 2px 3px rgba(0,0,0,0.4)) drop-shadow(0 0 8px rgba(168,85,247,0.3))",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}>
               ห้อง {provider}
             </h2>
-            <span style={{ fontSize: "0.7rem", color: "#94a3b8" }}>
-              {loading ? "กำลังโหลด..." : `เกมทั้งหมด ${games.length} เกม`}
+            <span style={{
+              fontSize: "0.72rem",
+              color: "#c084fc",
+              fontWeight: 700,
+              textShadow: "0 1px 2px rgba(0,0,0,0.5)",
+              letterSpacing: "0.3px",
+              marginTop: "2px",
+              display: "inline-block",
+            }}>
+              {loading ? (
+                "กำลังโหลด..."
+              ) : (
+                <>เกมทั้งหมด <span style={{ color: "#fbbf24", fontWeight: 900, fontSize: "0.85rem" }}>{games.length}</span> เกม</>
+              )}
             </span>
           </div>
         </div>
