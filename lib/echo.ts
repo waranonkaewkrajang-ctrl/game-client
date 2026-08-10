@@ -32,7 +32,7 @@ export function getEcho(): Echo<any> | null {
     authorizer: (channel: any) => ({
       authorize: (socketId: string, callback: any) => {
         // ยิง auth ไปที่ /api/broadcasting/auth ผ่านโดเมนปัจจุบัน
-        fetch(`${window.location.origin}/api/broadcasting/auth`, {
+        fetch(`${window.location.origin}/broadcasting/auth`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
