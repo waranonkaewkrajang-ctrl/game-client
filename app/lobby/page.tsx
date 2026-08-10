@@ -1032,7 +1032,12 @@ export default function LobbyPage() {
             <div style={{ position: "absolute", inset: 0, opacity: 0.48, background: "linear-gradient(90deg, rgba(22, 4, 4, 0.6) -6.21%, rgb(168, 85, 247) 6.41%, rgba(22, 4, 4, 0.6) 80.01%)" }}></div>
             <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "2px", opacity: 0.44, background: "linear-gradient(90deg, rgba(22, 4, 4, 0.6) -6.21%, rgb(168, 85, 247) 4.41%, rgba(22, 4, 4, 0.6) 83.01%)" }}></div>
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", gap: "10px", paddingLeft: "16px" }}>
-              <span style={{ fontSize: "1.2rem", filter: "drop-shadow(0 0 5px rgba(255,255,255,0.5))" }}>🔥</span>
+              <img
+                src="/icons/mostonline1.webp"
+                alt="ออนไลน์"
+                loading="lazy"
+                style={{ width: "25px", height: "25px", objectFit: "contain", filter: "drop-shadow(0 0 5px rgba(255,255,255,0.5))" }}
+              />
               <span style={{ color: "white", fontSize: "1.1rem", fontWeight: 700 }}>ออนไลน์มากที่สุดในขณะนี้</span>
             </div>
           </div>
