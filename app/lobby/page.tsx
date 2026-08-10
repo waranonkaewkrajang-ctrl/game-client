@@ -583,8 +583,11 @@ export default function LobbyPage() {
                     const pGames = allGames.filter((g) => g.product_id === p);
                     // ยอดนิยม = แสดงทุกค่าย, สล็อต = เฉพาะค่ายที่มีเกมสล็อต
                     if (selectedCategory === "SLOT") {
-                      const slotGames = pGames.filter((g) => (g.category || "").toUpperCase() === "EGAMES");
+                      const slotGames = pGames.filter((g) => (g.category || "").toUpperCase() === "EGAMES" && (g.type || "").toUpperCase() === "SLOT");
                       if (slotGames.length === 0) return null;
+                    } else if (selectedCategory === "FISHING") {
+                      const fishGames = pGames.filter((g) => (g.type || "").toUpperCase() === "FISHING");
+                      if (fishGames.length === 0) return null;
                     } else if (selectedCategory !== "") {
                       const catGames = pGames.filter((g) => (g.category || "").toUpperCase() === selectedCategory.toUpperCase());
                       if (catGames.length === 0) return null;
