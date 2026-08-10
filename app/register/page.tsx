@@ -53,7 +53,7 @@ export default function RegisterPage() {
         confirmButtonColor: "#7c3aed",
         confirmButtonText: "ตกลง",
       });
-    }
+      
     } finally { setLoading(false); }
   };
 
