@@ -168,9 +168,9 @@ e.currentTarget.style.boxShadow = "0 2px 0 #450a0a, 0 3px 5px rgba(0,0,0,0.4), i
 
         {/* Games Grid */}
         {loading ? (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+          <div className="games-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "12px" }}>
             {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4", animation: "pulse 1.5s ease-in-out infinite" }} />
+              <div key={i} style={{ background: "#14142a", borderRadius: "14px", aspectRatio: "3/4", animation: "pulse 1.5s ease-in-out infinite" }} />
             ))}
           </div>
         ) : games.length === 0 ? (
@@ -181,10 +181,10 @@ e.currentTarget.style.boxShadow = "0 2px 0 #450a0a, 0 3px 5px rgba(0,0,0,0.4), i
             </button>
           </div>
         ) : (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "10px" }}>
+          <div className="games-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "12px" }}>
             {games.map((game) => (
               <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
-               <div style={{ width: "100%", aspectRatio: "1/1", borderRadius: "10px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
+               <div style={{ width: "100%", aspectRatio: "3/4", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
                   onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.4)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
                   {game.image_url ? (
@@ -222,6 +222,14 @@ e.currentTarget.style.boxShadow = "0 2px 0 #450a0a, 0 3px 5px rgba(0,0,0,0.4), i
           50% { opacity: 0.6; }
         }
       `}} />
+
+    /* 🆕 บังคับ 2 คอลัมน์บนมือถือ */
+        @media (max-width: 768px) {
+          .games-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 10px !important;
+          }
+        }
     </div>
   );
 }
