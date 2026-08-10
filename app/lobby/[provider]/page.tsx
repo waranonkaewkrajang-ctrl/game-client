@@ -92,7 +92,7 @@ export default function ProviderRoomPage() {
           <button
             onClick={() => router.push("/lobby")}
             style={{
-              background: "linear-gradient(180deg, #a855f7 0%, #7e22ce 50%, #581c87 100%)",
+              background: "linear-gradient(180deg, #ef4444 0%, #b91c1c 50%, #7f1d1d 100%)",
               border: "1px solid rgba(255,255,255,0.2)",
               borderRadius: "10px",
               color: "#fff",
@@ -104,22 +104,22 @@ export default function ProviderRoomPage() {
               alignItems: "center",
               gap: "6px",
               letterSpacing: "0.3px",
-              boxShadow: "0 4px 0 #3b0764, 0 6px 10px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(59,7,100,0.6)",
+              boxShadow: "0 4px 0 #450a0a, 0 6px 10px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(69,10,10,0.6)",
               textShadow: "0 1px 2px rgba(0,0,0,0.4)",
               transition: "all 0.15s ease",
               flexShrink: 0,
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = "translateY(-2px)";
-              e.currentTarget.style.boxShadow = "0 6px 0 #3b0764, 0 8px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(59,7,100,0.6)";
+              e.currentTarget.style.boxShadow = "0 6px 0 #450a0a, 0 8px 14px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(69,10,10,0.6)";
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = "translateY(0)";
-              e.currentTarget.style.boxShadow = "0 4px 0 #3b0764, 0 6px 10px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(59,7,100,0.6)";
+e.currentTarget.style.boxShadow = "0 4px 0 #450a0a, 0 6px 10px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(69,10,10,0.6)";
             }}
             onMouseDown={(e) => {
               e.currentTarget.style.transform = "translateY(2px)";
-              e.currentTarget.style.boxShadow = "0 2px 0 #3b0764, 0 3px 5px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(59,7,100,0.6)";
+e.currentTarget.style.boxShadow = "0 2px 0 #450a0a, 0 3px 5px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.4), inset 0 -2px 3px rgba(69,10,10,0.6)";
             }}
             onMouseUp={(e) => {
               e.currentTarget.style.transform = "translateY(-2px)";
