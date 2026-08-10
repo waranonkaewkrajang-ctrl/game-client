@@ -12,7 +12,7 @@ export default function BottomMenu() {
         <div className="-bg-bar"></div>
         <div className="-left-wrapper">
           <Link href="/lobby" className="-item-wrapper -promotion">
-            <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="เข้าเกม" />
+            <img src="/icons/game.webp" className="-ic-img" alt="เข้าเกม" />
             <span className="-text">เข้าเกม</span>
           </Link>
           <Link href="/promotions" className="-item-wrapper -promotion">
