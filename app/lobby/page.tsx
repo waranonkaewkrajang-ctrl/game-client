@@ -1007,6 +1007,86 @@ export default function LobbyPage() {
           </div>
         </div>
 
+        {/* 🟢 ส่วนที่เพิ่มใหม่: ออนไลน์มากที่สุดในขณะนี้ (ปรับธีมม่วง-ทองแล้ว) 🟢 */}
+        <div style={{ marginBottom: "24px" }}>
+          <div className="relative w-full h-[38px] overflow-hidden rounded-[6px]">
+            {/* พื้นหลังไล่สีม่วง */}
+            <div className="absolute inset-0 opacity-[0.5]" style={{ background: "linear-gradient(90deg, rgba(20, 20, 42, 0.8) 0%, rgba(168, 85, 247, 0.7) 15%, rgba(20, 20, 42, 0.8) 80%)" }}></div>
+            {/* เส้นขีดสีม่วงด้านล่าง */}
+            <div className="absolute bottom-0 left-0 w-[100%] h-[2px] opacity-[0.8]" style={{ background: "linear-gradient(90deg, rgba(20, 20, 42, 0) 0%, rgb(168, 85, 247) 10%, rgba(20, 20, 42, 0) 80%)" }}></div>
+            
+            <div className="absolute inset-0 flex items-center gap-3 pl-5">
+              <div>
+                <img loading="lazy" className="w-[25px] h-[25px] object-contain" src="/images/home/mostonline1.webp" alt="Most Online" 
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }} 
+                />
+              </div>
+              <div className="w-full max-w-[600px] truncate flex-1 text-[16px] font-bold mt-0.5" style={{ color: "white", textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>
+                ออนไลน์มากที่สุดในขณะนี้
+              </div>
+            </div>
+          </div>
+          
+          <div className="px-4 mt-3">
+            <div className="swiper swiper-initialized swiper-horizontal swiper-free-mode">
+              <div className="swiper-wrapper" style={{ display: "flex", overflowX: "auto", gap: "16px", paddingBottom: "10px", scrollbarWidth: "none" }}>
+                
+                {[
+                  { id: "pgsoft", img: "https://cdn.zabbet.com/providers/set/1_1_v/pgsoft.png", users: "9,207" },
+                  { id: "sexyd", img: "https://cdn.zabbet.com/providers/set/1_1_v/sexyd.png", users: "15,573" },
+                  { id: "jl", img: "https://cdn.zabbet.com/providers/set/1_1_v/jl.png", users: "4,763" },
+                  { id: "sag", img: "https://cdn.zabbet.com/providers/set/1_1_v/sag.png", users: "8,352" },
+                ].map((item) => (
+                  <div key={item.id} className="swiper-slide relative max-w-[128px] flex-shrink-0">
+                    <div className="cursor-pointer w-[128px] h-[232px]">
+                      
+                      {/* รูปภาพค่ายเกม */}
+                      <div className="relative">
+                        <div className="absolute w-full z-20 pointer-events-none" style={{ zoom: 0.984615, paddingBottom: "142.857%" }}></div>
+                        <a className="block w-full relative rounded-lg overflow-hidden" style={{ paddingBottom: "142.857%" }}>
+                          <div className="absolute top-0 left-0 bottom-0 right-0 duration-300 opacity-100 hover:scale-105 transition-transform">
+                            <img loading="lazy" className="w-full h-full object-cover cursor-pointer" src={item.img} alt={`provider_${item.id}`} />
+                          </div>
+                        </a>
+                      </div>
+                      
+                      {/* กล่องตัวเลขคนออนไลน์ */}
+                      <div className="h-[40px] w-full rounded-[11px] mt-2 transition-all hover:bg-opacity-80" 
+                        style={{ 
+                          background: "radial-gradient(90.16% 77.79% at 92.58% 91.67%, rgba(168, 85, 247, 0.15) 0%, rgba(124, 58, 237, 0.05) 100%)", 
+                          backdropFilter: "blur(12px)", 
+                          border: "1px solid rgba(168, 85, 247, 0.4)" 
+                        }}>
+                        <div className="flex justify-between text-[10px] p-[7px] h-full">
+                          <div className="p-[4px] rounded-md w-full flex gap-2 justify-between items-center" 
+                            style={{ backgroundColor: "rgba(20, 20, 42, 0.6)", border: "1px solid rgba(168, 85, 247, 0.2)" }}>
+                            
+                            <div className="py-[1px]">
+                              {/* Icon User สีทอง */}
+                              <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M5.99935 7.41081C6.8834 7.41081 7.73125 7.05962 8.35637 6.4345C8.98149 5.80937 9.33268 4.96153 9.33268 4.07747C9.33268 3.19342 8.98149 2.34557 8.35637 1.72045C7.73125 1.09533 6.8834 0.744141 5.99935 0.744141C5.11529 0.744141 4.26745 1.09533 3.64233 1.72045C3.01721 2.34557 2.66602 3.19342 2.66602 4.07747C2.66602 4.96153 3.01721 5.80937 3.64233 6.4345C4.26745 7.05962 5.11529 7.41081 5.99935 7.41081Z" fill="#f59e0b" fillOpacity="1"></path>
+                                <path d="M0 14.8047C0 13.1974 0.632141 11.6558 1.75736 10.5193C2.88258 9.38267 4.4087 8.74414 6 8.74414C7.5913 8.74414 9.11742 9.38267 10.2426 10.5193C11.3679 11.6558 12 13.1974 12 14.8047C12 14.9655 11.9368 15.1196 11.8243 15.2333C11.7117 15.347 11.5591 15.4108 11.4 15.4108H0.6C0.44087 15.4108 0.288258 15.347 0.175736 15.2333C0.0632141 15.1196 0 14.9655 0 14.8047Z" fill="#f59e0b" fillOpacity="1"></path>
+                              </svg>
+                            </div>
+                            
+                            {/* ตัวเลขคนเล่นสีทอง */}
+                            <div className="font-bold text-[12px] tracking-wide" style={{ color: "#f59e0b", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
+                              {item.users}
+                            </div>
+                            
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                ))}
+
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* === Footer ค่ายเกม + ช่องทางชำระเงิน + ใบอนุญาต === */}
         <div style={{ marginTop: "30px", padding: "40px 24px 80px", textAlign: "center", background: "#0a0a14", borderTop: "1px solid rgba(124,58,237,0.2)", marginLeft: "-24px", marginRight: "-24px", position: "relative", zIndex: 2, paddingBottom: "100px" }}>
 
