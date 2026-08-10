@@ -11,66 +11,29 @@ export default function ProfilePage() {
   const [rewards, setRewards] = useState<any>(null);
   const [rank, setRank] = useState<any>(null);
   const [acceptPromo, setAcceptPromo] = useState(true); // เพิ่ม state สำหรับปุ่มรับโปร
+  const [showBankModal, setShowBankModal] = useState(false);
+  const [bankForm, setBankForm] = useState({ new_bank_code: "KBANK", new_bank_account: "", new_bank_name: "" });
+  const [submitting, setSubmitting] = useState(false);
 
-  const bankList = [
-    { code: "KBANK", name: "กสิกรไทย" }, { code: "SCB", name: "ไทยพาณิชย์" },
-    { code: "KTB", name: "กรุงไทย" }, { code: "BBL", name: "กรุงเทพ" },
-    { code: "BAY", name: "กรุงศรี" }, { code: "GSB", name: "ออมสิน" },
-    { code: "TTB", name: "ทีทีบี" }, { code: "KKP", name: "เกียรตินาคิน" },
-    { code: "CIMBT", name: "ซีไอเอ็มบี" }, { code: "TISCO", name: "ทิสโก้" },
-    { code: "UOBT", name: "ยูโอบี" }, { code: "BAAC", name: "ธ.ก.ส." },
-  ];
+  const openBankModal = () => {
+    setBankForm({ new_bank_code: user?.bank_code || "KBANK", new_bank_account: "", new_bank_name: user?.full_name || "" });
+    setShowBankModal(true);
+  };
 
-  const handleBankChange = async () => {
-    const bankOptions = bankList.map(b => `<option value="${b.code}">${b.name}</option>`).join("");
-    const { value: formValues } = await Swal.fire({
-      title: "แจ้งเปลี่ยนเลขบัญชี",
-      html:
-        `<div style="text-align:left;font-size:14px">` +
-        `<label style="display:block;margin:8px 0 4px;color:#475569">ธนาคาร</label>` +
-        `<select id="swal-bank" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;background:#0f0f1e;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:14px">${bankOptions}</select>` +
-        `<label style="display:block;margin:12px 0 4px;color:#475569">เลขบัญชี</label>` +
-        `<input id="swal-account" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;background:#0f0f1e;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:14px" placeholder="เลขบัญชีใหม่">` +
-        `<label style="display:block;margin:12px 0 4px;color:#475569">ชื่อบัญชี (ตามสมัคร)</label>` +
-        `<input id="swal-name" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;background:#0f0f1e;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:14px" placeholder="ชื่อ-นามสกุล" value="${user?.full_name || ''}">` +
-        `</div>`,
-      background: "#ffffff",
-      color: "#0f172a",
-      showCancelButton: true,
-      confirmButtonText: "ส่งคำขอ",
-      cancelButtonText: "ยกเลิก",
-      confirmButtonColor: "#eab308",
-      cancelButtonColor: "#64748b",
-      didOpen: () => {
-        ["swal-bank", "swal-account", "swal-name"].forEach((id) => {
-          const el = document.getElementById(id);
-          if (el) {
-            el.style.setProperty("background", "#ffffff", "important");
-            el.style.setProperty("color", "#0f172a", "important");
-            el.style.setProperty("border", "1px solid #cbd5e1", "important");
-          }
-        });
-      },
-      preConfirm: () => {
-        const code = (document.getElementById("swal-bank") as HTMLSelectElement).value;
-        const account = (document.getElementById("swal-account") as HTMLInputElement).value;
-        const name = (document.getElementById("swal-name") as HTMLInputElement).value;
-        if (!account || !name) {
-          Swal.showValidationMessage("กรุณากรอกให้ครบ");
-          return false;
-        }
-        return { new_bank_code: code, new_bank_account: account, new_bank_name: name };
-      },
-    });
-
-    if (formValues) {
-      try {
-        const res = await api.post("/bank-change", formValues);
-        Swal.fire({ icon: "success", title: "ส่งคำขอสำเร็จ", text: res.data.message, background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#10b981" });
-      } catch (err: any) {
-        Swal.fire({ icon: "error", title: "ไม่สำเร็จ", text: err.response?.data?.message || "กรุณาลองใหม่", background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#dc2626" });
-      }
+  const submitBankChange = async () => {
+    if (!bankForm.new_bank_account || !bankForm.new_bank_name) {
+      Swal.fire({ icon: "warning", title: "กรอกไม่ครบ", text: "กรุณากรอกให้ครบ", background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#eab308" });
+      return;
     }
+    setSubmitting(true);
+    try {
+      const res = await api.post("/bank-change", bankForm);
+      setShowBankModal(false);
+      Swal.fire({ icon: "success", title: "ส่งคำขอสำเร็จ", text: res.data.message, background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#10b981" });
+    } catch (err: any) {
+      Swal.fire({ icon: "error", title: "ไม่สำเร็จ", text: err.response?.data?.message || "กรุณาลองใหม่", background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#dc2626" });
+    }
+    setSubmitting(false);
   };
 
   useEffect(() => {
@@ -449,7 +412,7 @@ export default function ProfilePage() {
                 </div>
               </div>
               <InfoRow label="คัดลอกเลขบัญชี" value={user.bank_account} canCopy={true} isLast={true} />
-              <button onClick={handleBankChange} style={{ display: "block", width: "100%", boxSizing: "border-box", margin: "12px 0 0", padding: "12px", borderRadius: "10px", border: "1px solid rgba(234,179,8,0.5)", background: "rgba(234,179,8,0.15)", color: "#fde047", fontSize: "13px", fontWeight: 700, cursor: "pointer" }}>
+              <button onClick={openBankModal} style={{ display: "block", width: "100%", boxSizing: "border-box", margin: "12px 0 0", padding: "12px", borderRadius: "10px", border: "1px solid rgba(234,179,8,0.5)", background: "rgba(234,179,8,0.15)", color: "#fde047", fontSize: "13px", fontWeight: 700, cursor: "pointer" }}>
                 แจ้งเปลี่ยนเลขบัญชี
               </button>
             </div>
@@ -484,6 +447,32 @@ export default function ProfilePage() {
 
       </div>
       
+      {/* Modal แจ้งเปลี่ยนบัญชี */}
+      {showBankModal && (
+        <div onClick={() => setShowBankModal(false)} style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.7)", backdropFilter: "blur(4px)", zIndex: 9999, display: "flex", alignItems: "center", justifyContent: "center", padding: "20px" }}>
+          <div onClick={(e) => e.stopPropagation()} style={{ width: "100%", maxWidth: "400px", background: "linear-gradient(180deg, rgba(88, 28, 135, 0.95) 0%, rgba(157, 23, 77, 0.97) 100%)", backdropFilter: "blur(16px)", borderRadius: "24px", padding: "28px 24px", border: "1px solid rgba(236, 72, 153, 0.4)", boxShadow: "0 20px 50px rgba(0,0,0,0.7), inset 0 2px 3px rgba(255,255,255,0.12)", fontFamily: "'Kanit', sans-serif" }}>
+            <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#fff", margin: "0 0 6px", textAlign: "center" }}>แจ้งเปลี่ยนเลขบัญชี</h2>
+            <p style={{ fontSize: "12px", color: "#e9d5ff", margin: "0 0 20px", textAlign: "center" }}>กรอกข้อมูลบัญชีใหม่ รอแอดมินตรวจสอบ</p>
+
+            <label style={{ display: "block", fontSize: "13px", color: "#f5d0fe", marginBottom: "6px", fontWeight: 600 }}>ธนาคาร</label>
+            <select value={bankForm.new_bank_code} onChange={(e) => setBankForm({ ...bankForm, new_bank_code: e.target.value })} style={{ width: "100%", boxSizing: "border-box", padding: "12px", borderRadius: "12px", background: "rgba(0,0,0,0.35)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", fontSize: "14px", marginBottom: "16px", fontFamily: "'Kanit', sans-serif" }}>
+              {bankList.map((b) => (<option key={b.code} value={b.code} style={{ background: "#2b1055" }}>{b.name}</option>))}
+            </select>
+
+            <label style={{ display: "block", fontSize: "13px", color: "#f5d0fe", marginBottom: "6px", fontWeight: 600 }}>เลขบัญชีใหม่</label>
+            <input value={bankForm.new_bank_account} onChange={(e) => setBankForm({ ...bankForm, new_bank_account: e.target.value })} placeholder="กรอกเลขบัญชี" style={{ width: "100%", boxSizing: "border-box", padding: "12px", borderRadius: "12px", background: "rgba(0,0,0,0.35)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", fontSize: "14px", marginBottom: "16px", fontFamily: "'Kanit', sans-serif" }} />
+
+            <label style={{ display: "block", fontSize: "13px", color: "#f5d0fe", marginBottom: "6px", fontWeight: 600 }}>ชื่อบัญชี (ตามที่สมัคร)</label>
+            <input value={bankForm.new_bank_name} onChange={(e) => setBankForm({ ...bankForm, new_bank_name: e.target.value })} placeholder="ชื่อ-นามสกุล" style={{ width: "100%", boxSizing: "border-box", padding: "12px", borderRadius: "12px", background: "rgba(0,0,0,0.35)", color: "#fff", border: "1px solid rgba(255,255,255,0.2)", fontSize: "14px", marginBottom: "24px", fontFamily: "'Kanit', sans-serif" }} />
+
+            <div style={{ display: "flex", gap: "12px" }}>
+              <button onClick={() => setShowBankModal(false)} style={{ flex: 1, padding: "14px", borderRadius: "14px", border: "1px solid rgba(255,255,255,0.2)", background: "rgba(255,255,255,0.1)", color: "#fff", fontSize: "14px", fontWeight: 700, cursor: "pointer", fontFamily: "'Kanit', sans-serif" }}>ยกเลิก</button>
+              <button onClick={submitBankChange} disabled={submitting} style={{ flex: 2, padding: "14px", borderRadius: "14px", border: "none", background: "linear-gradient(180deg, #fef08a, #eab308)", color: "#422006", fontSize: "14px", fontWeight: 800, cursor: submitting ? "not-allowed" : "pointer", boxShadow: "0 6px 12px rgba(202,138,4,0.4), inset 0 2px 3px rgba(255,255,255,0.6)", fontFamily: "'Kanit', sans-serif" }}>{submitting ? "กำลังส่ง..." : "ส่งคำขอ"}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <style dangerouslySetInnerHTML={{__html: `
 
       /* เพิ่ม Class กะพริบสำหรับตัวหนังสือ */
