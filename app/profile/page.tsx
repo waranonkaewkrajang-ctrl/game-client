@@ -28,11 +28,11 @@ export default function ProfilePage() {
       html:
         `<div style="text-align:left;font-size:14px">` +
         `<label style="display:block;margin:8px 0 4px;color:#94a3b8">ธนาคาร</label>` +
-        `<select id="swal-bank" class="swal2-input" style="width:100%;margin:0">${bankOptions}</select>` +
+        `<select id="swal-bank" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;background:#0f0f1e;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:14px">${bankOptions}</select>` +
         `<label style="display:block;margin:12px 0 4px;color:#94a3b8">เลขบัญชี</label>` +
-        `<input id="swal-account" class="swal2-input" style="width:100%;margin:0" placeholder="เลขบัญชีใหม่">` +
+        `<input id="swal-account" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;background:#0f0f1e;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:14px" placeholder="เลขบัญชีใหม่">` +
         `<label style="display:block;margin:12px 0 4px;color:#94a3b8">ชื่อบัญชี (ตามสมัคร)</label>` +
-        `<input id="swal-name" class="swal2-input" style="width:100%;margin:0" placeholder="ชื่อ-นามสกุล" value="${user?.full_name || ''}">` +
+        `<input id="swal-name" style="width:100%;box-sizing:border-box;padding:10px;border-radius:8px;background:#0f0f1e;color:#fff;border:1px solid rgba(255,255,255,0.15);font-size:14px" placeholder="ชื่อ-นามสกุล" value="${user?.full_name || ''}">` +
         `</div>`,
       background: "#1a1a2e",
       color: "#e2e8f0",
@@ -439,7 +439,7 @@ export default function ProfilePage() {
                 </div>
               </div>
               <InfoRow label="คัดลอกเลขบัญชี" value={user.bank_account} canCopy={true} isLast={true} />
-              <button onClick={handleBankChange} style={{ width: "100%", marginTop: "12px", padding: "12px", borderRadius: "10px", border: "1px solid rgba(234,179,8,0.5)", background: "rgba(234,179,8,0.15)", color: "#fde047", fontSize: "13px", fontWeight: 700, cursor: "pointer" }}>
+              <button onClick={handleBankChange} style={{ display: "block", width: "100%", boxSizing: "border-box", margin: "12px 0 0", padding: "12px", borderRadius: "10px", border: "1px solid rgba(234,179,8,0.5)", background: "rgba(234,179,8,0.15)", color: "#fde047", fontSize: "13px", fontWeight: 700, cursor: "pointer" }}>
                 แจ้งเปลี่ยนเลขบัญชี
               </button>
             </div>
