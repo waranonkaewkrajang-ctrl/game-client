@@ -41,6 +41,16 @@ export default function ProfilePage() {
       cancelButtonText: "ยกเลิก",
       confirmButtonColor: "#eab308",
       cancelButtonColor: "#64748b",
+      didOpen: () => {
+        ["swal-bank", "swal-account", "swal-name"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.style.setProperty("background", "#0f0f1e", "important");
+            el.style.setProperty("color", "#ffffff", "important");
+            el.style.setProperty("border", "1px solid rgba(255,255,255,0.15)", "important");
+          }
+        });
+      },
       preConfirm: () => {
         const code = (document.getElementById("swal-bank") as HTMLSelectElement).value;
         const account = (document.getElementById("swal-account") as HTMLInputElement).value;
