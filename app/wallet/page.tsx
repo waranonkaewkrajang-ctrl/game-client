@@ -3,6 +3,7 @@ import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
+import { getEcho } from "@/lib/echo";
 
 interface FinanceSettings {
   min_deposit: number;
@@ -51,6 +52,39 @@ function WalletContent() {
       }).catch(() => {});
     }
   }, []);
+
+  // 🆕 ฟัง WebSocket — ฝากเงินสำเร็จ (auto approve)
+  useEffect(() => {
+    if (!userData?.id) return;
+    const echo = getEcho();
+    if (!echo) return;
+
+    echo.private(`App.Models.User.${userData.id}`)
+      .listen(".deposit.approved", (data: any) => {
+        Swal.fire({
+          icon: "success",
+          title: "ฝากเงินสำเร็จ! 🎉",
+          html: `
+            <div style="font-size:1.8rem;font-weight:900;color:#22c55e;margin:10px 0;">
+              +${Number(data.amount).toLocaleString()} บาท
+            </div>
+            <div style="color:#94a3b8;font-size:0.75rem;margin-top:6px;">
+              ${data.reference_id}
+            </div>
+          `,
+          confirmButtonColor: "#22c55e",
+          confirmButtonText: "ตกลง",
+          background: "#14142a",
+          color: "#e2e8f0",
+        });
+        // Refresh balance ใหม่
+        fetchWallet();
+      });
+
+    return () => {
+      echo.leave(`App.Models.User.${userData.id}`);
+    };
+  }, [userData?.id]);
 
   const fetchWallet = () => {
     api.get("/wallet/balance").then((res) => setWallet(res.data.data)).catch(() => {});
@@ -154,7 +188,7 @@ function WalletContent() {
           },
         });
       } else {
-        Swal.fire({ icon: "success", title: "แจ้งฝากเงินสำเร็จ", text: "รอ Admin อนุมัติ", timer: 2000, showConfirmButton: false });
+        Swal.fire({ icon: "info", title: "รอการโอนเงิน", text: "โอนตามยอดที่แจ้ง — ระบบจะยืนยันอัตโนมัติ", timer: 2500, showConfirmButton: false, background: "#14142a", color: "#e2e8f0" });
       }
       setAmount("");
       fetchWallet();
