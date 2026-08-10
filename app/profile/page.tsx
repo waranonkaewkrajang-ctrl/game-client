@@ -12,6 +12,57 @@ export default function ProfilePage() {
   const [rank, setRank] = useState<any>(null);
   const [acceptPromo, setAcceptPromo] = useState(true); // เพิ่ม state สำหรับปุ่มรับโปร
 
+  const bankList = [
+    { code: "KBANK", name: "กสิกรไทย" }, { code: "SCB", name: "ไทยพาณิชย์" },
+    { code: "KTB", name: "กรุงไทย" }, { code: "BBL", name: "กรุงเทพ" },
+    { code: "BAY", name: "กรุงศรี" }, { code: "GSB", name: "ออมสิน" },
+    { code: "TTB", name: "ทีทีบี" }, { code: "KKP", name: "เกียรตินาคิน" },
+    { code: "CIMBT", name: "ซีไอเอ็มบี" }, { code: "TISCO", name: "ทิสโก้" },
+    { code: "UOBT", name: "ยูโอบี" }, { code: "BAAC", name: "ธ.ก.ส." },
+  ];
+
+  const handleBankChange = async () => {
+    const bankOptions = bankList.map(b => `<option value="${b.code}">${b.name}</option>`).join("");
+    const { value: formValues } = await Swal.fire({
+      title: "แจ้งเปลี่ยนเลขบัญชี",
+      html:
+        `<div style="text-align:left;font-size:14px">` +
+        `<label style="display:block;margin:8px 0 4px;color:#94a3b8">ธนาคาร</label>` +
+        `<select id="swal-bank" class="swal2-input" style="width:100%;margin:0">${bankOptions}</select>` +
+        `<label style="display:block;margin:12px 0 4px;color:#94a3b8">เลขบัญชี</label>` +
+        `<input id="swal-account" class="swal2-input" style="width:100%;margin:0" placeholder="เลขบัญชีใหม่">` +
+        `<label style="display:block;margin:12px 0 4px;color:#94a3b8">ชื่อบัญชี (ตามสมัคร)</label>` +
+        `<input id="swal-name" class="swal2-input" style="width:100%;margin:0" placeholder="ชื่อ-นามสกุล" value="${user?.full_name || ''}">` +
+        `</div>`,
+      background: "#1a1a2e",
+      color: "#e2e8f0",
+      showCancelButton: true,
+      confirmButtonText: "ส่งคำขอ",
+      cancelButtonText: "ยกเลิก",
+      confirmButtonColor: "#eab308",
+      cancelButtonColor: "#64748b",
+      preConfirm: () => {
+        const code = (document.getElementById("swal-bank") as HTMLSelectElement).value;
+        const account = (document.getElementById("swal-account") as HTMLInputElement).value;
+        const name = (document.getElementById("swal-name") as HTMLInputElement).value;
+        if (!account || !name) {
+          Swal.showValidationMessage("กรุณากรอกให้ครบ");
+          return false;
+        }
+        return { new_bank_code: code, new_bank_account: account, new_bank_name: name };
+      },
+    });
+
+    if (formValues) {
+      try {
+        const res = await api.post("/bank-change", formValues);
+        Swal.fire({ icon: "success", title: "ส่งคำขอสำเร็จ", text: res.data.message, background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#10b981" });
+      } catch (err: any) {
+        Swal.fire({ icon: "error", title: "ไม่สำเร็จ", text: err.response?.data?.message || "กรุณาลองใหม่", background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#dc2626" });
+      }
+    }
+  };
+
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
     api.get("/auth/me").then((res) => setUser(res.data.data)).catch(() => {});
@@ -388,6 +439,9 @@ export default function ProfilePage() {
                 </div>
               </div>
               <InfoRow label="คัดลอกเลขบัญชี" value={user.bank_account} canCopy={true} isLast={true} />
+              <button onClick={handleBankChange} style={{ width: "100%", marginTop: "12px", padding: "12px", borderRadius: "10px", border: "1px solid rgba(234,179,8,0.5)", background: "rgba(234,179,8,0.15)", color: "#fde047", fontSize: "13px", fontWeight: 700, cursor: "pointer" }}>
+                แจ้งเปลี่ยนเลขบัญชี
+              </button>
             </div>
           </div>
 
