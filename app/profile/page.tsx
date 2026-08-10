@@ -422,7 +422,7 @@ export default function ProfilePage() {
                 </div>
               </div>
               <InfoRow label="คัดลอกเลขบัญชี" value={user.bank_account} canCopy={true} isLast={true} />
-              <button onClick={openBankModal} style={{ display: "block", width: "100%", boxSizing: "border-box", margin: "16px 0 4px", padding: "14px", borderRadius: "14px", border: "1px solid #fcd34d", background: "linear-gradient(180deg, #fef08a 0%, #eab308 50%, #ca8a04 100%)", color: "#422006", fontSize: "14px", fontWeight: 800, cursor: "pointer", fontFamily: "'Kanit', sans-serif", boxShadow: "0 8px 16px rgba(202,138,4,0.4), inset 0 2px 3px rgba(255,255,255,0.7), inset 0 -4px 5px rgba(133,77,14,0.6)", textShadow: "0 1px 1px rgba(255,255,255,0.4)", transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
+              <button onClick={openBankModal} style={{ width: "100%", boxSizing: "border-box", margin: "16px 0 4px", padding: "14px", borderRadius: "14px", border: "1px solid #fcd34d", background: "linear-gradient(180deg, #fef08a 0%, #eab308 50%, #ca8a04 100%)", color: "#422006", fontSize: "14px", fontWeight: 800, cursor: "pointer", fontFamily: "'Kanit', sans-serif", boxShadow: "0 8px 16px rgba(202,138,4,0.4), inset 0 2px 3px rgba(255,255,255,0.7), inset 0 -4px 5px rgba(133,77,14,0.6)", textShadow: "0 1px 1px rgba(255,255,255,0.4)", transition: "all 0.15s", display: "flex", alignItems: "center", justifyContent: "center", gap: "8px" }}
               onMouseDown={(e) => e.currentTarget.style.transform = "translateY(3px)"}
               onMouseUp={(e) => e.currentTarget.style.transform = "translateY(0)"}
               onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
