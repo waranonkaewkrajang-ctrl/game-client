@@ -65,13 +65,10 @@ function WalletContent() {
       .listen(".deposit.approved", (data: any) => {
         Swal.fire({
           icon: "success",
-          title: "ฝากเงินสำเร็จ! 🎉",
+          title: "ฝากเงินสำเร็จ",
           html: `
             <div style="font-size:2rem;font-weight:900;color:#16a34a;margin:12px 0;">
               +${Number(data.amount).toLocaleString()} บาท
-            </div>
-            <div style="color:#64748b;font-size:0.8rem;margin-top:6px;">
-              ${data.reference_id}
             </div>
           `,
           confirmButtonColor: "#16a34a",
