@@ -675,26 +675,32 @@ export default function LobbyPage() {
                           </div>
                         </div>
 
-                        {/* แถบคนออนไลน์ด้านล่าง (สีแดง) */}
-                        <div className="h-7 w-full rounded-b-lg" style={{ backgroundColor: "rgb(47, 16, 16)" }}>
+                        {/* แถบคนออนไลน์ด้านล่าง (เปลี่ยนเป็นธีมสีม่วง-ทอง) */}
+                        <div className="h-7 w-full rounded-b-lg" style={{ backgroundColor: "rgba(20, 20, 42, 0.9)", border: "1px solid rgba(168, 85, 247, 0.3)", borderTop: "none" }}>
                           <div className="flex justify-between text-[10px] px-1 pt-[5px]">
-                            <div className="font-bold text-[12px] pl-1" style={{ color: "rgb(207, 33, 3)" }}>
+                            
+                            {/* คำว่า 'ออนไลน์' สีทอง */}
+                            <div className="font-bold text-[12px] pl-1" style={{ color: "#f59e0b", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
                               ออนไลน์
                             </div>
-                            <div className="px-[6px] py-[2px] rounded-md min-w-[65px] flex gap-2 justify-between" style={{ backgroundColor: "rgb(28, 11, 11)", color: "rgb(207, 33, 3)" }}>
+                            
+                            {/* กล่องตัวเลขคนออนไลน์ */}
+                            <div className="px-[6px] py-[2px] rounded-md min-w-[65px] flex gap-2 justify-between items-center" 
+                                 style={{ backgroundColor: "rgba(0, 0, 0, 0.4)", border: "1px solid rgba(168, 85, 247, 0.2)" }}>
                               <div className="py-[1px]">
+                                {/* ไอคอนคน สีทอง */}
                                 <svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M4.5 5C5.16304 5 5.79893 4.73661 6.26777 4.26777C6.73661 3.79893 7 3.16304 7 2.5C7 1.83696 6.73661 1.20107 6.26777 0.732233C5.79893 0.263392 5.16304 0 4.5 0C3.83696 0 3.20107 0.263392 2.73223 0.732233C2.26339 1.20107 2 1.83696 2 2.5C2 3.16304 2.26339 3.79893 2.73223 4.26777C3.20107 4.73661 3.83696 5 4.5 5Z" fill="#e62200" fillOpacity="0.86"></path>
-                                  <path d="M0 10.5455C0 9.33993 0.474106 8.18377 1.31802 7.33133C2.16193 6.47889 3.30653 6 4.5 6C5.69347 6 6.83807 6.47889 7.68198 7.33133C8.52589 8.18377 9 9.33993 9 10.5455C9 10.666 8.95259 10.7816 8.8682 10.8669C8.78381 10.9521 8.66935 11 8.55 11H0.45C0.330653 11 0.216193 10.9521 0.131802 10.8669C0.0474106 10.7816 0 10.666 0 10.5455Z" fill="#e62200" fillOpacity="0.86"></path>
+                                  <path d="M4.5 5C5.16304 5 5.79893 4.73661 6.26777 4.26777C6.73661 3.79893 7 3.16304 7 2.5C7 1.83696 6.73661 1.20107 6.26777 0.732233C5.79893 0.263392 5.16304 0 4.5 0C3.83696 0 3.20107 0.263392 2.73223 0.732233C2.26339 1.20107 2 1.83696 2 2.5C2 3.16304 2.26339 3.79893 2.73223 4.26777C3.20107 4.73661 3.83696 5 4.5 5Z" fill="#f59e0b" fillOpacity="1"></path>
+                                  <path d="M0 10.5455C0 9.33993 0.474106 8.18377 1.31802 7.33133C2.16193 6.47889 3.30653 6 4.5 6C5.69347 6 6.83807 6.47889 7.68198 7.33133C8.52589 8.18377 9 9.33993 9 10.5455C9 10.666 8.95259 10.7816 8.8682 10.8669C8.78381 10.9521 8.66935 11 8.55 11H0.45C0.330653 11 0.216193 10.9521 0.131802 10.8669C0.0474106 10.7816 0 10.666 0 10.5455Z" fill="#f59e0b" fillOpacity="1"></path>
                                 </svg>
                               </div>
                               <div className="font-bold">
-                                <span style={{ color: "rgb(207, 33, 3)" }}>
-                                  {/* ดึงฟังก์ชันตัวเลขวิ่งมาแสดง พร้อมสุ่มตัวเลขหลักหมื่นไม่ซ้ำกันแต่ละค่าย */}
+                                <span style={{ color: "#f59e0b", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
                                   <LiveUserCounter initialCount={12000 + (p.charCodeAt(0) * 150) + Math.floor(Math.random() * 2000)} />
                                 </span>
                               </div>
                             </div>
+                            
                           </div>
                         </div>
                       </div>
