@@ -1,9 +1,15 @@
 "use client";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import api from "@/lib/api";
 
 export default function BottomMenu() {
   const pathname = usePathname();
+  const [contactLinks, setContactLinks] = useState({ line: "#", telegram: "#" });
+  useEffect(() => {
+    api.get("/contact-links").then((res) => setContactLinks(res.data)).catch(() => {});
+  }, []);
   if (["/login", "/register"].includes(pathname)) return null;
 
   return (
@@ -37,6 +43,10 @@ export default function BottomMenu() {
   <span className="-center-text">กระเป๋าเงิน</span>
 </Link>
         <div className="-right-wrapper">
+          <a href={contactLinks.line} target="_blank" rel="noopener noreferrer" className="-item-wrapper -line">
+            <img src="/icons/contact.webp" className="-ic-img" alt="ติดต่อ" />
+            <span className="-text">ติดต่อ</span>
+          </a>
           <Link href="/profile" className="-item-wrapper -line">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{color: "#a78bfa"}}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span className="-text">โปรไฟล์</span>
