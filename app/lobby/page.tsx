@@ -12,6 +12,41 @@ interface Game {
   category: string | null; type: string | null; image_url: string | null; is_active: boolean;
 }
 
+// สร้างตัวรันเลขแยกอิสระ เพื่อให้แต่ละค่ายเกมวิ่งไม่พร้อมกัน
+const LiveUserCounter = ({ initialCount }: { initialCount: number }) => {
+  const [count, setCount] = useState(initialCount);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    const updateCount = () => {
+      setCount((prev) => {
+        // สุ่มเลขขึ้น-ลง (-15 ถึง +25 คน เพื่อให้เทรนด์ค่อยๆ เพิ่ม)
+        const fluctuation = Math.floor(Math.random() * 41) - 15;
+        let newCount = prev + fluctuation;
+        
+        // ป้องกันไม่ให้เลขตกจากหลักหมื่นเริ่มต้นเกิน 500 คน
+        if (newCount < initialCount - 500) {
+          newCount = initialCount - 500 + Math.floor(Math.random() * 50);
+        }
+        return newCount;
+      });
+
+      // สุ่มพัก 4-7 วินาที หรือ วิ่งต่อทุกๆ 0.8-2 วินาที
+      const isPausing = Math.random() > 0.75;
+      const nextDelay = isPausing 
+        ? Math.floor(Math.random() * 3000) + 4000 
+        : Math.floor(Math.random() * 1200) + 800;
+
+      timeoutId = setTimeout(updateCount, nextDelay);
+    };
+
+    timeoutId = setTimeout(updateCount, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [initialCount]);
+
+  return <>{count.toLocaleString()}</>;
+};
+
 export default function LobbyPage() {
   const router = useRouter();
   const [games, setGames] = useState<Game[]>([]);
@@ -1032,11 +1067,11 @@ export default function LobbyPage() {
               <div className="swiper-wrapper" style={{ display: "flex", overflowX: "auto", gap: "16px", paddingBottom: "10px", scrollbarWidth: "none" }}>
                 
                 {[
-                  { id: "pgsoft", img: "https://cdn.zabbet.com/providers/set/1_1_v/pgsoft.png", users: "9,207" },
-                  { id: "sexyd", img: "https://cdn.zabbet.com/providers/set/1_1_v/sexyd.png", users: "15,573" },
-                  { id: "jl", img: "https://cdn.zabbet.com/providers/set/1_1_v/jl.png", users: "4,763" },
-                  { id: "sag", img: "https://cdn.zabbet.com/providers/set/1_1_v/sag.png", users: "8,352" },
-                ].map((item) => (
+                  { id: "pgsoft", img: "https://cdn.zabbet.com/providers/set/1_1_v/pgsoft.png", users: 19207 },
+                  { id: "sexyd", img: "https://cdn.zabbet.com/providers/set/1_1_v/sexyd.png", users: 15573 },
+                  { id: "jl", img: "https://cdn.zabbet.com/providers/set/1_1_v/jl.png", users: 14763 },
+                  { id: "sag", img: "https://cdn.zabbet.com/providers/set/1_1_v/sag.png", users: 18352 },
+                ].map((item, index) => (
                   <div key={item.id} className="swiper-slide relative max-w-[128px] flex-shrink-0">
                     <div className="cursor-pointer w-[128px] h-[232px]">
                       
@@ -1069,9 +1104,9 @@ export default function LobbyPage() {
                               </svg>
                             </div>
                             
-                            {/* ตัวเลขคนเล่นสีทอง */}
+                            {/* ตัวเลขคนเล่นสีทอง (วิ่งแบบเรียลไทม์) */}
                             <div className="font-bold text-[12px] tracking-wide" style={{ color: "#f59e0b", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
-                              {item.users}
+                              <LiveUserCounter initialCount={item.users} />
                             </div>
                             
                           </div>
