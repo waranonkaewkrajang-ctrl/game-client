@@ -1037,50 +1037,57 @@ export default function LobbyPage() {
             </div>
           </div>
 
-          {/* Horizontal scroll ค่ายเกม */}
+          {/* Horizontal scroll ค่ายเกม — ใช้ products จริงจาก API */}
           <div className="online-scroll" style={{ display: "flex", gap: "12px", overflowX: "auto", paddingBottom: "8px" }}>
-            {[
-              { name: "PG Soft",   slug: "pgsoft",       img: "slot/pgslot_menu.png" },
-              { name: "Sexy",      slug: "sexy",         img: "casino/sexy_menu.png" },
-              { name: "JILI",      slug: "jili",         img: "slot/jili_menu.png" },
-              { name: "SA Gaming", slug: "sagaming",     img: "casino/sa_menu.png" },
-              { name: "Joker",     slug: "joker",        img: "slot/joker_menu.png" },
-              { name: "Pragmatic", slug: "pragmaticplay",img: "slot/pragmaticplay_menu.png" },
-              { name: "Evolution", slug: "evolution",    img: "casino/evolution_menu.png" },
-              { name: "Dream",     slug: "dreamgaming",  img: "casino/dreamgaming_menu.png" },
-            ].map((item, i) => (
-              <div key={`online-${i}`}
-                onClick={() => router.push(`/games/${item.slug}`)}
+            {products.slice(0, 8).map((p, i) => (
+              <div key={`online-${p}`}
+                onClick={() => router.push(`/lobby/${p}`)}
                 style={{ flex: "0 0 128px", width: "128px", cursor: "pointer", transition: "transform 0.2s ease" }}
                 onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-4px)"}
                 onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
               >
-                {/* รูปค่าย */}
+                {/* 🎮 ภาพเกม (รูปหลัก) */}
                 <div style={{
                   width: "128px", height: "180px", borderRadius: "12px",
-                  background: "linear-gradient(135deg, rgba(168,85,247,0.15), rgba(124,58,237,0.05))",
                   border: "1px solid rgba(168,85,247,0.3)",
-                  display: "flex", alignItems: "center", justifyContent: "center",
                   overflow: "hidden", boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+                  background: "#14142a",
                 }}>
-                  <img src={`https://imagex-game.image-etc.co/_tempura/provider/${item.img}`} alt={item.name} loading="lazy"
-                    style={{ maxWidth: "80%", maxHeight: "80%", objectFit: "contain" }} />
+                  <img
+                    src={productImages[p]?.image_url}
+                    alt={p}
+                    loading="lazy"
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    onError={(e) => { e.currentTarget.onerror = null; e.currentTarget.src = "/default-provider.png"; }}
+                  />
                 </div>
 
-                {/* Badge จำนวนคนออนไลน์ */}
+                {/* 🏷️ LOGO ค่าย + จำนวนคนออนไลน์ (ใต้ภาพเกม) */}
                 <div style={{
-                  marginTop: "8px", height: "36px", borderRadius: "10px",
+                  marginTop: "8px", padding: "6px 8px", borderRadius: "10px",
                   background: "radial-gradient(90.16% 77.79% at 92.58% 91.67%, rgba(168,85,247,0.25) 0%, rgba(124,58,237,0.25) 100%)",
                   backdropFilter: "blur(21px)", border: "1px solid rgba(168,85,247,0.5)",
-                  display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px",
                 }}>
-                  <svg width="12" height="14" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M5.99935 7.41081C6.8834 7.41081 7.73125 7.05962 8.35637 6.4345C8.98149 5.80937 9.33268 4.96153 9.33268 4.07747C9.33268 3.19342 8.98149 2.34557 8.35637 1.72045C7.73125 1.09533 6.8834 0.744141 5.99935 0.744141C5.11529 0.744141 4.26745 1.09533 3.64233 1.72045C3.01721 2.34557 2.66602 3.19342 2.66602 4.07747C2.66602 4.96153 3.01721 5.80937 3.64233 6.4345C4.26745 7.05962 5.11529 7.41081 5.99935 7.41081Z" fill="#c084fc"/>
-                    <path d="M0 14.8047C0 13.1974 0.632141 11.6558 1.75736 10.5193C2.88258 9.38267 4.4087 8.74414 6 8.74414C7.5913 8.74414 9.11742 9.38267 10.2426 10.5193C11.3679 11.6558 12 13.1974 12 14.8047C12 14.9655 11.9368 15.1196 11.8243 15.2333C11.7117 15.347 11.5591 15.4108 11.4 15.4108H0.6C0.44087 15.4108 0.288258 15.347 0.175736 15.2333C0.0632141 15.1196 0 14.9655 0 14.8047Z" fill="#c084fc"/>
-                  </svg>
-                  <span style={{ color: "#c084fc", fontSize: "0.75rem", fontWeight: 800 }}>
-                    {(onlineCounts[i] ?? 0).toLocaleString()}
-                  </span>
+                  {/* Logo ค่าย (ซ้าย) */}
+                  <img
+                    src={productImages[p]?.logo_url || productImages[p]?.image_url}
+                    alt={p}
+                    loading="lazy"
+                    style={{ height: "20px", maxWidth: "60px", objectFit: "contain" }}
+                    onError={(e) => { e.currentTarget.style.display = "none"; }}
+                  />
+
+                  {/* จำนวนคน (ขวา) */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                    <svg width="10" height="12" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M5.99935 7.41081C6.8834 7.41081 7.73125 7.05962 8.35637 6.4345C8.98149 5.80937 9.33268 4.96153 9.33268 4.07747C9.33268 3.19342 8.98149 2.34557 8.35637 1.72045C7.73125 1.09533 6.8834 0.744141 5.99935 0.744141C5.11529 0.744141 4.26745 1.09533 3.64233 1.72045C3.01721 2.34557 2.66602 3.19342 2.66602 4.07747C2.66602 4.96153 3.01721 5.80937 3.64233 6.4345C4.26745 7.05962 5.11529 7.41081 5.99935 7.41081Z" fill="#c084fc"/>
+                      <path d="M0 14.8047C0 13.1974 0.632141 11.6558 1.75736 10.5193C2.88258 9.38267 4.4087 8.74414 6 8.74414C7.5913 8.74414 9.11742 9.38267 10.2426 10.5193C11.3679 11.6558 12 13.1974 12 14.8047C12 14.9655 11.9368 15.1196 11.8243 15.2333C11.7117 15.347 11.5591 15.4108 11.4 15.4108H0.6C0.44087 15.4108 0.288258 15.347 0.175736 15.2333C0.0632141 15.1196 0 14.9655 0 14.8047Z" fill="#c084fc"/>
+                    </svg>
+                    <span style={{ color: "#c084fc", fontSize: "0.72rem", fontWeight: 800 }}>
+                      {(onlineCounts[i] ?? 0).toLocaleString()}
+                    </span>
+                  </div>
                 </div>
               </div>
             ))}
