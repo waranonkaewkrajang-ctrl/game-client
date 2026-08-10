@@ -40,7 +40,20 @@ export default function RegisterPage() {
       Swal.fire({ icon: "success", title: "สมัครสมาชิกสำเร็จ", timer: 1500, showConfirmButton: false, background: "#1a1a2e", color: "#e2e8f0" });
       setTimeout(() => router.push("/lobby"), 1500);
     } catch (err: any) {
-      Swal.fire({ icon: "error", title: "สมัครไม่สำเร็จ", text: err.response?.data?.message || "เกิดข้อผิดพลาด", background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#7c3aed" });
+      // ดึงข้อความ error ตัวแรกจาก validation (ชื่อซ้ำ/เบอร์ซ้ำ/เลขบัญชีซ้ำ)
+      const errors = err.response?.data?.errors;
+      const firstError = errors ? Object.values(errors)[0] : null;
+      const msg = (Array.isArray(firstError) ? firstError[0] : firstError) || err.response?.data?.message || "เกิดข้อผิดพลาด";
+      Swal.fire({
+        icon: "error",
+        title: "สมัครไม่สำเร็จ",
+        text: msg,
+        background: "#ffffff",
+        color: "#0f172a",
+        confirmButtonColor: "#7c3aed",
+        confirmButtonText: "ตกลง",
+      });
+    }
     } finally { setLoading(false); }
   };
 
