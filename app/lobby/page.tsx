@@ -1062,25 +1062,14 @@ export default function LobbyPage() {
                   />
                 </div>
 
-                {/* 🏷️ LOGO ค่าย + จำนวนคนออนไลน์ (ใต้ภาพเกม) */}
                 <div style={{
                   marginTop: "8px", padding: "6px 8px", borderRadius: "10px",
                   background: "radial-gradient(90.16% 77.79% at 92.58% 91.67%, rgba(168,85,247,0.25) 0%, rgba(124,58,237,0.25) 100%)",
                   backdropFilter: "blur(21px)", border: "1px solid rgba(168,85,247,0.5)",
-                  display: "flex", alignItems: "center", justifyContent: "space-between", gap: "6px",
+                  display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
                 }}>
-                  {/* Logo ค่าย (ซ้าย) */}
-                  <img
-                    src={productImages[p]?.logo_url || productImages[p]?.image_url}
-                    alt={p}
-                    loading="lazy"
-                    style={{ height: "20px", maxWidth: "60px", objectFit: "contain" }}
-                    onError={(e) => { e.currentTarget.style.display = "none"; }}
-                  />
-
-                  {/* จำนวนคน (ขวา) — แดง 3D + คำว่า "ออนไลน์" */}
-                  <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-                    {/* Badge คำว่า "ออนไลน์" */}
+                  {/* คำว่า "ออนไลน์" + ตัวเลข (ตรงกลาง) */}
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
                     <span style={{
                       fontSize: "0.6rem",
                       fontWeight: 800,
@@ -1096,9 +1085,8 @@ export default function LobbyPage() {
                       ● ออนไลน์
                     </span>
 
-                    {/* ตัวเลขแดง 3D */}
                     <span style={{
-                      fontSize: "0.85rem",
+                      fontSize: "0.9rem",
                       fontWeight: 900,
                       color: "#ff3838",
                       letterSpacing: "0.5px",
