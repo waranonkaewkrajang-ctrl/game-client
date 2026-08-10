@@ -12,41 +12,6 @@ interface Game {
   category: string | null; type: string | null; image_url: string | null; is_active: boolean;
 }
 
-// สร้างตัวรันเลขแยกอิสระ เพื่อให้แต่ละค่ายเกมวิ่งไม่พร้อมกัน
-const LiveUserCounter = ({ initialCount }: { initialCount: number }) => {
-  const [count, setCount] = useState(initialCount);
-
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    const updateCount = () => {
-      setCount((prev) => {
-        // สุ่มเลขขึ้น-ลง (-15 ถึง +25 คน เพื่อให้เทรนด์ค่อยๆ เพิ่ม)
-        const fluctuation = Math.floor(Math.random() * 41) - 15;
-        let newCount = prev + fluctuation;
-        
-        // ป้องกันไม่ให้เลขตกจากหลักหมื่นเริ่มต้นเกิน 500 คน
-        if (newCount < initialCount - 500) {
-          newCount = initialCount - 500 + Math.floor(Math.random() * 50);
-        }
-        return newCount;
-      });
-
-      // สุ่มพัก 4-7 วินาที หรือ วิ่งต่อทุกๆ 0.8-2 วินาที
-      const isPausing = Math.random() > 0.75;
-      const nextDelay = isPausing 
-        ? Math.floor(Math.random() * 3000) + 4000 
-        : Math.floor(Math.random() * 1200) + 800;
-
-      timeoutId = setTimeout(updateCount, nextDelay);
-    };
-
-    timeoutId = setTimeout(updateCount, 1000);
-    return () => clearTimeout(timeoutId);
-  }, [initialCount]);
-
-  return <>{count.toLocaleString()}</>;
-};
-
 export default function LobbyPage() {
   const router = useRouter();
   const [games, setGames] = useState<Game[]>([]);
@@ -633,74 +598,101 @@ export default function LobbyPage() {
                       <div 
                         key={`room-${p}`} 
                         onClick={() => router.push(`/lobby/${p}`)}
-                        className="cursor-pointer relative transition-transform hover:scale-[1.03] hover:shadow-lg"
+                       style={{ 
+                          cursor: "pointer", 
+                          position: "relative",
+                          transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                          borderRadius: "12px",
+                          overflow: "hidden",
+                          background: "#14142a",
+                          border: "1px solid rgba(255, 255, 255, 0.12)",
+                          boxShadow: "0 6px 16px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.15)"
+                        }}
+                        onMouseEnter={(e) => { 
+                          e.currentTarget.style.transform = "translateY(-4px) scale(1.03)"; 
+                          e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.5)"; 
+                        }}
+                        onMouseLeave={(e) => { 
+                          e.currentTarget.style.transform = ""; 
+                          e.currentTarget.style.boxShadow = ""; 
+                        }}
                       >
-                        <div className="relative">
-                          {/* ป้าย HOT มุมขวาบน */}
-                          <div className="absolute w-full z-20 pointer-events-none" style={{ zoom: 1.2, paddingBottom: "56%" }}>
-                            <div className="grid gap-2 absolute top-0 right-2 pointer-events-none">
-                              <div className="relative translate-y-1 translate-x-1">
-                                <div className="h-[19px] flex justify-center items-center gap-[2px] rounded-[35px] pl-0.5 pr-2" 
-                                  style={{ background: "linear-gradient(rgb(244, 86, 67) 0%, rgb(241, 31, 112) 73.74%, rgb(252, 58, 133) 94.5%)", boxShadow: "rgba(243, 45, 120, 0.71) 0px 4px 4px 0px" }}>
-                                  <div>
-                                    <img loading="lazy" src="https://kingwin88.live/storage/images/wallet/hot.gif" className="w-5 h-5 -translate-y-[5px] rotate-[9deg]" alt="fire" />
-                                  </div>
-                                  <div className="text-[8px] font-extrabold mt-[1px] text-white">HOT</div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+                        {/* รูปค่ายเกม */}
+                        <div className="skeleton-box" /> 
+                        <img 
+                          data-src={productImages[p]?.image_url} 
+                          src={productImages[p]?.image_url}
+                          className="-cover-img img-fluid" 
+                          alt={p} 
+                          loading="lazy" 
+                          decoding="async" 
+                          width="255" 
+                          height="255"
+                          style={{ width: "100%", height: "auto", objectFit: "cover", display: "block" }}
+                            onLoad={(e) => {
+                            const skel = e.currentTarget.previousElementSibling as HTMLElement;  
+                            if (skel) skel.classList.add('loaded'); 
+                            const c = e.currentTarget.closest('.theme1-thumb-frame');
+                            if (c) {
+                              c.classList.remove('is-loading');
+                              c.classList.remove('is-fallback');
+                            }
+                          }}
+                          onError={(e) => {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = "/default-provider.png"; 
+                            const skel = e.currentTarget.previousElementSibling as HTMLElement;  
+                            if (skel) skel.classList.add('loaded');                               
+                            const c = e.currentTarget.closest('.theme1-thumb-frame');
+                            if (c) {
+                              c.classList.remove('is-loading');
+                              c.classList.add('is-fallback');
+                            }
+                          }}
+                        />
 
-                          {/* รูปค่ายเกม (อัตราส่วน 16:9) */}
-                          <div className="block w-full relative rounded-lg overflow-hidden rounded-b-none" style={{ paddingBottom: "56%" }}>
-                            <div className="absolute top-0 left-0 bottom-0 right-0 duration-300 opacity-100 bg-[#14142a]">
-                              <div className="skeleton-box" /> 
-                              <img 
-                                loading="lazy" 
-                                className="w-full h-full object-cover cursor-pointer" 
-                                src={productImages[p]?.image_url || `https://cdn.zabbet.com/providers/set/1_1_h/${p.toLowerCase()}.png`} 
-                                alt={`provider_${p}`}
-                                onLoad={(e) => {
-                                  const skel = e.currentTarget.previousElementSibling as HTMLElement;  
-                                  if (skel) skel.classList.add('loaded'); 
-                                }}
-                                onError={(e) => {
-                                  e.currentTarget.onerror = null;
-                                  e.currentTarget.src = "/default-provider.png";
-                                  const skel = e.currentTarget.previousElementSibling as HTMLElement;  
-                                  if (skel) skel.classList.add('loaded');
-                                }}
-                              />
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* แถบคนออนไลน์ด้านล่าง (เปลี่ยนเป็นธีมสีม่วง-ทอง) */}
-                        <div className="h-7 w-full rounded-b-lg" style={{ backgroundColor: "rgba(20, 20, 42, 0.9)", border: "1px solid rgba(168, 85, 247, 0.3)", borderTop: "none" }}>
-                          <div className="flex justify-between text-[10px] px-1 pt-[5px]">
-                            
-                            {/* คำว่า 'ออนไลน์' สีทอง */}
-                            <div className="font-bold text-[12px] pl-1" style={{ color: "#f59e0b", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
-                              ออนไลน์
-                            </div>
-                            
-                            {/* กล่องตัวเลขคนออนไลน์ */}
-                            <div className="px-[6px] py-[2px] rounded-md min-w-[65px] flex gap-2 justify-between items-center" 
-                                 style={{ backgroundColor: "rgba(0, 0, 0, 0.4)", border: "1px solid rgba(168, 85, 247, 0.2)" }}>
-                              <div className="py-[1px]">
-                                {/* ไอคอนคน สีทอง */}
-                                <svg width="9" height="11" viewBox="0 0 9 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                  <path d="M4.5 5C5.16304 5 5.79893 4.73661 6.26777 4.26777C6.73661 3.79893 7 3.16304 7 2.5C7 1.83696 6.73661 1.20107 6.26777 0.732233C5.79893 0.263392 5.16304 0 4.5 0C3.83696 0 3.20107 0.263392 2.73223 0.732233C2.26339 1.20107 2 1.83696 2 2.5C2 3.16304 2.26339 3.79893 2.73223 4.26777C3.20107 4.73661 3.83696 5 4.5 5Z" fill="#f59e0b" fillOpacity="1"></path>
-                                  <path d="M0 10.5455C0 9.33993 0.474106 8.18377 1.31802 7.33133C2.16193 6.47889 3.30653 6 4.5 6C5.69347 6 6.83807 6.47889 7.68198 7.33133C8.52589 8.18377 9 9.33993 9 10.5455C9 10.666 8.95259 10.7816 8.8682 10.8669C8.78381 10.9521 8.66935 11 8.55 11H0.45C0.330653 11 0.216193 10.9521 0.131802 10.8669C0.0474106 10.7816 0 10.666 0 10.5455Z" fill="#f59e0b" fillOpacity="1"></path>
-                                </svg>
-                              </div>
-                              <div className="font-bold">
-                                <span style={{ color: "#f59e0b", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
-                                  <LiveUserCounter initialCount={12000 + (p.charCodeAt(0) * 150) + Math.floor(Math.random() * 2000)} />
-                                </span>
-                              </div>
-                            </div>
-                            
+                        {/* 🟢 ปุ่มเข้าเล่นแบบซ่อนไว้ และจะโผล่มาตรงกลางเมื่อเอาเมาส์ชี้ 🟢 */}
+                        <div 
+                          style={{
+                            position: "absolute",
+                            inset: "0",
+                            background: "rgba(0, 0, 0, 0.6)",
+                            backdropFilter: "blur(4px)",
+                            WebkitBackdropFilter: "blur(4px)",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            opacity: 0,
+                            transition: "opacity 0.3s ease"
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
+                          onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}
+                        >
+                          <div
+                           style={{
+                            background: "linear-gradient(180deg, #d946ef 0%, #a855f7 50%, #7e22ce 100%)",
+                            border: "1.5px solid #f59e0b",
+                            color: "white",
+                            padding: "10px 24px",
+                            borderRadius: "24px",
+                            fontSize: "0.85rem",
+                            fontWeight: 900,
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "6px",
+                            letterSpacing: "0.5px",
+                            boxShadow: "0 8px 20px rgba(0, 0, 0, 0.7), inset 0 2px 3px rgba(255, 255, 255, 0.5), inset 0 -3px 4px rgba(74, 4, 78, 0.9)",
+                            textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)",
+                            transform: "scale(0.95)",
+                            transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)"
+                          }}
+                          onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
+                          onMouseLeave={(e) => e.currentTarget.style.transform = "scale(0.95)"}
+                          >
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.5))" }}>
+                              <path d="M8 5v14l11-7z"/>
+                            </svg>
+                            เข้าเล่น
                           </div>
                         </div>
                       </div>
@@ -1012,86 +1004,6 @@ export default function LobbyPage() {
                 ))}
               </div>
           </div>
-          </div>
-        </div>
-
-        {/* 🟢 ส่วนที่เพิ่มใหม่: ออนไลน์มากที่สุดในขณะนี้ (ปรับธีมม่วง-ทองแล้ว) 🟢 */}
-        <div style={{ marginBottom: "24px" }}>
-          <div className="relative w-full h-[38px] overflow-hidden rounded-[6px]">
-            {/* พื้นหลังไล่สีม่วง */}
-            <div className="absolute inset-0 opacity-[0.5]" style={{ background: "linear-gradient(90deg, rgba(20, 20, 42, 0.8) 0%, rgba(168, 85, 247, 0.7) 15%, rgba(20, 20, 42, 0.8) 80%)" }}></div>
-            {/* เส้นขีดสีม่วงด้านล่าง */}
-            <div className="absolute bottom-0 left-0 w-[100%] h-[2px] opacity-[0.8]" style={{ background: "linear-gradient(90deg, rgba(20, 20, 42, 0) 0%, rgb(168, 85, 247) 10%, rgba(20, 20, 42, 0) 80%)" }}></div>
-            
-            <div className="absolute inset-0 flex items-center gap-3 pl-5">
-              <div>
-                <img loading="lazy" className="w-[25px] h-[25px] object-contain" src="/images/home/mostonline1.webp" alt="Most Online" 
-                  onError={(e) => { e.currentTarget.style.display = 'none'; }} 
-                />
-              </div>
-              <div className="w-full max-w-[600px] truncate flex-1 text-[16px] font-bold mt-0.5" style={{ color: "white", textShadow: "0 2px 4px rgba(0,0,0,0.8)" }}>
-                ออนไลน์มากที่สุดในขณะนี้
-              </div>
-            </div>
-          </div>
-          
-          <div className="px-4 mt-3">
-            <div className="swiper swiper-initialized swiper-horizontal swiper-free-mode">
-              <div className="swiper-wrapper" style={{ display: "flex", overflowX: "auto", gap: "16px", paddingBottom: "10px", scrollbarWidth: "none" }}>
-                
-                {[
-                  { id: "pgsoft", img: "https://cdn.zabbet.com/providers/set/1_1_v/pgsoft.png", users: 19207 },
-                  { id: "sexyd", img: "https://cdn.zabbet.com/providers/set/1_1_v/sexyd.png", users: 15573 },
-                  { id: "jl", img: "https://cdn.zabbet.com/providers/set/1_1_v/jl.png", users: 14763 },
-                  { id: "sag", img: "https://cdn.zabbet.com/providers/set/1_1_v/sag.png", users: 18352 },
-                ].map((item, index) => (
-                  <div key={item.id} className="swiper-slide relative max-w-[128px] flex-shrink-0">
-                    <div className="cursor-pointer w-[128px] h-[232px]">
-                      
-                      {/* รูปภาพค่ายเกม */}
-                      <div className="relative">
-                        <div className="absolute w-full z-20 pointer-events-none" style={{ zoom: 0.984615, paddingBottom: "142.857%" }}></div>
-                        <a className="block w-full relative rounded-lg overflow-hidden" style={{ paddingBottom: "142.857%" }}>
-                          <div className="absolute top-0 left-0 bottom-0 right-0 duration-300 opacity-100 hover:scale-105 transition-transform">
-                            <img loading="lazy" className="w-full h-full object-cover cursor-pointer" src={item.img} alt={`provider_${item.id}`} />
-                          </div>
-                        </a>
-                      </div>
-                      
-                      {/* กล่องตัวเลขคนออนไลน์ */}
-                      <div className="h-[40px] w-full rounded-[11px] mt-2 transition-all hover:bg-opacity-80" 
-                        style={{ 
-                          background: "radial-gradient(90.16% 77.79% at 92.58% 91.67%, rgba(168, 85, 247, 0.15) 0%, rgba(124, 58, 237, 0.05) 100%)", 
-                          backdropFilter: "blur(12px)", 
-                          border: "1px solid rgba(168, 85, 247, 0.4)" 
-                        }}>
-                        <div className="flex justify-between text-[10px] p-[7px] h-full">
-                          <div className="p-[4px] rounded-md w-full flex gap-2 justify-between items-center" 
-                            style={{ backgroundColor: "rgba(20, 20, 42, 0.6)", border: "1px solid rgba(168, 85, 247, 0.2)" }}>
-                            
-                            <div className="py-[1px]">
-                              {/* Icon User สีทอง */}
-                              <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M5.99935 7.41081C6.8834 7.41081 7.73125 7.05962 8.35637 6.4345C8.98149 5.80937 9.33268 4.96153 9.33268 4.07747C9.33268 3.19342 8.98149 2.34557 8.35637 1.72045C7.73125 1.09533 6.8834 0.744141 5.99935 0.744141C5.11529 0.744141 4.26745 1.09533 3.64233 1.72045C3.01721 2.34557 2.66602 3.19342 2.66602 4.07747C2.66602 4.96153 3.01721 5.80937 3.64233 6.4345C4.26745 7.05962 5.11529 7.41081 5.99935 7.41081Z" fill="#f59e0b" fillOpacity="1"></path>
-                                <path d="M0 14.8047C0 13.1974 0.632141 11.6558 1.75736 10.5193C2.88258 9.38267 4.4087 8.74414 6 8.74414C7.5913 8.74414 9.11742 9.38267 10.2426 10.5193C11.3679 11.6558 12 13.1974 12 14.8047C12 14.9655 11.9368 15.1196 11.8243 15.2333C11.7117 15.347 11.5591 15.4108 11.4 15.4108H0.6C0.44087 15.4108 0.288258 15.347 0.175736 15.2333C0.0632141 15.1196 0 14.9655 0 14.8047Z" fill="#f59e0b" fillOpacity="1"></path>
-                              </svg>
-                            </div>
-                            
-                            {/* ตัวเลขคนเล่นสีทอง (วิ่งแบบเรียลไทม์) */}
-                            <div className="font-bold text-[12px] tracking-wide" style={{ color: "#f59e0b", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
-                              <LiveUserCounter initialCount={item.users} />
-                            </div>
-                            
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-                  </div>
-                ))}
-
-              </div>
-            </div>
           </div>
         </div>
 
