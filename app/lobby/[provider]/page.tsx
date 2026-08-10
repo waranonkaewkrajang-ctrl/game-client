@@ -183,7 +183,7 @@ e.currentTarget.style.boxShadow = "0 2px 0 #450a0a, 0 3px 5px rgba(0,0,0,0.4), i
         ) : (
           <div className="games-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "12px" }}>
             {games.map((game) => (
-              <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible" }}>
+              <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible", minWidth: 0 }}>
                <div style={{ width: "100%", aspectRatio: "3/4", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
                   onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.4)"; }}
                   onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
@@ -200,7 +200,18 @@ e.currentTarget.style.boxShadow = "0 2px 0 #450a0a, 0 3px 5px rgba(0,0,0,0.4), i
                     <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#a78bfa" }} />
                   </div>
                 </div>
-                <p style={{ fontSize: "0.72rem", fontWeight: 600, color: "#e2e8f0", margin: "6px 0 0", textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                <p style={{
+                  fontSize: "0.78rem",
+                  fontWeight: 800,
+                  color: "#ffffff",
+                  margin: "8px 0 0",
+                  textAlign: "center",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  whiteSpace: "nowrap",
+                  textShadow: "0 1px 2px rgba(0,0,0,0.9), 0 0 8px rgba(168,85,247,0.5)",
+                  letterSpacing: "0.3px",
+                }}>
                   {game.game_name_th || game.game_name}
                 </p>
               </div>
