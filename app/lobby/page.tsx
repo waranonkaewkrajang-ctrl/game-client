@@ -617,8 +617,8 @@ export default function LobbyPage() {
                         {/* รูปค่ายเกม */}
                         <div className="skeleton-box" /> 
                         <img 
-                          data-src={productImages[p]?.image_url || firstImg?.image_url} 
-                          src={productImages[p]?.image_url || firstImg?.image_url} 
+                          data-src={productImages[p]?.image_url} 
+                          src={productImages[p]?.image_url}
                           className="-cover-img img-fluid" 
                           alt={p} 
                           loading="lazy" 
