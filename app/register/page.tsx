@@ -26,8 +26,68 @@ export default function RegisterPage() {
     { code: "TRUEWALLET", name: "TrueWallet", color: "#FF6F00", logo: "/logos/TRUEWALLET.webp" },
   ];
 
+  // 🔒 Validate ชื่อบัญชีจริง
+  const validateFullName = (name: string): string | null => {
+    const trimmed = name.trim();
+    
+    if (!trimmed) return "กรุณากรอกชื่อบัญชี";
+    
+    // 1. ต้องมี 2 คำขึ้นไป (ชื่อ + นามสกุล)
+    const words = trimmed.split(/\s+/);
+    if (words.length < 2) {
+      return "กรุณากรอกชื่อ และ นามสกุล (คั่นด้วยเว้นวรรค)";
+    }
+    
+    // 2. แต่ละคำต้องมีอย่างน้อย 2 ตัวอักษร
+    for (const word of words) {
+      if (word.length < 2) {
+        return "ชื่อและนามสกุลต้องมีอย่างน้อย 2 ตัวอักษร";
+      }
+    }
+    
+    // 3. รับเฉพาะไทย + อังกฤษ (ห้ามตัวเลข/สัญลักษณ์)
+    const validPattern = /^[ก-๙a-zA-Z\s]+$/;
+    if (!validPattern.test(trimmed)) {
+      return "ชื่อต้องเป็นภาษาไทยหรืออังกฤษเท่านั้น (ห้ามตัวเลข/สัญลักษณ์)";
+    }
+    
+    // 4. Blacklist ชื่อธนาคาร + คำต้องห้าม
+    const blacklist = [
+      'truewallet', 'true wallet', 'truemoney', 'true money',
+      'scb', 'ไทยพาณิชย์', 'siam commercial',
+      'kbank', 'กสิกร', 'kasikorn',
+      'ktb', 'กรุงไทย', 'krung thai',
+      'bay', 'กรุงศรี', 'krungsri',
+      'bbl', 'กรุงเทพ', 'bangkok bank',
+      'ttb', 'ทหารไทย', 'tmb',
+      'gsb', 'ออมสิน',
+      'baac', 'ธกส', 'ธ.ก.ส.',
+      'ghb', 'อาคารสงเคราะห์',
+      'cimb', 'ซีไอเอ็มบี',
+      'test', 'admin', 'user', 'demo', 'null', 'none',
+    ];
+    
+    const lowerName = trimmed.toLowerCase().replace(/\s+/g, '');
+    for (const bad of blacklist) {
+      const cleanBad = bad.toLowerCase().replace(/\s+/g, '');
+      if (lowerName === cleanBad) {
+        return "กรุณากรอกชื่อ-นามสกุลจริง (ห้ามใช้ชื่อธนาคาร)";
+      }
+    }
+    
+    return null; // ✅ ผ่าน
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // 🔒 Validate ชื่อบัญชี
+    const nameError = validateFullName(form.bank_name);
+    if (nameError) {
+      Swal.fire({ icon: "error", title: "ข้อมูลไม่ถูกต้อง", text: nameError, background: "#ffffff", color: "#0f172a", confirmButtonColor: "#7c3aed" });
+      return;
+    }
+    
     if (form.password !== form.password_confirmation) {
       Swal.fire({ icon: "error", title: "รหัสผ่านไม่ตรงกัน", background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#7c3aed" });
       return;
