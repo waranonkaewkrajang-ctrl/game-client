@@ -37,7 +37,22 @@
     "balance": "余额",
     "deposit": "存款",
     "withdraw": "提款",
-    "history": "历史"
+    "history": "历史",
+    "selectDepositMethod": "选择存款方式",
+    "selectWithdrawMethod": "提款方式",
+    "bankAccount": "银行账户",
+    "receivingAccount": "收款账户",
+    "myAccount": "我的账户",
+    "withdrawToBank": "提款到银行账户",
+    "registered": "已注册的",
+    "specifyAmount": "输入金额",
+    "amountDeposit": "存款",
+    "amountWithdraw": "提款",
+    "processing": "处理中...",
+    "confirm": "确认",
+    "loading": "加载中...",
+    "note1": "存款成功后5分钟内资金将自动到账",
+    "note2": "资金将仅转账到您已注册的账户"
   },
   "auth": {
     "username": "用户名",

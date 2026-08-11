@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
 import { getEcho } from "@/lib/echo";
+import { useTranslation } from "react-i18next";
 
 interface FinanceSettings {
   min_deposit: number;
@@ -17,6 +18,7 @@ interface FinanceSettings {
 
 function WalletContent() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [wallet, setWallet] = useState<any>(null);
   const [tab, setTab] = useState<"deposit" | "withdraw">("deposit");
   const [amount, setAmount] = useState("");
@@ -223,7 +225,7 @@ function WalletContent() {
   };
 
   const channelIcons: Record<string, { icon: string; label: string }> = {
-    bank_transfer: { icon: "https://fs.cdnrc.com/payment-layout/svg/bank.svg", label: "บัญชีธนาคาร" },
+    bank_transfer: { icon: "https://fs.cdnrc.com/payment-layout/svg/bank.svg", label: t("wallet.bankAccount") },
     promptpay: { icon: "https://fs.cdnrc.com/payment-layout/svg/qr-payment.svg", label: "QR Payment" },
     truewallet: { icon: "https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg", label: "True Wallet" },
   };
@@ -349,7 +351,7 @@ function WalletContent() {
                 {/* Left: Payment Methods (เปลี่ยนเป็นกล่อง 3D) */}
                 <div className="finance-card flex flex-col gap-3 w-full md:w-[250px] shrink-0 p-4 md:p-5">
                   <div className="font-bold text-sm text-white text-center tracking-wide">
-                    {tab === "deposit" ? "เลือกวิธีการฝากเงิน" : "ช่องทางการถอนเงิน"}
+                    {tab === "deposit" ? t("wallet.selectDepositMethod") : t("wallet.selectWithdrawMethod")}
                   </div>
 
                   {tab === "deposit" ? (
@@ -423,7 +425,7 @@ function WalletContent() {
                   ) : (
                     <div className="finance-inner-box text-center p-6 w-full flex flex-col items-center justify-center">
                       <img className="w-10 h-10 mx-auto mb-3 drop-shadow-md" alt="icon" src="https://fs.cdnrc.com/payment-layout/svg/bank.svg" />
-                      <span className="text-sm font-medium text-white">ถอนเข้าบัญชีธนาคาร<br/>ที่ลงทะเบียนไว้</span>
+                      <span className="text-sm font-medium text-white">{t("wallet.withdrawToBank")}<br/>{t("wallet.registered")}</span>
                     </div>
                   )}
                 </div>
@@ -434,11 +436,11 @@ function WalletContent() {
                   {/* บัญชีลูกค้า (ถอน) - ปรับเป็นแบบบุ๋ม */}
                   {tab === "withdraw" && userData && (
                     <div>
-                      <label className="text-sm font-semibold text-white mb-2 block px-2 tracking-wide">บัญชีรับเงิน</label>
+                      <label className="text-sm font-semibold text-white mb-2 block px-2 tracking-wide">{t("wallet.receivingAccount")}</label>
                       <div className="flex items-center gap-3 p-4 finance-inner-box">
                         <img alt="Bank" width="32" height="32" className="shrink-0 rounded-md bg-white object-contain p-0.5 shadow-md" src={`https://fs.cdnrc.com/payment-layout/iconbank/${userData.bank_code || 'BAY'}.png`} onError={(e) => { e.currentTarget.src = "https://fs.cdnrc.com/payment-layout/svg/bank.svg"; }} />
                         <div className="flex-1 min-w-0">
-                          <div className="text-white text-sm font-semibold truncate">{userData.bank_name || "บัญชีของฉัน"}</div>
+                          <div className="text-white text-sm font-semibold truncate">{userData.bank_name || t("wallet.myAccount")}</div>
                           <div className="text-[#fbcfe8] text-xs">{userData.bank_code} — {userData.bank_account}</div>
                         </div>
                       </div>
@@ -450,7 +452,7 @@ function WalletContent() {
 
                     <div style={{ display: "flex", justifyContent: "center", width: "100%", paddingTop: "4px" }}>
                       <label style={{ fontSize: "14px", fontWeight: 600, color: "white", textAlign: "center", letterSpacing: "0.5px" }}>
-                        ระบุจำนวนเงิน{tab === "deposit" ? "ฝาก" : "ถอน"}
+                        {t("wallet.specifyAmount")} {tab === "deposit" ? t("wallet.amountDeposit") : t("wallet.amountWithdraw")}
                       </label>
                     </div>
 
@@ -475,7 +477,7 @@ function WalletContent() {
                         ยกเลิก
                       </button>
                       <button type="submit" disabled={loading || !amount} className="inline-flex items-center justify-center rounded-xl text-xs md:text-sm font-bold transition-all border border-[#047857] bg-gradient-to-b from-[#10b981] to-[#059669] text-white disabled:opacity-50 h-10 md:h-12 flex-1 cursor-pointer shadow-[0_4px_10px_rgba(16,185,129,0.3)] hover:brightness-110">
-                        {loading ? "กำลังทำรายการ..." : "ยืนยัน"}
+                        {loading ? t("wallet.processing") : t("wallet.confirm")}
                       </button>
                     </div>
 
@@ -494,10 +496,10 @@ function WalletContent() {
                       {tab === "deposit" ? (
                         <>
                           <span className="text-[11px] md:text-xs text-[#fca5a5] font-medium">QR Code จะสามารถใช้สแกนได้เพียงครั้งเดียวเท่านั้น !</span>
-                          <span className="text-[11px] md:text-xs text-[#fca5a5] font-medium">หลังจากฝากเงินสำเร็จรอไม่เกิน 5 นาที เงินจะเข้ากระเป๋าอัตโนมัติ</span>
+                          <span className="text-[11px] md:text-xs text-[#fca5a5] font-medium">{t("wallet.note1")}</span>
                         </>
                       ) : (
-                        <span className="text-[11px] md:text-xs text-[#fde047]">เงินจะโอนเข้าบัญชีที่ท่านลงทะเบียนไว้เท่านั้น</span>
+                        <span className="text-[11px] md:text-xs text-[#fde047]">{t("wallet.note2")}</span>
                       )}
                     </div>
 
@@ -565,7 +567,7 @@ function WalletContent() {
 
 export default function WalletPage() {
   return (
-    <Suspense fallback={<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b" }}>กำลังโหลด...</div>}>
+    <Suspense fallback={<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b" }}>{t("wallet.loading")}</div>}>
       <WalletContent />
     </Suspense>
   );

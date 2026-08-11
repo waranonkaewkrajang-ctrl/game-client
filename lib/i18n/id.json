@@ -37,7 +37,22 @@
     "balance": "Saldo",
     "deposit": "Setor",
     "withdraw": "Tarik",
-    "history": "Riwayat"
+    "history": "Riwayat",
+    "selectDepositMethod": "Pilih Metode Setor",
+    "selectWithdrawMethod": "Metode Tarik",
+    "bankAccount": "Rekening Bank",
+    "receivingAccount": "Rekening Penerima",
+    "myAccount": "Rekening Saya",
+    "withdrawToBank": "Tarik ke Rekening Bank",
+    "registered": "yang terdaftar",
+    "specifyAmount": "Masukkan Jumlah",
+    "amountDeposit": "setor",
+    "amountWithdraw": "tarik",
+    "processing": "Memproses...",
+    "confirm": "Konfirmasi",
+    "loading": "Memuat...",
+    "note1": "Setelah setor, uang akan masuk dompet dalam 5 menit",
+    "note2": "Uang akan ditransfer hanya ke rekening yang terdaftar"
   },
   "auth": {
     "username": "Nama Pengguna",

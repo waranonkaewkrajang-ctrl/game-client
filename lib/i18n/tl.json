@@ -36,8 +36,23 @@
   "wallet": {
     "balance": "Balanse",
     "deposit": "Deposito",
-    "withdraw": "Mag-withdraw",
-    "history": "Kasaysayan"
+    "withdraw": "Withdraw",
+    "history": "Kasaysayan",
+    "selectDepositMethod": "Piliin ang Paraan ng Deposit",
+    "selectWithdrawMethod": "Paraan ng Withdraw",
+    "bankAccount": "Bank Account",
+    "receivingAccount": "Tumatanggap na Account",
+    "myAccount": "Aking Account",
+    "withdrawToBank": "Withdraw sa Bank Account",
+    "registered": "na naka-register",
+    "specifyAmount": "Ilagay ang Halaga",
+    "amountDeposit": "Deposito",
+    "amountWithdraw": "Withdraw",
+    "processing": "Nagpoproseso...",
+    "confirm": "Kumpirmahin",
+    "loading": "Naglo-load...",
+    "note1": "Pagkatapos mag-deposit, ang pera ay ilalagay sa wallet sa loob ng 5 minuto",
+    "note2": "Ang pera ay ililipat lamang sa naka-register na account"
   },
   "auth": {
     "username": "Username",

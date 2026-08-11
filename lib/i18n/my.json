@@ -37,7 +37,22 @@
     "balance": "လက်ကျန်",
     "deposit": "ငွေသွင်း",
     "withdraw": "ငွေထုတ်",
-    "history": "မှတ်တမ်း"
+    "history": "မှတ်တမ်း",
+    "selectDepositMethod": "ငွေသွင်းနည်းလမ်းရွေးရန်",
+    "selectWithdrawMethod": "ငွေထုတ်နည်းလမ်း",
+    "bankAccount": "ဘဏ်အကောင့်",
+    "receivingAccount": "လက်ခံအကောင့်",
+    "myAccount": "ကျွန်ုပ်၏အကောင့်",
+    "withdrawToBank": "ဘဏ်အကောင့်သို့ထုတ်",
+    "registered": "မှတ်ပုံတင်ထားသော",
+    "specifyAmount": "ငွေပမာဏထည့်ရန်",
+    "amountDeposit": "သွင်း",
+    "amountWithdraw": "ထုတ်",
+    "processing": "လုပ်ဆောင်နေ...",
+    "confirm": "အတည်ပြု",
+    "loading": "ဖွင့်နေ...",
+    "note1": "ငွေသွင်းပြီး 5 မိနစ်အတွင်း ငွေရောက်ရှိမည်",
+    "note2": "မှတ်ပုံတင်ထားသောအကောင့်သို့သာ လွှဲပြောင်းမည်"
   },
   "auth": {
     "username": "အသုံးပြုသူ",

@@ -37,7 +37,22 @@
     "balance": "Balance",
     "deposit": "Deposit",
     "withdraw": "Withdraw",
-    "history": "History"
+    "history": "History",
+    "selectDepositMethod": "Select Deposit Method",
+    "selectWithdrawMethod": "Withdrawal Method",
+    "bankAccount": "Bank Account",
+    "receivingAccount": "Receiving Account",
+    "myAccount": "My Account",
+    "withdrawToBank": "Withdraw to Bank Account",
+    "registered": "registered on system",
+    "specifyAmount": "Enter Amount to",
+    "amountDeposit": "Deposit",
+    "amountWithdraw": "Withdraw",
+    "processing": "Processing...",
+    "confirm": "Confirm",
+    "loading": "Loading...",
+    "note1": "After deposit, money will enter wallet automatically within 5 minutes",
+    "note2": "Money will only be transferred to your registered bank account"
   },
   "auth": {
     "username": "Username",

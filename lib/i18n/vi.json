@@ -37,7 +37,22 @@
     "balance": "Số dư",
     "deposit": "Nạp tiền",
     "withdraw": "Rút tiền",
-    "history": "Lịch sử"
+    "history": "Lịch sử",
+    "selectDepositMethod": "Chọn phương thức nạp",
+    "selectWithdrawMethod": "Phương thức rút",
+    "bankAccount": "Tài khoản ngân hàng",
+    "receivingAccount": "Tài khoản nhận",
+    "myAccount": "Tài khoản của tôi",
+    "withdrawToBank": "Rút về tài khoản ngân hàng",
+    "registered": "đã đăng ký",
+    "specifyAmount": "Nhập số tiền",
+    "amountDeposit": "nạp",
+    "amountWithdraw": "rút",
+    "processing": "Đang xử lý...",
+    "confirm": "Xác nhận",
+    "loading": "Đang tải...",
+    "note1": "Sau khi nạp, tiền sẽ vào ví trong 5 phút",
+    "note2": "Tiền chỉ chuyển vào tài khoản đã đăng ký"
   },
   "auth": {
     "username": "Tên đăng nhập",

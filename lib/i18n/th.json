@@ -37,7 +37,22 @@
     "balance": "ยอดคงเหลือ",
     "deposit": "ฝากเงิน",
     "withdraw": "ถอนเงิน",
-    "history": "ประวัติ"
+    "history": "ประวัติ",
+    "selectDepositMethod": "เลือกวิธีการฝากเงิน",
+    "selectWithdrawMethod": "ช่องทางการถอนเงิน",
+    "bankAccount": "บัญชีธนาคาร",
+    "receivingAccount": "บัญชีรับเงิน",
+    "myAccount": "บัญชีของฉัน",
+    "withdrawToBank": "ถอนเข้าบัญชีธนาคาร",
+    "registered": "ที่ลงทะเบียนไว้",
+    "specifyAmount": "ระบุจำนวนเงิน",
+    "amountDeposit": "ฝาก",
+    "amountWithdraw": "ถอน",
+    "processing": "กำลังทำรายการ...",
+    "confirm": "ยืนยัน",
+    "loading": "กำลังโหลด...",
+    "note1": "หลังจากฝากเงินสำเร็จรอไม่เกิน 5 นาที เงินจะเข้ากระเป๋าอัตโนมัติ",
+    "note2": "เงินจะโอนเข้าบัญชีที่ท่านลงทะเบียนไว้เท่านั้น"
   },
   "auth": {
     "username": "ชื่อผู้ใช้",

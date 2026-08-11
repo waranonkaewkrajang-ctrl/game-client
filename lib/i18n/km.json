@@ -37,7 +37,22 @@
     "balance": "សមតុល្យ",
     "deposit": "ដាក់ប្រាក់",
     "withdraw": "ដកប្រាក់",
-    "history": "ប្រវត្តិ"
+    "history": "ប្រវត្តិ",
+    "selectDepositMethod": "ជ្រើសរើសវិធីដាក់ប្រាក់",
+    "selectWithdrawMethod": "វិធីដកប្រាក់",
+    "bankAccount": "គណនីធនាគារ",
+    "receivingAccount": "គណនីទទួល",
+    "myAccount": "គណនីរបស់ខ្ញុំ",
+    "withdrawToBank": "ដកទៅគណនីធនាគារ",
+    "registered": "ដែលបានចុះឈ្មោះ",
+    "specifyAmount": "បញ្ចូលចំនួន",
+    "amountDeposit": "ដាក់",
+    "amountWithdraw": "ដក",
+    "processing": "កំពុងដំណើរការ...",
+    "confirm": "បញ្ជាក់",
+    "loading": "កំពុងផ្ទុក...",
+    "note1": "បន្ទាប់ពីដាក់ប្រាក់ ប្រាក់នឹងចូលក្នុងរយៈពេល 5 នាទី",
+    "note2": "ប្រាក់នឹងផ្ទេរទៅគណនីដែលចុះឈ្មោះតែប៉ុណ្ណោះ"
   },
   "auth": {
     "username": "ឈ្មោះ",

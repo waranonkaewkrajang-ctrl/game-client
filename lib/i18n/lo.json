@@ -37,7 +37,22 @@
     "balance": "ຍອດເງິນ",
     "deposit": "ຝາກເງິນ",
     "withdraw": "ຖອນເງິນ",
-    "history": "ປະຫວັດ"
+    "history": "ປະຫວັດ",
+    "selectDepositMethod": "ເລືອກວິທີຝາກເງິນ",
+    "selectWithdrawMethod": "ຊ່ອງທາງຖອນເງິນ",
+    "bankAccount": "ບັນຊີທະນາຄານ",
+    "receivingAccount": "ບັນຊີຮັບເງິນ",
+    "myAccount": "ບັນຊີຂອງຂ້ອຍ",
+    "withdrawToBank": "ຖອນເຂົ້າບັນຊີທະນາຄານ",
+    "registered": "ທີ່ລົງທະບຽນໄວ້",
+    "specifyAmount": "ລະບຸຈຳນວນເງິນ",
+    "amountDeposit": "ຝາກ",
+    "amountWithdraw": "ຖອນ",
+    "processing": "ກຳລັງດຳເນີນການ...",
+    "confirm": "ຢືນຢັນ",
+    "loading": "ກຳລັງໂຫຼດ...",
+    "note1": "ຫຼັງຈາກຝາກເງິນສຳເລັດ ເງິນຈະເຂົ້າກະເປົາອັດຕະໂນມັດພາຍໃນ 5 ນາທີ",
+    "note2": "ເງິນຈະໂອນເຂົ້າບັນຊີທີ່ທ່ານລົງທະບຽນໄວ້ເທົ່ານັ້ນ"
   },
   "auth": {
     "username": "ຊື່ຜູ້ໃຊ້",
