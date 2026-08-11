@@ -378,13 +378,52 @@ export default function LobbyPage() {
               return (
                 <div key={`mob-cat-${cat.id}`} onClick={() => handleCategoryFilter(cat.id)}
                   style={{
-                    background: isActive ? "linear-gradient(135deg, rgb(170, 0, 160), rgb(75, 0, 130))" : "rgba(20, 20, 42, 0.55)",
-                    border: isActive ? "1px solid rgb(255, 179, 0)" : "1px solid rgba(255, 255, 255, 0.08)",
-                    borderRadius: "10px", padding: "8px 4px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "5px", cursor: "pointer",
-                    transition: "all 0.3s ease"
+                    /* ✨ ดีไซน์ 3D นูนพรีเมียม (ให้เข้ากับ Tab Menu ด้านบน) */
+                    background: isActive 
+                      ? "linear-gradient(180deg, #c084fc 0%, #9333ea 50%, #6d28d9 100%)" 
+                      : "linear-gradient(180deg, rgba(30, 30, 60, 0.8) 0%, rgba(15, 15, 35, 0.9) 100%)",
+                    border: isActive 
+                      ? "2px solid rgba(216, 180, 254, 0.7)" 
+                      : "1.5px solid rgba(168, 85, 247, 0.3)",
+                    borderRadius: "12px", 
+                    padding: "10px 4px", 
+                    display: "flex", 
+                    flexDirection: "column", 
+                    alignItems: "center", 
+                    justifyContent: "center", 
+                    gap: "5px", 
+                    cursor: "pointer",
+                    backdropFilter: "blur(12px)",
+                    WebkitBackdropFilter: "blur(12px)",
+                    transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+                    transform: isActive ? "translateY(-3px) scale(1.02)" : "translateY(0)",
+                    boxShadow: isActive 
+                      ? "0 10px 24px rgba(147, 51, 234, 0.7), 0 4px 8px rgba(0, 0, 0, 0.4), inset 0 3px 5px rgba(255, 255, 255, 0.5), inset 0 -4px 6px rgba(76, 29, 149, 0.9)" 
+                      : "0 4px 12px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.08), inset 0 -2px 4px rgba(0, 0, 0, 0.3)",
                   }}>
-                  <img src={cat.icon} alt={cat.label} style={{ width: "36px", height: "36px", objectFit: "contain" }} />
-                  <span style={{ fontSize: "0.55rem", fontWeight: 700, color: isActive ? "#fff" : "#cbd5e1", textAlign: "center", whiteSpace: "nowrap" }}>{cat.label}</span>
+                  <img 
+                    src={cat.icon} 
+                    alt={cat.label} 
+                    style={{ 
+                      width: "36px", 
+                      height: "36px", 
+                      objectFit: "contain",
+                      filter: isActive ? "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" : "none",
+                    }} 
+                  />
+                  <span style={{ 
+                    fontSize: "0.6rem", 
+                    fontWeight: 900, 
+                    color: isActive ? "#ffffff" : "#d8b4fe", 
+                    textAlign: "center", 
+                    whiteSpace: "nowrap",
+                    letterSpacing: "0.3px",
+                    textShadow: isActive 
+                      ? "0 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(216, 180, 254, 0.6)" 
+                      : "0 1px 2px rgba(0, 0, 0, 0.5)",
+                  }}>
+                    {cat.label}
+                  </span>
                 </div>
               );
             })}
