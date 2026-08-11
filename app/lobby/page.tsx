@@ -321,138 +321,6 @@ export default function LobbyPage() {
         </div>
 
  
-        {/* 10 ค่ายเกมสล็อต ปล่อยแรกแตก - ปรับสไตล์ใหม่ให้เหมือนโซน PG */}
-<div style={{ marginBottom: "24px" }}>
-  {/* ส่วนหัวข้อ Highlight ใหม่ */}
-  <div style={{
-    /* 🟢 ปรับพื้นหลังให้ทึบตรงกลาง และสว่างหัวท้ายนิดๆ ดันให้กรอบเด่นขึ้น */
-    background: "linear-gradient(90deg, rgba(20, 20, 42, 0.95) 0%, rgba(245, 158, 11, 0.15) 50%, rgba(20, 20, 42, 0.95) 100%)",
-    padding: "12px 20px",
-    borderLeft: "4px solid #f59e0b",
-    borderTop: "1px solid rgba(245, 158, 11, 0.15)", /* 🟢 เพิ่มขอบเรืองแสงด้านบน */
-    borderBottom: "1px solid rgba(245, 158, 11, 0.15)", /* 🟢 เพิ่มขอบเรืองแสงด้านล่าง */
-    borderRadius: "8px",
-    marginBottom: "16px",
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-    marginLeft: "16px",
-    marginRight: "16px",
-    /* 🟢 ใส่เงาสีดำหนาๆ ให้กรอบลอยขึ้นมาจากพื้นหลัง และใส่เงาสะท้อนด้านใน */
-    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(245, 158, 11, 0.05)",
-    backdropFilter: "blur(6px)"
-  }}>
-    {/* 🔴 รูป GIF ไฟ */}
-    <img 
-      src="https://kingwin88.live/storage/images/wallet/hot.gif" 
-      alt="Hot" 
-      style={{ 
-        width: "35px", 
-        height: "35px", 
-        objectFit: "contain", 
-        margin: "-8px 0",
-        filter: "drop-shadow(0 2px 4px rgba(245, 158, 11, 0.5))" /* 🟢 เพิ่มแสงเรืองรองใต้รูปไฟ */
-      }} 
-    />
-    <h3 style={{ 
-      fontSize: "1.05rem", 
-      fontWeight: 800, 
-      color: "#f59e0b", 
-      margin: 0,
-      /* 🟢 ใส่เงาสีดำทับด้วยเรืองแสงสีส้มบางๆ ให้ตัวหนังสือตัดกับพื้นหลังชัดเจน */
-      textShadow: "0 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(245, 158, 11, 0.4)" 
-    }}>
-      10 ค่ายเกมสล็อต ปล่อยแรกแตก!!!
-    </h3>
-  </div>
-  
-  {/* ใช้ Class rank-scroll-container เพื่อให้เลื่อนได้แบบเดียวกัน */}
- <div className="rank-scroll-container" ref={rankScrollRef}>
-    {products
-  .filter((p) => {
-    const isSlot = (g: Game) => ["SLOT","SLOTS","EGAMES"].includes(g.category?.toUpperCase() || "") || ["SLOT","SLOTS","EGAMES"].includes(g.type?.toUpperCase() || "");
-    return allGames.some((g) => g.product_id === p && isSlot(g));
-  })
-  .sort((a, b) => {
-    if (a.toUpperCase().includes("PG")) return -1;
-    if (b.toUpperCase().includes("PG")) return 1;
-    return 0;
-  })
-  .slice(0, 10)
-  .map((p, i) => {
-  const pGames = allGames.filter((g) => g.product_id === p && (["SLOT","SLOTS","EGAMES"].includes(g.category?.toUpperCase() || "") || ["SLOT","SLOTS","EGAMES"].includes(g.type?.toUpperCase() || "")));
-      const firstImg = pGames.find((g) => g.image_url);
-      return (
-       <div key={`provider-${p}`} className={`rank-card ${activeRank === i ? "rank-active" : ""}`} onClick={() => router.push(`/lobby/${p}`)}>
-          
-          {/* ตัวเลข Rank (ใช้สีส้มให้เข้ากับค่ายเกม) */}
-          <div className="rank-number-svg">
-            <svg width="70" height="85" viewBox="0 0 70 85">
-              <text x="50%" y="55%" dominantBaseline="central" textAnchor="middle" fill="#0a0a14" stroke="#f59e0b" strokeWidth="3" fontSize="80" fontWeight="900" fontFamily="Arial, sans-serif" paintOrder="stroke">
-                {i + 1}
-              </text>
-            </svg>
-          </div>
-
-          {/* กล่องรูปภาพ (ใช้สไตล์ rank-img-wrapper เดิม) */}
-          <div className="rank-img-wrapper">
-             {productImages[p]?.image_url ? (
-               <img src={productImages[p]?.image_url} className="rank-main-img" alt={p} loading="lazy" />
-             ) : (
-               <div className="rank-no-img">{p.charAt(0)}</div>
-             )}
-             <div className="rank-provider-badge">
-               <span style={{ fontSize: "9px", fontWeight: 800, color: "rgba(255,255,255,0.8)" }}>{pGames.length} เกม</span>
-             </div>
-          </div>
-
-          {/* ชื่อค่าย */}
-          <div className="rank-title">{p}</div>
-        </div>
-      );
-    })}
-  </div>
-</div>
-        {/* Highlight Marquee Bar */}
-        <div style={{ 
-          display: "flex", 
-          alignItems: "center", 
-          height: "38px", /* 🟢 เพิ่มความสูงนิดนึงให้ดูไม่อึดอัด */
-          borderRadius: "8px", 
-          overflow: "hidden", 
-          marginBottom: "14px", 
-          border: "1px solid rgba(168, 85, 247, 0.4)", /* 🟢 เปลี่ยนขอบสีดำเป็นสีม่วงอ่อนๆ ให้เข้ากับธีม */
-          background: "linear-gradient(90deg, rgba(20, 20, 42, 0.9) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(20, 20, 42, 0.9) 100%)", /* 🟢 ใส่พื้นหลังไล่สีทึบๆ ช่วยดันตัวหนังสือให้เด่น */
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)", /* 🟢 ใส่เงาให้กรอบดูลอยมีมิติ */
-          backdropFilter: "blur(4px)" 
-        }}>
-          <div style={{ padding: "0 12px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}>
-              <path d="M18 8C19.1 8 20 8.9 20 10V14C20 15.1 19.1 16 18 16" stroke="#a855f7" strokeWidth="2" strokeLinecap="round"/>
-              <path d="M13 6L7 10H3V14H7L13 18V6Z" fill="#a855f7" stroke="#a855f7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M21.5 7.5C22.9 9.4 22.9 14.6 21.5 16.5" stroke="#c084fc" strokeWidth="2" strokeLinecap="round"/>
-            </svg>
-          </div>
-          <div style={{ flex: 1, overflow: "hidden", whiteSpace: "nowrap" }}>
-            <div className="marquee-scroll" style={{ 
-              display: "inline-block", 
-              animation: "marquee 20s linear infinite", 
-              fontSize: "0.85rem", /* 🟢 ปรับฟอนต์ให้ใหญ่ขึ้นนิดนึง */
-              fontWeight: 600, /* 🟢 เพิ่มความหนาให้ตัวหนังสือ */
-              color: "#ffffff", /* 🟢 ขาวสว่างสุด */
-              letterSpacing: "0.5px",
-              /* ✨ ไฮไลต์: ใส่เงาสีดำเข้มๆ รองหลังตัวอักษร ตามด้วยเงาเรืองแสงสีม่วง */
-              textShadow: "0 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(168, 85, 247, 0.8)" 
-            }}>
-              ยินดีต้อนรับสมาชิกทุกท่าน ให้ความลื่นไหลในการเล่นไม่มีสะดุด พร้อมดูแลทุกเวลา รองรับผู้เล่นนับแสนจากทั่วโลก ด้วยเซิร์ฟเวอร์ประสิทธิภาพสูงระดับสากล
-            </div>
-          </div>
-        </div>
-        
-        
-
-        
-        
        {/* Tab Menu */}
         <div className="tab-menu-row" style={{ display: "flex", gap: "8px", marginBottom: "14px", overflowX: "auto", scrollbarWidth: "none" }}>
           {[
@@ -823,6 +691,134 @@ if (pGames.length === 0) return null;
                 )}
           </>
           )}
+          </div>
+        </div>
+
+        {/* 10 ค่ายเกมสล็อต ปล่อยแรกแตก - ปรับสไตล์ใหม่ให้เหมือนโซน PG */}
+<div style={{ marginBottom: "24px" }}>
+  {/* ส่วนหัวข้อ Highlight ใหม่ */}
+  <div style={{
+    /* 🟢 ปรับพื้นหลังให้ทึบตรงกลาง และสว่างหัวท้ายนิดๆ ดันให้กรอบเด่นขึ้น */
+    background: "linear-gradient(90deg, rgba(20, 20, 42, 0.95) 0%, rgba(245, 158, 11, 0.15) 50%, rgba(20, 20, 42, 0.95) 100%)",
+    padding: "12px 20px",
+    borderLeft: "4px solid #f59e0b",
+    borderTop: "1px solid rgba(245, 158, 11, 0.15)", /* 🟢 เพิ่มขอบเรืองแสงด้านบน */
+    borderBottom: "1px solid rgba(245, 158, 11, 0.15)", /* 🟢 เพิ่มขอบเรืองแสงด้านล่าง */
+    borderRadius: "8px",
+    marginBottom: "16px",
+    display: "flex",
+    alignItems: "center",
+    gap: "10px",
+    marginLeft: "16px",
+    marginRight: "16px",
+    /* 🟢 ใส่เงาสีดำหนาๆ ให้กรอบลอยขึ้นมาจากพื้นหลัง และใส่เงาสะท้อนด้านใน */
+    boxShadow: "0 6px 12px rgba(0, 0, 0, 0.6), inset 0 0 10px rgba(245, 158, 11, 0.05)",
+    backdropFilter: "blur(6px)"
+  }}>
+    {/* 🔴 รูป GIF ไฟ */}
+    <img 
+      src="https://kingwin88.live/storage/images/wallet/hot.gif" 
+      alt="Hot" 
+      style={{ 
+        width: "35px", 
+        height: "35px", 
+        objectFit: "contain", 
+        margin: "-8px 0",
+        filter: "drop-shadow(0 2px 4px rgba(245, 158, 11, 0.5))" /* 🟢 เพิ่มแสงเรืองรองใต้รูปไฟ */
+      }} 
+    />
+    <h3 style={{ 
+      fontSize: "1.05rem", 
+      fontWeight: 800, 
+      color: "#f59e0b", 
+      margin: 0,
+      /* 🟢 ใส่เงาสีดำทับด้วยเรืองแสงสีส้มบางๆ ให้ตัวหนังสือตัดกับพื้นหลังชัดเจน */
+      textShadow: "0 2px 4px rgba(0, 0, 0, 0.9), 0 0 10px rgba(245, 158, 11, 0.4)" 
+    }}>
+      10 ค่ายเกมสล็อต ปล่อยแรกแตก!!!
+    </h3>
+  </div>
+  
+  {/* ใช้ Class rank-scroll-container เพื่อให้เลื่อนได้แบบเดียวกัน */}
+ <div className="rank-scroll-container" ref={rankScrollRef}>
+    {products
+  .filter((p) => {
+    const isSlot = (g: Game) => ["SLOT","SLOTS","EGAMES"].includes(g.category?.toUpperCase() || "") || ["SLOT","SLOTS","EGAMES"].includes(g.type?.toUpperCase() || "");
+    return allGames.some((g) => g.product_id === p && isSlot(g));
+  })
+  .sort((a, b) => {
+    if (a.toUpperCase().includes("PG")) return -1;
+    if (b.toUpperCase().includes("PG")) return 1;
+    return 0;
+  })
+  .slice(0, 10)
+  .map((p, i) => {
+  const pGames = allGames.filter((g) => g.product_id === p && (["SLOT","SLOTS","EGAMES"].includes(g.category?.toUpperCase() || "") || ["SLOT","SLOTS","EGAMES"].includes(g.type?.toUpperCase() || "")));
+      const firstImg = pGames.find((g) => g.image_url);
+      return (
+       <div key={`provider-${p}`} className={`rank-card ${activeRank === i ? "rank-active" : ""}`} onClick={() => router.push(`/lobby/${p}`)}>
+          
+          {/* ตัวเลข Rank (ใช้สีส้มให้เข้ากับค่ายเกม) */}
+          <div className="rank-number-svg">
+            <svg width="70" height="85" viewBox="0 0 70 85">
+              <text x="50%" y="55%" dominantBaseline="central" textAnchor="middle" fill="#0a0a14" stroke="#f59e0b" strokeWidth="3" fontSize="80" fontWeight="900" fontFamily="Arial, sans-serif" paintOrder="stroke">
+                {i + 1}
+              </text>
+            </svg>
+          </div>
+
+          {/* กล่องรูปภาพ (ใช้สไตล์ rank-img-wrapper เดิม) */}
+          <div className="rank-img-wrapper">
+             {productImages[p]?.image_url ? (
+               <img src={productImages[p]?.image_url} className="rank-main-img" alt={p} loading="lazy" />
+             ) : (
+               <div className="rank-no-img">{p.charAt(0)}</div>
+             )}
+             <div className="rank-provider-badge">
+               <span style={{ fontSize: "9px", fontWeight: 800, color: "rgba(255,255,255,0.8)" }}>{pGames.length} เกม</span>
+             </div>
+          </div>
+
+          {/* ชื่อค่าย */}
+          <div className="rank-title">{p}</div>
+        </div>
+      );
+    })}
+  </div>
+</div>
+        {/* Highlight Marquee Bar */}
+        <div style={{ 
+          display: "flex", 
+          alignItems: "center", 
+          height: "38px", /* 🟢 เพิ่มความสูงนิดนึงให้ดูไม่อึดอัด */
+          borderRadius: "8px", 
+          overflow: "hidden", 
+          marginBottom: "14px", 
+          border: "1px solid rgba(168, 85, 247, 0.4)", /* 🟢 เปลี่ยนขอบสีดำเป็นสีม่วงอ่อนๆ ให้เข้ากับธีม */
+          background: "linear-gradient(90deg, rgba(20, 20, 42, 0.9) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(20, 20, 42, 0.9) 100%)", /* 🟢 ใส่พื้นหลังไล่สีทึบๆ ช่วยดันตัวหนังสือให้เด่น */
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)", /* 🟢 ใส่เงาให้กรอบดูลอยมีมิติ */
+          backdropFilter: "blur(4px)" 
+        }}>
+          <div style={{ padding: "0 12px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}>
+              <path d="M18 8C19.1 8 20 8.9 20 10V14C20 15.1 19.1 16 18 16" stroke="#a855f7" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M13 6L7 10H3V14H7L13 18V6Z" fill="#a855f7" stroke="#a855f7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M21.5 7.5C22.9 9.4 22.9 14.6 21.5 16.5" stroke="#c084fc" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <div style={{ flex: 1, overflow: "hidden", whiteSpace: "nowrap" }}>
+            <div className="marquee-scroll" style={{ 
+              display: "inline-block", 
+              animation: "marquee 20s linear infinite", 
+              fontSize: "0.85rem", /* 🟢 ปรับฟอนต์ให้ใหญ่ขึ้นนิดนึง */
+              fontWeight: 600, /* 🟢 เพิ่มความหนาให้ตัวหนังสือ */
+              color: "#ffffff", /* 🟢 ขาวสว่างสุด */
+              letterSpacing: "0.5px",
+              /* ✨ ไฮไลต์: ใส่เงาสีดำเข้มๆ รองหลังตัวอักษร ตามด้วยเงาเรืองแสงสีม่วง */
+              textShadow: "0 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(168, 85, 247, 0.8)" 
+            }}>
+              ยินดีต้อนรับสมาชิกทุกท่าน ให้ความลื่นไหลในการเล่นไม่มีสะดุด พร้อมดูแลทุกเวลา รองรับผู้เล่นนับแสนจากทั่วโลก ด้วยเซิร์ฟเวอร์ประสิทธิภาพสูงระดับสากล
+            </div>
           </div>
         </div>
 
