@@ -848,67 +848,6 @@ if (pGames.length === 0) return null;
                     ))}
                   </div>
                 )}
-
-            {/* Hot Games Section */}
-{!selectedProduct && !selectedCategory && games.length > 0 && (
-              <div style={{ marginTop: "24px" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
-                  <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "white", margin: 0 }}>
-                    เกมแนะนำ 
-                  </h2>
-                  <span style={{ background: "linear-gradient(135deg, #f59e0b, #ea580c)", color: "white", fontSize: "0.65rem", fontWeight: 800, padding: "2px 8px", borderRadius: "6px", letterSpacing: "0.5px", boxShadow: "0 2px 10px rgba(245,158,11,0.2)" }}>
-                    HOT 🔥
-                  </span>
-                </div>
-                
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(130px, 1fr))", gap: "14px" }}>
-                  {games.slice(0, 8).map((game) => (
-                    <div 
-                      key={`hot-${game.id}`} 
-                      onClick={() => router.push(`/lobby/${game.product_id}`)}
-                      style={{ background: "#121214", borderRadius: "10px", border: "1px solid rgba(245,158,11,0.2)", overflow: "visible", position: "relative", cursor: "pointer", transition: "all 0.3s ease", display: "flex", flexDirection: "column" }}
-                      onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.6)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(245,158,11,0.15)"; }}
-                      onMouseLeave={(e) => { e.currentTarget.style.transform = "none"; e.currentTarget.style.borderColor = "rgba(245,158,11,0.2)"; e.currentTarget.style.boxShadow = "none"; }}
-                    >
-                      
-                      {/* ไอคอนเกมแตก */}
-                      {game.id % 3 === 0 && (
-                        <img 
-                          src="https://kingwin88.live/storage/images/wallet/hot.gif" 
-                          alt="เกมแตก" 
-                          style={{ position: "absolute", top: "-18px", right: "-16px", width: "56px", height: "56px", zIndex: 30, pointerEvents: "none" }} 
-                        />
-                      )}
-
-                      <div style={{ width: "100%", paddingBottom: "125%", background: "#1a1a2e", position: "relative", overflow: "hidden", borderTopLeftRadius: "10px", borderTopRightRadius: "10px" }}>
-                        {game.image_url ? (
-                          <img 
-                            src={game.image_url} 
-                            alt={game.game_name} 
-                            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.4s ease" }} 
-                            loading="lazy" 
-                            onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.1)"} 
-                            onMouseLeave={(e) => e.currentTarget.style.transform = "scale(1)"} 
-                          />
-                        ) : (
-                          <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center", color: "#4a5568", fontSize: "0.75rem" }}>No Image</div>
-                        )}
-                        <div style={{ position: "absolute", top: "8px", left: "8px", background: "linear-gradient(135deg, #f59e0b, #ea580c)", color: "white", fontSize: "0.6rem", fontWeight: 800, padding: "2px 8px", borderRadius: "6px", boxShadow: "0 2px 8px rgba(0,0,0,0.5)", zIndex: 10 }}>ยอดฮิต</div>
-                      </div>
-                      
-                      <div style={{ padding: "12px 10px" }}>
-                        <p style={{ fontSize: "0.75rem", fontWeight: 700, color: "#e4e4e7", margin: "0 0 6px 0", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                          {game.game_name_th || game.game_name}
-                        </p>
-                        <span style={{ fontSize: "0.6rem", fontWeight: 700, color: "#f59e0b", background: "rgba(245,158,11,0.1)", padding: "3px 8px", borderRadius: "6px" }}>
-                          {game.product_id}
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
           </>
           )}
           </div>
