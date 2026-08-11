@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import "./globals.css";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import BottomMenu from "@/components/BottomMenu";
-import "@/lib/i18n/config"; // 🌐 i18n init
+import I18nProvider from "@/components/I18nProvider";
 
 const TITLE = "SNAKE168 – เว็บอันดับ 1 ของไทย มั่นคงปลอดภัย 100%";
 const DESCRIPTION = "SNAKE168 เว็บสล็อตออนไลน์ ฝากถอนออโต้ ปลอดภัย 100% บริการ 24 ชม.";
@@ -60,10 +60,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
       </head>
-      <body className="app-bg">
-        <NavbarWrapper />
-        <main>{children}</main>
-        <BottomMenu />
+      <body>
+        <I18nProvider>
+          <NavbarWrapper />
+          {children}
+          <BottomMenu />
+        </I18nProvider>
       </body>
     </html>
   );
