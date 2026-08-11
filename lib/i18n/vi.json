@@ -1,0 +1,6 @@
+{
+  "nav": { "home": "Trang chủ", "login": "Đăng nhập", "register": "Đăng ký", "logout": "Đăng xuất" },
+  "lobby": { "highlight": "Nổi bật", "recent": "Chơi gần đây", "promotion": "Khuyến mãi", "news": "Tin tức", "allGames": "Tất cả trò chơi", "search": "Tìm kiếm...", "playNow": "Chơi ngay" },
+  "wallet": { "balance": "Số dư", "deposit": "Nạp tiền", "withdraw": "Rút tiền", "history": "Lịch sử" },
+  "auth": { "username": "Tên đăng nhập", "password": "Mật khẩu", "phone": "Số điện thoại" }
+}

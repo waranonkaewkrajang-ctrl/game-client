@@ -1,0 +1,6 @@
+{
+  "nav": { "home": "Home", "login": "Mag-login", "register": "Magparehistro", "logout": "Mag-logout" },
+  "lobby": { "highlight": "Highlight", "recent": "Kamakailan", "promotion": "Promosyon", "news": "Balita", "allGames": "Lahat ng Laro", "search": "Maghanap...", "playNow": "Maglaro Ngayon" },
+  "wallet": { "balance": "Balanse", "deposit": "Deposito", "withdraw": "Mag-withdraw", "history": "Kasaysayan" },
+  "auth": { "username": "Username", "password": "Password", "phone": "Telepono" }
+}

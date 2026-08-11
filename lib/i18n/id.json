@@ -1,0 +1,6 @@
+{
+  "nav": { "home": "Beranda", "login": "Masuk", "register": "Daftar", "logout": "Keluar" },
+  "lobby": { "highlight": "Sorotan", "recent": "Baru Dimainkan", "promotion": "Promosi", "news": "Berita", "allGames": "Semua Game", "search": "Cari...", "playNow": "Main Sekarang" },
+  "wallet": { "balance": "Saldo", "deposit": "Setor", "withdraw": "Tarik", "history": "Riwayat" },
+  "auth": { "username": "Nama Pengguna", "password": "Kata Sandi", "phone": "Nomor Telepon" }
+}

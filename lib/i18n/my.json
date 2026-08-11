@@ -1,0 +1,6 @@
+{
+  "nav": { "home": "မူလစာမျက်နှာ", "login": "ဝင်ရန်", "register": "စာရင်းသွင်း", "logout": "ထွက်ရန်" },
+  "lobby": { "highlight": "ဟိုက်လိုက်", "recent": "လတ်တလော", "promotion": "ပရိုမိုးရှင်း", "news": "သတင်း", "allGames": "ဂိမ်းအားလုံး", "search": "ရှာဖွေရန်...", "playNow": "ယခုကစားရန်" },
+  "wallet": { "balance": "လက်ကျန်", "deposit": "ငွေသွင်း", "withdraw": "ငွေထုတ်", "history": "မှတ်တမ်း" },
+  "auth": { "username": "အသုံးပြုသူ", "password": "စကားဝှက်", "phone": "ဖုန်း" }
+}
