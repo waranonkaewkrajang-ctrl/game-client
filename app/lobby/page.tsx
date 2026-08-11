@@ -242,14 +242,7 @@ export default function LobbyPage() {
     }
   };
 
-  // 🆕 กรองเกมตามที่เล่นล่าสุด (ถ้ากด tab "recent")
-  const displayedGames = activeTab === "recent"
-    ? allGames.filter((g) =>
-        recentGames.some(
-          (rg) => rg.provider === g.product_id && String(rg.game_id) === String(g.game_code)
-        )
-      )
-    : games;
+  const displayedGames = activeTab === "recent" ? (recentGames as any[]) : games;
 
   return (
   <div style={{ minHeight: "100vh", background: "transparent", paddingBottom: "0px", position: "relative", overflow: "hidden" }}>
