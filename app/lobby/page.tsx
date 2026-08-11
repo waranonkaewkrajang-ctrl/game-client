@@ -325,8 +325,8 @@ export default function LobbyPage() {
         <div className="tab-menu-row" style={{ display: "flex", gap: "8px", marginBottom: "14px", overflowX: "auto", scrollbarWidth: "none" }}>
           {[
             { id: "highlight", label: "ไฮไลท์", href: "" },
-            { id: "promotion", label: "โปรโมชันแนะนำ", href: "/promotions" },
             { id: "recent", label: "เล่นล่าสุด", href: "" },
+            { id: "promotion", label: "โปรโมชันแนะนำ", href: "/promotions" },
             { id: "news", label: "ข่าวสาร", href: "/history" },
           ].map((tab) => (
             <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.href) router.push(tab.href); }} style={{
