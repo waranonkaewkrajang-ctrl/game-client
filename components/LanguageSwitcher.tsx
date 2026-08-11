@@ -23,6 +23,16 @@ export default function LanguageSwitcher() {
     setMounted(true);
   }, []);
 
+  // 🎯 ล็อค scroll เวลา modal เปิด
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   if (!mounted) return null;
 
   const current = languages.find(l => l.code === i18n.language) || languages[1];
@@ -34,19 +44,19 @@ export default function LanguageSwitcher() {
 
   return (
     <>
-      {/* Trigger button */}
+      {/* Trigger button — ธงกลม */}
       <button
         onClick={() => setOpen(true)}
         style={{
           width: "36px",
           height: "36px",
           borderRadius: "50%",
-          border: "2px solid rgba(255,255,255,0.2)",
+          border: "2px solid rgba(168,85,247,0.5)",
           padding: 0,
           overflow: "hidden",
           cursor: "pointer",
           background: "transparent",
-          boxShadow: "0 2px 8px rgba(0,0,0,0.3)",
+          boxShadow: "0 2px 8px rgba(124,58,237,0.4)",
         }}
         title="เปลี่ยนภาษา"
       >
@@ -67,37 +77,46 @@ export default function LanguageSwitcher() {
           onClick={() => setOpen(false)}
           style={{
             position: "fixed",
-            inset: 0,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: "100vw",
+            height: "100vh",
             background: "rgba(0,0,0,0.75)",
             zIndex: 9998,
             display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            alignItems: "center",       // 🎯 กึ่งกลางแนวตั้ง
+            justifyContent: "center",   // 🎯 กึ่งกลางแนวนอน
             padding: "20px",
             backdropFilter: "blur(4px)",
           }}
         >
-          {/* Modal Content */}
+          {/* Modal Content — สีธีมม่วง */}
           <div
             onClick={(e) => e.stopPropagation()}
             style={{
-              background: "linear-gradient(0deg, #160606 -5.86%, #2e1818 104.05%)",
+              background: "linear-gradient(135deg, #1a0b2e 0%, #2d1b5e 100%)",  // 🎨 ม่วงเข้ม
               borderRadius: "16px",
               padding: "40px 24px 24px",
               maxWidth: "380px",
               width: "100%",
+              maxHeight: "90vh",
+              overflowY: "auto",
               position: "relative",
-              boxShadow: "0px 1px 24px 4px rgba(90,90,90,0.2)",
-              border: "1px solid #2e1818",
+              boxShadow: "0px 8px 32px rgba(124,58,237,0.35)",  // 🎨 เงาม่วง
+              border: "1px solid rgba(168,85,247,0.4)",         // 🎨 ขอบม่วง
             }}
           >
             {/* Header */}
             <div style={{ 
               textAlign: "center", 
-              fontSize: "1rem", 
-              fontWeight: 800, 
-              color: "white",
+              fontSize: "1.1rem", 
+              fontWeight: 900, 
+              color: "#fff",
               marginBottom: "24px",
+              letterSpacing: "0.5px",
+              textShadow: "0 0 10px rgba(168,85,247,0.5)",
             }}>
               เปลี่ยนภาษา
             </div>
@@ -109,16 +128,18 @@ export default function LanguageSwitcher() {
                 position: "absolute",
                 top: "12px",
                 right: "12px",
-                background: "transparent",
-                border: "none",
+                background: "rgba(168,85,247,0.2)",
+                border: "1px solid rgba(168,85,247,0.4)",
                 color: "white",
-                fontSize: "1.2rem",
+                fontSize: "1rem",
                 cursor: "pointer",
                 width: "32px",
                 height: "32px",
+                borderRadius: "50%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                fontWeight: 700,
               }}
             >
               ✕
@@ -138,32 +159,39 @@ export default function LanguageSwitcher() {
                     onClick={() => changeLanguage(lang.code)}
                     style={{
                       cursor: "pointer",
-                      padding: "1px",
-                      borderRadius: "8px",
+                      padding: "2px",
+                      borderRadius: "10px",
                       background: isActive 
-                        ? "linear-gradient(165.34deg, #e62200 -17.16%, #ff0000 91.36%)"
+                        ? "linear-gradient(135deg, #9333ea, #6d28d9)"  // 🎨 ม่วง gradient
                         : "transparent",
+                      transition: "all 0.2s",
                     }}
                   >
                     <div style={{
                       width: "100%",
-                      minHeight: "78px",
-                      background: isActive ? "#220707" : "#0e0606",
-                      border: "1px solid #261717",
-                      borderRadius: "8px",
+                      minHeight: "82px",
+                      background: isActive 
+                        ? "linear-gradient(135deg, #2d1b5e, #1a0b2e)"  // 🎨 ม่วงเข้ม active
+                        : "rgba(20,10,40,0.6)",                          // 🎨 ม่วงจาง
+                      border: isActive 
+                        ? "1px solid rgba(216,180,254,0.5)"
+                        : "1px solid rgba(168,85,247,0.15)",
+                      borderRadius: "10px",
                       display: "flex",
                       flexDirection: "column",
                       alignItems: "center",
                       justifyContent: "center",
                       gap: "6px",
-                      padding: "8px 4px",
+                      padding: "10px 4px",
                     }}>
                       <div style={{
-                        width: "34px",
-                        height: "34px",
+                        width: "36px",
+                        height: "36px",
                         borderRadius: "50%",
                         overflow: "hidden",
-                        boxShadow: "0px 4px 4px rgba(0,0,0,0.25)",
+                        boxShadow: isActive 
+                          ? "0px 4px 12px rgba(168,85,247,0.6)"
+                          : "0px 2px 6px rgba(0,0,0,0.25)",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
@@ -182,7 +210,7 @@ export default function LanguageSwitcher() {
                         textAlign: "center",
                         fontSize: "0.65rem",
                         fontWeight: 700,
-                        color: "white",
+                        color: isActive ? "#e9d5ff" : "#c4b5fd",  // 🎨 สีตัวหนังสือม่วงอ่อน
                         lineHeight: 1.1,
                       }}>
                         {lang.label}
