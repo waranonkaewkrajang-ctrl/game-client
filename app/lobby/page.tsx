@@ -22,6 +22,8 @@ export default function LobbyPage() {
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("highlight");
+  const [recentGames, setRecentGames] = useState<any[]>([]);     
+  const [loadingRecent, setLoadingRecent] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [productImages, setProductImages] = useState<Record<string, any>>({});
   const [gameCategories, setGameCategories] = useState<{id: string; label: string; count: number}[]>([]);
@@ -35,6 +37,20 @@ export default function LobbyPage() {
   const [activeRank, setActiveRank] = useState(0);
   const rankScrollRef = useRef<HTMLDivElement>(null);
   const [highlightIndex, setHighlightIndex] = useState(0);
+
+  // 🆕 ดึงเกมที่เล่นล่าสุด เมื่อกด tab "recent"
+  useEffect(() => {
+    if (activeTab !== "recent") return;
+    if (recentGames.length > 0) return; // cache ถ้าดึงแล้ว
+    
+    setLoadingRecent(true);
+    api.get("/games/recently-played?limit=24")
+      .then((res) => {
+        setRecentGames(res.data.data || []);
+      })
+      .catch(() => setRecentGames([]))
+      .finally(() => setLoadingRecent(false));
+  }, [activeTab]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -435,7 +451,7 @@ export default function LobbyPage() {
           {[
             { id: "highlight", label: "ไฮไลท์", href: "" },
             { id: "promotion", label: "โปรโมชันแนะนำ", href: "/promotions" },
-            { id: "event", label: "กิจกรรม", href: "/promotions" },
+            { id: "recent", label: "เล่นล่าสุด", href: "" },
             { id: "news", label: "ข่าวสาร", href: "/history" },
           ].map((tab) => (
             <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.href) router.push(tab.href); }} style={{
@@ -458,7 +474,7 @@ export default function LobbyPage() {
             }}>
              {tab.id === "highlight" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>}
               {tab.id === "promotion" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v13M4 14.5A3.5 3.5 0 0 1 7.5 11H12m0 0h4.5A3.5 3.5 0 0 1 20 14.5M4 14.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4.5M4 14.5h16M12 11V8m0 0a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1 5 0zm0 0a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0-5 0z" /></svg>}
-              {tab.id === "event" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M8 2v4M16 2v4M3 10h18M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z" /></svg>}
+              {tab.id === "recent" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>}
               {tab.id === "news" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" /></svg>}
               {tab.label}
             </button>
@@ -719,13 +735,85 @@ export default function LobbyPage() {
                 {/* Section Title */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
                   <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
-                    {selectedCategory || selectedProduct || "เกมทั้งหมด"}
-                    <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem", marginLeft: "6px" }}>({games.length})</span>
+                    {activeTab === "recent" 
+                      ? "เกมที่เล่นล่าสุด" 
+                      : (selectedCategory || selectedProduct || "เกมทั้งหมด")}
+                    <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem", marginLeft: "6px" }}>
+                      ({activeTab === "recent" ? recentGames.length : games.length})
+                    </span>
                   </h2>
                 </div>
 
-                {/* Games Grid */}
-                {loading ? (
+                {/* 🆕 Recent Games Grid (เมื่อกด tab "เล่นล่าสุด") */}
+                {activeTab === "recent" ? (
+                  loadingRecent ? (
+                    <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }} className="game-grid-container">
+                      {Array.from({ length: 12 }).map((_, i) => (
+                        <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4" }} />
+                      ))}
+                    </div>
+                  ) : recentGames.length === 0 ? (
+                    <div style={{ textAlign: "center", padding: "3rem 1rem" }}>
+                      <p style={{ color: "#4a5568", fontSize: "0.9rem", fontWeight: 600 }}>ยังไม่มีเกมที่เล่น</p>
+                      <p style={{ color: "#4a5568", fontSize: "0.75rem", marginTop: "6px" }}>เริ่มเล่นเกมแรกของคุณเลย!</p>
+                    </div>
+                  ) : (
+                    <div style={{ display: "grid", gap: "10px" }} className="game-grid-container">
+                      {recentGames.map((rg) => {
+                        // หา game object จาก allGames โดยใช้ provider + game_id
+                        const matchedGame = allGames.find(
+                          (g) => g.product_id === rg.provider && String(g.game_id) === String(rg.game_id)
+                        );
+                        const imageUrl = matchedGame?.image_url;
+                        const gameName = matchedGame?.game_name || rg.game_name || rg.game_id;
+
+                        return (
+                          <div
+                            key={`${rg.provider}-${rg.game_id}`}
+                            onClick={() => router.push(`/lobby/${rg.provider}`)}
+                            style={{ cursor: "pointer", position: "relative", transition: "all 0.3s ease" }}
+                            onMouseEnter={(e) => {
+                              e.currentTarget.style.transform = "translateY(-4px) scale(1.03)";
+                              e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.5)";
+                            }}
+                            onMouseLeave={(e) => {
+                              e.currentTarget.style.transform = "";
+                              e.currentTarget.style.boxShadow = "";
+                            }}
+                          >
+                            <div style={{ width: "100%", position: "relative", overflow: "hidden", borderRadius: "10px", aspectRatio: "1/1", background: "#14142a" }}>
+                              {imageUrl ? (
+                                <img
+                                  src={imageUrl}
+                                  alt={gameName}
+                                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                                  loading="lazy"
+                                  onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                                />
+                              ) : (
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#4a5568", fontSize: "0.7rem", padding: "6px", textAlign: "center" }}>
+                                  {gameName}
+                                </div>
+                              )}
+                              {/* Badge: provider */}
+                              <div style={{
+                                position: "absolute", top: "4px", right: "4px",
+                                background: "rgba(124, 58, 237, 0.9)", color: "white",
+                                padding: "2px 6px", borderRadius: "6px",
+                                fontSize: "8px", fontWeight: 800,
+                              }}>
+                                {rg.provider}
+                              </div>
+                            </div>
+                            <div style={{ marginTop: "4px", color: "white", fontSize: "0.7rem", fontWeight: 600, textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                              {gameName}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )
+                ) : loading ? (
                   <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "10px" }} className="game-grid-container">
                     {Array.from({ length: 12 }).map((_, i) => (
                       <div key={i} style={{ background: "#14142a", borderRadius: "12px", aspectRatio: "3/4" }} />
