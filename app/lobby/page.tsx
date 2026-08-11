@@ -5,6 +5,7 @@ import api from "@/lib/api";
 import GameSidebar from "@/components/GameSidebar";
 import Swal from "sweetalert2";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
 
 
 interface Game {
@@ -14,6 +15,7 @@ interface Game {
 
 export default function LobbyPage() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [games, setGames] = useState<Game[]>([]);
   const [allGames, setAllGames] = useState<Game[]>([]);
   const [products, setProducts] = useState<string[]>([]);
@@ -324,10 +326,10 @@ export default function LobbyPage() {
        {/* Tab Menu */}
         <div className="tab-menu-row" style={{ display: "flex", gap: "8px", marginBottom: "14px", overflowX: "auto", scrollbarWidth: "none" }}>
           {[
-            { id: "highlight", label: "ไฮไลท์", href: "" },
-            { id: "recent", label: "เล่นล่าสุด", href: "" },
-            { id: "promotion", label: "โปรโมชันแนะนำ", href: "/promotions" },
-            { id: "news", label: "ข่าวสาร", href: "/history" },
+            { id: "highlight", label: t("lobby.highlight"), href: "" },
+            { id: "recent", label: t("lobby.recent"), href: "" },
+            { id: "promotion", label: t("lobby.promotion"), href: "/promotions" },
+            { id: "news", label: t("lobby.news"), href: "/history" },
           ].map((tab) => (
             <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.href) router.push(tab.href); }} style={{
              flex: 1, height: "44px", padding: "0 22px", borderRadius: "12px", cursor: "pointer",
@@ -639,7 +641,7 @@ if (pGames.length === 0) return null;
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.5))" }}>
                               <path d="M8 5v14l11-7z"/>
                             </svg>
-                            เข้าเล่น
+                            {t("lobby.playNow")}
                           </div>
                         </div>
                       </div>
@@ -654,7 +656,7 @@ if (pGames.length === 0) return null;
                 {/* Section Title */}
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
                   <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
-                    {selectedCategory || selectedProduct || "เกมทั้งหมด"}
+                    {selectedCategory || selectedProduct || t("lobby.allGames")}
                     <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem", marginLeft: "6px" }}>({displayedGames.length})</span>
                   </h2>
                 </div>
@@ -880,7 +882,7 @@ if (pGames.length === 0) return null;
             <div style={{ position: "absolute", bottom: 0, left: 0, width: "100%", height: "2px", opacity: 0.44, background: "linear-gradient(90deg, rgba(22, 4, 4, 0.6) -6.21%, rgb(246, 42, 0) 4.41%, rgba(22, 4, 4, 0.6) 83.01%)" }}></div>
             <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", gap: "10px", paddingLeft: "16px" }}>
               <span style={{ fontSize: "1.2rem", filter: "drop-shadow(0 0 5px rgba(255,255,255,0.5))" }}>⭐</span>
-              <span style={{ color: "white", fontSize: "1.1rem", fontWeight: 700 }}>เกมไฮไลท์</span>
+              <span style={{ color: "white", fontSize: "1.1rem", fontWeight: 700 }}>{t("lobby.highlight")}</span>
             </div>
           </div>
 
