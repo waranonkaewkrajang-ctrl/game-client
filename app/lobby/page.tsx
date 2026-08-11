@@ -763,7 +763,7 @@ if (pGames.length === 0) return null;
                     {displayedGames.map((game) => activeTab === "recent" ? (
                       <div
                         key={game.id}
-                        onClick={() => handlePlay(game)}
+                        onClick={() => router.push(`/lobby/${game.product_id}`)}
                         style={{ cursor: "pointer", position: "relative", overflow: "visible", minWidth: 0 }}
                         onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px) scale(1.03)"; }}
                         onMouseLeave={(e) => { e.currentTarget.style.transform = ""; }}
