@@ -369,12 +369,12 @@ export default function LobbyPage() {
           {/* 📱 เมนูมือถือด้านซ้าย (sticky ในส่วนเกมเท่านั้น) 📱 */}
           <div className="mobile-menu-col" style={{ width: "78px", flexShrink: 0, alignSelf: "stretch", flexDirection: "column", gap: "8px" }}>
             {[
-              { id: "", label: "ยอดนิยม", icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
-              { id: "LIVECASINO", label: "คาสิโน", icon: "https://odin996.com/theme_1/img/icons8-cards-48.png" },
-              { id: "SLOT", label: "สล็อต", icon: "https://odin996.com/theme_1/img/ic-nav-menu-slot.png" },
-              { id: "FISHING", label: "ยิงปลา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-fishing-game.png" },
-              { id: "CARD", label: "เกมไพ่", icon: "https://odin996.com/theme_1/img/ic-nav-menu-casino.png" },
-              { id: "SPORT", label: "กีฬา", icon: "https://odin996.com/theme_1/img/ic-nav-menu-sport.png" },
+              { id: "", label: t("sidebar.popular"), icon: "https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" },
+              { id: "LIVECASINO", label: t("sidebar.casino"), icon: "https://odin996.com/theme_1/img/icons8-cards-48.png" },
+              { id: "SLOT", label: t("sidebar.slot"), icon: "https://odin996.com/theme_1/img/ic-nav-menu-slot.png" },
+              { id: "FISHING", label: t("sidebar.fishing"), icon: "https://odin996.com/theme_1/img/ic-nav-menu-fishing-game.png" },
+              { id: "CARD", label: t("sidebar.card"), icon: "https://odin996.com/theme_1/img/ic-nav-menu-casino.png" },
+              { id: "SPORT", label: t("sidebar.sport"), icon: "https://odin996.com/theme_1/img/ic-nav-menu-sport.png" },
             ].map((cat) => {
               const isActive = selectedCategory === cat.id;
               return (
@@ -450,7 +450,7 @@ export default function LobbyPage() {
                   <img src="https://odin996.com/theme_1/img/ic-nav-menu-hot-game.png" alt="ยอดนิยม" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>HOT GAME</h2>
-                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>ยอดนิยม</div>
+                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>{t("sidebar.popular")}</div>
                   </div>
                 </a>
               </li>
@@ -460,7 +460,7 @@ export default function LobbyPage() {
                   <img src="https://odin996.com/theme_1/img/icons8-cards-48.png" alt="คาสิโนสด" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>CASINO</h2>
-                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>คาสิโนสด</div>
+                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>{t("sidebar.casinoLive")}</div>
                   </div>
                 </a>
               </li>
@@ -470,7 +470,7 @@ export default function LobbyPage() {
                   <img src="https://odin996.com/theme_1/img/ic-nav-menu-slot.png" alt="สล็อตเกมส์" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>SLOT</h2>
-                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>สล็อตเกมส์</div>
+                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>{t("sidebar.slot")}</div>
                   </div>
                 </a>
               </li>
@@ -480,7 +480,7 @@ export default function LobbyPage() {
                   <img src="https://odin996.com/theme_1/img/ic-nav-menu-fishing-game.png" alt="ยิงปลา" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>FISHING</h2>
-                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>ยิงปลา</div>
+                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>{t("sidebar.fishing")}</div>
                   </div>
                 </a>
               </li>
@@ -490,7 +490,7 @@ export default function LobbyPage() {
                   <img src="https://odin996.com/theme_1/img/ic-nav-menu-casino.png" alt="เกมไพ่" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>CARD</h2>
-                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>เกมไพ่</div>
+                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>{t("sidebar.card")}</div>
                   </div>
                 </a>
               </li>
@@ -500,7 +500,7 @@ export default function LobbyPage() {
                   <img src="https://odin996.com/theme_1/img/ic-nav-menu-sport.png" alt="กีฬา" className="img-fluid -ic-menu" width="55" height="55" loading="lazy" />
                   <div className="-text-provider-wrapper" style={{ marginLeft: "12px" }}>
                     <h2 className="-text-nav-menu -title" style={{ fontSize: "1rem", fontWeight: 800, color: "white", margin: 0 }}>SPORT</h2>
-                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>กีฬา</div>
+                    <div className="-text-nav-menu -title-trans" style={{ fontSize: "0.8rem", color: "#d1d5db" }}>{t("sidebar.sport")}</div>
                   </div>
                 </a>
               </li>
@@ -515,14 +515,14 @@ export default function LobbyPage() {
               <>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
                   <h2 style={{ fontSize: "0.95rem", fontWeight: 800, color: "white", margin: 0 }}>
-                    เลือกค่ายเกม
+                    {t("lobby.selectProvider")}
                   </h2>
                   <span style={{ color: "#4a5568", fontWeight: 500, fontSize: "0.75rem" }}>({products.filter((p) => {
                     const pGames = allGames.filter((g) => g.product_id === p);
                     if (selectedCategory === "SLOT") return pGames.some((g) => (g.category || "").toUpperCase() === "EGAMES");
                     if (selectedCategory !== "") return pGames.some((g) => (g.category || "").toUpperCase() === selectedCategory.toUpperCase());
 return pGames.length > 0;;
-                  }).length} ค่าย)</span>
+                  }).length} {t("lobby.providers")})</span>
                 </div>
 
     

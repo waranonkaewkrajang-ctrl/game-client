@@ -10,7 +10,19 @@
     "profile": "个人资料",
     "topup": "充值",
     "deposit": "存款",
-    "withdraw": "提款"
+    "withdraw": "提款",
+    "enterGame": "游戏",
+    "walletMenu": "钱包",
+    "contact": "联系"
+  },
+  "sidebar": {
+    "popular": "热门",
+    "casino": "娱乐场",
+    "casinoLive": "真人娱乐",
+    "slot": "老虎机",
+    "fishing": "捕鱼",
+    "card": "纸牌",
+    "sport": "体育"
   },
   "lobby": {
     "highlight": "热门游戏",

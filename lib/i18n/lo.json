@@ -10,7 +10,19 @@
     "profile": "ໂປຣໄຟລ໌",
     "topup": "ຕື່ມ",
     "deposit": "ຝາກເງິນ",
-    "withdraw": "ຖອນເງິນ"
+    "withdraw": "ຖອນເງິນ",
+    "enterGame": "ເກມ",
+    "walletMenu": "ກະເປົາເງິນ",
+    "contact": "ຕິດຕໍ່"
+  },
+  "sidebar": {
+    "popular": "ຍອດນິຍົມ",
+    "casino": "ຄາສິໂນ",
+    "casinoLive": "ຄາສິໂນສົດ",
+    "slot": "ສະລັອດ",
+    "fishing": "ຍິງປາ",
+    "card": "ເກມໄພ່",
+    "sport": "ກິລາ"
   },
   "lobby": {
     "highlight": "ໄຮໄລ້",

@@ -10,7 +10,19 @@
     "profile": "Hồ sơ",
     "topup": "Nạp",
     "deposit": "Nạp tiền",
-    "withdraw": "Rút tiền"
+    "withdraw": "Rút tiền",
+    "enterGame": "Trò chơi",
+    "walletMenu": "Ví",
+    "contact": "Liên hệ"
+  },
+  "sidebar": {
+    "popular": "Phổ biến",
+    "casino": "Sòng bạc",
+    "casinoLive": "Sòng bạc trực tiếp",
+    "slot": "Slot",
+    "fishing": "Bắn cá",
+    "card": "Bài",
+    "sport": "Thể thao"
   },
   "lobby": {
     "highlight": "Nổi bật",

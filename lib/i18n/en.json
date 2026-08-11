@@ -10,7 +10,19 @@
     "profile": "Profile",
     "topup": "Top Up",
     "deposit": "Deposit",
-    "withdraw": "Withdraw"
+    "withdraw": "Withdraw",
+    "enterGame": "Games",
+    "walletMenu": "Wallet",
+    "contact": "Contact"
+  },
+  "sidebar": {
+    "popular": "Popular",
+    "casino": "Casino",
+    "casinoLive": "Live Casino",
+    "slot": "Slots",
+    "fishing": "Fishing",
+    "card": "Card Games",
+    "sport": "Sports"
   },
   "lobby": {
     "highlight": "Highlight",

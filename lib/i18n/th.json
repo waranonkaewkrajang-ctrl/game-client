@@ -10,7 +10,19 @@
     "profile": "โปรไฟล์",
     "topup": "เติม",
     "deposit": "ฝากเงิน",
-    "withdraw": "ถอนเงิน"
+    "withdraw": "ถอนเงิน",
+    "enterGame": "เข้าเกม",
+    "walletMenu": "กระเป๋าเงิน",
+    "contact": "ติดต่อ"
+  },
+  "sidebar": {
+    "popular": "ยอดนิยม",
+    "casino": "คาสิโน",
+    "casinoLive": "คาสิโนสด",
+    "slot": "สล็อต",
+    "fishing": "ยิงปลา",
+    "card": "เกมไพ่",
+    "sport": "กีฬา"
   },
   "lobby": {
     "highlight": "เกมไฮไลท์",

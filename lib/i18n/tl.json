@@ -10,7 +10,19 @@
     "profile": "Profile",
     "topup": "Mag-top up",
     "deposit": "Deposito",
-    "withdraw": "Mag-withdraw"
+    "withdraw": "Mag-withdraw",
+    "enterGame": "Mga Laro",
+    "walletMenu": "Wallet",
+    "contact": "Kontak"
+  },
+  "sidebar": {
+    "popular": "Popular",
+    "casino": "Kasino",
+    "casinoLive": "Live Kasino",
+    "slot": "Slots",
+    "fishing": "Pangingisda",
+    "card": "Baraha",
+    "sport": "Sports"
   },
   "lobby": {
     "highlight": "Highlight",

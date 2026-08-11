@@ -10,7 +10,19 @@
     "profile": "ប្រវត្តិរូប",
     "topup": "បញ្ចូល",
     "deposit": "ដាក់ប្រាក់",
-    "withdraw": "ដកប្រាក់"
+    "withdraw": "ដកប្រាក់",
+    "enterGame": "ហ្គេម",
+    "walletMenu": "កាបូប",
+    "contact": "ទំនាក់ទំនង"
+  },
+  "sidebar": {
+    "popular": "ពេញនិយម",
+    "casino": "កាស៊ីណូ",
+    "casinoLive": "កាស៊ីណូផ្សាយផ្ទាល់",
+    "slot": "ស្លុត",
+    "fishing": "បាញ់ត្រី",
+    "card": "ហ្គេមបៀ",
+    "sport": "កីឡា"
   },
   "lobby": {
     "highlight": "ពិសេស",

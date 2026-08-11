@@ -10,7 +10,19 @@
     "profile": "ပရိုဖိုင်",
     "topup": "ဖြည့်",
     "deposit": "ငွေသွင်း",
-    "withdraw": "ငွေထုတ်"
+    "withdraw": "ငွေထုတ်",
+    "enterGame": "ဂိမ်း",
+    "walletMenu": "ပိုက်ဆံအိတ်",
+    "contact": "ဆက်သွယ်"
+  },
+  "sidebar": {
+    "popular": "ရေပန်းစား",
+    "casino": "ကာစီနို",
+    "casinoLive": "တိုက်ရိုက်ကာစီနို",
+    "slot": "စလော့",
+    "fishing": "ငါးပစ်",
+    "card": "ဖဲ",
+    "sport": "အားကစား"
   },
   "lobby": {
     "highlight": "ဟိုက်လိုက်",

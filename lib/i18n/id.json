@@ -10,7 +10,19 @@
     "profile": "Profil",
     "topup": "Isi",
     "deposit": "Setor",
-    "withdraw": "Tarik"
+    "withdraw": "Tarik",
+    "enterGame": "Game",
+    "walletMenu": "Dompet",
+    "contact": "Kontak"
+  },
+  "sidebar": {
+    "popular": "Populer",
+    "casino": "Kasino",
+    "casinoLive": "Kasino Langsung",
+    "slot": "Slot",
+    "fishing": "Tembak Ikan",
+    "card": "Kartu",
+    "sport": "Olahraga"
   },
   "lobby": {
     "highlight": "Sorotan",

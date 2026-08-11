@@ -3,9 +3,11 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import api from "@/lib/api";
+import { useTranslation } from "react-i18next";
 
 export default function BottomMenu() {
   const pathname = usePathname();
+  const { t } = useTranslation();
   const [contactLinks, setContactLinks] = useState({ line: "#", telegram: "#" });
   useEffect(() => {
     api.get("/contact-links").then((res) => setContactLinks(res.data)).catch(() => {});
@@ -19,11 +21,11 @@ export default function BottomMenu() {
         <div className="-left-wrapper">
           <Link href="/lobby" className="-item-wrapper -promotion">
             <img src="/icons/game.webp" className="-ic-img" alt="เข้าเกม" />
-            <span className="-text">เข้าเกม</span>
+            <span className="-text">{t("nav.enterGame")}</span>
           </Link>
           <Link href="/promotions" className="-item-wrapper -promotion">
             <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชัน" />
-            <span className="-text">โปรโมชัน</span>
+            <span className="-text">{t("nav.promotion")}</span>
           </Link>
         </div>
         <Link href="/wallet" className="-center-wrapper" aria-label="กระเป๋าเงิน">
@@ -40,16 +42,16 @@ export default function BottomMenu() {
       </defs>
     </svg>
   </div>
-  <span className="-center-text">กระเป๋าเงิน</span>
+  <span className="-center-text">{t("nav.walletMenu")}</span>
 </Link>
         <div className="-right-wrapper">
           <a href={contactLinks.line} target="_blank" rel="noopener noreferrer" className="-item-wrapper -line">
             <img src="/icons/contact.webp" className="-ic-img" alt="ติดต่อ" />
-            <span className="-text">ติดต่อ</span>
+            <span className="-text">{t("nav.contact")}</span>
           </a>
           <Link href="/profile" className="-item-wrapper -line">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{color: "#a78bfa"}}><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span className="-text">โปรไฟล์</span>
+            <span className="-text">{t("nav.profile")}</span>
           </Link>
         </div>
       </div>
