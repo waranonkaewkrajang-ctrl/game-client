@@ -609,7 +609,7 @@ export default function LobbyPage() {
                     const pGames = allGames.filter((g) => g.product_id === p);
                     if (selectedCategory === "SLOT") return pGames.some((g) => (g.category || "").toUpperCase() === "EGAMES");
                     if (selectedCategory !== "") return pGames.some((g) => (g.category || "").toUpperCase() === selectedCategory.toUpperCase());
-                    return pdisplayedGames.length > 0;
+return pGames.length > 0;;
                   }).length} ค่าย)</span>
                 </div>
 
@@ -621,15 +621,15 @@ export default function LobbyPage() {
                     // ยอดนิยม = แสดงทุกค่าย, สล็อต = เฉพาะค่ายที่มีเกมสล็อต
                     if (selectedCategory === "SLOT") {
                       const slotGames = pGames.filter((g) => (g.category || "").toUpperCase() === "EGAMES" && (g.type || "").toUpperCase() === "SLOT");
-                      if (slotdisplayedGames.length === 0) return null;
+if (slotGames.length === 0) return null;
                     } else if (selectedCategory === "FISHING") {
                       const fishGames = pGames.filter((g) => (g.type || "").toUpperCase() === "FISHING");
-                      if (fishdisplayedGames.length === 0) return null;
+                      if (fishGames.length === 0) return null;
                     } else if (selectedCategory !== "") {
                       const catGames = pGames.filter((g) => (g.category || "").toUpperCase() === selectedCategory.toUpperCase());
-                      if (catdisplayedGames.length === 0) return null;
+                      if (catGames.length === 0) return null;
                     }
-                    if (pdisplayedGames.length === 0) return null;
+if (pGames.length === 0) return null;
                     const firstImg = pGames.find((g) => g.image_url);
                    return (
                       <div 
@@ -852,7 +852,7 @@ export default function LobbyPage() {
                 )}
 
             {/* Hot Games Section */}
-            {!selectedProduct && !selectedCategory && displayedGames.length > 0 && (
+{!selectedProduct && !selectedCategory && games.length > 0 && (
               <div style={{ marginTop: "24px" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "14px" }}>
                   <h2 style={{ fontSize: "1.1rem", fontWeight: 800, color: "white", margin: 0 }}>
