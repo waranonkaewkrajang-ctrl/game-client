@@ -41,7 +41,7 @@ export default function LobbyPage() {
   // 🆕 ดึงเกมที่เล่นล่าสุด เมื่อกด tab "recent"
   useEffect(() => {
     if (activeTab !== "recent") return;
-    if (recentdisplayedGames.length > 0) return; // cache ถ้าดึงแล้ว
+    if (recentGames.length > 0) return; // cache ถ้าดึงแล้ว// cache ถ้าดึงแล้ว
     
     setLoadingRecent(true);
     api.get("/games/recently-played?limit=24")
