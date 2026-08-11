@@ -1,6 +1,39 @@
 {
-  "nav": { "home": "ទំព័រដើម", "login": "ចូល", "register": "ចុះឈ្មោះ", "logout": "ចាកចេញ" },
-  "lobby": { "highlight": "ពិសេស", "recent": "លេងថ្មីៗ", "promotion": "ការផ្សព្វផ្សាយ", "news": "ព័ត៌មាន", "allGames": "គ្រប់ហ្គេម", "search": "ស្វែងរក...", "playNow": "លេងឥឡូវ" },
-  "wallet": { "balance": "សមតុល្យ", "deposit": "ដាក់ប្រាក់", "withdraw": "ដកប្រាក់", "history": "ប្រវត្តិ" },
-  "auth": { "username": "ឈ្មោះ", "password": "ពាក្យសម្ងាត់", "phone": "ទូរស័ព្ទ" }
+  "nav": {
+    "home": "ទំព័រដើម",
+    "login": "ចូល",
+    "register": "ចុះឈ្មោះ",
+    "logout": "ចាកចេញ",
+    "promotion": "ការផ្សព្វផ្សាយ",
+    "wallet": "កាបូប",
+    "history": "ប្រវត្តិ",
+    "profile": "ប្រវត្តិរូប",
+    "topup": "បញ្ចូល",
+    "deposit": "ដាក់ប្រាក់",
+    "withdraw": "ដកប្រាក់"
+  },
+  "lobby": {
+    "highlight": "ពិសេស",
+    "recent": "លេងថ្មីៗ",
+    "promotion": "ការផ្សព្វផ្សាយ",
+    "news": "ព័ត៌មាន",
+    "allGames": "គ្រប់ហ្គេម",
+    "search": "ស្វែងរក...",
+    "playNow": "លេងឥឡូវ"
+  },
+  "wallet": {
+    "balance": "សមតុល្យ",
+    "deposit": "ដាក់ប្រាក់",
+    "withdraw": "ដកប្រាក់",
+    "history": "ប្រវត្តិ"
+  },
+  "auth": {
+    "username": "ឈ្មោះ",
+    "password": "ពាក្យសម្ងាត់",
+    "phone": "ទូរស័ព្ទ",
+    "confirmPassword": "បញ្ជាក់ពាក្យសម្ងាត់",
+    "signIn": "ចូល",
+    "signUp": "ចុះឈ្មោះ",
+    "forgotPassword": "ភ្លេចពាក្យសម្ងាត់?"
+  }
 }

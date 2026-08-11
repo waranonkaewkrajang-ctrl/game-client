@@ -1,6 +1,39 @@
 {
-  "nav": { "home": "ໜ້າຫຼັກ", "login": "ເຂົ້າສູ່ລະບົບ", "register": "ລົງທະບຽນ", "logout": "ອອກຈາກລະບົບ" },
-  "lobby": { "highlight": "ໄຮໄລ້", "recent": "ຫຼິ້ນຫຼ້າສຸດ", "promotion": "ໂປຣໂມຊັນ", "news": "ຂ່າວ", "allGames": "ເກມທັງໝົດ", "search": "ຄົ້ນຫາ...", "playNow": "ຫຼິ້ນເລີຍ" },
-  "wallet": { "balance": "ຍອດເງິນ", "deposit": "ຝາກເງິນ", "withdraw": "ຖອນເງິນ", "history": "ປະຫວັດ" },
-  "auth": { "username": "ຊື່ຜູ້ໃຊ້", "password": "ລະຫັດຜ່ານ", "phone": "ເບີໂທ" }
+  "nav": {
+    "home": "ໜ້າຫຼັກ",
+    "login": "ເຂົ້າສູ່ລະບົບ",
+    "register": "ລົງທະບຽນ",
+    "logout": "ອອກຈາກລະບົບ",
+    "promotion": "ໂປຣໂມຊັນ",
+    "wallet": "ກະເປົາເງິນ",
+    "history": "ປະຫວັດ",
+    "profile": "ໂປຣໄຟລ໌",
+    "topup": "ຕື່ມ",
+    "deposit": "ຝາກເງິນ",
+    "withdraw": "ຖອນເງິນ"
+  },
+  "lobby": {
+    "highlight": "ໄຮໄລ້",
+    "recent": "ຫຼິ້ນຫຼ້າສຸດ",
+    "promotion": "ໂປຣໂມຊັນ",
+    "news": "ຂ່າວ",
+    "allGames": "ເກມທັງໝົດ",
+    "search": "ຄົ້ນຫາ...",
+    "playNow": "ຫຼິ້ນເລີຍ"
+  },
+  "wallet": {
+    "balance": "ຍອດເງິນ",
+    "deposit": "ຝາກເງິນ",
+    "withdraw": "ຖອນເງິນ",
+    "history": "ປະຫວັດ"
+  },
+  "auth": {
+    "username": "ຊື່ຜູ້ໃຊ້",
+    "password": "ລະຫັດຜ່ານ",
+    "phone": "ເບີໂທ",
+    "confirmPassword": "ຢືນຢັນລະຫັດຜ່ານ",
+    "signIn": "ເຂົ້າສູ່ລະບົບ",
+    "signUp": "ລົງທະບຽນ",
+    "forgotPassword": "ລືມລະຫັດຜ່ານ?"
+  }
 }

@@ -1,6 +1,39 @@
 {
-  "nav": { "home": "Beranda", "login": "Masuk", "register": "Daftar", "logout": "Keluar" },
-  "lobby": { "highlight": "Sorotan", "recent": "Baru Dimainkan", "promotion": "Promosi", "news": "Berita", "allGames": "Semua Game", "search": "Cari...", "playNow": "Main Sekarang" },
-  "wallet": { "balance": "Saldo", "deposit": "Setor", "withdraw": "Tarik", "history": "Riwayat" },
-  "auth": { "username": "Nama Pengguna", "password": "Kata Sandi", "phone": "Nomor Telepon" }
+  "nav": {
+    "home": "Beranda",
+    "login": "Masuk",
+    "register": "Daftar",
+    "logout": "Keluar",
+    "promotion": "Promosi",
+    "wallet": "Dompet",
+    "history": "Riwayat",
+    "profile": "Profil",
+    "topup": "Isi",
+    "deposit": "Setor",
+    "withdraw": "Tarik"
+  },
+  "lobby": {
+    "highlight": "Sorotan",
+    "recent": "Baru Dimainkan",
+    "promotion": "Promosi",
+    "news": "Berita",
+    "allGames": "Semua Game",
+    "search": "Cari...",
+    "playNow": "Main Sekarang"
+  },
+  "wallet": {
+    "balance": "Saldo",
+    "deposit": "Setor",
+    "withdraw": "Tarik",
+    "history": "Riwayat"
+  },
+  "auth": {
+    "username": "Nama Pengguna",
+    "password": "Kata Sandi",
+    "phone": "Nomor Telepon",
+    "confirmPassword": "Konfirmasi Sandi",
+    "signIn": "Masuk",
+    "signUp": "Daftar",
+    "forgotPassword": "Lupa Sandi?"
+  }
 }

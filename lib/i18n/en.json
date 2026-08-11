@@ -3,7 +3,14 @@
     "home": "Home",
     "login": "Login",
     "register": "Register",
-    "logout": "Logout"
+    "logout": "Logout",
+    "promotion": "Promotion",
+    "wallet": "Wallet",
+    "history": "History",
+    "profile": "Profile",
+    "topup": "Top Up",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw"
   },
   "lobby": {
     "highlight": "Highlight",

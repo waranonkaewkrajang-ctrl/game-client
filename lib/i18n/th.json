@@ -3,7 +3,14 @@
     "home": "หน้าแรก",
     "login": "เข้าสู่ระบบ",
     "register": "สมัครสมาชิก",
-    "logout": "ออกจากระบบ"
+    "logout": "ออกจากระบบ",
+    "promotion": "โปรโมชัน",
+    "wallet": "ฝาก-ถอน",
+    "history": "ประวัติ",
+    "profile": "โปรไฟล์",
+    "topup": "เติม",
+    "deposit": "ฝากเงิน",
+    "withdraw": "ถอนเงิน"
   },
   "lobby": {
     "highlight": "เกมไฮไลท์",

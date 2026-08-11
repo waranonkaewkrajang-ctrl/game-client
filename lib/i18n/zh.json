@@ -3,7 +3,14 @@
     "home": "首页",
     "login": "登录",
     "register": "注册",
-    "logout": "退出"
+    "logout": "退出",
+    "promotion": "优惠",
+    "wallet": "钱包",
+    "history": "历史",
+    "profile": "个人资料",
+    "topup": "充值",
+    "deposit": "存款",
+    "withdraw": "提款"
   },
   "lobby": {
     "highlight": "热门游戏",
