@@ -566,6 +566,7 @@ function WalletContent() {
 }
 
 export default function WalletPage() {
+  const { t } = useTranslation();
   return (
     <Suspense fallback={<div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", color: "#64748b" }}>{t("wallet.loading")}</div>}>
       <WalletContent />
