@@ -40,15 +40,20 @@ export default function LobbyPage() {
 
   // 🆕 ดึงเกมที่เล่นล่าสุด เมื่อกด tab "recent"
   useEffect(() => {
+    console.log("🔍 [Recent] useEffect trigger, activeTab =", activeTab);
     if (activeTab !== "recent") return;
-    if (recentGames.length > 0) return; // cache ถ้าดึงแล้ว// cache ถ้าดึงแล้ว
     
+    console.log("🚀 [Recent] Fetching...");
     setLoadingRecent(true);
     api.get("/games/recently-played?limit=24")
       .then((res) => {
-        setRecentGames(res.data.data || []);
+        console.log("✅ [Recent] Got", res?.data?.data?.length, "games");
+        setRecentGames(res?.data?.data || []);
       })
-      .catch(() => setRecentGames([]))
+      .catch((err) => {
+        console.error("❌ [Recent] Error:", err);
+        setRecentGames([]);
+      })
       .finally(() => setLoadingRecent(false));
   }, [activeTab]);
 
