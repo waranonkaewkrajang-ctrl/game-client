@@ -760,87 +760,60 @@ if (pGames.length === 0) return null;
                   </div>
                 ) : (
                   <div style={{ display: "grid", gap: "10px" }} className="game-grid-container">
-                    {displayedGames.map((game) => (
+                    {displayedGames.map((game) => activeTab === "recent" ? (
+                      <div
+                        key={game.id}
+                        onClick={() => handlePlay(game)}
+                        style={{ cursor: "pointer", position: "relative", overflow: "visible", minWidth: 0 }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px) scale(1.03)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = ""; }}
+                      >
+                        <div style={{ width: "100%", aspectRatio: "3/4", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s" }}>
+                          {game.image_url ? (
+                            <img src={game.image_url} alt={game.game_name} loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                          ) : (
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%", color: "#4a5568", fontSize: "0.7rem" }}>
+                              {game.game_name}
+                            </div>
+                          )}
+                          <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "20px 8px 8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
+                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#a78bfa" }}></div>
+                            <span style={{ fontSize: "0.55rem", color: "#a78bfa", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>
+                              {game.product_id}
+                            </span>
+                            <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#a78bfa" }}></div>
+                          </div>
+                        </div>
+                        <p style={{ fontSize: "0.78rem", fontWeight: 800, color: "#ffffff", margin: "8px 0 0", textAlign: "center", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textShadow: "0 1px 2px rgba(0,0,0,0.9), 0 0 8px rgba(168, 85, 247, 0.5)", letterSpacing: "0.3px" }}>
+                          {game.game_name_th || game.game_name}
+                        </p>
+                      </div>
+                    ) : (
                       <div 
                         key={game.id} 
                         onClick={() => router.push(`/lobby/${game.product_id}`)}
-                       style={{ 
-                          cursor: "pointer", 
-                          position: "relative",
-                          transition: "all 0.3s ease"
-                        }}
-                        onMouseEnter={(e) => { 
-                          e.currentTarget.style.transform = "translateY(-4px) scale(1.03)"; 
-                          e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.5)"; 
-                        }}
-                        onMouseLeave={(e) => { 
-                          e.currentTarget.style.transform = ""; 
-                          e.currentTarget.style.boxShadow = ""; 
-                        }}
+                        style={{ cursor: "pointer", position: "relative", transition: "all 0.3s ease" }}
+                        onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px) scale(1.03)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.5)"; }}
+                        onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}
                       >
-                        {/* รูปเกม */}
                         <div style={{ width: "100%", position: "relative", overflow: "hidden", borderRadius: "10px" }}>
                           {game.image_url ? (
-                            <>                                                                    
-                              <div className="skeleton-box" style={{ aspectRatio: "1/1" }} />     
+                            <>
+                              <div className="skeleton-box" style={{ aspectRatio: "1/1" }} />
                               <img 
                                 src={game.image_url} 
                                 alt={game.game_name} 
                                 className="-cover-img img-fluid"
                                 style={{ width: "100%", height: "auto", objectFit: "cover", display: "block" }}
                                 loading="lazy"
-                                onLoad={(e) => {                                                  
-                                  const skel = e.currentTarget.previousElementSibling as HTMLElement; 
-                                  if (skel) skel.classList.add('loaded');                                                    
-                              }}
-                                onError={(e) => {
-                                  const skel = e.currentTarget.previousElementSibling as HTMLElement;
-                                  if (skel) skel.classList.add('loaded');
-                                }}
+                                onLoad={(e) => { const skel = e.currentTarget.previousElementSibling as HTMLElement; if (skel) skel.classList.add('loaded'); }}
+                                onError={(e) => { const skel = e.currentTarget.previousElementSibling as HTMLElement; if (skel) skel.classList.add('loaded'); }}
                               />
-                            </>                                                                 
+                            </>
                           ) : (
                             <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#4a5568", fontSize: "0.75rem" }}>No Image</div>
                           )}
-
-                          {/* ปุ่มเข้าเล่นตรงกลาง แสดงเฉพาะตอนเอาเมาส์ชี้ */}
-                          <div 
-                            style={{
-                              position: "absolute",
-                              inset: "0",
-                              background: "rgba(0, 0, 0, 0.45)",
-                              display: "flex",
-                              justifyContent: "center",
-                              alignItems: "center",
-                              opacity: 0,
-                              transition: "opacity 0.3s ease"
-                            }}
-                            onMouseEnter={(e) => e.currentTarget.style.opacity = "1"}
-                            onMouseLeave={(e) => e.currentTarget.style.opacity = "0"}
-                          >
-                            <div style={{
-                              background: "linear-gradient(to right, #aa00a0, #4b0082)",
-                              border: "1px solid #f59e0b",
-                              color: "white",
-                              padding: "6px 18px",
-                              borderRadius: "20px",
-                              fontSize: "0.8rem",
-                              fontWeight: 800,
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "6px",
-                              boxShadow: "0 4px 15px rgba(170, 0, 160, 0.8)",
-                              transform: "scale(0.95)",
-                              transition: "transform 0.3s ease"
-                            }}>
-                              <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M8 5v14l11-7z"/>
-                              </svg>
-                              เข้าเล่น
-                            </div>
-                          </div>
                         </div>
-
                         <p style={{ fontSize: "0.7rem", fontWeight: 600, color: "#a1a1aa", margin: "6px 0 0", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", textAlign: "center", padding: "0 2px" }}>
                           {game.game_name_th || game.game_name}
                         </p>
