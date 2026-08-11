@@ -322,95 +322,40 @@ export default function LobbyPage() {
           )}
         </div>
        
-       {/* Highlight Marquee Bar - Premium Casino Style */}
+       {/* Highlight Marquee Bar */}
         <div style={{ 
           display: "flex", 
           alignItems: "center", 
-          height: "44px",
-          borderRadius: "12px", 
+          height: "38px", /* 🟢 เพิ่มความสูงนิดนึงให้ดูไม่อึดอัด */
+          borderRadius: "8px", 
           overflow: "hidden", 
           marginBottom: "14px", 
-          position: "relative",
-          background: "linear-gradient(90deg, rgba(15, 5, 30, 0.98) 0%, rgba(45, 15, 90, 0.85) 30%, rgba(88, 28, 135, 0.7) 50%, rgba(45, 15, 90, 0.85) 70%, rgba(15, 5, 30, 0.98) 100%)",
-          boxShadow: "0 4px 20px rgba(147, 51, 234, 0.4), 0 0 40px rgba(168, 85, 247, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -1px 0 rgba(0, 0, 0, 0.5)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          border: "1px solid transparent",
-          backgroundClip: "padding-box",
+          border: "1px solid rgba(168, 85, 247, 0.4)", /* 🟢 เปลี่ยนขอบสีดำเป็นสีม่วงอ่อนๆ ให้เข้ากับธีม */
+          background: "linear-gradient(90deg, rgba(20, 20, 42, 0.9) 0%, rgba(124, 58, 237, 0.2) 50%, rgba(20, 20, 42, 0.9) 100%)", /* 🟢 ใส่พื้นหลังไล่สีทึบๆ ช่วยดันตัวหนังสือให้เด่น */
+          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.5)", /* 🟢 ใส่เงาให้กรอบดูลอยมีมิติ */
+          backdropFilter: "blur(4px)" 
         }}>
-          
-          {/* ✨ Animated Border Glow */}
-          <div style={{
-            position: "absolute",
-            inset: 0,
-            borderRadius: "12px",
-            padding: "1.5px",
-            background: "linear-gradient(90deg, #7c3aed, #fbbf24, #a855f7, #fbbf24, #7c3aed)",
-            backgroundSize: "300% 100%",
-            animation: "borderShimmer 4s linear infinite",
-            WebkitMask: "linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)",
-            WebkitMaskComposite: "xor",
-            maskComposite: "exclude",
-            pointerEvents: "none",
-            zIndex: 1,
-          }} />
-
-          {/* 🔔 Icon with Neon Glow */}
-          <div style={{ 
-            padding: "0 14px", 
-            display: "flex", 
-            alignItems: "center", 
-            justifyContent: "center", 
-            flexShrink: 0,
-            position: "relative",
-            zIndex: 2,
-            background: "linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(147, 51, 234, 0.15))",
-            height: "100%",
-            borderRight: "1px solid rgba(251, 191, 36, 0.3)",
-          }}>
-            <div style={{
-              filter: "drop-shadow(0 0 8px rgba(251, 191, 36, 0.8)) drop-shadow(0 0 3px rgba(168, 85, 247, 0.6))",
-              animation: "iconPulse 2s ease-in-out infinite",
-            }}>
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M18 8C19.1 8 20 8.9 20 10V14C20 15.1 19.1 16 18 16" stroke="#fbbf24" strokeWidth="2.5" strokeLinecap="round"/>
-                <path d="M13 6L7 10H3V14H7L13 18V6Z" fill="#fbbf24" stroke="#fbbf24" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M21.5 7.5C22.9 9.4 22.9 14.6 21.5 16.5" stroke="#fde047" strokeWidth="2.5" strokeLinecap="round"/>
-              </svg>
-            </div>
+          <div style={{ padding: "0 12px", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.5))" }}>
+              <path d="M18 8C19.1 8 20 8.9 20 10V14C20 15.1 19.1 16 18 16" stroke="#a855f7" strokeWidth="2" strokeLinecap="round"/>
+              <path d="M13 6L7 10H3V14H7L13 18V6Z" fill="#a855f7" stroke="#a855f7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M21.5 7.5C22.9 9.4 22.9 14.6 21.5 16.5" stroke="#c084fc" strokeWidth="2" strokeLinecap="round"/>
+            </svg>
           </div>
-
-          {/* 📢 Marquee Text */}
-          <div style={{ flex: 1, overflow: "hidden", whiteSpace: "nowrap", position: "relative", zIndex: 2 }}>
+          <div style={{ flex: 1, overflow: "hidden", whiteSpace: "nowrap" }}>
             <div className="marquee-scroll" style={{ 
               display: "inline-block", 
-              animation: "marquee 25s linear infinite", 
-              fontSize: "0.9rem",
-              fontWeight: 700,
-              background: "linear-gradient(90deg, #fde047 0%, #ffffff 30%, #fbbf24 60%, #ffffff 80%, #fde047 100%)",
-              backgroundClip: "text",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundSize: "200% auto",
-              letterSpacing: "0.6px",
-              textShadow: "0 0 10px rgba(251, 191, 36, 0.5)",
-              paddingRight: "80px",
+              animation: "marquee 20s linear infinite", 
+              fontSize: "0.85rem", /* 🟢 ปรับฟอนต์ให้ใหญ่ขึ้นนิดนึง */
+              fontWeight: 600, /* 🟢 เพิ่มความหนาให้ตัวหนังสือ */
+              color: "#ffffff", /* 🟢 ขาวสว่างสุด */
+              letterSpacing: "0.5px",
+              /* ✨ ไฮไลต์: ใส่เงาสีดำเข้มๆ รองหลังตัวอักษร ตามด้วยเงาเรืองแสงสีม่วง */
+              textShadow: "0 2px 4px rgba(0, 0, 0, 0.9), 0 0 8px rgba(168, 85, 247, 0.8)" 
             }}>
-              🎰 {t("lobby.marquee")} ✨
+              {t("lobby.marquee")}
             </div>
           </div>
-
-          {/* 💫 Right Gradient Fade */}
-          <div style={{
-            position: "absolute",
-            right: 0,
-            top: 0,
-            height: "100%",
-            width: "60px",
-            background: "linear-gradient(90deg, transparent, rgba(15, 5, 30, 0.98))",
-            pointerEvents: "none",
-            zIndex: 3,
-          }} />
         </div>
   
        {/* Tab Menu */}
@@ -1408,20 +1353,6 @@ if (pGames.length === 0) return null;
           0% { transform: translateX(100%); }
           100% { transform: translateX(-100%); }
         }
-          @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-          }
-          
-          @keyframes borderShimmer {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 300% 50%; }
-          }
-          
-          @keyframes iconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-          }
       `}} />
       </div>
       </div>
