@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "Home",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "lobby": {
+    "highlight": "Highlight",
+    "recent": "Recently Played",
+    "promotion": "Promotions",
+    "news": "News",
+    "allGames": "All Games",
+    "search": "Search games...",
+    "playNow": "Play Now"
+  },
+  "wallet": {
+    "balance": "Balance",
+    "deposit": "Deposit",
+    "withdraw": "Withdraw",
+    "history": "History"
+  },
+  "auth": {
+    "username": "Username",
+    "password": "Password",
+    "phone": "Phone",
+    "confirmPassword": "Confirm Password",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "forgotPassword": "Forgot Password?"
+  }
+}

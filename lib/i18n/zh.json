@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "首页",
+    "login": "登录",
+    "register": "注册",
+    "logout": "退出"
+  },
+  "lobby": {
+    "highlight": "热门游戏",
+    "recent": "最近玩过",
+    "promotion": "优惠活动",
+    "news": "新闻",
+    "allGames": "所有游戏",
+    "search": "搜索游戏...",
+    "playNow": "立即玩"
+  },
+  "wallet": {
+    "balance": "余额",
+    "deposit": "存款",
+    "withdraw": "提款",
+    "history": "历史"
+  },
+  "auth": {
+    "username": "用户名",
+    "password": "密码",
+    "phone": "手机号",
+    "confirmPassword": "确认密码",
+    "signIn": "登录",
+    "signUp": "注册",
+    "forgotPassword": "忘记密码？"
+  }
+}

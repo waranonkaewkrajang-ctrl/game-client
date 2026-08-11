@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import "./globals.css";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import BottomMenu from "@/components/BottomMenu";
+import "@/lib/i18n/config"; // 🌐 i18n init
 
 const TITLE = "SNAKE168 – เว็บอันดับ 1 ของไทย มั่นคงปลอดภัย 100%";
 const DESCRIPTION = "SNAKE168 เว็บสล็อตออนไลน์ ฝากถอนออโต้ ปลอดภัย 100% บริการ 24 ชม.";

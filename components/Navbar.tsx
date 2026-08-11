@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import api from "@/lib/api";
 import Link from "next/link";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Navbar() {
   const router = useRouter();
@@ -72,20 +73,7 @@ export default function Navbar() {
                 <span style={{ background: "#dc2626", color: "white", fontSize: "0.55rem", fontWeight: 700, padding: "2px 6px", borderRadius: "4px" }}>เติม</span>
               </a>
 
-              <button onClick={handleLogout} style={{
-                width: "36px", height: "36px", borderRadius: "50%", border: "none", cursor: "pointer",
-                background: "linear-gradient(135deg, #8b1a1a, #6b1010)",
-                boxShadow: "0 2px 8px rgba(139,26,26,0.4)",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                color: "white", fontSize: "0.7rem", fontWeight: 800,
-                transition: "all 0.2s",
-              }} title="ออกจากระบบ">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                  <polyline points="16 17 21 12 16 7" />
-                  <line x1="21" y1="12" x2="9" y2="12" />
-                </svg>
-              </button>
+              <LanguageSwitcher />
             </>
           )}
 

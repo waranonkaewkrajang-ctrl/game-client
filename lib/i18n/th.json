@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "home": "หน้าแรก",
+    "login": "เข้าสู่ระบบ",
+    "register": "สมัครสมาชิก",
+    "logout": "ออกจากระบบ"
+  },
+  "lobby": {
+    "highlight": "เกมไฮไลท์",
+    "recent": "เล่นล่าสุด",
+    "promotion": "โปรโมชันแนะนำ",
+    "news": "ข่าวสาร",
+    "allGames": "เกมทั้งหมด",
+    "search": "ค้นหาเกม...",
+    "playNow": "เข้าเล่น"
+  },
+  "wallet": {
+    "balance": "ยอดคงเหลือ",
+    "deposit": "ฝากเงิน",
+    "withdraw": "ถอนเงิน",
+    "history": "ประวัติ"
+  },
+  "auth": {
+    "username": "ชื่อผู้ใช้",
+    "password": "รหัสผ่าน",
+    "phone": "เบอร์โทร",
+    "confirmPassword": "ยืนยันรหัสผ่าน",
+    "signIn": "เข้าสู่ระบบ",
+    "signUp": "สมัคร",
+    "forgotPassword": "ลืมรหัสผ่าน?"
+  }
+}
