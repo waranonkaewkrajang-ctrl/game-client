@@ -25,6 +25,9 @@
     "sport": "Thể thao"
   },
   "lobby": {
+    "selectProvider": "Chọn nhà cung cấp",
+    "providers": "nhà cung cấp",
+    "marquee": "Chào mừng tất cả thành viên. Trò chơi mượt mà, hỗ trợ 24/7. Phục vụ hàng trăm nghìn người chơi trên toàn thế giới với máy chủ hiệu suất cao đẳng cấp thế giới.",
     "highlight": "Nổi bật",
     "recent": "Chơi gần đây",
     "promotion": "Khuyến mãi",

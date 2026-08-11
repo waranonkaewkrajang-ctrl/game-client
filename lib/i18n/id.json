@@ -25,6 +25,9 @@
     "sport": "Olahraga"
   },
   "lobby": {
+    "selectProvider": "Pilih Provider",
+    "providers": "provider",
+    "marquee": "Selamat datang semua anggota. Permainan lancar dengan dukungan 24/7. Melayani ratusan ribu pemain di seluruh dunia dengan server berkinerja tinggi kelas dunia.",
     "highlight": "Sorotan",
     "recent": "Baru Dimainkan",
     "promotion": "Promosi",

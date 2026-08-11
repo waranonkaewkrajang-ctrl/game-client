@@ -25,6 +25,9 @@
     "sport": "Sports"
   },
   "lobby": {
+    "selectProvider": "Piliin ang Provider",
+    "providers": "provider",
+    "marquee": "Maligayang pagdating sa lahat ng mga miyembro. Maayos na paglalaro na may suporta 24/7. Naglilingkod sa daan-daang libong manlalaro sa buong mundo gamit ang mga high-performance server na world-class.",
     "highlight": "Highlight",
     "recent": "Kamakailan",
     "promotion": "Promosyon",

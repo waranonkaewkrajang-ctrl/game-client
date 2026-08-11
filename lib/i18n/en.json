@@ -25,6 +25,9 @@
     "sport": "Sports"
   },
   "lobby": {
+    "selectProvider": "Select Provider",
+    "providers": "providers",
+    "marquee": "Welcome to all members. Smooth gameplay with 24/7 support. Serving hundreds of thousands of players worldwide with world-class high-performance servers.",
     "highlight": "Highlight",
     "recent": "Recently Played",
     "promotion": "Promotions",

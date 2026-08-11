@@ -25,6 +25,9 @@
     "sport": "体育"
   },
   "lobby": {
+    "selectProvider": "选择游戏商",
+    "providers": "家",
+    "marquee": "欢迎所有会员。流畅游戏体验，24小时全天候服务。以世界级高性能服务器为全球数十万玩家提供服务。",
     "highlight": "热门游戏",
     "recent": "最近玩过",
     "promotion": "优惠活动",
