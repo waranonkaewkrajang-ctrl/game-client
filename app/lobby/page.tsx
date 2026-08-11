@@ -762,7 +762,7 @@ export default function LobbyPage() {
                       {recentGames.map((rg) => {
                         // หา game object จาก allGames โดยใช้ provider + game_id
                         const matchedGame = allGames.find(
-                          (g) => g.product_id === rg.provider && String(g.game_id) === String(rg.game_id)
+                          (g) => g.product_id === rg.provider && String(g.game_code) === String(rg.game_id)
                         );
                         const imageUrl = matchedGame?.image_url;
                         const gameName = matchedGame?.game_name || rg.game_name || rg.game_id;
