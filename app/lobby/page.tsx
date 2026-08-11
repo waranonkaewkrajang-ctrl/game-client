@@ -404,7 +404,7 @@ export default function LobbyPage() {
                <div className="rank-no-img">{p.charAt(0)}</div>
              )}
              <div className="rank-provider-badge">
-               <span style={{ fontSize: "9px", fontWeight: 800, color: "rgba(255,255,255,0.8)" }}>{pdisplayedGames.length} เกม</span>
+               <span style={{ fontSize: "9px", fontWeight: 800, color: "rgba(255,255,255,0.8)" }}>{pGames.length} เกม</span>
              </div>
           </div>
 
