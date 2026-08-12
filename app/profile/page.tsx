@@ -455,45 +455,47 @@ export default function ProfilePage() {
                 isLast={true} 
               />
             </div>
-
-            {/* 🔴 ปุ่มออกจากระบบ (สีแดง) */}
-            <a 
-              onClick={(e) => {
-                e.preventDefault();
+            {/* 🔴 ปุ่มออกจากระบบ (สีแดง — ทรงเดียวกับปุ่มแจ้งเปลี่ยนบัญชี) */}
+            <button
+              onClick={() => {
                 if (confirm("ต้องการออกจากระบบใช่หรือไม่?")) {
                   localStorage.removeItem("user_token");
                   localStorage.removeItem("user_data");
                   window.location.href = "/login";
                 }
-              }} 
-              className="designer-btn" 
-              style={{ marginTop: "16px", cursor: "pointer" }}
+              }}
+              style={{
+                width: "100%",
+                boxSizing: "border-box",
+                margin: "16px 0px 4px",
+                padding: "14px",
+                borderRadius: "14px",
+                border: "1px solid rgb(248, 113, 113)",
+                background: "linear-gradient(180deg, rgb(254, 202, 202) 0%, rgb(239, 68, 68) 50%, rgb(185, 28, 28) 100%)",
+                color: "rgb(66, 6, 6)",
+                fontSize: "14px",
+                fontWeight: 800,
+                cursor: "pointer",
+                fontFamily: "'Kanit', sans-serif",
+                boxShadow: "0 8px 16px rgba(185, 28, 28, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.7), inset 0 -4px 5px rgba(127, 29, 29, 0.6)",
+                textShadow: "0 1px 1px rgba(255, 255, 255, 0.4)",
+                transition: "all 0.15s",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+              }}
+              onMouseDown={(e) => e.currentTarget.style.transform = "translateY(3px)"}
+              onMouseUp={(e) => e.currentTarget.style.transform = "translateY(0)"}
+              onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
-                <div style={{ 
-                  width: "40px", 
-                  height: "40px", 
-                  borderRadius: "10px", 
-                  background: "linear-gradient(135deg, rgba(239,68,68,0.25), rgba(220,38,38,0.15))",
-                  display: "flex", 
-                  alignItems: "center", 
-                  justifyContent: "center", 
-                  border: "1px solid rgba(239,68,68,0.3)" 
-                }}>
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                    <polyline points="16 17 21 12 16 7" />
-                    <line x1="21" y1="12" x2="9" y2="12" />
-                  </svg>
-                </div>
-                <div>
-                  <p style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: "#fca5a5" }}>ออกจากระบบ</p>
-                  <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>ออกจากบัญชีปัจจุบัน</p>
-                </div>
-              </div>
-              <svg className="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
-            </a>
-
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                <polyline points="16 17 21 12 16 7" />
+                <line x1="21" y1="12" x2="9" y2="12" />
+              </svg>
+              ออกจากระบบ
+            </button>
           </div>
 
         </div>
