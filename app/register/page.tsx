@@ -81,6 +81,20 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // 🔒 Validate Username (English + ตัวเลขเท่านั้น)
+    const usernameRegex = /^[a-zA-Z0-9_]+$/;
+    if (!usernameRegex.test(form.username)) {
+      Swal.fire({ 
+        icon: "error", 
+        title: "ชื่อผู้ใช้ไม่ถูกต้อง", 
+        text: "กรุณาใช้ภาษาอังกฤษ (a-z, A-Z) และตัวเลข (0-9) เท่านั้น", 
+        background: "#ffffff", 
+        color: "#0f172a", 
+        confirmButtonColor: "#7c3aed" 
+      });
+      return;
+    }
+
     // 🔒 Validate ชื่อบัญชี
     const nameError = validateFullName(form.bank_name);
     if (nameError) {
@@ -165,7 +179,16 @@ export default function RegisterPage() {
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
               <div className="input-group">
                 <label>ชื่อผู้ใช้งาน</label>
-                <input placeholder="Username" value={form.username} onChange={(e) => set("username", e.target.value)} required />
+                <input 
+                  placeholder="Username (a-z, 0-9)" 
+                  value={form.username} 
+                  onChange={(e) => set("username", e.target.value.replace(/[^a-zA-Z0-9_]/g, ''))} 
+                  pattern="[a-zA-Z0-9_]+"
+                  minLength={4}
+                  maxLength={50}
+                  title="ใช้ภาษาอังกฤษ (a-z, A-Z) และตัวเลข (0-9) เท่านั้น"
+                  required 
+                />
               </div>
               <div className="input-group">
                 <label>เบอร์โทรศัพท์</label>
