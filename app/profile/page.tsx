@@ -455,6 +455,45 @@ export default function ProfilePage() {
                 isLast={true} 
               />
             </div>
+
+            {/* 🔴 ปุ่มออกจากระบบ (สีแดง) */}
+            <a 
+              onClick={(e) => {
+                e.preventDefault();
+                if (confirm("ต้องการออกจากระบบใช่หรือไม่?")) {
+                  localStorage.removeItem("user_token");
+                  localStorage.removeItem("user_data");
+                  window.location.href = "/login";
+                }
+              }} 
+              className="designer-btn" 
+              style={{ marginTop: "16px", cursor: "pointer" }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <div style={{ 
+                  width: "40px", 
+                  height: "40px", 
+                  borderRadius: "10px", 
+                  background: "linear-gradient(135deg, rgba(239,68,68,0.25), rgba(220,38,38,0.15))",
+                  display: "flex", 
+                  alignItems: "center", 
+                  justifyContent: "center", 
+                  border: "1px solid rgba(239,68,68,0.3)" 
+                }}>
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                </div>
+                <div>
+                  <p style={{ margin: 0, fontSize: "15px", fontWeight: 600, color: "#fca5a5" }}>ออกจากระบบ</p>
+                  <p style={{ margin: "2px 0 0", fontSize: "12px", color: "#a1a1aa" }}>ออกจากบัญชีปัจจุบัน</p>
+                </div>
+              </div>
+              <svg className="arrow-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+
           </div>
 
         </div>
