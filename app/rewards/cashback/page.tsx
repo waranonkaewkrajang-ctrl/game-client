@@ -174,17 +174,17 @@ export default function CashbackPage() {
                     </p>
                   </div>
                 </div>
-                <div style={{ textAlign: "right" }}>
-                  <p style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: item.status === "claimed" ? "#10b981" : "#eab308", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
+                                <div style={{ textAlign: "right" }}>
+                  <p style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: item.status === "claimed" ? "#10b981" : item.status === "expired" ? "#71717a" : "#eab308", textShadow: "0 1px 2px rgba(0,0,0,0.8)" }}>
                     +฿{fmt(item.amount)}
                   </p>
                   <span style={{ 
                     display: "inline-block", marginTop: "4px", fontSize: "11px", fontWeight: 800, padding: "2px 10px", borderRadius: "6px", 
-                    background: item.status === "claimed" ? "rgba(16,185,129,0.2)" : "rgba(234,179,8,0.2)", 
-                    color: item.status === "claimed" ? "#4ade80" : "#fde047",
-                    border: `1px solid ${item.status === "claimed" ? "rgba(16,185,129,0.4)" : "rgba(234,179,8,0.4)"}`
+                    background: item.status === "claimed" ? "rgba(16,185,129,0.2)" : item.status === "expired" ? "rgba(113,113,122,0.2)" : "rgba(234,179,8,0.2)", 
+                    color: item.status === "claimed" ? "#4ade80" : item.status === "expired" ? "#a1a1aa" : "#fde047",
+                    border: `1px solid ${item.status === "claimed" ? "rgba(16,185,129,0.4)" : item.status === "expired" ? "rgba(113,113,122,0.4)" : "rgba(234,179,8,0.4)"}`
                   }}>
-                    {item.status === "claimed" ? "รับแล้ว" : "รอรับ"}
+                    {item.status === "claimed" ? "รับแล้ว" : item.status === "expired" ? "หมดอายุ" : "รอรับ"}
                   </span>
                 </div>
               </div>
