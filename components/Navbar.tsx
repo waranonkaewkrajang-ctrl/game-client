@@ -126,7 +126,7 @@ const [menuOpen, setMenuOpen] = useState(false);
           <div className="desktop-drawer" onClick={(e) => e.stopPropagation()}>
 
             {/* User Info */}
-            <div style={{ padding: "20px 16px", borderBottom: "1px solid rgba(255,255,255,0.1)", background: "linear-gradient(135deg, rgba(124,58,237,0.3), rgba(168,85,247,0.15))" }}>
+            <div style={{ padding: "20px 16px", borderBottom: "1px solid rgba(255,255,255,0.1)", background: "rgba(124,58,237,0.15)"}}>
               <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
                 <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "linear-gradient(135deg, #9333ea, #c084fc)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", fontWeight: 800, color: "#fff", flexShrink: 0 }}>
                   {(username || "U")[0].toUpperCase()}
@@ -136,7 +136,7 @@ const [menuOpen, setMenuOpen] = useState(false);
                   <div style={{ fontSize: "0.75rem", color: "#a78bfa" }}>สมาชิก</div>
                 </div>
               </div>
-              <div style={{ background: "rgba(0,0,0,0.3)", borderRadius: "10px", padding: "10px 14px" }}>
+              <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: "10px", padding: "10px 14px" }}>
                 <div style={{ fontSize: "0.65rem", color: "#94a3b8", marginBottom: "2px" }}>ยอดเงินคงเหลือ</div>
                 <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#f59e0b" }}>
                   ฿{balance !== null ? fmt(balance) : "0.00"}
@@ -226,15 +226,17 @@ const [menuOpen, setMenuOpen] = useState(false);
         @media (min-width: 1024px) {
           .desktop-drawer-overlay { display: block; }
         }
-        .desktop-drawer {
-          position: fixed; top: 0; left: 0;
-          width: 300px; height: 100vh;
-          background: linear-gradient(180deg, #1a1a2e 0%, #14142a 100%);
-          border-right: 1px solid rgba(124,58,237,0.3);
-          box-shadow: 4px 0 20px rgba(0,0,0,0.5);
-          overflow-y: auto;
-          animation: slideIn 0.25s ease-out;
-        }
+       .desktop-drawer {
+  position: fixed; top: 0; left: 0;
+  width: 300px; height: 100vh;
+  background: rgba(20, 10, 40, 0.65);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border-right: 1px solid rgba(168, 85, 247, 0.25);
+  box-shadow: 4px 0 30px rgba(0,0,0,0.4), inset 0 0 60px rgba(124,58,237,0.08);
+  overflow-y: auto;
+  animation: slideIn 0.25s ease-out;
+}
         @keyframes slideIn {
           from { transform: translateX(-100%); }
           to { transform: translateX(0); }
