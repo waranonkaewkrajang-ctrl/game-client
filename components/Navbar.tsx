@@ -40,13 +40,7 @@ const [menuOpen, setMenuOpen] = useState(false);
 
   const fmt = (n: number) => n.toLocaleString("th-TH", { minimumFractionDigits: 2 });
 
-  const navItems = [
-    { label: "หน้าแรก", href: "/lobby", img: "/nav/home.png" },
-    { label: "โปรโมชัน", href: "/promotions", img: "/nav/promo.png" },
-    { label: "ฝาก-ถอน", href: "/wallet", img: "/nav/wallet.png" },
-    { label: "ประวัติ", href: "/history", img: "/nav/history.png" },
-    { label: "โปรไฟล์", href: "/profile", img: "/nav/profile.png" },
-  ];
+  
 
   return (
     <>
@@ -160,28 +154,42 @@ const [menuOpen, setMenuOpen] = useState(false);
               </Link>
             </div>
 
-            {/* Menu Items */}
+           {/* Menu Items */}
             <div style={{ padding: "8px 0" }}>
               {[
-                { label: "หน้าแรก", href: "/lobby", img: "/nav/home.png" },
-                { label: "โปรโมชั่น", href: "/promotions", img: "/nav/promo.png" },
-                { label: "ฝาก-ถอน", href: "/wallet", img: "/nav/wallet.png" },
-                { label: "ประวัติ", href: "/history", img: "/nav/history.png" },
-                { label: "โปรไฟล์", href: "/profile", img: "/nav/profile.png" },
-              ].map((item) => (
-                <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} style={{
-                  display: "flex", alignItems: "center", gap: "12px",
-                  padding: "12px 20px", textDecoration: "none",
-                  color: pathname === item.href ? "#c084fc" : "#d1d5db",
-                  background: pathname === item.href ? "rgba(124,58,237,0.15)" : "transparent",
-                  fontSize: "0.9rem", fontWeight: 600, transition: "background 0.2s",
-                }}
-                  onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
-                  onMouseLeave={(e) => e.currentTarget.style.background = pathname === item.href ? "rgba(124,58,237,0.15)" : "transparent"}
-                >
-                  <img src={item.img} alt={item.label} style={{ width: "22px", height: "22px", objectFit: "contain" }} />
-                  <span>{item.label}</span>
-                </Link>
+                { label: "เข้าเกม", href: "/lobby", icon: <img src="/icons/game.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
+                { label: "โปรโมชั่น", href: "/promotions", icon: <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
+                { label: "กระเป๋าเงิน", href: "/wallet", icon: <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
+                { label: "ติดต่อ", href: "https://lin.ee/rjOBayDx", icon: <img src="/icons/contact.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" />, external: true },
+                { label: "โปรไฟล์", href: "/profile", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> },
+              ].map((item: any) => (
+                item.external ? (
+                  <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{
+                    display: "flex", alignItems: "center", gap: "12px",
+                    padding: "12px 20px", textDecoration: "none",
+                    color: "#d1d5db", fontSize: "0.9rem", fontWeight: 600, transition: "background 0.2s",
+                  }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
+                  >
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </a>
+                ) : (
+                  <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} style={{
+                    display: "flex", alignItems: "center", gap: "12px",
+                    padding: "12px 20px", textDecoration: "none",
+                    color: pathname === item.href ? "#c084fc" : "#d1d5db",
+                    background: pathname === item.href ? "rgba(124,58,237,0.15)" : "transparent",
+                    fontSize: "0.9rem", fontWeight: 600, transition: "background 0.2s",
+                  }}
+                    onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
+                    onMouseLeave={(e) => e.currentTarget.style.background = pathname === item.href ? "rgba(124,58,237,0.15)" : "transparent"}
+                  >
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </Link>
+                )
               ))}
             </div>
 
