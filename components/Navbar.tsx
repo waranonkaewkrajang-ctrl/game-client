@@ -42,20 +42,20 @@ const [menuOpen, setMenuOpen] = useState(false);
 
   
 
-  return (
+   return (
     <>
       <header style={{ background: "linear-gradient(to bottom, #aa00a0, #2b002b)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 16px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 150, backdropFilter: "blur(10px)" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-  <a href="/lobby" style={{ textDecoration: "none" }}>
-    <img src="/logo.png" alt="Logo" style={{ height: "48px", width: "auto" }} />
-  </a>
   {isLoggedIn && (
-   <button className="desktop-hamburger" onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "6px", flexDirection: "column", gap: "4px" }}>
+    <button className="desktop-hamburger" onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "6px", flexDirection: "column", gap: "4px" }}>
       <span style={{ width: "22px", height: "2.5px", background: "#fff", borderRadius: "2px", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translateY(6.5px)" : "none" }} />
       <span style={{ width: "22px", height: "2.5px", background: "#fff", borderRadius: "2px", transition: "all 0.3s", opacity: menuOpen ? 0 : 1 }} />
       <span style={{ width: "22px", height: "2.5px", background: "#fff", borderRadius: "2px", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translateY(-6.5px)" : "none" }} />
     </button>
   )}
+  <a href="/lobby" style={{ textDecoration: "none" }}>
+    <img src="/logo.png" alt="Logo" style={{ height: "48px", width: "auto" }} />
+  </a>
 </div>
 
         {/* Right Side */}
