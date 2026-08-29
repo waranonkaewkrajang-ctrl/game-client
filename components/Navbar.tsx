@@ -50,7 +50,7 @@ const [menuOpen, setMenuOpen] = useState(false);
     <img src="/logo.png" alt="Logo" style={{ height: "48px", width: "auto" }} />
   </a>
   {isLoggedIn && (
-    <button className="desktop-hamburger" onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "6px", display: "flex", flexDirection: "column", gap: "4px" }}>
+   <button className="desktop-hamburger" onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "6px", flexDirection: "column", gap: "4px" }}>
       <span style={{ width: "22px", height: "2.5px", background: "#fff", borderRadius: "2px", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translateY(6.5px)" : "none" }} />
       <span style={{ width: "22px", height: "2.5px", background: "#fff", borderRadius: "2px", transition: "all 0.3s", opacity: menuOpen ? 0 : 1 }} />
       <span style={{ width: "22px", height: "2.5px", background: "#fff", borderRadius: "2px", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translateY(-6.5px)" : "none" }} />
