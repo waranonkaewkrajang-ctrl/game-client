@@ -91,15 +91,25 @@ function WalletContent() {
   };
 
   const fetchFinanceSettings = () => {
-    api.get("/finance/settings").then((res) => {
-      if (res.data.data) {
-        setFinance(res.data.data);
-        if (res.data.data.truewallet_accounts) {
-          setTruewalletAccounts(res.data.data.truewallet_accounts.filter((w: any) => w.is_active));
+  api.get("/finance/settings").then((res) => {
+    if (res.data.data) {
+      api.get("/deposits/available-channels").then((chRes) => {
+        if (chRes.data.data) {
+          setFinance({ ...res.data.data, channels: chRes.data.data });
+          setChannel(chRes.data.data[0] || "bank_transfer");
+        } else {
+          setFinance(res.data.data);
         }
+      }).catch(() => {
+        setFinance(res.data.data);
+      });
+
+      if (res.data.data.truewallet_accounts) {
+        setTruewalletAccounts(res.data.data.truewallet_accounts.filter((w: any) => w.is_active));
       }
-    }).catch(() => {});
-  };
+    }
+  }).catch(() => {});
+};
 
   const handleDeposit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,7 +131,9 @@ function WalletContent() {
         promotion_id: selectedPromo?.id || null,
       });
 
-      if (finance.banks.length > 0) {
+      if (channel === "truewallet") {
+  Swal.fire({ icon: "success", title: "แจ้งฝากสำเร็จ", text: "โอนเงินผ่าน TrueWallet ระบบจะยืนยันอัตโนมัติ", timer: 2500, showConfirmButton: false, background: "#14142a", color: "#e2e8f0" });
+} else if (finance.banks.length > 0) {
         const minutesLimit = 15;
         let secondsLeft = minutesLimit * 60;
         const banksHtml = finance.banks.map((b, i) => `
