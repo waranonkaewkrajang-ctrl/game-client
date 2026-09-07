@@ -1163,7 +1163,7 @@ if (pGames.length === 0) return null;
         /* 🟢 สไตล์แบนเนอร์ (เปลี่ยนชื่อคลาสใหม่หนีแคชมือถือ) 🟢 */
          .hero-banner-track { --bw: 100%; }
          /* 🟢 แก้ตรงนี้: ให้เป็น 100% เสมอ ป้องกันการคำนวณสไลด์บนจอคอมเพี้ยน */
-         @media (min-width: 768px) { .hero-banner-track { --bw: 100%; } }
+         @media (min-width: 768px) { .hero-banner-track { --bw: 33.333%; --banner-offset: 1; } }
 
         .provider-grid-container, .game-grid-container {
           grid-template-columns: repeat(3, 1fr) !important;
@@ -1221,7 +1221,10 @@ if (pGames.length === 0) return null;
         /* 🖥️ สำหรับหน้าจอคอมพิวเตอร์ / แล็ปท็อป */
         @media (min-width: 1024px) {
           .hero-banner-img {
-            max-height: 400px; /* ขยายเพดานความสูงให้พอดีจอใหญ่ */
+            max-height: 420px;
+            object-fit: cover;
+            aspect-ratio: 16 / 7;
+            border-radius: 14px;
           }
         }
 
