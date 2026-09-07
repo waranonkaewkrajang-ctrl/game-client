@@ -367,24 +367,26 @@ export default function LobbyPage() {
             { id: "news", label: t("lobby.news"), href: "/history" },
           ].map((tab) => (
             <button key={tab.id} onClick={() => { setActiveTab(tab.id); if (tab.href) router.push(tab.href); }} style={{
-              flex: 1, height: "42px", padding: "0 18px", borderRadius: "12px", cursor: "pointer",
+              flex: 1, height: "44px", padding: "0 20px", borderRadius: "14px", cursor: "pointer",
               display: "flex", alignItems: "center", justifyContent: "center", gap: "8px", whiteSpace: "nowrap",
-              fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.3px",
+              fontSize: "0.85rem", fontWeight: 800, letterSpacing: "0.3px",
               transition: "all 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
               background: activeTab === tab.id
-                ? "rgba(147, 51, 234, 0.5)"
-                : "rgba(255, 255, 255, 0.06)",
-              backdropFilter: "blur(16px)",
-              WebkitBackdropFilter: "blur(16px)",
-              color: activeTab === tab.id ? "#f3e8ff" : "rgba(216, 180, 254, 0.7)",
+                ? "linear-gradient(135deg, rgba(168, 85, 247, 0.85), rgba(124, 58, 237, 0.95))"
+                : "rgba(15, 10, 35, 0.65)",
+              backdropFilter: "blur(20px) saturate(1.3)",
+              WebkitBackdropFilter: "blur(20px) saturate(1.3)",
+              color: activeTab === tab.id ? "#ffffff" : "rgba(255, 255, 255, 0.75)",
               border: activeTab === tab.id
-                ? "1px solid rgba(192, 132, 252, 0.5)"
-                : "1px solid rgba(255, 255, 255, 0.08)",
+                ? "1.5px solid rgba(216, 180, 254, 0.6)"
+                : "1px solid rgba(255, 255, 255, 0.12)",
               boxShadow: activeTab === tab.id
-                ? "0 4px 16px rgba(147, 51, 234, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15)"
+                ? "0 6px 20px rgba(124, 58, 237, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.3), inset 0 -2px 4px rgba(76, 29, 149, 0.4)"
+                : "0 2px 8px rgba(0, 0, 0, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.06)",
+              textShadow: activeTab === tab.id
+                ? "0 1px 3px rgba(0, 0, 0, 0.5)"
                 : "none",
-              textShadow: "none",
-              transform: activeTab === tab.id ? "translateY(-1px)" : "translateY(0)",
+              transform: activeTab === tab.id ? "translateY(-2px)" : "translateY(0)",
             }}>
              {tab.id === "highlight" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>}
               {tab.id === "promotion" && <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 8v13M4 14.5A3.5 3.5 0 0 1 7.5 11H12m0 0h4.5A3.5 3.5 0 0 1 20 14.5M4 14.5V19a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4.5M4 14.5h16M12 11V8m0 0a2.5 2.5 0 0 1-5 0 2.5 2.5 0 0 1 5 0zm0 0a2.5 2.5 0 0 0 5 0 2.5 2.5 0 0 0-5 0z" /></svg>}
