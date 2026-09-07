@@ -1222,8 +1222,8 @@ if (pGames.length === 0) return null;
         @media (min-width: 1024px) {
           .hero-banner-img {
             max-height: 450px;
-            object-fit: cover;
-            aspect-ratio: 16 / 6;
+            object-fit: contain;
+            aspect-ratio: auto;
             width: 100%;
             border-radius: 14px;
           }
