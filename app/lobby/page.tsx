@@ -470,7 +470,9 @@ export default function LobbyPage() {
           <div className="desktop-only" style={{ 
             width: "250px", 
             flexShrink: 0,
-            background: "#14142a", /* พื้นหลังกล่องครอบ */
+            background: "rgba(20, 20, 42, 0.55)", /* พื้นหลังเบลอ */
+            backdropFilter: "blur(20px) saturate(1.4)",
+            WebkitBackdropFilter: "blur(20px) saturate(1.4)",
             borderRadius: "16px",
             padding: "16px",
             position: "sticky", 
