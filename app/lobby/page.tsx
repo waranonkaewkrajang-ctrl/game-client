@@ -1195,7 +1195,7 @@ if (pGames.length === 0) return null;
         .hero-banner-item {
           flex: 0 0 var(--bw);
           width: var(--bw);
-          padding: 0 4px;
+          padding: 0 3px;
           box-sizing: border-box; /* 🟢 หัวใจสำคัญ: ป้องกัน padding ดันกรอบจนภาพเหลื่อมกัน */
           transition: transform 0.4s ease, opacity 0.4s ease;
         }
@@ -1221,9 +1221,10 @@ if (pGames.length === 0) return null;
         /* 🖥️ สำหรับหน้าจอคอมพิวเตอร์ / แล็ปท็อป */
         @media (min-width: 1024px) {
           .hero-banner-img {
-            max-height: 420px;
+            max-height: 450px;
             object-fit: cover;
-            aspect-ratio: 16 / 7;
+            aspect-ratio: 16 / 6;
+            width: 100%;
             border-radius: 14px;
           }
         }
