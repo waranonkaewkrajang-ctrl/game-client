@@ -21,7 +21,6 @@ export default function PopupModal() {
       .then((res) => res.json())
       .then((data) => {
         if (data.data && data.data.length > 0) {
-          // กรอง popup ที่ user เคยเห็นแล้ว (show_once)
           const seen = JSON.parse(localStorage.getItem("seen_popups") || "[]");
           const filtered = data.data.filter((p: Popup) => {
             if (p.show_once && seen.includes(p.id)) return false;
@@ -39,8 +38,6 @@ export default function PopupModal() {
 
   const handleClose = () => {
     const popup = popups[currentIndex];
-
-    // บันทึกว่าเห็นแล้ว (ถ้า show_once)
     if (popup?.show_once) {
       const seen = JSON.parse(localStorage.getItem("seen_popups") || "[]");
       if (!seen.includes(popup.id)) {
@@ -48,8 +45,6 @@ export default function PopupModal() {
         localStorage.setItem("seen_popups", JSON.stringify(seen));
       }
     }
-
-    // ถ้ามี popup ถัดไป แสดงต่อ
     if (currentIndex < popups.length - 1) {
       setCurrentIndex(currentIndex + 1);
     } else {
@@ -67,82 +62,37 @@ export default function PopupModal() {
     : null;
 
   return (
-    <div onClick={handleClose} style={{
-      position: "fixed", inset: 0, zIndex: 9999,
-      background: "rgba(0,0,0,0.6)",
-      backdropFilter: "blur(4px)",
-      display: "flex", alignItems: "center", justifyContent: "center",
-      padding: "16px",
-      animation: "popupFadeIn 0.3s ease",
-    }}>
-      <div onClick={(e) => e.stopPropagation()} style={{
-        background: "linear-gradient(135deg, #1a1a2e, #14142a)",
-        borderRadius: "16px",
-        width: "100%",
-        maxWidth: "420px",
-        overflow: "hidden",
-        border: "1px solid rgba(168, 85, 247, 0.3)",
-        boxShadow: "0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(124,58,237,0.2)",
-        animation: "popupSlideUp 0.3s ease",
-      }}>
-        {/* รูปภาพ */}
+    <div className="popup-overlay" onClick={handleClose}>
+      <div className="popup-container" onClick={(e) => e.stopPropagation()}>
+
+        {/* ปุ่มกากบาทปิด */}
+        <button className="popup-close-btn" onClick={handleClose}>✕</button>
+
+        {/* รูปภาพเต็ม */}
         {imgSrc && (
-          <img src={imgSrc} alt={popup.title} style={{
-            width: "100%", maxHeight: "280px", objectFit: "cover", display: "block",
-          }} />
+          <div className="popup-image-wrapper">
+            <img src={imgSrc} alt={popup.title} className="popup-image" />
+          </div>
         )}
 
         {/* เนื้อหา */}
-        <div style={{ padding: "20px" }}>
-          <h2 style={{
-            fontSize: "1.2rem", fontWeight: 800, color: "#f5f3ff",
-            margin: "0 0 8px", textAlign: "center",
-          }}>
-            {popup.title}
-          </h2>
-
+        <div className="popup-content">
           {popup.description && (
-            <p style={{
-              fontSize: "0.85rem", color: "rgba(216,180,254,0.8)",
-              margin: "0 0 16px", textAlign: "center", lineHeight: 1.6,
-            }}>
-              {popup.description}
-            </p>
+            <p className="popup-description">{popup.description}</p>
           )}
 
-          {/* ปุ่ม */}
-          <div style={{ display: "flex", gap: "8px" }}>
+          <div className="popup-buttons">
             {popup.link_url && (
-              <a href={popup.link_url} style={{
-                flex: 1, padding: "10px", borderRadius: "10px",
-                background: "linear-gradient(135deg, #9333ea, #7c3aed)",
-                color: "white", fontSize: "0.9rem", fontWeight: 700,
-                textAlign: "center", textDecoration: "none",
-                border: "1px solid rgba(216,180,254,0.3)",
-              }}>
+              <a href={popup.link_url} className="popup-btn-primary">
                 {popup.link_text || "ดูเพิ่มเติม"}
               </a>
             )}
-            <button onClick={handleClose} style={{
-              flex: popup.link_url ? 0.6 : 1, padding: "10px", borderRadius: "10px",
-              background: "rgba(255,255,255,0.08)",
-              color: "rgba(255,255,255,0.7)", fontSize: "0.9rem", fontWeight: 600,
-              border: "1px solid rgba(255,255,255,0.1)", cursor: "pointer",
-            }}>
-              {currentIndex < popups.length - 1 ? "ถัดไป" : "ปิด"}
-            </button>
           </div>
 
-          {/* จุดแสดงจำนวน popup */}
           {popups.length > 1 && (
-            <div style={{ display: "flex", justifyContent: "center", gap: "6px", marginTop: "12px" }}>
+            <div className="popup-dots">
               {popups.map((_, i) => (
-                <div key={i} style={{
-                  width: i === currentIndex ? "16px" : "6px",
-                  height: "6px", borderRadius: "3px",
-                  background: i === currentIndex ? "#9333ea" : "rgba(255,255,255,0.2)",
-                  transition: "all 0.3s",
-                }} />
+                <div key={i} className={`popup-dot ${i === currentIndex ? "active" : ""}`} />
               ))}
             </div>
           )}
@@ -150,13 +100,117 @@ export default function PopupModal() {
       </div>
 
       <style dangerouslySetInnerHTML={{__html: `
-        @keyframes popupFadeIn {
+        .popup-overlay {
+          position: fixed; inset: 0; z-index: 9999;
+          background: rgba(0,0,0,0.7);
+          display: flex; align-items: center; justify-content: center;
+          padding: 20px;
+          animation: popupFade 0.25s ease;
+        }
+
+        .popup-container {
+          position: relative;
+          width: 100%;
+          max-width: 400px;
+          border-radius: 20px;
+          overflow: hidden;
+          background: #0f0f1a;
+          box-shadow:
+            0 0 0 1px rgba(168,85,247,0.2),
+            0 25px 50px rgba(0,0,0,0.6),
+            0 0 80px rgba(124,58,237,0.08);
+          animation: popupScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .popup-close-btn {
+          position: absolute; top: 12px; right: 12px; z-index: 10;
+          width: 32px; height: 32px; border-radius: 50%;
+          background: rgba(0,0,0,0.5);
+          backdrop-filter: blur(8px);
+          border: 1px solid rgba(255,255,255,0.15);
+          color: rgba(255,255,255,0.8);
+          font-size: 14px; cursor: pointer;
+          display: flex; align-items: center; justify-content: center;
+          transition: all 0.2s;
+        }
+        .popup-close-btn:hover {
+          background: rgba(239,68,68,0.8);
+          color: white;
+          transform: rotate(90deg);
+        }
+
+        .popup-image-wrapper {
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .popup-image {
+          width: 100%;
+          display: block;
+          object-fit: cover;
+        }
+
+        .popup-content {
+          padding: 20px 24px 24px;
+        }
+
+        .popup-description {
+          font-size: 0.9rem;
+          color: rgba(255,255,255,0.75);
+          text-align: center;
+          line-height: 1.7;
+          margin: 0 0 18px;
+        }
+
+        .popup-buttons {
+          display: flex; gap: 10px;
+        }
+
+        .popup-btn-primary {
+          flex: 1;
+          padding: 12px 20px;
+          border-radius: 12px;
+          background: linear-gradient(135deg, #9333ea, #7c3aed);
+          color: white;
+          font-size: 0.9rem;
+          font-weight: 700;
+          text-align: center;
+          text-decoration: none;
+          border: none;
+          cursor: pointer;
+          transition: all 0.2s;
+          box-shadow: 0 4px 15px rgba(124,58,237,0.4);
+        }
+        .popup-btn-primary:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 20px rgba(124,58,237,0.5);
+        }
+
+        .popup-dots {
+          display: flex; justify-content: center; gap: 6px; margin-top: 16px;
+        }
+        .popup-dot {
+          width: 6px; height: 6px; border-radius: 3px;
+          background: rgba(255,255,255,0.15);
+          transition: all 0.3s;
+        }
+        .popup-dot.active {
+          width: 20px;
+          background: #9333ea;
+        }
+
+        @keyframes popupFade {
           from { opacity: 0; }
           to { opacity: 1; }
         }
-        @keyframes popupSlideUp {
-          from { transform: translateY(30px) scale(0.95); opacity: 0; }
-          to { transform: translateY(0) scale(1); opacity: 1; }
+        @keyframes popupScale {
+          from { transform: scale(0.9) translateY(20px); opacity: 0; }
+          to { transform: scale(1) translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 480px) {
+          .popup-container { max-width: 340px; border-radius: 16px; }
+          .popup-content { padding: 16px 20px 20px; }
         }
       `}} />
     </div>
