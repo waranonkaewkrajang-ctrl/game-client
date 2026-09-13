@@ -4,6 +4,7 @@ import "./globals.css";
 import NavbarWrapper from "@/components/NavbarWrapper";
 import BottomMenu from "@/components/BottomMenu";
 import I18nProvider from "@/components/I18nProvider";
+import PopupModal from "@/components/PopupModal";
 
 const TITLE = "SNAKE168 – เว็บอันดับ 1 ของไทย มั่นคงปลอดภัย 100%";
 const DESCRIPTION = "SNAKE168 เว็บสล็อตออนไลน์ ฝากถอนออโต้ ปลอดภัย 100% บริการ 24 ชม.";
@@ -79,6 +80,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <NavbarWrapper />
           {children}
           <BottomMenu />
+          <PopupModal />
         </I18nProvider>
       </body>
     </html>
