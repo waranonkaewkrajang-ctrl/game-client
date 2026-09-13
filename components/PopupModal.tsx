@@ -93,15 +93,16 @@ export default function PopupModal() {
             )}
           </div>
 
-          {/* ปุ่มไม่ต้องแสดงอีกวันนี้ */}
-          <button className="popup-btn-dismiss" onClick={() => {
+          {/* ติ๊กไม่แสดงอีกวันนี้ */}
+          <label className="popup-dismiss-label" onClick={() => {
             const dismissed = JSON.parse(localStorage.getItem("dismissed_popups_today") || "{}");
             dismissed[popup.id] = new Date().toDateString();
             localStorage.setItem("dismissed_popups_today", JSON.stringify(dismissed));
             handleClose();
           }}>
-            วันนี้ไม่ต้องแสดงอีก
-          </button>
+            <input type="checkbox" className="popup-dismiss-checkbox" readOnly />
+            <span>วันนี้ไม่ต้องแสดงอีก</span>
+          </label>
 
           {popups.length > 1 && (
             <div className="popup-dots">
@@ -154,14 +155,18 @@ export default function PopupModal() {
 
         .popup-image-wrapper {
           width: 100%;
-          overflow: hidden;
+          padding: 16px 16px 0 16px;
+          box-sizing: border-box;
         }
 
         .popup-image {
           width: 100%;
           display: block;
           object-fit: cover;
+          border-radius: 12px;
         }
+
+
 
         .popup-content {
           padding: 20px 24px 24px;
@@ -221,22 +226,29 @@ export default function PopupModal() {
           text-shadow: none;
         }
 
-        .popup-btn-dismiss {
-          width: 100%;
-          padding: 8px;
-          margin-top: 10px;
-          border-radius: 8px;
-          background: none;
-          border: 1px solid #e2e8f0;
-          color: #94a3b8;
-          font-size: 0.75rem;
+        .popup-dismiss-label {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 8px;
+          margin-top: 12px;
+          padding: 10px;
           cursor: pointer;
           transition: all 0.2s;
         }
-        .popup-btn-dismiss:hover {
+        .popup-dismiss-label:hover {
+          opacity: 0.8;
+        }
+        .popup-dismiss-label span {
+          font-size: 0.85rem;
           color: #64748b;
-          border-color: #cbd5e1;
-          background: #f8fafc;
+          font-weight: 600;
+        }
+        .popup-dismiss-checkbox {
+          width: 18px;
+          height: 18px;
+          accent-color: #8b5cf6;
+          cursor: pointer;
         }
 
         @keyframes popupFade {
