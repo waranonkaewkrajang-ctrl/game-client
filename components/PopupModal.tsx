@@ -125,14 +125,13 @@ export default function PopupModal() {
         .popup-container {
           position: relative;
           width: 100%;
-          max-width: 400px;
+          max-width: 440px;
           border-radius: 20px;
           overflow: hidden;
-          background: #0f0f1a;
+          background: #ffffff;
           box-shadow:
-            0 0 0 1px rgba(168,85,247,0.2),
-            0 25px 50px rgba(0,0,0,0.6),
-            0 0 80px rgba(124,58,237,0.08);
+            0 25px 60px rgba(0,0,0,0.5),
+            0 0 0 1px rgba(0,0,0,0.05);
           animation: popupScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -170,7 +169,7 @@ export default function PopupModal() {
 
         .popup-description {
           font-size: 0.9rem;
-          color: rgba(255,255,255,0.75);
+          color: #475569;
           text-align: center;
           line-height: 1.7;
           margin: 0 0 18px;
@@ -216,10 +215,10 @@ export default function PopupModal() {
         .popup-title {
           font-size: 1.15rem;
           font-weight: 800;
-          color: #f5f3ff;
+          color: #0f172a;
           margin: 0 0 8px;
           text-align: center;
-          text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+          text-shadow: none;
         }
 
         .popup-btn-dismiss {
@@ -228,16 +227,16 @@ export default function PopupModal() {
           margin-top: 10px;
           border-radius: 8px;
           background: none;
-          border: 1px solid rgba(255,255,255,0.1);
-          color: rgba(255,255,255,0.4);
+          border: 1px solid #e2e8f0;
+          color: #94a3b8;
           font-size: 0.75rem;
           cursor: pointer;
           transition: all 0.2s;
         }
         .popup-btn-dismiss:hover {
-          color: rgba(255,255,255,0.7);
-          border-color: rgba(255,255,255,0.2);
-          background: rgba(255,255,255,0.05);
+          color: #64748b;
+          border-color: #cbd5e1;
+          background: #f8fafc;
         }
 
         @keyframes popupFade {
