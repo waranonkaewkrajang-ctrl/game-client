@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 interface Popup {
   id: number;
@@ -16,7 +17,12 @@ export default function PopupModal() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [show, setShow] = useState(false);
 
+  const pathname = usePathname();
+
   useEffect(() => {
+    // แสดงเฉพาะหน้า /lobby เท่านั้น
+    if (pathname !== "/lobby") return;
+
     fetch(`${process.env.NEXT_PUBLIC_API_URL || "https://admintg289.sbs/api"}/popups`)
       .then((res) => res.json())
       .then((data) => {
