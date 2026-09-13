@@ -21,9 +21,12 @@ export default function PopupModal() {
       .then((res) => res.json())
       .then((data) => {
         if (data.data && data.data.length > 0) {
-          const seen = JSON.parse(localStorage.getItem("seen_popups") || "[]");
+           const seen = JSON.parse(localStorage.getItem("seen_popups") || "[]");
+          const dismissed = JSON.parse(localStorage.getItem("dismissed_popups_today") || "{}");
+          const today = new Date().toDateString();
           const filtered = data.data.filter((p: Popup) => {
             if (p.show_once && seen.includes(p.id)) return false;
+            if (dismissed[p.id] === today) return false;
             return true;
           });
           if (filtered.length > 0) {
@@ -77,6 +80,7 @@ export default function PopupModal() {
 
         {/* เนื้อหา */}
         <div className="popup-content">
+          <h2 className="popup-title">{popup.title}</h2>
           {popup.description && (
             <p className="popup-description">{popup.description}</p>
           )}
@@ -88,6 +92,16 @@ export default function PopupModal() {
               </a>
             )}
           </div>
+
+          {/* ปุ่มไม่ต้องแสดงอีกวันนี้ */}
+          <button className="popup-btn-dismiss" onClick={() => {
+            const dismissed = JSON.parse(localStorage.getItem("dismissed_popups_today") || "{}");
+            dismissed[popup.id] = new Date().toDateString();
+            localStorage.setItem("dismissed_popups_today", JSON.stringify(dismissed));
+            handleClose();
+          }}>
+            วันนี้ไม่ต้องแสดงอีก
+          </button>
 
           {popups.length > 1 && (
             <div className="popup-dots">
@@ -124,19 +138,19 @@ export default function PopupModal() {
 
         .popup-close-btn {
           position: absolute; top: 12px; right: 12px; z-index: 10;
-          width: 32px; height: 32px; border-radius: 50%;
-          background: rgba(0,0,0,0.5);
-          backdrop-filter: blur(8px);
-          border: 1px solid rgba(255,255,255,0.15);
-          color: rgba(255,255,255,0.8);
-          font-size: 14px; cursor: pointer;
+          width: 34px; height: 34px; border-radius: 50%;
+          background: linear-gradient(135deg, #f87171, #ef4444);
+          border: 2px solid rgba(252,165,165,0.5);
+          color: white;
+          font-size: 14px; font-weight: 700; cursor: pointer;
           display: flex; align-items: center; justify-content: center;
           transition: all 0.2s;
+          box-shadow: 0 4px 12px rgba(239,68,68,0.4), inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -2px 3px rgba(153,27,27,0.4);
         }
         .popup-close-btn:hover {
-          background: rgba(239,68,68,0.8);
-          color: white;
-          transform: rotate(90deg);
+          background: linear-gradient(135deg, #ef4444, #dc2626);
+          transform: scale(1.1);
+          box-shadow: 0 6px 16px rgba(239,68,68,0.5), inset 0 1px 2px rgba(255,255,255,0.3), inset 0 -2px 3px rgba(153,27,27,0.5);
         }
 
         .popup-image-wrapper {
@@ -197,6 +211,33 @@ export default function PopupModal() {
         .popup-dot.active {
           width: 20px;
           background: #9333ea;
+        }
+
+        .popup-title {
+          font-size: 1.15rem;
+          font-weight: 800;
+          color: #f5f3ff;
+          margin: 0 0 8px;
+          text-align: center;
+          text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .popup-btn-dismiss {
+          width: 100%;
+          padding: 8px;
+          margin-top: 10px;
+          border-radius: 8px;
+          background: none;
+          border: 1px solid rgba(255,255,255,0.1);
+          color: rgba(255,255,255,0.4);
+          font-size: 0.75rem;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .popup-btn-dismiss:hover {
+          color: rgba(255,255,255,0.7);
+          border-color: rgba(255,255,255,0.2);
+          background: rgba(255,255,255,0.05);
         }
 
         @keyframes popupFade {
