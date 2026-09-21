@@ -31,8 +31,6 @@ export default function PopupModal() {
           const dismissed = JSON.parse(localStorage.getItem("dismissed_popups_today") || "{}");
           const today = new Date().toDateString();
           const filtered = data.data.filter((p: Popup) => {
-            if (p.show_once && seen.includes(p.id)) return false;
-            if (dismissed[p.id] === today) return false;
             return true;
           });
           if (filtered.length > 0) {
