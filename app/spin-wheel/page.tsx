@@ -17,9 +17,63 @@ interface Winner {
   image_url: string | null; created_at: string;
 }
 
+// ── ธีมวงล้อ (ค่าเริ่มต้น = หน้าตาเดิม) ──
+const WHEEL_DEFAULTS = {
+  wheel_slice_mode: "theme",
+  wheel_slice_a: "#7c3aed",
+  wheel_slice_b: "#5b21b6",
+  wheel_ring: "#2d1b69",
+  wheel_ring_border: "#7c3aed",
+  wheel_glow: "#8b5cf6",
+  wheel_dot_a: "#fbbf24",
+  wheel_dot_b: "#ec4899",
+  wheel_inner_ring: "#38bdf8",
+  wheel_center: "#4c1d95",
+  wheel_center_border: "#a78bfa",
+  wheel_text: "#e9d5ff",
+  wheel_center_text: "SPIN",
+};
+type WheelTheme = typeof WHEEL_DEFAULTS;
+
+const hexRgb = (hex: string) => {
+  const h = (hex || "#000000").replace("#", "");
+  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+};
+const rgbaOf = (hex: string, a: number) => {
+  const [r, g, b] = hexRgb(hex);
+  return `rgba(${r},${g},${b},${a})`;
+};
+// สีเข้มขึ้นสำหรับไล่สีด้านใน (สีเดิมใช้คู่ที่กำหนดไว้เป๊ะ)
+const DARKER: Record<string, string> = { "#7c3aed": "#6d28d9", "#5b21b6": "#4c1d95", "#4c1d95": "#2e1065" };
+const darker = (hex: string) => {
+  const key = (hex || "").toLowerCase();
+  if (DARKER[key]) return DARKER[key];
+  const [r, g, b] = hexRgb(hex);
+  return `rgb(${Math.round(r * 0.72)},${Math.round(g * 0.72)},${Math.round(b * 0.72)})`;
+};
+// เลือกสีตัวอักษรให้อ่านออกบนพื้นสีนั้น (ใช้ในโหมดสีรายช่อง)
+const readableText = (hex: string) => {
+  const [r, g, b] = hexRgb(hex);
+  return (r * 299 + g * 587 + b * 114) / 1000 > 150 ? "#1a1a2e" : "#ffffff";
+};
+
 export default function SpinWheelPage() {
   const router = useRouter();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  const [wt, setWt] = useState<WheelTheme>(WHEEL_DEFAULTS);
+  useEffect(() => {
+    const pick = (t: any) => {
+      if (!t) return;
+      const o: Partial<WheelTheme> = {};
+      (Object.keys(WHEEL_DEFAULTS) as (keyof WheelTheme)[]).forEach((k) => {
+        if (typeof t[k] === "string") (o as any)[k] = t[k];
+      });
+      setWt({ ...WHEEL_DEFAULTS, ...o });
+    };
+    try { const c = localStorage.getItem("site_theme"); if (c) pick(JSON.parse(c)); } catch {}
+    api.get("/site/theme").then((r) => pick(r.data?.data)).catch(() => {});
+  }, []);
   const [prizes, setPrizes] = useState<Prize[]>([]);
   const [multipliers, setMultipliers] = useState<MultiplierItem[]>([]);
   const [winners, setWinners] = useState<Winner[]>([]);
@@ -93,7 +147,7 @@ export default function SpinWheelPage() {
     return () => clearInterval(interval);
   }, [winners]);
 
-  // === Draw wheel (Purple Neon Style) ===
+   // === Draw wheel (คุมสีจากหลังบ้าน) ===
   const drawWheel = useCallback((angle: number) => {
     const canvas = canvasRef.current;
     if (!canvas || prizes.length === 0) return;
@@ -106,24 +160,25 @@ export default function SpinWheelPage() {
     const outerR = size / 2 - 6;
     const wheelR = outerR - 38;
     const sliceAngle = (2 * Math.PI) / prizes.length;
+    const prizeMode = wt.wheel_slice_mode === "prize";
 
     ctx.clearRect(0, 0, size, size);
 
     // === Outer glow ring ===
     const glowGrad = ctx.createRadialGradient(cx, cy, outerR - 10, cx, cy, outerR + 10);
-    glowGrad.addColorStop(0, "rgba(139,92,246,0.3)");
-    glowGrad.addColorStop(1, "rgba(139,92,246,0)");
+    glowGrad.addColorStop(0, rgbaOf(wt.wheel_glow, 0.3));
+    glowGrad.addColorStop(1, rgbaOf(wt.wheel_glow, 0));
     ctx.beginPath();
     ctx.arc(cx, cy, outerR + 10, 0, 2 * Math.PI);
     ctx.fillStyle = glowGrad;
     ctx.fill();
 
-    // === Outer purple ring ===
+    // === Outer ring ===
     ctx.beginPath();
     ctx.arc(cx, cy, outerR, 0, 2 * Math.PI);
-    ctx.fillStyle = "#2d1b69";
+    ctx.fillStyle = wt.wheel_ring;
     ctx.fill();
-    ctx.strokeStyle = "#7c3aed";
+    ctx.strokeStyle = wt.wheel_ring_border;
     ctx.lineWidth = 3;
     ctx.stroke();
 
@@ -138,22 +193,21 @@ export default function SpinWheelPage() {
         ctx.arc(cx, cy, outerR - 2, startA, endA);
         ctx.closePath();
         const mGrad = ctx.createRadialGradient(cx, cy, wheelR, cx, cy, outerR);
-        mGrad.addColorStop(0, "rgba(109,40,217,0.6)");
-        mGrad.addColorStop(1, "rgba(76,29,149,0.9)");
+        mGrad.addColorStop(0, rgbaOf(DARKER[wt.wheel_slice_a.toLowerCase()] || wt.wheel_slice_a, 0.6));
+        mGrad.addColorStop(1, rgbaOf(wt.wheel_center, 0.9));
         ctx.fillStyle = mGrad;
         ctx.fill();
-        ctx.strokeStyle = "rgba(139,92,246,0.3)";
+        ctx.strokeStyle = rgbaOf(wt.wheel_glow, 0.3);
         ctx.lineWidth = 1;
         ctx.stroke();
-        // Label
         ctx.save();
         ctx.translate(cx, cy);
         ctx.rotate(startA + multSlice / 2);
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
-        ctx.fillStyle = "#e9d5ff";
+        ctx.fillStyle = wt.wheel_text;
         ctx.font = `bold ${size * 0.026}px sans-serif`;
-        ctx.shadowColor = "rgba(168,85,247,0.8)";
+        ctx.shadowColor = rgbaOf(wt.wheel_glow, 0.8);
         ctx.shadowBlur = 6;
         ctx.fillText(m.label, outerR - 20, 0);
         ctx.shadowBlur = 0;
@@ -161,33 +215,32 @@ export default function SpinWheelPage() {
       });
     }
 
-    // === LED dots around outer ring ===
+    // === LED dots ===
     const numDots = 16;
     for (let i = 0; i < numDots; i++) {
       const dotAngle = (i / numDots) * 2 * Math.PI + angle * 0.3;
       const dotX = cx + Math.cos(dotAngle) * (outerR - 4);
       const dotY = cy + Math.sin(dotAngle) * (outerR - 4);
-      // Glow
+      const dotColor = i % 2 === 0 ? wt.wheel_dot_a : wt.wheel_dot_b;
       const dotGlow = ctx.createRadialGradient(dotX, dotY, 0, dotX, dotY, 8);
-      dotGlow.addColorStop(0, i % 2 === 0 ? "rgba(251,191,36,0.8)" : "rgba(236,72,153,0.8)");
+      dotGlow.addColorStop(0, rgbaOf(dotColor, 0.8));
       dotGlow.addColorStop(1, "rgba(0,0,0,0)");
       ctx.beginPath();
       ctx.arc(dotX, dotY, 8, 0, 2 * Math.PI);
       ctx.fillStyle = dotGlow;
       ctx.fill();
-      // Dot
       ctx.beginPath();
       ctx.arc(dotX, dotY, 3, 0, 2 * Math.PI);
-      ctx.fillStyle = i % 2 === 0 ? "#fbbf24" : "#ec4899";
+      ctx.fillStyle = dotColor;
       ctx.fill();
     }
 
-    // === Inner blue glow ring ===
+    // === Inner glow ring ===
     ctx.beginPath();
     ctx.arc(cx, cy, wheelR + 5, 0, 2 * Math.PI);
-    ctx.strokeStyle = "#38bdf8";
+    ctx.strokeStyle = wt.wheel_inner_ring;
     ctx.lineWidth = 4;
-    ctx.shadowColor = "rgba(56,189,248,0.6)";
+    ctx.shadowColor = rgbaOf(wt.wheel_inner_ring, 0.6);
     ctx.shadowBlur = 12;
     ctx.stroke();
     ctx.shadowBlur = 0;
@@ -197,26 +250,21 @@ export default function SpinWheelPage() {
       const startA = i * sliceAngle + angle;
       const endA = startA + sliceAngle;
 
-      // Slice fill — alternating purples
+      const base = prizeMode && p.color ? p.color : (i % 2 === 0 ? wt.wheel_slice_a : wt.wheel_slice_b);
+
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.arc(cx, cy, wheelR, startA, endA);
       ctx.closePath();
       const sliceGrad = ctx.createRadialGradient(cx, cy, size * 0.06, cx, cy, wheelR);
-      if (i % 2 === 0) {
-        sliceGrad.addColorStop(0, "#6d28d9");
-        sliceGrad.addColorStop(1, "#7c3aed");
-      } else {
-        sliceGrad.addColorStop(0, "#4c1d95");
-        sliceGrad.addColorStop(1, "#5b21b6");
-      }
+      sliceGrad.addColorStop(0, darker(base));
+      sliceGrad.addColorStop(1, base);
       ctx.fillStyle = sliceGrad;
       ctx.fill();
-      ctx.strokeStyle = "rgba(168,85,247,0.4)";
+      ctx.strokeStyle = rgbaOf(wt.wheel_glow, 0.4);
       ctx.lineWidth = 1.5;
       ctx.stroke();
 
-      // Content
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(startA + sliceAngle / 2);
@@ -227,8 +275,7 @@ export default function SpinWheelPage() {
         ctx.drawImage(imgObj, wheelR * 0.5 - imgSize / 2, -imgSize / 2, imgSize, imgSize);
       }
 
-      // Label
-      ctx.fillStyle = "#e9d5ff";
+      ctx.fillStyle = prizeMode ? readableText(base) : wt.wheel_text;
       ctx.font = `bold ${size * 0.024}px sans-serif`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
@@ -243,34 +290,31 @@ export default function SpinWheelPage() {
     // === Center circle ===
     const centerR = size * 0.12;
     const centerGrad = ctx.createRadialGradient(cx, cy - centerR * 0.3, 0, cx, cy, centerR);
-    centerGrad.addColorStop(0, "#7c3aed");
-    centerGrad.addColorStop(0.7, "#4c1d95");
-    centerGrad.addColorStop(1, "#2e1065");
+    centerGrad.addColorStop(0, wt.wheel_ring_border);
+    centerGrad.addColorStop(0.7, wt.wheel_center);
+    centerGrad.addColorStop(1, darker(wt.wheel_center));
     ctx.beginPath();
     ctx.arc(cx, cy, centerR, 0, 2 * Math.PI);
     ctx.fillStyle = centerGrad;
     ctx.fill();
-    // Center glow border
-    ctx.strokeStyle = "#a78bfa";
+    ctx.strokeStyle = wt.wheel_center_border;
     ctx.lineWidth = 3;
-    ctx.shadowColor = "rgba(167,139,250,0.6)";
+    ctx.shadowColor = rgbaOf(wt.wheel_center_border, 0.6);
     ctx.shadowBlur = 10;
     ctx.stroke();
     ctx.shadowBlur = 0;
 
-    // SPIN text
+    // Center text
     ctx.fillStyle = "#f5f3ff";
     ctx.font = `bold ${size * 0.042}px sans-serif`;
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-    ctx.shadowColor = "rgba(139,92,246,0.8)";
+    ctx.shadowColor = rgbaOf(wt.wheel_glow, 0.8);
     ctx.shadowBlur = 8;
-    ctx.fillText("SPIN", cx, cy);
+    ctx.fillText(wt.wheel_center_text || "SPIN", cx, cy);
     ctx.shadowBlur = 0;
 
-    
-
-  }, [prizes, multipliers, loadedImages]);
+  }, [prizes, multipliers, loadedImages, wt]);
 
   useEffect(() => { drawWheel(currentAngle); }, [currentAngle, drawWheel]);
 
