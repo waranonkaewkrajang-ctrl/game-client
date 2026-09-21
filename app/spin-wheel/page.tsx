@@ -48,6 +48,7 @@ const DARKER: Record<string, string> = { "#7c3aed": "#6d28d9", "#5b21b6": "#4c1d
 const darker = (hex: string) => {
   const key = (hex || "").toLowerCase();
   if (DARKER[key]) return DARKER[key];
+  if (!/^#[0-9a-f]{6}$/.test(key)) return hex || "#000000";
   const [r, g, b] = hexRgb(hex);
   return `rgb(${Math.round(r * 0.72)},${Math.round(g * 0.72)},${Math.round(b * 0.72)})`;
 };
