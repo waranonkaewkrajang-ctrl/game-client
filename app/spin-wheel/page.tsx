@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 interface Prize {
   id: number; label: string; type: string; value: number;
   color: string; icon: string; image_url: string | null; sort_order: number;
+  img_scale?: number; img_x?: number; img_y?: number; img_rotate?: number;
 }
 interface MultiplierItem {
   id: number; label: string; value: number; color: string; sort_order: number;
@@ -56,6 +57,64 @@ const darker = (hex: string) => {
 const readableText = (hex: string) => {
   const [r, g, b] = hexRgb(hex);
   return (r * 299 + g * 587 + b * 114) / 1000 > 150 ? "#1a1a2e" : "#ffffff";
+};
+
+
+// ── วาดภาพ + ชื่อในช่อง (ต้องตรงกับตัวแก้ภาพหลังบ้าน prizeImageEditor.ts) ──
+const WHEEL = { SIZE: 380, RIM: 44, IMG_BASE: 0.13, IMG_POS: 0.58, LABEL_RIM: 0.87 };
+type ImgTransform = { img_scale: number; img_x: number; img_y: number; img_rotate: number };
+
+const fitText = (ctx: CanvasRenderingContext2D, text: string, maxW: number, maxPx: number, minPx: number) => {
+  let px = maxPx;
+  ctx.font = `bold ${px}px sans-serif`;
+  while (px > minPx && ctx.measureText(text).width > maxW) {
+    px -= 0.5;
+    ctx.font = `bold ${px}px sans-serif`;
+  }
+  if (ctx.measureText(text).width <= maxW) return text;
+  let t = text;
+  while (t.length > 1 && ctx.measureText(t + "…").width > maxW) t = t.slice(0, -1);
+  return t + "…";
+};
+
+const drawSliceContent = (
+  ctx: CanvasRenderingContext2D,
+  o: { size: number; wheelR: number; sliceAngle: number; label: string; textColor: string; img: HTMLImageElement | null; t: ImgTransform }
+) => {
+  const { size, wheelR, sliceAngle, label, textColor, img, t } = o;
+  const hasImg = !!img && img.naturalWidth > 0;
+
+  if (hasImg && img) {
+    const base = size * WHEEL.IMG_BASE * (t.img_scale / 100);
+    const ratio = img.naturalWidth / img.naturalHeight;
+    const w = ratio >= 1 ? base : base * ratio;
+    const h = ratio >= 1 ? base / ratio : base;
+    ctx.save();
+    ctx.translate(wheelR * (WHEEL.IMG_POS + t.img_x / 100), wheelR * (t.img_y / 100));
+    ctx.rotate(Math.PI / 2 + (t.img_rotate * Math.PI) / 180);
+    ctx.shadowColor = "rgba(0,0,0,0.45)";
+    ctx.shadowBlur = 8;
+    ctx.shadowOffsetY = 2;
+    ctx.drawImage(img, -w / 2, -h / 2, w, h);
+    ctx.restore();
+  }
+
+  ctx.save();
+  ctx.fillStyle = textColor;
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.shadowColor = "rgba(0,0,0,0.5)";
+  ctx.shadowBlur = 3;
+  if (hasImg) {
+    const r = wheelR * WHEEL.LABEL_RIM;
+    const maxW = 2 * r * Math.sin(Math.min(sliceAngle / 2, Math.PI / 2)) * 0.8;
+    ctx.translate(r, 0);
+    ctx.rotate(Math.PI / 2);
+    ctx.fillText(fitText(ctx, label, maxW, size * 0.03, size * 0.017), 0, 0);
+  } else {
+    ctx.fillText(fitText(ctx, label, wheelR * 0.6, size * 0.024, size * 0.016), wheelR * 0.55, 0);
+  }
+  ctx.restore();
 };
 
 export default function SpinWheelPage() {
@@ -269,22 +328,13 @@ export default function SpinWheelPage() {
       ctx.save();
       ctx.translate(cx, cy);
       ctx.rotate(startA + sliceAngle / 2);
-
-      const imgObj = loadedImages[p.id];
-      if (imgObj) {
-        const imgSize = size * 0.09;
-        ctx.drawImage(imgObj, wheelR * 0.5 - imgSize / 2, -imgSize / 2, imgSize, imgSize);
-      }
-
-      ctx.fillStyle = prizeMode ? readableText(base) : wt.wheel_text;
-      ctx.font = `bold ${size * 0.024}px sans-serif`;
-      ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      ctx.shadowColor = "rgba(0,0,0,0.5)";
-      ctx.shadowBlur = 3;
-      const labelY = imgObj ? -size * 0.065 : 0;
-      ctx.fillText(p.label, wheelR * 0.55, labelY);
-      ctx.shadowBlur = 0;
+      drawSliceContent(ctx, {
+        size, wheelR, sliceAngle,
+        label: p.label,
+        textColor: prizeMode ? readableText(base) : wt.wheel_text,
+        img: loadedImages[p.id] || null,
+        t: { img_scale: p.img_scale ?? 100, img_x: p.img_x ?? 0, img_y: p.img_y ?? 0, img_rotate: p.img_rotate ?? 0 },
+      });
       ctx.restore();
     });
 
