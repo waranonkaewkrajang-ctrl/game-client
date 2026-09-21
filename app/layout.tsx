@@ -5,6 +5,7 @@ import NavbarWrapper from "@/components/NavbarWrapper";
 import BottomMenu from "@/components/BottomMenu";
 import I18nProvider from "@/components/I18nProvider";
 import PopupModal from "@/components/PopupModal";
+import ThemeLoader from "./ThemeLoader";
 
 const TITLE = "SNAKE168 – เว็บอันดับ 1 ของไทย มั่นคงปลอดภัย 100%";
 const DESCRIPTION = "SNAKE168 เว็บสล็อตออนไลน์ ฝากถอนออโต้ ปลอดภัย 100% บริการ 24 ชม.";
@@ -14,7 +15,11 @@ export async function generateMetadata(): Promise<Metadata> {
   const headersList = await headers();
   const host = headersList.get("host") || "snake1168.online";
   const protocol = host.includes("localhost") ? "http" : "https";
-  const baseUrl = `${protocol}://${host}`;
+  // host เป็น IPv6 ต้องครอบ [ ] ไม่งั้น new URL() พัง
+  const safeHost = host.includes(":") && !host.startsWith("[") && (host.match(/:/g) || []).length > 1
+    ? `[${host}]`
+    : host;
+  const baseUrl = `${protocol}://${safeHost}`;
 
   return {
     title: TITLE,
@@ -76,6 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body>
+        <ThemeLoader />
         <I18nProvider>
           <NavbarWrapper />
           {children}
