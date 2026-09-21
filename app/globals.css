@@ -19,7 +19,11 @@
   --glow-accent: rgba(245, 158, 11, 0.4);
   --glow-danger: rgba(220, 38, 38, 0.4);
   --glow-primary: rgba(124, 58, 237, 0.4);
+  --font-family: 'Inter';
+  --font-scale: 100%;
 }
+
+html { font-size: var(--font-scale); }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -31,7 +35,7 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   color: var(--color-text);
-  font-family: 'Inter', -apple-system, sans-serif;
+  font-family: var(--font-family), 'Kanit', -apple-system, sans-serif;
   min-height: 100vh;
   overflow-x: clip;
 }

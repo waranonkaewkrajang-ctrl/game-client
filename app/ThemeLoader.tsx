@@ -9,6 +9,21 @@ const hexToRgb = (hex: string) => {
   return `${parseInt(h.slice(0, 2), 16)}, ${parseInt(h.slice(2, 4), 16)}, ${parseInt(h.slice(4, 6), 16)}`;
 };
 
+// โหลดฟอนต์จาก Google Fonts ตามที่เลือกในหลังบ้าน
+const loadFont = (font: string) => {
+  if (!font || font === "Inter") return;
+  const id = "theme-font-link";
+  const href = `https://fonts.googleapis.com/css2?family=${encodeURIComponent(font).replace(/%20/g, "+")}:wght@300;400;500;600;700&display=swap`;
+  let link = document.getElementById(id) as HTMLLinkElement | null;
+  if (!link) {
+    link = document.createElement("link");
+    link.id = id;
+    link.rel = "stylesheet";
+    document.head.appendChild(link);
+  }
+  if (link.href !== href) link.href = href;
+};
+
 const applyTheme = (t: Theme) => {
   const root = document.documentElement.style;
   const colors: Record<string, string> = {
@@ -38,17 +53,22 @@ const applyTheme = (t: Theme) => {
   if (typeof t.accent === "string")  root.setProperty("--glow-accent",  `rgba(${hexToRgb(t.accent)}, ${glow})`);
   if (typeof t.danger === "string")  root.setProperty("--glow-danger",  `rgba(${hexToRgb(t.danger)}, ${glow})`);
   if (typeof t.primary === "string") root.setProperty("--glow-primary", `rgba(${hexToRgb(t.primary)}, ${glow})`);
+
+  // ฟอนต์ + ขนาดตัวอักษร
+  if (typeof t.font === "string") {
+    loadFont(t.font);
+    root.setProperty("--font-family", `'${t.font}'`);
+  }
+  root.setProperty("--font-scale", `${Number(t.font_scale ?? 100)}%`);
 };
 
 export default function ThemeLoader() {
   useEffect(() => {
-    // ใช้ธีมที่จำไว้ก่อน (ไม่ต้องรอ API)
     try {
       const cached = localStorage.getItem("site_theme");
       if (cached) applyTheme(JSON.parse(cached));
     } catch {}
 
-    // แล้วโหลดล่าสุดจาก server
     api.get("/site/theme")
       .then((res) => {
         const t = res.data?.data;
