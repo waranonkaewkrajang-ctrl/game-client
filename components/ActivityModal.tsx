@@ -109,35 +109,48 @@ export default function ActivityModal({ act, onClose }: { act: ActItem; onClose:
       </div>
 
       <style>{`
-        .am-overlay { position:fixed; inset:0; z-index:90; background:rgba(3,7,18,.78); backdrop-filter:blur(5px); display:flex; align-items:center; justify-content:center; padding:1rem; animation:amFade .18s ease-out; }
-        .am-box { position:relative; width:100%; max-width:380px; max-height:88vh; overflow-y:auto; border-radius:20px; background:linear-gradient(180deg,#1e1b4b 0%,#0f0f2e 100%); border:1px solid rgba(253,224,71,.35); box-shadow:0 24px 60px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.06) inset; animation:amPop .25s cubic-bezier(.2,1.2,.4,1); }
-        .am-close { position:absolute; top:10px; right:10px; z-index:2; width:32px; height:32px; border-radius:50%; border:none; background:rgba(0,0,0,.5); color:#fff; font-size:15px; cursor:pointer; }
-        .am-img { width:100%; max-height:190px; overflow:hidden; border-radius:20px 20px 0 0; }
+                .am-overlay { position:fixed; inset:0; z-index:90; background:rgba(15,23,42,.62); backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; padding:1rem; animation:amFade .18s ease-out; }
+        .am-box { position:relative; width:100%; max-width:380px; max-height:88vh; overflow-y:auto; border-radius:24px;
+          background:linear-gradient(180deg,#ffffff 0%,#f6f8ff 60%,#eef1ff 100%);
+          border:1px solid rgba(255,255,255,.9);
+          box-shadow:0 0 0 1px rgba(99,102,241,.1), 0 10px 0 -4px #dbe3ff, 0 18px 0 -8px #b9c6ff, 0 34px 70px -18px rgba(30,41,59,.55);
+          animation:amPop .28s cubic-bezier(.2,1.25,.4,1); }
+        .am-close { position:absolute; top:12px; right:12px; z-index:2; width:34px; height:34px; border-radius:50%; border:none; background:rgba(255,255,255,.95); color:#475569; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 3px 10px rgba(15,23,42,.25); }
+        .am-close:active { transform:scale(.92); }
+        .am-img { width:100%; max-height:186px; overflow:hidden; border-radius:24px 24px 0 0; }
         .am-img img { width:100%; display:block; object-fit:cover; }
-        .am-body { padding:1.1rem 1.15rem 1.3rem; }
-        .am-title { margin:0; font-size:1.2rem; font-weight:800; color:#fde68a; text-align:center; }
-        .am-sub { margin:.35rem 0 0; font-size:.83rem; color:rgba(226,232,240,.75); text-align:center; line-height:1.5; }
-        .am-pills { display:flex; gap:.4rem; flex-wrap:wrap; justify-content:center; margin:.8rem 0 0; }
-        .am-pill { background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.14); color:#e2e8f0; font-size:.74rem; padding:.28rem .7rem; border-radius:99px; }
-        .am-pill-gold { background:rgba(253,224,71,.14); border-color:rgba(253,224,71,.45); color:#fde68a; font-weight:700; }
-        .am-rules { margin-top:.9rem; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.1); border-radius:12px; padding:.7rem .85rem; }
-        .am-rules-head { font-size:.78rem; font-weight:700; color:#c7d2fe; margin-bottom:.35rem; }
-        .am-rule-line { font-size:.78rem; color:rgba(226,232,240,.8); line-height:1.7; }
-        .am-question { margin-top:1rem; text-align:center; font-size:.95rem; font-weight:700; color:#fff; }
-        .am-options { display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:.5rem; margin-top:.7rem; }
-        .am-opt { padding:.65rem .5rem; border-radius:12px; border:1.5px solid rgba(255,255,255,.16); background:rgba(255,255,255,.06); color:#e2e8f0; font-size:.83rem; font-weight:600; cursor:pointer; font-family:inherit; transition:all .13s; }
-        .am-opt:active { transform:scale(.97); }
-        .am-opt-on { border-color:#fbbf24; background:rgba(251,191,36,.18); color:#fde68a; box-shadow:0 0 0 3px rgba(251,191,36,.16); }
-        .am-msg { margin-top:.8rem; padding:.55rem .75rem; border-radius:10px; font-size:.8rem; text-align:center; }
-        .am-msg-ok { background:rgba(34,197,94,.14); border:1px solid rgba(34,197,94,.4); color:#86efac; }
-        .am-msg-err { background:rgba(239,68,68,.14); border:1px solid rgba(239,68,68,.4); color:#fca5a5; }
-        .am-cta { width:100%; margin-top:1rem; height:48px; border:none; border-radius:12px; cursor:pointer; font-family:inherit; font-size:.95rem; font-weight:800; color:#3b2409;
-          background:linear-gradient(180deg,#fde047 0%,#f59e0b 60%,#b45309 100%);
-          box-shadow:0 5px 0 #78350f, 0 10px 20px rgba(0,0,0,.45), inset 0 2px 0 rgba(255,255,255,.5); transition:transform .1s, box-shadow .1s; }
-        .am-cta:active:not(:disabled) { transform:translateY(4px); box-shadow:0 1px 0 #78350f, inset 0 2px 0 rgba(255,255,255,.5); }
-        .am-cta:disabled { opacity:.65; cursor:not-allowed; }
+        .am-body { padding:1.2rem 1.2rem 1.35rem; }
+        .am-title { margin:0; font-size:1.3rem; font-weight:800; text-align:center; letter-spacing:-.01em;
+          background:linear-gradient(90deg,#4f46e5,#9333ea 55%,#f59e0b); -webkit-background-clip:text; background-clip:text; color:transparent; }
+        .am-sub { margin:.35rem 0 0; font-size:.84rem; color:#64748b; text-align:center; line-height:1.55; }
+        .am-pills { display:flex; gap:.45rem; flex-wrap:wrap; justify-content:center; margin:.85rem 0 0; }
+        .am-pill { background:#f1f5f9; border:1px solid #e2e8f0; color:#475569; font-size:.75rem; font-weight:600; padding:.32rem .75rem; border-radius:99px; }
+        .am-pill-gold { background:linear-gradient(180deg,#fef3c7,#fde68a); border-color:#fbbf24; color:#92400e; font-weight:800; box-shadow:0 2px 0 #f59e0b; }
+        .am-rules { margin-top:.95rem; background:white; border:1px solid #e8ecf7; border-radius:16px; padding:.85rem .95rem; box-shadow:0 2px 8px rgba(79,70,229,.06); }
+        .am-rules-head { font-size:.8rem; font-weight:800; color:#4f46e5; margin-bottom:.4rem; }
+        .am-rule-line { font-size:.8rem; color:#475569; line-height:1.75; }
+        .am-question { margin-top:1.05rem; text-align:center; font-size:1rem; font-weight:800; color:#0f172a; }
+        .am-options { display:grid; grid-template-columns:repeat(auto-fit,minmax(90px,1fr)); gap:.55rem; margin-top:.75rem; }
+        .am-opt { padding:.7rem .5rem; border-radius:16px; border:none; cursor:pointer; font-family:inherit; font-size:.85rem; font-weight:700; color:#334155;
+          background:linear-gradient(180deg,#ffffff,#eef2ff);
+          box-shadow:0 4px 0 #c7d2fe, 0 8px 14px rgba(79,70,229,.14), inset 0 1px 0 #fff;
+          transition:transform .12s, box-shadow .12s; }
+        .am-opt:active { transform:translateY(3px); box-shadow:0 1px 0 #c7d2fe, inset 0 1px 0 #fff; }
+        .am-opt-on { color:#3730a3;
+          background:linear-gradient(180deg,#e0e7ff,#c7d2fe);
+          box-shadow:0 4px 0 #818cf8, 0 10px 18px rgba(79,70,229,.3), inset 0 1px 0 #fff, 0 0 0 2px #6366f1; }
+        .am-msg { margin-top:.85rem; padding:.6rem .8rem; border-radius:12px; font-size:.8rem; text-align:center; font-weight:600; }
+        .am-msg-ok { background:#dcfce7; border:1px solid #86efac; color:#15803d; }
+        .am-msg-err { background:#fee2e2; border:1px solid #fca5a5; color:#b91c1c; }
+        .am-cta { width:100%; margin-top:1.1rem; height:52px; border:none; border-radius:18px; cursor:pointer; font-family:inherit; font-size:1rem; font-weight:800; color:#fff; letter-spacing:.01em;
+          background:linear-gradient(180deg,#818cf8 0%,#4f46e5 55%,#4338ca 100%);
+          box-shadow:0 6px 0 #312e81, 0 14px 24px rgba(67,56,202,.42), inset 0 2px 0 rgba(255,255,255,.4);
+          transition:transform .1s, box-shadow .1s, filter .15s; }
+        .am-cta:hover:not(:disabled) { filter:brightness(1.07); }
+        .am-cta:active:not(:disabled) { transform:translateY(5px); box-shadow:0 1px 0 #312e81, inset 0 2px 0 rgba(255,255,255,.4); }
+        .am-cta:disabled { opacity:.6; cursor:not-allowed; }
         @keyframes amFade { from { opacity:0 } to { opacity:1 } }
-        @keyframes amPop { from { opacity:0; transform:translateY(16px) scale(.96) } to { opacity:1; transform:translateY(0) scale(1) } }
+        @keyframes amPop { from { opacity:0; transform:translateY(20px) scale(.94) } to { opacity:1; transform:translateY(0) scale(1) } }
       `}</style>
     </div>
   );
