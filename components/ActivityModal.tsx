@@ -117,8 +117,8 @@ export default function ActivityModal({ act, onClose }: { act: ActItem; onClose:
           animation:amPop .28s cubic-bezier(.2,1.25,.4,1); }
         .am-close { position:absolute; top:12px; right:12px; z-index:2; width:34px; height:34px; border-radius:50%; border:none; background:rgba(255,255,255,.95); color:#475569; font-size:15px; font-weight:700; cursor:pointer; box-shadow:0 3px 10px rgba(15,23,42,.25); }
         .am-close:active { transform:scale(.92); }
-        .am-img { width:100%; max-height:186px; overflow:hidden; border-radius:24px 24px 0 0; }
-        .am-img img { width:100%; display:block; object-fit:cover; }
+        .am-img { width:100%; overflow:hidden; border-radius:24px 24px 0 0; background:#0f172a; }
+        .am-img img { width:100%; height:auto; display:block; }
         .am-body { padding:1.2rem 1.2rem 1.35rem; }
         .am-title { margin:0; font-size:1.3rem; font-weight:800; text-align:center; letter-spacing:-.01em;
           background:linear-gradient(90deg,#4f46e5,#9333ea 55%,#f59e0b); -webkit-background-clip:text; background-clip:text; color:transparent; }
