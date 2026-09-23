@@ -7,8 +7,31 @@ type Act = {
   id: number; type: string; title: string; subtitle: string | null;
   image_url: string | null; image_thumb: string | null;
   slots: string[]; link_url: string | null;
-  badge: string | null; badge_color: string | null; show_once: boolean;
+    badge: string | null; badge_color: string | null; show_once: boolean;
+  end_at?: string | null;
 };
+
+
+// นับถอยหลังจนถึงเวลาที่กำหนด
+function Countdown({ end }: { end: string }) {
+  const [left, setLeft] = useState(() => Math.max(0, new Date(end).getTime() - Date.now()));
+
+  useEffect(() => {
+    const t = setInterval(() => setLeft(Math.max(0, new Date(end).getTime() - Date.now())), 1000);
+    return () => clearInterval(t);
+  }, [end]);
+
+  if (left <= 0) return null;
+
+  const s = Math.floor(left / 1000);
+  const d = Math.floor(s / 86400);
+  const pad = (n: number) => String(n).padStart(2, "0");
+  const text = d > 0
+    ? `${d} วัน ${pad(Math.floor((s % 86400) / 3600))}:${pad(Math.floor((s % 3600) / 60))}`
+    : `${pad(Math.floor(s / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`;
+
+  return <span className={`act-timer ${s < 3600 ? "act-timer-hot" : ""}`}>⏱ {text}</span>;
+}
 
 export default function Activities({ page, slot }: { page: string; slot: string }) {
   const router = useRouter();
@@ -92,27 +115,53 @@ export default function Activities({ page, slot }: { page: string; slot: string 
     );
   }
 
-  // ── ปุ่มลอย ──
+    // ── กล่องสมบัติลอย ──
   if (slot === "float_button") {
     return (
       <div className="act-float">
         {items.slice(0, 3).map((a) => (
-          <button key={a.id} onClick={() => go(a)} title={a.title}>
-            {a.image_thumb ? <img src={a.image_thumb} alt={a.title} loading="lazy" /> : <span>{a.title.slice(0, 2)}</span>}
-            {a.badge && <i style={{ background: a.badge_color || "#ef4444" }}>{a.badge}</i>}
-          </button>
+          <div key={a.id} className="act-box-wrap">
+            <button className="act-box" onClick={() => go(a)} title={a.title}>
+              <span className="act-spark act-spark-1">✦</span>
+              <span className="act-spark act-spark-2">✦</span>
+              <span className="act-box-img">
+                {a.image_thumb
+                  ? <img src={a.image_thumb} alt={a.title} loading="lazy" />
+                  : <span className="act-box-text">{a.title.slice(0, 2)}</span>}
+              </span>
+              {a.badge && <i className="act-box-badge" style={{ background: a.badge_color || "#ef4444" }}>{a.badge}</i>}
+            </button>
+            <span className="act-box-foot">
+              {a.end_at ? <Countdown end={a.end_at} /> : <span className="act-box-name">{a.title}</span>}
+            </span>
+          </div>
         ))}
         <style>{`
-          .act-float { position:fixed; right:10px; bottom:96px; z-index:35; display:flex; flex-direction:column; gap:.6rem; }
-          .act-float button { position:relative; width:58px; height:58px; border-radius:50%; border:1px solid rgba(255,255,255,.2); background:rgba(15,23,42,.85); cursor:pointer; overflow:hidden; padding:0; box-shadow:0 6px 18px rgba(0,0,0,.5); animation:actBob 3s ease-in-out infinite; }
-          .act-float button img { width:100%; height:100%; object-fit:cover; }
-          .act-float button span { color:white; font-size:.8rem; font-weight:700; }
-          .act-float i { position:absolute; top:-2px; right:-2px; color:white; font-size:.55rem; font-style:normal; font-weight:700; padding:1px 5px; border-radius:99px; }
-          @keyframes actBob { 0%,100% { transform:translateY(0) } 50% { transform:translateY(-6px) } }
+          .act-float { position:fixed; right:10px; bottom:92px; z-index:35; display:flex; flex-direction:column; gap:.7rem; }
+          .act-box-wrap { display:flex; flex-direction:column; align-items:center; width:76px; }
+          .act-box { position:relative; width:76px; height:72px; border:none; padding:5px; cursor:pointer; border-radius:14px 14px 4px 4px;
+            background:linear-gradient(180deg,#facc15 0%,#f59e0b 45%,#b45309 100%);
+            box-shadow:0 0 0 2px rgba(253,224,71,.45), 0 6px 0 #78350f, 0 12px 20px rgba(0,0,0,.55), inset 0 2px 0 rgba(255,255,255,.55);
+            animation:actShake 2.6s ease-in-out infinite; transition:transform .12s; }
+          .act-box:active { transform:translateY(4px); box-shadow:0 0 0 2px rgba(253,224,71,.45), 0 2px 0 #78350f, inset 0 2px 0 rgba(255,255,255,.55); }
+          .act-box-img { display:block; width:100%; height:100%; border-radius:10px 10px 3px 3px; overflow:hidden; background:#1e1b4b; display:flex; align-items:center; justify-content:center; }
+          .act-box-img img { width:100%; height:100%; object-fit:cover; }
+          .act-box-text { color:#fde68a; font-size:.85rem; font-weight:800; }
+          .act-box-badge { position:absolute; top:-6px; left:-4px; color:white; font-size:.55rem; font-style:normal; font-weight:700; padding:2px 6px; border-radius:99px; box-shadow:0 2px 5px rgba(0,0,0,.4); }
+          .act-box-foot { margin-top:5px; min-height:18px; display:flex; align-items:center; justify-content:center; }
+          .act-timer { background:rgba(15,23,42,.92); border:1px solid rgba(253,224,71,.5); color:#fde68a; font-size:.62rem; font-weight:700; padding:2px 7px; border-radius:99px; white-space:nowrap; font-variant-numeric:tabular-nums; }
+          .act-timer-hot { color:#fecaca; border-color:rgba(248,113,113,.7); animation:actBlink 1s steps(2) infinite; }
+          .act-box-name { background:rgba(15,23,42,.9); color:#e2e8f0; font-size:.6rem; padding:2px 7px; border-radius:99px; max-width:76px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+          .act-spark { position:absolute; color:#fff9c4; font-size:.7rem; pointer-events:none; text-shadow:0 0 6px #fde047; }
+          .act-spark-1 { top:-4px; right:2px; animation:actTwinkle 1.8s ease-in-out infinite; }
+          .act-spark-2 { bottom:8px; left:-3px; animation:actTwinkle 1.8s ease-in-out .9s infinite; }
+          @keyframes actShake { 0%,88%,100% { transform:rotate(0) } 90% { transform:rotate(-5deg) } 94% { transform:rotate(5deg) } 97% { transform:rotate(-3deg) } }
+          @keyframes actTwinkle { 0%,100% { opacity:0; transform:scale(.6) } 50% { opacity:1; transform:scale(1.2) } }
+          @keyframes actBlink { 0%,100% { opacity:1 } 50% { opacity:.45 } }
         `}</style>
       </div>
     );
   }
-
+  
   return null;
 }
