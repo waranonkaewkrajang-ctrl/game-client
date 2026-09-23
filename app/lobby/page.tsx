@@ -6,6 +6,7 @@ import GameSidebar from "@/components/GameSidebar";
 import Swal from "sweetalert2";
 import Link from "next/link";
 import { useTranslation } from "react-i18next";
+import Activities from "@/components/Activities";
 
 
 interface Game {
@@ -322,6 +323,10 @@ export default function LobbyPage() {
           )}
         </div>
        
+        {/* กิจกรรมจากหลังบ้าน */}
+        <Activities page="lobby" slot="icon_grid" />
+        <Activities page="lobby" slot="home_card" />
+      
        {/* Highlight Marquee Bar */}
         <div style={{ 
           display: "flex", 

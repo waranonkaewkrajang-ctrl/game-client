@@ -40,8 +40,6 @@ const [menuOpen, setMenuOpen] = useState(false);
 
   const fmt = (n: number) => n.toLocaleString("th-TH", { minimumFractionDigits: 2 });
 
-  
-
    return (
     <>
       <header style={{ background: "linear-gradient(to bottom, #aa00a0, #2b002b)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 16px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 150, backdropFilter: "blur(10px)" }}>
