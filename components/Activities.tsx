@@ -37,6 +37,7 @@ function Countdown({ end }: { end: string }) {
 export default function Activities({ page, slot }: { page: string; slot: string }) {
   const router = useRouter();
   const [items, setItems] = useState<Act[]>([]);
+  const [modal, setModal] = useState<Act | null>(null);
 
   useEffect(() => {
     let alive = true;
