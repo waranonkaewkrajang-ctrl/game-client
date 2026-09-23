@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
+import ActivityModal from "@/components/ActivityModal";
 
 type Act = {
   id: number; type: string; title: string; subtitle: string | null;
@@ -52,12 +53,18 @@ export default function Activities({ page, slot }: { page: string; slot: string 
   if (items.length === 0) return null;
 
   const go = (a: Act) => {
+    // ทายบอล/ทายหวย หรือกิจกรรมที่มีกติกา → เปิด Pop-up
+    const hasDetail = a.type === "football" || a.type === "lotto2" || !!(a as any).config?.rules;
+    if (hasDetail) { setModal(a); return; }
+
     api.post(`/activities/${a.id}/click`).catch(() => {});
     const url = a.link_url || "";
     if (!url) return;
     if (url.startsWith("http")) window.open(url, "_blank");
     else router.push(url);
   };
+
+  const Modal = modal ? <ActivityModal act={modal as any} onClose={() => setModal(null)} /> : null;
 
   // ── กริดไอคอน ──
   if (slot === "icon_grid") {
@@ -81,6 +88,7 @@ export default function Activities({ page, slot }: { page: string; slot: string 
           .act-icon-label { font-size:.72rem; color:var(--color-text,#e2e8f0); text-align:center; line-height:1.25; max-width:84px; }
           .act-badge { position:absolute; top:3px; right:3px; color:white; font-size:.55rem; font-weight:700; padding:1px 5px; border-radius:99px; }
         `}</style>
+        {Modal}
       </div>
     );
   }
@@ -111,6 +119,7 @@ export default function Activities({ page, slot }: { page: string; slot: string 
           .act-card-text i { color:rgba(255,255,255,.8); font-size:.78rem; font-style:normal; }
           .act-badge-lg { position:absolute; top:10px; left:10px; color:white; font-size:.7rem; font-weight:700; padding:2px 9px; border-radius:99px; }
         `}</style>
+        {Modal}
       </div>
     );
   }
@@ -159,9 +168,10 @@ export default function Activities({ page, slot }: { page: string; slot: string 
           @keyframes actTwinkle { 0%,100% { opacity:0; transform:scale(.6) } 50% { opacity:1; transform:scale(1.2) } }
           @keyframes actBlink { 0%,100% { opacity:1 } 50% { opacity:.45 } }
         `}</style>
+        {Modal}
       </div>
     );
   }
-  
+
   return null;
 }
