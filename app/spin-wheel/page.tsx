@@ -386,6 +386,7 @@ export default function SpinWheelPage() {
       const prizeCenter = prizeIndex * sliceAngle + sliceAngle / 2;
       const targetSlice = -90 - prizeCenter - (angleRef.current * 180 / Math.PI);
       const normalizedTarget = ((targetSlice % 360) + 360) % 360;
+      console.log("🎯", data.prize.label, "| ช่อง", prizeIndex, "/", prizes.length, "| ค้าง", angleRef.current.toFixed(1), "| หมุนไป", normalizedTarget.toFixed(1), "| ลำดับ:", prizes.map(p => p.label).join(","));
       const totalSpin = 360 * 8 + normalizedTarget; // 8 full rotations + target
 
       const startAngle = angleRef.current;
