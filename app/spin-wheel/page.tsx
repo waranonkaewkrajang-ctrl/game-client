@@ -382,8 +382,9 @@ export default function SpinWheelPage() {
 
       // Calculate target angle
       const sliceAngle = 360 / prizes.length;
-      // 🆕 -90 เพราะ pointer อยู่ด้านบน (12 นาฬิกา) ไม่ใช่ด้านขวา (3 นาฬิกา)
-      const targetSlice = 360 - (prizeIndex * sliceAngle + sliceAngle / 2) - 90;
+      // เข็มอยู่ 12 นาฬิกา (-90°) — หมุนให้กลางช่องที่ถูกรางวัลมาหยุดตรงนั้น
+      const prizeCenter = prizeIndex * sliceAngle + sliceAngle / 2;
+      const targetSlice = -90 - prizeCenter - (angleRef.current * 180 / Math.PI);
       const normalizedTarget = ((targetSlice % 360) + 360) % 360;
       const totalSpin = 360 * 8 + normalizedTarget; // 8 full rotations + target
 
