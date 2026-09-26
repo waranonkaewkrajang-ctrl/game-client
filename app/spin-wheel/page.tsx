@@ -387,7 +387,7 @@ export default function SpinWheelPage() {
       const targetSlice = -90 - prizeCenter - angleRef.current;
       const normalizedTarget = ((targetSlice % 360) + 360) % 360;
       const totalSpin = 360 * 8 + normalizedTarget; // 8 full rotations + target
-
+      
       const startAngle = angleRef.current;
       const duration = 6000;
       const startTime = performance.now();
