@@ -44,7 +44,7 @@ export default function ProviderRoomPage() {
         }
       }
     } catch (err: any) {
-      Swal.fire({ icon: "error", title: "เปิดเกมไม่สำเร็จ", text: err.response?.data?.message || "กรุณาลองใหม่", background: "#14142a", color: "#e2e8f0", confirmButtonColor: "#dc2626" });
+      Swal.fire({ icon: "error", title: "เปิดเกมไม่สำเร็จ", text: err.response?.data?.message || "กรุณาลองใหม่", background: "#ffffff", color: "#0f172a", confirmButtonColor: "#dc2626", confirmButtonText: "ตกลง" });
     }
   };
 
