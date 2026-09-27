@@ -70,7 +70,7 @@ export default function LoginPage() {
       minHeight: "100vh", 
       display: "flex", alignItems: "center", justifyContent: "center",
       padding: "1rem", 
-      background: "url('/bg-desktop.webp') center/cover no-repeat",
+      background: "url('/bg-desktop-v2.webp') center/cover no-repeat",
       position: "relative", overflow: "hidden", fontFamily: "sans-serif" 
     }}>
       
