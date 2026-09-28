@@ -29,19 +29,27 @@ html { font-size: var(--font-scale); }
 
 body {
   background-color: var(--color-bg);
-  background-image: url('/bg-mobile-v2.webp');
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
   color: var(--color-text);
   font-family: var(--font-family), 'Kanit', -apple-system, sans-serif;
   min-height: 100vh;
   overflow-x: clip;
 }
 
+/* ภาพพื้นหลังแยกชั้น — แทน background-attachment: fixed ที่มือถือไม่รองรับ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: url('/bg-mobile-v2.webp');
+  background-size: contain;          /* เห็นภาพครบทุกส่วน ไม่ตัดขอบ */
+  background-position: center center;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+
 @media (min-width: 1024px) {
-  body {
+  body::before {
     background-image: url('/bg-desktop-v2.webp');
   }
 }

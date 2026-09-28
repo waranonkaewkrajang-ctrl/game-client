@@ -144,7 +144,7 @@ export default function RegisterPage() {
       minHeight: "100vh", 
       display: "flex", alignItems: "center", justifyContent: "center", 
       padding: "2rem 1rem", 
-      background: "url('/bg-desktop-v2.webp') center/cover no-repeat",
+      background: "transparent",
       position: "relative", overflow: "hidden", fontFamily: "sans-serif" 
     }}>
       
