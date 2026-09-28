@@ -88,12 +88,12 @@ const [menuOpen, setMenuOpen] = useState(false);
         <div className="-bg-bar"></div>
 
         <div className="-left-wrapper">
-          <a href="https://line.me/R/ti/p/@ODIN996" className="-item-wrapper -line" target="_blank" rel="noopener noreferrer nofollow">
-            <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-1.png" className="-ic-img" alt="Line" />
+          <a href="https://lin.ee/rjOBayDx" className="-item-wrapper -line" target="_blank" rel="noopener noreferrer nofollow">
+            <img src="/icons/menu/footer-menu-ic-left-1.webp" className="-ic-img" alt="Line" />
             <span className="-text">Line</span>
           </a>
           <Link href="/promotions" className="-item-wrapper -promotion">
-            <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชั่น" />
+            <img src="/icons/menu/footer-menu-ic-left-2.webp" className="-ic-img" alt="โปรโมชั่น" />
             <span className="-text">โปรโมชัน</span>
           </Link>
         </div>
@@ -101,18 +101,18 @@ const [menuOpen, setMenuOpen] = useState(false);
         <Link href="/lobby" className="-center-wrapper" aria-label="หน้าแรก">
           <div className="-selected">
             {/* โลโก้ตรงกลางปุ่ม */}
-            <img src="/logo.png" alt="Odin996" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
+            <img src="/logo.png" alt="SNAKE168" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
             <span className="-text">หน้าแรก</span>
           </div>
         </Link>
 
         <div className="-right-wrapper">
           <Link href="/wallet" className="-item-wrapper -deposit">
-            <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" className="-ic-img" alt="ฝากเงิน" />
+            <img src="/icons/menu/footer-menu-ic-right-1.webp" className="-ic-img" alt="ฝากเงิน" />
             <span className="-text">ฝากเงิน</span>
           </Link>
           <Link href="/wallet" className="-item-wrapper -withdraw">
-            <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-2.png" className="-ic-img" alt="ถอนเงิน" />
+            <img src="/icons/menu/footer-menu-ic-right-2.webp" className="-ic-img" alt="ถอนเงิน" />
             <span className="-text">ถอนเงิน</span>
           </Link>
         </div>
@@ -145,10 +145,10 @@ const [menuOpen, setMenuOpen] = useState(false);
             {/* ปุ่มฝาก/ถอน */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
               <Link href="/wallet?tab=deposit" onClick={() => setMenuOpen(false)} style={{ padding: "10px", borderRadius: "10px", background: "linear-gradient(135deg, #22c55e, #15803d)", color: "#fff", fontSize: "0.85rem", fontWeight: 700, textAlign: "center", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" style={{ width: "18px", height: "18px" }} alt="" /> ฝากเงิน
+                <img src="/icons/menu/footer-menu-ic-right-1.webp" style={{ width: "18px", height: "18px" }} alt="" /> ฝากเงิน
               </Link>
               <Link href="/wallet?tab=withdraw" onClick={() => setMenuOpen(false)} style={{ padding: "10px", borderRadius: "10px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontSize: "0.85rem", fontWeight: 700, textAlign: "center", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-2.png" style={{ width: "18px", height: "18px" }} alt="" /> ถอนเงิน
+                <img src="/icons/menu/footer-menu-ic-right-2.webp" style={{ width: "18px", height: "18px" }} alt="" /> ถอนเงิน
               </Link>
             </div>
 
@@ -156,8 +156,8 @@ const [menuOpen, setMenuOpen] = useState(false);
             <div style={{ padding: "8px 0" }}>
               {[
                 { label: "เข้าเกม", href: "/lobby", icon: <img src="/icons/game.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
-                { label: "โปรโมชั่น", href: "/promotions", icon: <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
-                { label: "กระเป๋าเงิน", href: "/wallet", icon: <img src="https://odin996.com/theme_1/img/footer-menu-ic-right-1.png" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
+                { label: "โปรโมชั่น", href: "/promotions", icon: <img src="/icons/menu/footer-menu-ic-left-2.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
+                { label: "กระเป๋าเงิน", href: "/wallet", icon: <img src="/icons/menu/footer-menu-ic-right-1.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
                 { label: "ติดต่อ", href: "https://lin.ee/rjOBayDx", icon: <img src="/icons/contact.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" />, external: true },
                 { label: "โปรไฟล์", href: "/profile", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> },
               ].map((item: any) => (

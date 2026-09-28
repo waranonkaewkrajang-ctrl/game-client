@@ -24,7 +24,7 @@ export default function BottomMenu() {
             <span className="-text">{t("nav.enterGame")}</span>
           </Link>
           <Link href="/promotions" className="-item-wrapper -promotion">
-            <img src="https://odin996.com/theme_1/img/footer-menu-ic-left-2.png" className="-ic-img" alt="โปรโมชัน" />
+            <img src="/icons/menu/footer-menu-ic-left-2.webp" className="-ic-img" alt="โปรโมชัน" />
             <span className="-text">{t("nav.promotion")}</span>
           </Link>
         </div>
