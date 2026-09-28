@@ -66,7 +66,7 @@ const [menuOpen, setMenuOpen] = useState(false);
               <a href="/wallet" style={{ textDecoration: "none", background: "linear-gradient(135deg, rgba(245,158,11,0.15), rgba(220,38,38,0.1))", border: "1px solid rgba(245,158,11,0.3)", borderRadius: "8px", padding: "4px 10px", display: "flex", alignItems: "center", gap: "5px" }}>
                 
                 {/* ลดขนาดเหรียญลงเหลือ 14px */}
-                <img alt="coin" className="shrink-0" src="https://fs.cdnrc.com/payment-layout/svg/coin.svg" style={{ width: "14px", height: "14px" }} />
+                <img alt="coin" className="shrink-0" src="/icons/coin.svg" style={{ width: "14px", height: "14px" }} />
                 
                 {/* ลดขนาดฟอนต์ตัวเลขลงเหลือ 0.8rem */}
                 <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#f59e0b", marginTop: "1px" }}>{balance !== null ? fmt(balance) : "..."}</span>
