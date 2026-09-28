@@ -217,10 +217,11 @@ export default function ProfilePage() {
           {rank?.next_rank && (
             <div style={{
               width: "100%", maxWidth: "300px", marginTop: "18px",
-              background: `linear-gradient(160deg, #52525b 0%, #3f3f46 18%, #27272a 50%, #18181b 82%, #09090b 100%)`,
-              border: "1px solid rgba(255,255,255,.10)",
-              borderTop: "2px solid rgba(255,255,255,.34)",
-              borderBottom: "2px solid rgba(0,0,0,.65)",
+              background: `linear-gradient(160deg, rgba(124,45,181,.95) 0%, rgba(88,28,135,.92) 30%, rgba(131,24,101,.92) 70%, rgba(112,16,55,.95) 100%)`,
+              backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)",
+              border: "1px solid rgba(236,72,153,.3)",
+              borderTop: "2px solid rgba(255,255,255,.3)",
+              borderBottom: "2px solid rgba(0,0,0,.5)",
               borderRadius: "22px",
               padding: "17px 16px 15px",
               position: "relative", overflow: "hidden",
@@ -229,7 +230,7 @@ export default function ProfilePage() {
                 0 -10px 22px rgba(0,0,0,.6) inset,
                 0 16px 0 -6px rgba(0,0,0,.45),
                 0 26px 44px -14px rgba(0,0,0,.95),
-                0 0 34px -10px ${rank.next_rank.color || "#eab308"}66
+                0 34px -10px rgba(236,72,153,.5)
               `,
               transform: "perspective(1000px) rotateX(3deg)",
               transformStyle: "preserve-3d",
