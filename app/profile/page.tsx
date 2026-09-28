@@ -217,11 +217,38 @@ export default function ProfilePage() {
           {rank?.next_rank && (
             <div style={{
               width: "100%", maxWidth: "300px", marginTop: "18px",
-              background: "linear-gradient(180deg, rgba(39,39,42,.75), rgba(24,24,27,.9))",
-              border: "1px solid rgba(255,255,255,.08)", borderRadius: "16px",
-              padding: "14px 14px 12px",
-              boxShadow: "0 10px 24px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06)",
+              background: `linear-gradient(160deg, #52525b 0%, #3f3f46 18%, #27272a 50%, #18181b 82%, #09090b 100%)`,
+              border: "1px solid rgba(255,255,255,.10)",
+              borderTop: "2px solid rgba(255,255,255,.34)",
+              borderBottom: "2px solid rgba(0,0,0,.65)",
+              borderRadius: "22px",
+              padding: "17px 16px 15px",
+              position: "relative", overflow: "hidden",
+              boxShadow: `
+                0 2px 0 rgba(255,255,255,.14) inset,
+                0 -10px 22px rgba(0,0,0,.6) inset,
+                0 16px 0 -6px rgba(0,0,0,.45),
+                0 26px 44px -14px rgba(0,0,0,.95),
+                0 0 34px -10px ${rank.next_rank.color || "#eab308"}66
+              `,
+              transform: "perspective(1000px) rotateX(3deg)",
+              transformStyle: "preserve-3d",
             }}>
+
+                            {/* แสงสะท้อนบนพื้นผิว */}
+              <div style={{
+                position: "absolute", top: 0, left: 0, right: 0, height: "46%",
+                background: "linear-gradient(180deg, rgba(255,255,255,.13) 0%, rgba(255,255,255,.04) 45%, transparent 100%)",
+                borderRadius: "22px 22px 50% 50% / 22px 22px 18% 18%",
+                pointerEvents: "none",
+              }} />
+              {/* ประกายวิ่งผ่าน */}
+              <div className="card-sheen" style={{
+                position: "absolute", top: 0, bottom: 0, width: "38%",
+                background: "linear-gradient(105deg, transparent, rgba(255,255,255,.10), transparent)",
+                pointerEvents: "none",
+              }} />
+
               {/* หัวข้อ + เปอร์เซ็นต์ */}
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
                 <span style={{ fontSize: "10px", fontWeight: 700, color: "#a1a1aa", letterSpacing: ".8px" }}>ความคืบหน้าแรงค์</span>
@@ -694,6 +721,11 @@ export default function ProfilePage() {
           100% { transform: rotateY(360deg); }
       }
       .flip-inner { animation: flipCard 5s ease-in-out infinite; }
+            .card-sheen { animation: cardSheen 4.5s ease-in-out infinite; }
+      @keyframes cardSheen {
+        0% { transform: translateX(-120%) skewX(-12deg); }
+        55%, 100% { transform: translateX(380%) skewX(-12deg); }
+      }
             .rank-glow { animation: rankPulse 2.2s ease-in-out infinite; }
       @keyframes rankPulse {
         0%, 100% { transform: scale(1); filter: drop-shadow(0 0 3px rgba(255,255,255,.35)); }
