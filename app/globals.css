@@ -8,7 +8,7 @@
   --color-accent-dark: #d97706;
   --color-success: #10b981;
   --color-danger: #dc2626;
-  --color-bg: #0a0a14;
+  --color-bg: #2a1145;
   --color-surface: #14142a;
   --color-text: #e2e8f0;
   --color-text-muted: #94a3b8;
@@ -39,14 +39,14 @@ body {
 body::before {
   content: "";
   position: fixed;
-  inset: 0;
+  inset: -12%;
   z-index: -2;
   background-image: url('/bg-mobile-v2.webp');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   filter: blur(28px) brightness(.55) saturate(1.1);
-  transform: scale(1.15);
+  transform: scale(1.35);
   pointer-events: none;
 }
 
