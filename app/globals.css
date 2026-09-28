@@ -57,7 +57,7 @@ body::after {
   inset: 0;
   z-index: -1;
   background-image: url('/bg-mobile-v2.webp');
-  background-size: contain;
+    background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
   pointer-events: none;
