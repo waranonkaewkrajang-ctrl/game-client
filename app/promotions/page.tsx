@@ -226,7 +226,7 @@ export default function PromotionsPage() {
         }
         @media (min-width: 768px) {
           .promo-text-section {
-            padding: 24px 24px 24px 0;
+            padding: 24px;
           }
         }
 
