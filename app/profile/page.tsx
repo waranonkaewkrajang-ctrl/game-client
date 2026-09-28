@@ -213,18 +213,68 @@ export default function ProfilePage() {
           <h1 style={{ fontSize: "20px", fontWeight: 600, margin: "0 0 4px 0", letterSpacing: "0.5px" }}>{user.full_name || "สมาชิกทั่วไป"}</h1>
           <p style={{ color: "#a1a1aa", fontSize: "14px", margin: 0 }}>@{user.username}</p>
 
-          {/* Progress แรงค์ถัดไป */}
+                    {/* Progress แรงค์ถัดไป */}
           {rank?.next_rank && (
-            <div style={{ width: "100%", maxWidth: "280px", marginTop: "12px" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "11px", color: "#71717a", marginBottom: "4px" }}>
-                <span>{rank.current_rank?.name || "-"}</span>
-                <span>{rank.next_rank.name}</span>
+            <div style={{
+              width: "100%", maxWidth: "300px", marginTop: "18px",
+              background: "linear-gradient(180deg, rgba(39,39,42,.75), rgba(24,24,27,.9))",
+              border: "1px solid rgba(255,255,255,.08)", borderRadius: "16px",
+              padding: "14px 14px 12px",
+              boxShadow: "0 10px 24px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06)",
+            }}>
+              {/* หัวข้อ + เปอร์เซ็นต์ */}
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                <span style={{ fontSize: "10px", fontWeight: 700, color: "#a1a1aa", letterSpacing: ".8px" }}>ความคืบหน้าแรงค์</span>
+                <span style={{
+                  fontSize: "11px", fontWeight: 900, color: "#09090b", padding: "2px 8px", borderRadius: "999px",
+                  background: `linear-gradient(135deg, #fff, ${rank.next_rank.color || "#eab308"})`,
+                  boxShadow: `0 0 12px ${rank.next_rank.color || "#eab308"}55`,
+                }}>{rank.progress}%</span>
               </div>
-              <div style={{ width: "100%", height: "6px", background: "#27272a", borderRadius: "3px", overflow: "hidden" }}>
-                <div style={{ width: `${rank.progress}%`, height: "100%", background: rank.current_rank?.color || "#7c3aed", borderRadius: "3px", transition: "width 0.5s" }} />
+
+              {/* แรงค์ปัจจุบัน → แรงค์ถัดไป */}
+              <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "9px" }}>
+                {/* ปัจจุบัน */}
+                <div style={{ display: "flex", alignItems: "center", gap: "5px", minWidth: 0 }}>
+                  {rank.current_rank?.image_url
+                    ? <img src={rank.current_rank.image_url} alt="" style={{ width: 22, height: 22, objectFit: "contain", opacity: .85, flexShrink: 0 }} />
+                    : <span style={{ width: 22, height: 22, borderRadius: "50%", background: rank.current_rank?.color || "#71717a", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 900, color: "#fff", flexShrink: 0 }}>{rank.current_rank?.name?.charAt(0) || "-"}</span>}
+                  <span style={{ fontSize: "11px", fontWeight: 700, color: "#a1a1aa", whiteSpace: "nowrap" }}>{rank.current_rank?.name || "-"}</span>
+                </div>
+
+                <div style={{ flex: 1, height: 1, background: "linear-gradient(90deg, rgba(255,255,255,.12), rgba(255,255,255,.04))" }} />
+
+                {/* ถัดไป — เด่นกว่า */}
+                <div style={{
+                  display: "flex", alignItems: "center", gap: "5px", flexShrink: 0,
+                  padding: "3px 8px 3px 4px", borderRadius: "999px",
+                  background: `${rank.next_rank.color || "#eab308"}1f`,
+                  border: `1px solid ${rank.next_rank.color || "#eab308"}55`,
+                }}>
+                  {rank.next_rank.image_url
+                    ? <img src={rank.next_rank.image_url} alt={rank.next_rank.name} className="rank-glow" style={{ width: 26, height: 26, objectFit: "contain", flexShrink: 0 }} />
+                    : <span style={{ width: 26, height: 26, borderRadius: "50%", background: rank.next_rank.color || "#eab308", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, color: "#09090b", flexShrink: 0 }}>{rank.next_rank.name?.charAt(0)}</span>}
+                  <span style={{ fontSize: "11px", fontWeight: 900, color: rank.next_rank.color || "#eab308", whiteSpace: "nowrap" }}>{rank.next_rank.name}</span>
+                </div>
               </div>
-              <p style={{ fontSize: "10px", color: "#52525b", margin: "4px 0 0", textAlign: "center" }}>
-                ฝากอีก ฿{((rank.next_rank.min_deposit || 0) - (rank.total_deposit || 0)).toLocaleString()} ถึงแรงค์ถัดไป
+
+              {/* แถบ */}
+              <div style={{ position: "relative", width: "100%", height: "10px", background: "#18181b", borderRadius: "999px", overflow: "hidden", boxShadow: "inset 0 2px 4px rgba(0,0,0,.6)" }}>
+                <div className="rank-bar" style={{
+                  width: `${Math.max(rank.progress, 2)}%`, height: "100%", borderRadius: "999px",
+                  background: `linear-gradient(90deg, ${rank.current_rank?.color || "#7c3aed"}, ${rank.next_rank.color || "#eab308"})`,
+                  boxShadow: `0 0 12px ${rank.next_rank.color || "#eab308"}99`,
+                  transition: "width .8s cubic-bezier(.4,0,.2,1)",
+                }} />
+              </div>
+
+              {/* ยอดที่เหลือ */}
+              <p style={{ fontSize: "11px", color: "#a1a1aa", margin: "9px 0 0", textAlign: "center" }}>
+                ฝากอีก{" "}
+                <span style={{ fontSize: "14px", fontWeight: 900, color: rank.next_rank.color || "#eab308", textShadow: `0 0 12px ${rank.next_rank.color || "#eab308"}66` }}>
+                  ฿{((rank.next_rank.min_deposit || 0) - (rank.total_deposit || 0)).toLocaleString()}
+                </span>
+                {" "}เพื่อเลื่อนเป็น <b style={{ color: "#e4e4e7" }}>{rank.next_rank.name}</b>
               </p>
             </div>
           )}
@@ -644,6 +694,18 @@ export default function ProfilePage() {
           100% { transform: rotateY(360deg); }
       }
       .flip-inner { animation: flipCard 5s ease-in-out infinite; }
+            .rank-glow { animation: rankPulse 2.2s ease-in-out infinite; }
+      @keyframes rankPulse {
+        0%, 100% { transform: scale(1); filter: drop-shadow(0 0 3px rgba(255,255,255,.35)); }
+        50% { transform: scale(1.12); filter: drop-shadow(0 0 10px rgba(255,255,255,.7)); }
+      }
+      .rank-bar { position: relative; overflow: hidden; }
+      .rank-bar::after {
+        content: ""; position: absolute; inset: 0;
+        background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+        animation: rankShine 2s ease-in-out infinite;
+      }
+      @keyframes rankShine { 0% { transform: translateX(-100%); } 60%,100% { transform: translateX(200%); } }
       @keyframes spin { 100% { transform: rotate(360deg); } }
       @keyframes floatDice {
         0% { transform: translate(0, 0) rotate(0deg) scale(0.3); opacity: 0; }
