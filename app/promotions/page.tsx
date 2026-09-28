@@ -217,12 +217,17 @@ export default function PromotionsPage() {
 
         .promo-text-section {
           padding: 20px;
-          background: rgba(10, 10, 20, 0.85);
+          background: linear-gradient(145deg, rgba(255,255,255,.12) 0%, rgba(255,255,255,.05) 50%, rgba(255,255,255,.02) 100%);
+          backdrop-filter: blur(18px) saturate(1.5);
+          -webkit-backdrop-filter: blur(18px) saturate(1.5);
+          border: 1px solid rgba(255,255,255,.18);
+          border-top: 1px solid rgba(255,255,255,.3);
           border-radius: 16px;
           color: #ffffff;
           display: flex;
           flex-direction: column;
           justify-content: center;
+          box-shadow: 0 8px 32px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.12);
         }
         @media (min-width: 768px) {
           .promo-text-section {
@@ -242,6 +247,7 @@ export default function PromotionsPage() {
 
         /* จัดการหน้าตาของเนื้อหา HTML ดั้งเดิมของคุณ */
         .promo-html-content {
+          text-shadow: 0 1px 3px rgba(0,0,0,.7);
           font-size: 0.95rem;
           color: #e2e8f0;
           line-height: 2;
