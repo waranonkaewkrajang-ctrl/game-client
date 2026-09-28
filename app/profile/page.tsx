@@ -265,7 +265,7 @@ export default function ProfilePage() {
                 {/* ปัจจุบัน */}
                 <div style={{ display: "flex", alignItems: "center", gap: "5px", minWidth: 0 }}>
                   {rank.current_rank?.image_url
-                    ? <img src={rank.current_rank.image_url} alt="" style={{ width: 22, height: 22, objectFit: "contain", opacity: .85, flexShrink: 0 }} />
+                    ? <img src={rank.current_rank.image_url} alt="" style={{ width: 22, height: 22, objectFit: "contain", opacity: 1, imageRendering: "auto" as const, filter: "contrast(1.15) saturate(1.2) drop-shadow(0 1px 2px rgba(0,0,0,.5))",, flexShrink: 0 }} />
                     : <span style={{ width: 22, height: 22, borderRadius: "50%", background: rank.current_rank?.color || "#71717a", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 10, fontWeight: 900, color: "#fff", flexShrink: 0 }}>{rank.current_rank?.name?.charAt(0) || "-"}</span>}
                   <span style={{ fontSize: "11px", fontWeight: 700, color: "#a1a1aa", whiteSpace: "nowrap" }}>{rank.current_rank?.name || "-"}</span>
                 </div>
@@ -280,7 +280,7 @@ export default function ProfilePage() {
                   border: `1px solid ${rank.next_rank.color || "#eab308"}55`,
                 }}>
                   {rank.next_rank.image_url
-                    ? <img src={rank.next_rank.image_url} alt={rank.next_rank.name} className="rank-glow" style={{ width: 26, height: 26, objectFit: "contain", flexShrink: 0 }} />
+                    ? <img src={rank.next_rank.image_url} alt={rank.next_rank.name} className="rank-glow" style={{ width: 26, height: 26, objectFit: "contain", flexShrink: 0, filter: "contrast(1.2) saturate(1.25)" }} />
                     : <span style={{ width: 26, height: 26, borderRadius: "50%", background: rank.next_rank.color || "#eab308", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 11, fontWeight: 900, color: "#09090b", flexShrink: 0 }}>{rank.next_rank.name?.charAt(0)}</span>}
                   <span style={{ fontSize: "11px", fontWeight: 900, color: rank.next_rank.color || "#eab308", whiteSpace: "nowrap" }}>{rank.next_rank.name}</span>
                 </div>
