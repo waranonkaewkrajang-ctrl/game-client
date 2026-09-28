@@ -35,21 +35,37 @@ body {
   overflow-x: clip;
 }
 
-/* ภาพพื้นหลังแยกชั้น — แทน background-attachment: fixed ที่มือถือไม่รองรับ */
+/* ชั้นหลัง — ภาพเดียวกันเบลอ เติมขอบไม่ให้เป็นสีดำ */
 body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: url('/bg-mobile-v2.webp');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  filter: blur(28px) brightness(.55) saturate(1.1);
+  transform: scale(1.15);
+  pointer-events: none;
+}
+
+/* ชั้นหน้า — ภาพเต็มไม่ถูกตัด */
+body::after {
   content: "";
   position: fixed;
   inset: 0;
   z-index: -1;
   background-image: url('/bg-mobile-v2.webp');
-  background-size: contain;          /* เห็นภาพครบทุกส่วน ไม่ตัดขอบ */
+  background-size: contain;
   background-position: center center;
   background-repeat: no-repeat;
   pointer-events: none;
 }
 
 @media (min-width: 1024px) {
-  body::before {
+  body::before,
+  body::after {
     background-image: url('/bg-desktop-v2.webp');
   }
 }
