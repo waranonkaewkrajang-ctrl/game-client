@@ -10,6 +10,7 @@ import ThemeLoader from "./ThemeLoader";
 
 const TITLE = "SNAKE168 – เว็บอันดับ 1 ของไทย มั่นคงปลอดภัย 100%";
 const DESCRIPTION = "SNAKE168 เว็บสล็อตออนไลน์ ฝากถอนออโต้ ปลอดภัย 100% บริการ 24 ชม.";
+const CANONICAL_BASE = "https://snake1168.online";
 
 export async function generateMetadata(): Promise<Metadata> {
   // 🎯 จับ domain ปัจจุบันแบบ dynamic
@@ -26,13 +27,16 @@ export async function generateMetadata(): Promise<Metadata> {
     title: TITLE,
     description: DESCRIPTION,
     keywords: ["SNAKE168", "สล็อต", "คาสิโน", "สล็อตออนไลน์", "ฝากถอนออโต้"],
-    metadataBase: new URL(baseUrl),
+    metadataBase: new URL(CANONICAL_BASE),
+
+    // บอก Google ว่าเนื้อหาตัวจริงอยู่โดเมนเดียว — กัน 9 โดเมนแย่งคะแนนกันเอง
+    alternates: { canonical: "/" },
 
     // 🎯 Open Graph (Facebook, LINE, Discord)
     openGraph: {
       title: TITLE,
       description: DESCRIPTION,
-      url: baseUrl,
+      url: CANONICAL_BASE,
       siteName: "SNAKE168",
       images: [
         {
