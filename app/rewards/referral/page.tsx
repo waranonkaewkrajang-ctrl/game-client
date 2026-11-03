@@ -85,7 +85,7 @@ export default function ReferralPage() {
   );
 
   return (
-    <div style={{ minHeight: "100vh", background: "transparent", color: "#f8fafc", paddingBottom: "6rem", fontFamily: "'Kanit', sans-serif" }}>
+    <div style={{ minHeight: "100vh", background: "transparent", color: "#f8fafc", paddingBottom: "6rem", fontFamily: "var(--font-kanit), sans-serif" }}>
 
       <div style={{ maxWidth: "480px", margin: "0 auto", padding: "1.5rem 1.25rem" }}>
 

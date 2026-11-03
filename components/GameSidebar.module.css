@@ -1,0 +1,179 @@
+/* ---------- Desktop vertical sidebar ---------- */
+.sidebar {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ds-space-4);
+    position: sticky;
+    top: calc(var(--ds-header-h) + var(--ds-space-4));
+    max-height: calc(100vh - var(--ds-header-h) - var(--ds-space-6));
+    overflow-y: auto;
+    scrollbar-width: none;
+    padding: var(--ds-space-3);
+    background: var(--ds-surface-1);
+    backdrop-filter: var(--ds-blur);
+    -webkit-backdrop-filter: var(--ds-blur);
+    border: 1px solid var(--ds-border);
+    border-radius: var(--ds-radius-lg);
+    box-shadow: var(--ds-shadow-md);
+  }
+  .sidebar::-webkit-scrollbar { display: none; }
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-space-1);
+}
+
+.item {
+  position: relative;
+  width: 100%;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: var(--ds-space-3);
+  padding: var(--ds-space-2) var(--ds-space-3) var(--ds-space-2) var(--ds-space-2);
+  border: 1px solid transparent;
+  border-radius: var(--ds-radius-md);
+  background: transparent;
+  color: var(--ds-text-muted);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--ds-dur) var(--ds-ease), border-color var(--ds-dur) var(--ds-ease), color var(--ds-dur);
+}
+.item:hover { background: var(--ds-hover); color: var(--ds-text); }
+
+.itemActive,
+.itemActive:hover {
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.28), rgba(124, 58, 237, 0.08));
+  border-color: var(--ds-border-strong);
+  color: var(--ds-text);
+}
+.itemActive::before {
+  content: "";
+  position: absolute;
+  left: -1px;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--ds-accent-light);
+  box-shadow: 0 0 12px var(--ds-accent);
+}
+
+.iconWrap {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.04);
+}
+.itemActive .iconWrap { background: rgba(168, 85, 247, 0.22); }
+.icon { width: 32px; height: 32px; object-fit: contain; }
+
+.text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.title {
+  font-family: var(--ds-font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: inherit;
+}
+.label {
+  font-size: 0.75rem;
+  color: var(--ds-text-subtle);
+}
+.itemActive .label { color: var(--ds-accent-light); }
+
+.count {
+  flex-shrink: 0;
+  min-width: 28px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  color: var(--ds-text-muted);
+}
+.itemActive .count { background: rgba(168, 85, 247, 0.3); color: var(--ds-text); }
+
+.footer {
+  padding-top: var(--ds-space-3);
+  border-top: 1px solid var(--ds-border-subtle);
+}
+
+/* ---------- Mobile / tablet horizontal chips ---------- */
+.chips {
+  display: flex;
+  gap: var(--ds-space-2);
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-padding-inline: var(--ds-space-4); /* keep first chip off the screen edge when snapping */
+  scrollbar-width: none;
+  /* bleed to screen edge so chips scroll under the gutter */
+  margin: 0 calc(var(--ds-space-4) * -1);
+  padding: 2px var(--ds-space-4) var(--ds-space-1);
+}
+.chips::-webkit-scrollbar { display: none; }
+
+@media (min-width: 1024px) {
+  .chips { display: none; }
+}
+
+.chip {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px 6px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--ds-border);
+  background: var(--ds-surface-1);
+  backdrop-filter: var(--ds-blur);
+  -webkit-backdrop-filter: var(--ds-blur);
+  color: var(--ds-text-muted);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background var(--ds-dur) var(--ds-ease), border-color var(--ds-dur), color var(--ds-dur);
+}
+.chip:active { transform: scale(0.97); }
+
+.chipActive {
+  background: var(--ds-primary-gradient);
+  border-color: rgba(216, 180, 254, 0.55);
+  color: var(--ds-text-on-primary);
+  box-shadow: var(--ds-shadow-glow);
+}
+
+.chipIcon { width: 26px; height: 26px; object-fit: contain; }
+.chipLabel { line-height: 1; }
+.chipCount {
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.25);
+}

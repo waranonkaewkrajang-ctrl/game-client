@@ -1,110 +1,87 @@
 "use client";
+import type { ReactNode } from "react";
+import type { CategoryItem } from "@/components/lobby/types";
+import styles from "./GameSidebar.module.css";
 
-export default function GameSidebar({ selected, onSelect, categories }: { selected: string; onSelect: (id: string) => void; categories: {id: string; label: string; count: number}[] }) {
+interface GameSidebarProps {
+  items: CategoryItem[];
+  selected: string;
+  onSelect: (id: string) => void;
+  /** Extra content rendered under the categories on desktop (quick links). */
+  footer?: ReactNode;
+  ariaLabel?: string;
+  /** "sidebar" = desktop list only, "chips" = mobile row only, "both" (default). */
+  variant?: "both" | "sidebar" | "chips";
+}
 
-  const iconMap: Record<string, string> = {
-    "": "/icons/home.png",
-    "SLOT": "/icons/slot.png",
-    "EGAMES": "/icons/slot.png",
-    "LIVECASINO": "/icons/casino.png",
-    "LIVE": "/icons/casino.png",
-    "SPORT": "/icons/sport.png",
-    "FISHING": "/icons/fishing.png",
-    "FISH": "/icons/fishing.png",
-    "CARD": "/icons/card.png",
-    "TABLE": "/icons/card.png",
-    "LOTTO": "/icons/lotto.png",
-    "KENO": "/icons/lotto.png",
-    "ESPORT": "/icons/esport.png",
-    "TRADING": "/icons/trading.png",
-  };
-
-  const colors: Record<string, string> = {
-    "": "#dc2626",
-    "SLOT": "#f59e0b",
-    "EGAMES": "#f59e0b",
-    "LIVECASINO": "#10b981",
-    "LIVE": "#10b981",
-    "SPORT": "#3b82f6",
-    "FISHING": "#8b5cf6",
-    "FISH": "#8b5cf6",
-    "CARD": "#ec4899",
-    "TABLE": "#ec4899",
-    "LOTTO": "#f97316",
-    "KENO": "#f97316",
-    "ESPORT": "#06b6d4",
-    "TRADING": "#eab308",
-  };
-
-  const allItems = [{ id: "", label: "หน้าแรก", count: 0 }, ...categories];
-
+/**
+ * Category navigation.
+ *  - ≥1024px: sticky vertical sidebar
+ *  - <1024px: horizontal, swipeable chip row
+ * Both share the same items + selection state.
+ */
+export default function GameSidebar({ items, selected, onSelect, footer, ariaLabel = "Game categories", variant = "both" }: GameSidebarProps) {
   return (
     <>
-      {/* คอม: แนวตั้งด้านซ้าย */}
-      <div className="sidebar-desktop" style={{ display: "flex", flexDirection: "column", gap: "6px", width: "68px", flexShrink: 0, paddingTop: "4px", position: "sticky", top: "12px", maxHeight: "100vh" }}>
-        {allItems.map((cat) => {
-          const isActive = selected === cat.id;
-          const color = colors[cat.id] || "#64748b";
-          const icon = iconMap[cat.id];
-          return (
-            <button key={cat.id} onClick={() => onSelect(cat.id)} style={{
-              width: "60px", minHeight: "60px", borderRadius: "12px", border: "none", cursor: "pointer",
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "3px",
-              padding: "6px 2px", transition: "all 0.2s",
-              background: isActive ? `linear-gradient(135deg, ${color}, ${color}dd)` : "rgba(255,255,255,0.06)",
-              boxShadow: isActive ? `0 4px 12px ${color}40` : "0 2px 4px rgba(0,0,0,0.2)",
-            }}>
-              <div style={{
-                width: "28px", height: "28px", borderRadius: "8px",
-                display: "flex", alignItems: "center", justifyContent: "center",
-                overflow: "hidden",
-              }}>
-                {icon ? (
-                  <img src={icon} alt={cat.label} style={{
-                    width: "24px", height: "24px", objectFit: "contain",
-                    filter: isActive ? "brightness(1.2)" : "brightness(0.7)",
-                    transition: "filter 0.2s",
-                  }} />
-                ) : (
-                  <span style={{
-                    fontSize: "0.85rem", fontWeight: 800,
-                    color: isActive ? "white" : color,
-                  }}>{cat.label.charAt(0)}</span>
-                )}
-              </div>
-              <span style={{
-                fontSize: "0.5rem", fontWeight: 700, lineHeight: 1.2,
-                color: isActive ? "white" : "#94a3b8", textAlign: "center",
-              }}>{cat.label}</span>
-            </button>
-          );
-        })}
-      </div>
+      {variant !== "chips" && (
+      <nav className={styles.sidebar} aria-label={ariaLabel}>
+        <ul className={styles.list}>
+          {items.map((cat) => {
+            const active = selected === cat.id;
+            return (
+              <li key={cat.id || "all"}>
+                <button
+                  type="button"
+                  className={`${styles.item} ${active ? styles.itemActive : ""}`}
+                  aria-pressed={active}
+                  onClick={() => onSelect(cat.id)}
+                >
+                  <span className={styles.iconWrap}>
+                    <img src={cat.icon} alt="" width={40} height={40} className={styles.icon} />
+                  </span>
+                  <span className={styles.text}>
+                    <span className={styles.title}>{cat.title}</span>
+                    <span className={styles.label}>{cat.label}</span>
+                  </span>
+                  {typeof cat.count === "number" && cat.count > 0 && (
+                    <span className={styles.count} aria-label={`${cat.count} games`}>{cat.count.toLocaleString()}</span>
+                  )}
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+        {footer && <div className={styles.footer}>{footer}</div>}
+      </nav>
+      )}
 
-      {/* มือถือ: grid 4 คอลัมน์ เหมือน ODIN996 */}
-      <div className="sidebar-mobile" style={{ display: "none", gap: "10px", padding: "10px 12px", flexWrap: "wrap", justifyContent: "center", width: "100%" }}>
-        {allItems.map((cat) => {
-          const isActive = selected === cat.id;
-          const color = colors[cat.id] || "#64748b";
-          const icon = iconMap[cat.id];
+      {variant !== "sidebar" && (
+      <nav className={styles.chips} aria-label={ariaLabel}>
+        {items.map((cat) => {
+          const active = selected === cat.id;
           return (
-            <button key={`m-${cat.id}`} onClick={() => onSelect(cat.id)} style={{
-              width: "calc(25% - 8px)", height: "70px", borderRadius: "12px", border: "none", cursor: "pointer",
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: "4px",
-              padding: "8px 4px", flexShrink: 0,
-              background: isActive ? `linear-gradient(135deg, ${color}, ${color}dd)` : "rgba(255,255,255,0.06)",
-              boxShadow: isActive ? `0 3px 10px ${color}40` : "none",
-            }}>
-              {icon ? (
-                <img src={icon} alt={cat.label} style={{ width: "28px", height: "28px", objectFit: "contain", filter: isActive ? "brightness(1.2)" : "brightness(0.7)" }} />
-              ) : (
-                <span style={{ fontSize: "0.85rem", fontWeight: 800, color: isActive ? "white" : color }}>{cat.label.charAt(0)}</span>
+            <button
+              key={cat.id || "all"}
+              type="button"
+              className={`${styles.chip} ${active ? styles.chipActive : ""}`}
+              aria-pressed={active}
+              onClick={(e) => {
+                onSelect(cat.id);
+                // bring the chosen chip fully into view on narrow screens
+                const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+                e.currentTarget.scrollIntoView({ behavior: reduce ? "auto" : "smooth", inline: "center", block: "nearest" });
+              }}
+            >
+              <img src={cat.icon} alt="" width={26} height={26} className={styles.chipIcon} />
+              <span className={styles.chipLabel}>{cat.label}</span>
+              {typeof cat.count === "number" && cat.count > 0 && (
+                <span className={styles.chipCount}>{cat.count.toLocaleString()}</span>
               )}
-              <span style={{ fontSize: "0.65rem", fontWeight: 700, color: isActive ? "white" : "#94a3b8", whiteSpace: "nowrap" }}>{cat.label}</span>
             </button>
           );
         })}
-      </div>
+      </nav>
+      )}
     </>
   );
 }
