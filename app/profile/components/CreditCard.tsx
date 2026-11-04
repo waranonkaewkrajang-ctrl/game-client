@@ -57,18 +57,6 @@ export default function CreditCard({ wallet, rewards, acceptPromo, refreshing, o
           <span className="hidden @lg:inline">สถิติ</span>
         </h2>
         <div className="flex shrink-0 items-center gap-1.5">
-        <button
-          type="button"
-          onClick={onRefresh}
-          disabled={refreshing}
-          aria-label={refreshing ? "กำลังอัปเดตยอด" : "อัปเดตยอด"}
-          className={`group inline-flex shrink-0 items-center rounded-full disabled:opacity-60 ${PRESS} ${FOCUS}`}
-        >
-          <span className="inline-flex h-6 items-center gap-1 rounded-full border border-[var(--border-gold)] bg-black/20 px-2 text-xs font-medium text-[var(--accent-gold-soft)] group-hover:bg-black/35">
-            <Svg size={13} className={refreshing ? styles.spin : ""}>{Icon.refresh}</Svg>
-            {refreshing ? "กำลังอัปเดต" : "อัปเดตยอด"}
-          </span>
-        </button>
         {/* promo status; tapping it goes to the setting that changes it */}
         <button type="button" onClick={() => jump("settings")} className={`inline-flex shrink-0 items-center ${PRESS} ${FOCUS} rounded-full`}>
           <span
@@ -90,13 +78,29 @@ export default function CreditCard({ wallet, rewards, acceptPromo, refreshing, o
           <Svg size={16}>{Icon.coins}</Svg>
           ยอดเครดิต
         </p>
-        <p
-          className={`relative z-[2] min-w-0 break-all text-[length:clamp(24px,6cqi,32px)] font-semibold leading-[1.1] tracking-tight text-[var(--accent-gold)] [text-shadow:0_2px_10px_rgba(234,179,8,0.14)]`}
-          aria-live="polite"
-        >
-          <span className="mr-0.5 align-top text-[0.55em] font-semibold">฿</span>
-          {balance}
-        </p>
+        <div className="flex items-center">
+          <p
+            className={`relative z-[2] min-w-0 break-all text-[length:clamp(24px,6cqi,32px)] font-semibold leading-[1.1] tracking-tight text-[var(--accent-gold)] [text-shadow:0_2px_10px_rgba(234,179,8,0.14)]`}
+            aria-live="polite"
+          >
+            <span className="mr-0.5 align-top text-[0.55em] font-semibold">฿</span>
+            {balance}
+          </p>
+          {/* bare refresh icon right after the figure; the ::before pad gives it a 44px tap area with no visible box */}
+          <button
+            type="button"
+            onClick={onRefresh}
+            disabled={refreshing}
+            aria-label="อัปเดตยอดเงิน"
+            className={
+              "relative z-[2] ml-3 shrink-0 cursor-pointer text-[var(--text-muted)] [transition:color_0.2s,transform_0.3s] " +
+              "before:absolute before:inset-[-12px] before:content-[''] hover:text-[var(--accent-gold)] disabled:cursor-default disabled:opacity-60 " +
+              FOCUS
+            }
+          >
+            <Svg size={20} className={refreshing ? "animate-spin" : ""}>{Icon.refresh}</Svg>
+          </button>
+        </div>
       </div>
 
       {/* narrow: pushes the ledger to the bottom; wide: the stat boxes follow the panel directly */}
