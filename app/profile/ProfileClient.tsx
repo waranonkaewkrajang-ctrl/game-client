@@ -127,7 +127,7 @@ export default function ProfileClient() {
 
         {/* 753 : 554 on desktop (reference), full width each below that */}
         <div className="grid gap-4 lg:grid-cols-[753fr_554fr] lg:gap-6">
-          <CreditCard wallet={wallet} rewards={rewards} acceptPromo={acceptPromo} refreshing={refreshing} onRefresh={refreshWallet} />
+          <CreditCard wallet={wallet} rewards={rewards} acceptPromo={acceptPromo} refreshing={refreshing} onRefresh={refreshWallet} onTogglePromo={togglePromo} />
           <RankCard rank={rank} />
         </div>
 
