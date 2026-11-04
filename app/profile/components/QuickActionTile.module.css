@@ -65,22 +65,31 @@
   pointer-events: none;
 }
 
-.iconMain {
-  position: relative;
+.icon {
+  position: absolute;
+  top: 50%;
+  right: 14px;
   z-index: 2;
-  width: 38px;
-  height: 38px;
-  margin-top: 6px;
-  margin-left: auto;
-  color: rgba(255, 255, 255, 0.95);
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+  opacity: 0.95;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+  transform: translateY(-50%);
+  transition: transform 0.2s;
+  pointer-events: none;
 }
-.iconMain svg { width: 100%; height: 100%; }
+.tile:hover .icon { transform: translateY(-50%) scale(1.05); }
+@media (prefers-reduced-motion: reduce) {
+  .tile:hover .icon { transform: translateY(-50%); }
+}
 
 .content {
   position: relative;
   z-index: 2;
   min-width: 0;
   margin-top: auto;
+  padding-right: 72px;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
 }
 .title {
