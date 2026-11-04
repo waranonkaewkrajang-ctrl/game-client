@@ -4,6 +4,7 @@ import type { Rewards, User } from "../types";
 import { baht, num } from "../lib";
 import { CopyButton, FOCUS, GOLD_BTN, Icon, PRESS, Svg } from "./ui";
 import { GiftBox } from "./decorations";
+import ProfileArt from "./ProfileArt";
 import surface from "../styles/surfaces.module.css";
 
 /** Referral card: purple → magenta with light streaks, gift illustration on the right (replaces the i.ibb.co image). */
@@ -16,7 +17,14 @@ export default function ReferCard({ user, rewards, className = "" }: { user: Use
       aria-labelledby="refer-title"
       className={`${surface.refer} relative isolate overflow-hidden rounded-[var(--radius-card)] p-4 sm:p-5 lg:flex lg:flex-col lg:justify-center ${className}`}
     >
-      <GiftBox className="pointer-events-none absolute -right-1 top-2 -z-10 h-auto w-[104px] sm:w-[136px] lg:right-6 lg:top-1/2 lg:w-[196px] lg:-translate-y-1/2" />
+      <ProfileArt
+        name="gift-purple"
+        width={400}
+        height={348}
+        sizes="(min-width: 1024px) 196px, 136px"
+        className="pointer-events-none absolute -right-1 top-2 -z-10 h-auto w-[104px] sm:w-[136px] lg:right-6 lg:top-1/2 lg:w-[196px] lg:-translate-y-1/2"
+        fallback={<GiftBox className="pointer-events-none absolute -right-1 top-2 -z-10 h-auto w-[104px] sm:w-[136px] lg:right-6 lg:top-1/2 lg:w-[196px] lg:-translate-y-1/2" />}
+      />
 
       <div className="pr-24 sm:pr-32 lg:pr-56">
         <h2 id="refer-title" className="flex items-center gap-2 text-base font-semibold text-[var(--text-primary)] sm:text-lg">

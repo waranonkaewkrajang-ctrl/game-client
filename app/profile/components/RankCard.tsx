@@ -55,12 +55,21 @@ export default function RankCard({ rank, className = "" }: { rank: Rank | null; 
             style={{ "--rank-tone": tone } as CSSProperties}
           >
             <div className="relative aspect-square w-[120px] shrink-0 @sm:w-[150px]">
+              {/* laurel behind the frame, wider than it so the leaves frame the sides (reference) */}
+              <ProfileArt
+                name="laurel-wreath"
+                width={400}
+                height={367}
+                sizes="200px"
+                className="absolute -left-[6%] -top-[2%] h-auto w-[112%] max-w-none @sm:-left-[17%] @sm:top-0 @sm:w-[134%]"
+                fallback={null}
+              />
               {/* the exported frame is silver; the SVG fallback is tinted from the rank colour */}
               <ProfileArt
                 name="medal-silver"
-                width={296}
-                height={296}
-                sizes="148px"
+                width={320}
+                height={320}
+                sizes="150px"
                 className="absolute inset-0 size-full"
                 fallback={<Medallion tone={tone} className="absolute inset-0 size-full" />}
               />
@@ -69,7 +78,7 @@ export default function RankCard({ rank, className = "" }: { rank: Rank | null; 
               </div>
             </div>
             <p className="absolute bottom-2 right-3 hidden text-sm font-semibold tabular-nums text-[var(--accent-gold)] @sm:block">{pct}%</p>
-            <div className="-mt-1 min-w-0 text-center @sm:mt-0 @sm:text-left">
+            <div className="mt-1 min-w-0 text-center @sm:mt-0 @sm:text-left">
               <p className="truncate text-2xl font-bold leading-tight text-[var(--text-primary)] @sm:text-[32px]">{current?.name || "ยังไม่มีระดับ"}</p>
               <p className="text-sm text-[var(--text-secondary)] @sm:mt-1">
                 ยอดฝากสะสม<span className="@sm:hidden"> {deposit}</span>

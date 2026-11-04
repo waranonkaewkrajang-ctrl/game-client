@@ -6,6 +6,7 @@ import { FOCUS, Icon, Svg } from "./ui";
 import { ArrowsGlyph, BankGlyph, GiftBox, PersonGlyph } from "./decorations";
 import styles from "../profile.module.css";
 import surface from "../styles/surfaces.module.css";
+import ProfileArt from "./ProfileArt";
 
 interface Tile {
   label: string;
@@ -33,7 +34,16 @@ const TILES: Tile[] = [
     // concentric rings
     background:
       "repeating-radial-gradient(circle at 100% 100%, rgba(255,255,255,0.07) 0 1px, transparent 1px 14px), linear-gradient(135deg, #fb923c 0%, #f97316 45%, #ea580c 100%)",
-    art: <PersonGlyph className={`${ART} -bottom-1 right-1 w-[78px] text-white lg:w-[92px]`} />,
+    art: (
+      <ProfileArt
+        name="tile-person"
+        width={200}
+        height={245}
+        sizes="92px"
+        className={`${ART} -bottom-2 right-3 w-[78px]`}
+        fallback={<PersonGlyph className={`${ART} -bottom-1 right-1 w-[78px] text-white lg:w-[92px]`} />}
+      />
+    ),
     target: { section: "personal" },
   },
   {
@@ -44,7 +54,16 @@ const TILES: Tile[] = [
     // diagonal hatching
     background:
       "repeating-linear-gradient(135deg, rgba(255,255,255,0.06) 0 2px, transparent 2px 12px), linear-gradient(135deg, #34d399 0%, #10b981 45%, #047857 100%)",
-    art: <ArrowsGlyph className={`${ART} bottom-2 right-2 w-[76px] text-white lg:w-[88px]`} />,
+    art: (
+      <ProfileArt
+        name="tile-arrows"
+        width={200}
+        height={199}
+        sizes="92px"
+        className={`${ART} bottom-1 right-2 w-[76px]`}
+        fallback={<ArrowsGlyph className={`${ART} bottom-2 right-2 w-[76px] text-white lg:w-[88px]`} />}
+      />
+    ),
     target: { href: "/history" },
   },
   {
@@ -55,7 +74,16 @@ const TILES: Tile[] = [
     // fine grid
     background:
       "linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px) 0 0/16px 16px, linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px) 0 0/16px 16px, linear-gradient(135deg, #60a5fa 0%, #3b82f6 45%, #1d4ed8 100%)",
-    art: <BankGlyph className={`${ART} bottom-1 right-2 w-[80px] text-sky-100 lg:w-[96px]`} />,
+    art: (
+      <ProfileArt
+        name="bank-building"
+        width={220}
+        height={199}
+        sizes="104px"
+        className={`${ART} bottom-1 right-2 w-[96px]`}
+        fallback={<BankGlyph className={`${ART} bottom-1 right-2 w-[80px] text-sky-100 lg:w-[96px]`} />}
+      />
+    ),
     target: { section: "bank" },
   },
   {
@@ -66,7 +94,16 @@ const TILES: Tile[] = [
     // scattered dots
     background:
       "radial-gradient(rgba(255,255,255,0.12) 1.2px, transparent 1.6px) 0 0/18px 18px, linear-gradient(135deg, #f87171 0%, #ef4444 45%, #b91c1c 100%)",
-    art: <GiftBox palette="red" coins={false} className={`${ART} -bottom-3 -right-3 w-[96px] lg:w-[108px]`} />,
+    art: (
+      <ProfileArt
+        name="gift-red"
+        width={220}
+        height={231}
+        sizes="100px"
+        className={`${ART} -bottom-1 right-1 w-[84px]`}
+        fallback={<GiftBox palette="red" coins={false} className={`${ART} -bottom-3 -right-3 w-[96px] lg:w-[108px]`} />}
+      />
+    ),
     target: { href: "/spin-wheel" },
   },
 ];
@@ -95,7 +132,7 @@ function Body({ t }: { t: Tile }) {
       <span className="grid size-10 shrink-0 place-items-center rounded-xl border border-white/25 bg-white/20 shadow-[inset_0_1px_0_rgba(255,255,255,0.25)] lg:size-12">
         <Svg size={22}>{t.icon}</Svg>
       </span>
-      <span className="block min-w-0 max-w-full lg:max-w-[56%] lg:pt-0.5">
+      <span className="block min-w-0 max-w-full lg:max-w-[52%] lg:pt-0.5">
         <span className="block truncate text-base font-bold leading-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.2)] lg:text-lg">{t.label}</span>
         <span className="mt-0.5 block truncate text-xs text-white/85 lg:hidden">{t.short}</span>
         <span className="mt-1 hidden text-[13px] leading-snug text-white/85 lg:line-clamp-2">{t.hint}</span>

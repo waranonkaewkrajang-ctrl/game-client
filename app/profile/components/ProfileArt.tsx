@@ -9,15 +9,15 @@ import { useState, type ReactNode } from "react";
  * takes over as well. Names match the artwork brief (design-reference/artwork-crops/).
  */
 const READY = {
-  crown: false,
-  coins: false,
-  "medal-silver": false,
-  "laurel-wreath": false,
-  "gift-purple": false,
-  "gift-red": false,
-  "bank-building": false,
-  "tile-person": false,
-  "tile-arrows": false,
+  crown: true,
+  coins: true,
+  "medal-silver": true,
+  "laurel-wreath": true,
+  "gift-purple": true,
+  "gift-red": true,
+  "bank-building": true,
+  "tile-person": true,
+  "tile-arrows": true,
 } as const;
 
 export type ArtName = keyof typeof READY;

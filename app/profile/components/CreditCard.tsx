@@ -10,7 +10,7 @@ import ProfileArt from "./ProfileArt";
 import surface from "../styles/surfaces.module.css";
 
 // reference: coins 110×86 flush with the right edge, 50px down (390); 180×150, 18px from the right, 77px down (1440)
-const COINS = "art-coins absolute -right-[9px] top-[26px] -z-10 h-auto w-[134px] @sm:w-[156px] @lg:right-[5px] @lg:top-[47px] @lg:w-[220px]";
+const COINS = "art-coins absolute right-0 top-[50px] -z-10 h-auto w-[100px] @sm:right-1 @sm:w-[128px] @lg:right-[16px] @lg:top-[60px] @lg:w-[184px]";
 
 interface Props {
   wallet: Wallet | null;
@@ -44,9 +44,9 @@ export default function CreditCard({ wallet, rewards, acceptPromo, refreshing, o
     >
       <ProfileArt
         name="coins"
-        width={500}
-        height={412}
-        sizes="(min-width: 1024px) 250px, 156px"
+        width={480}
+        height={474}
+        sizes="(min-width: 1024px) 184px, 128px"
         className={COINS}
         fallback={<CoinStack className={`pointer-events-none ${COINS}`} />}
       />
