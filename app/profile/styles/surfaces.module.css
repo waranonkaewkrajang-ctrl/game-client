@@ -158,20 +158,3 @@
     linear-gradient(160deg, #26143d 0%, var(--bg-card) 65%) border-box;
   box-shadow: var(--shadow-card);
 }
-
-/* ── Colour tiles: the tile itself clips overflow, so its edge is a 1px rim drawn over its border ── */
-.rim {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  border-radius: inherit;
-  padding: 1px;
-  background:
-    linear-gradient(90deg, rgba(255, 255, 255, 0.076), rgba(255, 255, 255, 0.04) 75%) top / 100% 1px no-repeat,
-    radial-gradient(45% 110% at 0% 0%, rgba(255, 255, 255, 0.189), transparent 72%),
-    linear-gradient(rgba(40, 6, 30, 0.2), rgba(40, 6, 30, 0.2));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
-}
