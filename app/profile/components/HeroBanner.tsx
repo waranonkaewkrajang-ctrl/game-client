@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Rank, User } from "../types";
 import { baht, num } from "../lib";
 import { avatarSrc } from "../avatars";
+import { getAvatarPath } from "../utils/avatar";
 import { FOCUS, Icon, PRESS, RankIcon, Svg } from "./ui";
 import { Crown } from "./decorations";
 import ProfileArt from "./ProfileArt";
@@ -80,18 +81,17 @@ export default function HeroBanner({ user, rank, avatar, onChangeAvatar, onLogou
           >
             {/* frame A "Simple Square": 64/72/96px, 16px radius, sprite-navy behind the image while it loads */}
             <span className="block size-16 overflow-hidden rounded-2xl bg-[#0f1424] sm:size-[72px] lg:size-24">
-              {avatar ? (
-                <Image src={avatarSrc(avatar)} alt="" width={128} height={128} unoptimized className="size-full object-cover" />
-              ) : (
-                <Image
-                  src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(user.username || "game")}&backgroundColor=1b1030`}
-                  alt=""
-                  width={96}
-                  height={96}
-                  unoptimized
-                  className="size-full"
-                />
-              )}
+              {/* the picked avatar, else the one auto-picked from the username; served straight from /avatars (no optimiser hop) */}
+              <Image
+                src={avatar ? avatarSrc(avatar) : getAvatarPath(user.username || "guest")}
+                alt={`avatar ${user.full_name || user.username}`}
+                width={96}
+                height={96}
+                preload
+                unoptimized
+                className="size-full object-cover"
+              />
+
             </span>
             <span
               aria-hidden="true"
