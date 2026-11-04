@@ -34,7 +34,26 @@
     "news": "News",
     "allGames": "All Games",
     "search": "Search games...",
-    "playNow": "Play Now"
+    "playNow": "Play Now",
+    "games": "games",
+    "searchSubmit": "Search",
+    "clearSearch": "Clear search",
+    "searchResults": "Search results",
+    "noGames": "No games found",
+    "noGamesHint": "Try another category or a different search term",
+    "noRecent": "No recently played games yet",
+    "noRecentHint": "Games you play will appear here",
+    "noProviders": "No providers in this category",
+    "loadError": "Couldn't load games",
+    "retry": "Try again",
+    "recommendedSlots": "Recommended slot providers",
+    "categories": "Game categories",
+    "viewAll": "View all"
+  },
+  "footer": {
+    "tagline": "An all-in-one gaming platform — every game, one place, built for convenience.",
+    "payments": "Payment channels",
+    "tags": "Tags"
   },
   "wallet": {
     "balance": "Balance",

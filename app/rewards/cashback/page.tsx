@@ -66,7 +66,7 @@ export default function CashbackPage() {
   const canClaim = summary?.cashback?.pending > 0;
 
   return (
-    <div style={{ minHeight: "100vh", background: "transparent", color: "#fafafa", paddingBottom: "6rem", fontFamily: "'Kanit', sans-serif", position: "relative", overflow: "hidden" }}>
+    <div style={{ minHeight: "100vh", background: "transparent", color: "#fafafa", paddingBottom: "6rem", fontFamily: "var(--font-kanit), sans-serif", position: "relative", overflow: "hidden" }}>
 
       {/* Dice Background */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>

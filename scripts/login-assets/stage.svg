@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1400" viewBox="0 0 1200 1400">
+  <!-- SNAKE168 login brand stage — source for public/login/stage.webp (built by build.mjs).
+       Minimal lighting: one soft key light, layered 2.5D slabs, thin rings, pedestal. -->
+  <defs>
+    <radialGradient id="base" cx="50%" cy="44%" r="70%">
+      <stop offset="0" stop-color="#2b1a63"/>
+      <stop offset="0.55" stop-color="#170f3a"/>
+      <stop offset="1" stop-color="#0c0920"/>
+    </radialGradient>
+    <linearGradient id="slabA" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a2680" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#1a1240" stop-opacity="0.15"/>
+    </linearGradient>
+    <linearGradient id="slabB" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4b2f9e" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#150e33" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#c4b5fd" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#c4b5fd" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#c4b5fd" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="discTop" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3d2a85"/>
+      <stop offset="1" stop-color="#221650"/>
+    </linearGradient>
+    <linearGradient id="discSide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1d1345"/>
+      <stop offset="1" stop-color="#0e0a24"/>
+    </linearGradient>
+    <radialGradient id="key" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#8b5cf6" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#8b5cf6" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="shadow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#000" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1.3" fill="#c4b5fd" fill-opacity="0.16"/>
+    </pattern>
+    <linearGradient id="dotsFade" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="1"/>
+      <stop offset="0.6" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <mask id="dotsMask"><rect width="1200" height="1400" fill="url(#dotsFade)"/></mask>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" seed="7" result="n"/>
+      <feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.05 0"/>
+    </filter>
+  </defs>
+
+  <!-- base -->
+  <rect width="1200" height="1400" fill="url(#base)"/>
+
+  <!-- dot field, top-left only -->
+  <rect width="1200" height="1400" fill="url(#dots)" mask="url(#dotsMask)"/>
+
+  <!-- layered 2.5D slabs -->
+  <polygon points="0,180 520,0 760,0 0,520" fill="url(#slabA)"/>
+  <polygon points="1200,820 1200,1400 640,1400" fill="url(#slabB)"/>
+  <polygon points="1200,240 1200,560 860,1400 700,1400" fill="url(#slabA)" opacity="0.45"/>
+  <line x1="0" y1="520" x2="760" y2="0" stroke="url(#edge)" stroke-width="2"/>
+  <line x1="1200" y1="820" x2="640" y2="1400" stroke="url(#edge)" stroke-width="2"/>
+
+  <!-- soft key light behind the emblem -->
+  <ellipse cx="600" cy="600" rx="430" ry="430" fill="url(#key)"/>
+
+  <!-- rings -->
+  <g fill="none" stroke="#c4b5fd">
+    <circle cx="600" cy="600" r="250" stroke-opacity="0.16" stroke-width="1.5"/>
+    <circle cx="600" cy="600" r="330" stroke-opacity="0.10" stroke-width="1.5" stroke-dasharray="2 12"/>
+    <circle cx="600" cy="600" r="420" stroke-opacity="0.08" stroke-width="1.5"/>
+    <circle cx="600" cy="600" r="520" stroke-opacity="0.05" stroke-width="1.5"/>
+  </g>
+  <!-- ring ticks -->
+  <g fill="#d8b4fe" fill-opacity="0.5">
+    <rect x="596" y="174" width="8" height="8" transform="rotate(45 600 178)"/>
+    <rect x="1016" y="596" width="8" height="8" transform="rotate(45 1020 600)"/>
+    <rect x="176" y="596" width="8" height="8" transform="rotate(45 180 600)"/>
+  </g>
+
+  <!-- pedestal: three stacked discs -->
+  <ellipse cx="600" cy="870" rx="400" ry="70" fill="url(#shadow)"/>
+  <g>
+    <path d="M250 820 a350 66 0 0 0 700 0 v26 a350 66 0 0 1 -700 0 z" fill="url(#discSide)"/>
+    <ellipse cx="600" cy="820" rx="350" ry="66" fill="url(#discTop)"/>
+    <ellipse cx="600" cy="820" rx="350" ry="66" fill="none" stroke="#c4b5fd" stroke-opacity="0.22" stroke-width="2"/>
+
+    <path d="M320 790 a280 50 0 0 0 560 0 v20 a280 50 0 0 1 -560 0 z" fill="url(#discSide)"/>
+    <ellipse cx="600" cy="790" rx="280" ry="50" fill="url(#discTop)"/>
+    <ellipse cx="600" cy="790" rx="280" ry="50" fill="none" stroke="#ddd6fe" stroke-opacity="0.32" stroke-width="2"/>
+    <ellipse cx="600" cy="790" rx="220" ry="36" fill="none" stroke="#c4b5fd" stroke-opacity="0.14" stroke-width="1.5" stroke-dasharray="3 9"/>
+  </g>
+
+  <!-- grain -->
+  <rect width="1200" height="1400" filter="url(#grain)"/>
+
+</svg>

@@ -1,25 +1,31 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
-import api from "@/lib/api";
 import Link from "next/link";
+import { useTranslation } from "react-i18next";
+import api from "@/lib/api";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import styles from "./Navbar.module.css";
 
 export default function Navbar() {
   const router = useRouter();
   const pathname = usePathname();
+  const { t } = useTranslation();
   const [balance, setBalance] = useState<number | null>(null);
-  const [username, setUsername] = useState("");
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-const [menuOpen, setMenuOpen] = useState(false);
-
-  useEffect(() => {
+  // Navbar only renders client-side (I18nProvider mounts children after hydration),
+  // so reading localStorage in the initializer is safe and runs once on mount — same as before.
+  const [session] = useState(() => {
+    if (typeof window === "undefined") return null;
     const token = localStorage.getItem("user_token");
     const userData = localStorage.getItem("user_data");
-    if (token && userData) {
-      setIsLoggedIn(true);
-      setUsername(JSON.parse(userData).username);
-      
+    return token && userData ? { username: JSON.parse(userData).username as string } : null;
+  });
+  const [username] = useState(session?.username ?? "");
+  const [isLoggedIn, setIsLoggedIn] = useState(!!session);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (session) {
       const fetchBalance = () => {
         api.get("/wallet/balance").then((res) => setBalance(res.data.data.balance)).catch(() => {});
       };
@@ -28,7 +34,15 @@ const [menuOpen, setMenuOpen] = useState(false);
       const interval = setInterval(fetchBalance, 10000);
       return () => clearInterval(interval);
     }
-  }, []);
+  }, [session]);
+
+  // close drawer with Escape
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setMenuOpen(false); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
 
   const handleLogout = () => {
     api.post("/auth/logout").catch(() => {});
@@ -39,208 +53,132 @@ const [menuOpen, setMenuOpen] = useState(false);
   };
 
   const fmt = (n: number) => n.toLocaleString("th-TH", { minimumFractionDigits: 2 });
+  // display guard: never crash the header if the balance payload is missing/non-numeric
+  const hasBalance = typeof balance === "number" && Number.isFinite(balance);
 
-   return (
+  const navLinks = [
+    { href: "/lobby", label: t("nav.enterGame") },
+    { href: "/promotions", label: t("nav.promotion") },
+    { href: "/wallet", label: t("nav.walletMenu") },
+    { href: "/history", label: t("nav.history") },
+  ];
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
+  const drawerItems: { label: string; href: string; icon: React.ReactNode; external?: boolean }[] = [
+    { label: t("nav.enterGame"), href: "/lobby", icon: <img src="/icons/game.webp" className={styles.drawerIcon} alt="" /> },
+    { label: t("nav.promotion"), href: "/promotions", icon: <img src="/icons/menu/footer-menu-ic-left-2.webp" className={styles.drawerIcon} alt="" /> },
+    { label: t("nav.walletMenu"), href: "/wallet", icon: <img src="/icons/menu/footer-menu-ic-right-1.webp" className={styles.drawerIcon} alt="" /> },
+    { label: t("nav.contact"), href: "https://lin.ee/rjOBayDx", icon: <img src="/icons/contact.webp" className={styles.drawerIcon} alt="" />, external: true },
+    { label: t("nav.profile"), href: "/profile", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg> },
+  ];
+
+  return (
     <>
-      <header style={{ background: "linear-gradient(to bottom, #aa00a0, #2b002b)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "0 16px", height: "56px", display: "flex", alignItems: "center", justifyContent: "space-between", position: "sticky", top: 0, zIndex: 150, backdropFilter: "blur(10px)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-  {isLoggedIn && (
-    <button className="desktop-hamburger" onClick={() => setMenuOpen(!menuOpen)} style={{ background: "none", border: "none", cursor: "pointer", padding: "6px", flexDirection: "column", gap: "4px" }}>
-      <span style={{ width: "22px", height: "2.5px", background: "#fff", borderRadius: "2px", transition: "all 0.3s", transform: menuOpen ? "rotate(45deg) translateY(6.5px)" : "none" }} />
-      <span style={{ width: "22px", height: "2.5px", background: "#fff", borderRadius: "2px", transition: "all 0.3s", opacity: menuOpen ? 0 : 1 }} />
-      <span style={{ width: "22px", height: "2.5px", background: "#fff", borderRadius: "2px", transition: "all 0.3s", transform: menuOpen ? "rotate(-45deg) translateY(-6.5px)" : "none" }} />
-    </button>
-  )}
-  <a href="/lobby" style={{ textDecoration: "none" }}>
-    <img src="/logo.png" alt="Logo" style={{ height: "48px", width: "auto" }} />
-  </a>
-</div>
+      <header className={styles.header}>
+        <div className={styles.inner}>
+          <div className={styles.left}>
+            {isLoggedIn && (
+              <button
+                type="button"
+                className={styles.menuBtn}
+                onClick={() => setMenuOpen(!menuOpen)}
+                aria-label="Menu"
+                aria-expanded={menuOpen}
+                aria-controls="user-drawer"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" /></svg>
+              </button>
+            )}
+            <Link href="/lobby" className={styles.logoLink} aria-label="SNAKE168">
+              <img src="/logo.png" alt="SNAKE168" className={styles.logo} width={96} height={48} />
+            </Link>
+          </div>
 
-        {/* Right Side */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          
-          {/* 🟢 เปลี่ยนตรงนี้เป็น && และลบปุ่มสมัคร/ล็อกอินด้านล่างทิ้งไปเลย */}
           {isLoggedIn && (
-            <>
-              {/* 🟢 ปุ่มจำนวนเงิน (ปรับขนาดให้เล็กลง) */}
-              <a href="/wallet" style={{ textDecoration: "none", background: "linear-gradient(135deg, rgba(245,158,11,0.15), rgba(220,38,38,0.1))", border: "1px solid rgba(245,158,11,0.3)", borderRadius: "8px", padding: "4px 10px", display: "flex", alignItems: "center", gap: "5px" }}>
-                
-                {/* ลดขนาดเหรียญลงเหลือ 14px */}
-                <img alt="coin" className="shrink-0" src="/icons/coin.svg" style={{ width: "14px", height: "14px" }} />
-                
-                {/* ลดขนาดฟอนต์ตัวเลขลงเหลือ 0.8rem */}
-                <span style={{ fontSize: "0.8rem", fontWeight: 800, color: "#f59e0b", marginTop: "1px" }}>{balance !== null ? fmt(balance) : "..."}</span>
-                
-                {/* ลดขนาดปุ่มคำว่า "เติม" */}
-                <span style={{ background: "#dc2626", color: "white", fontSize: "0.55rem", fontWeight: 700, padding: "2px 6px", borderRadius: "4px" }}>เติม</span>
-              </a>
-
-              <LanguageSwitcher />
-            </>
+            <nav className={styles.nav} aria-label="Main">
+              {navLinks.map((l) => (
+                <Link key={l.href} href={l.href} className={`${styles.navLink} ${isActive(l.href) ? styles.navLinkActive : ""}`} aria-current={isActive(l.href) ? "page" : undefined}>
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
           )}
 
+          <div className={styles.right}>
+            {isLoggedIn && (
+              <>
+                <Link href="/wallet" className={styles.balance} aria-label={`${t("wallet.balance")} ${hasBalance ? fmt(balance as number) : ""}`}>
+                  <img alt="" src="/icons/coin.svg" className={styles.coin} width={18} height={18} />
+                  <span className={styles.balanceValue}>{hasBalance ? fmt(balance as number) : "…"}</span>
+                  <span className={styles.topup}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+                    <span className={styles.topupText}>{t("nav.topup")}</span>
+                  </span>
+                </Link>
+
+                <LanguageSwitcher />
+
+                <button type="button" className={styles.avatarBtn} onClick={() => setMenuOpen(true)} aria-label={username || "Account"} aria-controls="user-drawer">
+                  <span className={styles.avatar}>{(username || "U")[0].toUpperCase()}</span>
+                  <span className={styles.avatarName}>{username}</span>
+                </button>
+              </>
+            )}
+          </div>
         </div>
       </header>
 
-      {/* 🟢 ริชเมนูด้านล่าง (Bottom Menu) แบบใหม่ (โชว์เฉพาะมือถือ) 🟢 */}
-      <div className="-outer-wrapper mobile-only">
-        {/* พื้นหลังสีม่วงที่มีรอยแหว่งเว้าตรงกลาง */}
-        <div className="-bg-bar"></div>
-
-        <div className="-left-wrapper">
-          <a href="https://lin.ee/rjOBayDx" className="-item-wrapper -line" target="_blank" rel="noopener noreferrer nofollow">
-            <img src="/icons/menu/footer-menu-ic-left-1.webp" className="-ic-img" alt="Line" />
-            <span className="-text">Line</span>
-          </a>
-          <Link href="/promotions" className="-item-wrapper -promotion">
-            <img src="/icons/menu/footer-menu-ic-left-2.webp" className="-ic-img" alt="โปรโมชั่น" />
-            <span className="-text">โปรโมชัน</span>
-          </Link>
-        </div>
-
-        <Link href="/lobby" className="-center-wrapper" aria-label="หน้าแรก">
-          <div className="-selected">
-            {/* โลโก้ตรงกลางปุ่ม */}
-            <img src="/logo.png" alt="SNAKE168" className="-center-icon" onError={(e) => e.currentTarget.style.display='none'} />
-            <span className="-text">หน้าแรก</span>
-          </div>
-        </Link>
-
-        <div className="-right-wrapper">
-          <Link href="/wallet" className="-item-wrapper -deposit">
-            <img src="/icons/menu/footer-menu-ic-right-1.webp" className="-ic-img" alt="ฝากเงิน" />
-            <span className="-text">ฝากเงิน</span>
-          </Link>
-          <Link href="/wallet" className="-item-wrapper -withdraw">
-            <img src="/icons/menu/footer-menu-ic-right-2.webp" className="-ic-img" alt="ถอนเงิน" />
-            <span className="-text">ถอนเงิน</span>
-          </Link>
-        </div>
-            </div>
-
-      {/* 🆕 Desktop Drawer */}
+      {/* Desktop drawer (≥1024px) */}
       {menuOpen && (
-        <div className="desktop-drawer-overlay" onClick={() => setMenuOpen(false)}>
-          <div className="desktop-drawer" onClick={(e) => e.stopPropagation()}>
-
-            {/* User Info */}
-            <div style={{ padding: "20px 16px", borderBottom: "1px solid rgba(255,255,255,0.1)", background: "rgba(124,58,237,0.15)"}}>
-              <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
-                <div style={{ width: "44px", height: "44px", borderRadius: "50%", background: "linear-gradient(135deg, #9333ea, #c084fc)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "1.2rem", fontWeight: 800, color: "#fff", flexShrink: 0 }}>
-                  {(username || "U")[0].toUpperCase()}
-                </div>
+        <div className={styles.overlay} onClick={() => setMenuOpen(false)}>
+          <div id="user-drawer" className={styles.drawer} role="dialog" aria-modal="true" aria-label="Menu" onClick={(e) => e.stopPropagation()}>
+            <div className={styles.drawerHead}>
+              <div className={styles.drawerUser}>
+                <span className={`${styles.avatar} ${styles.avatarLg}`}>{(username || "U")[0].toUpperCase()}</span>
                 <div>
-                  <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "#fff" }}>{username}</div>
-                  <div style={{ fontSize: "0.75rem", color: "#a78bfa" }}>สมาชิก</div>
+                  <div className={styles.drawerName}>{username}</div>
+                  <div className={styles.drawerRole}>สมาชิก</div>
                 </div>
+                <button type="button" className={styles.drawerClose} onClick={() => setMenuOpen(false)} aria-label="Close">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                </button>
               </div>
-              <div style={{ background: "rgba(255,255,255,0.06)", borderRadius: "10px", padding: "10px 14px" }}>
-                <div style={{ fontSize: "0.65rem", color: "#94a3b8", marginBottom: "2px" }}>ยอดเงินคงเหลือ</div>
-                <div style={{ fontSize: "1.3rem", fontWeight: 900, color: "#f59e0b" }}>
-                  ฿{balance !== null ? fmt(balance) : "0.00"}
-                </div>
+              <div className={styles.drawerBalance}>
+                <div className={styles.drawerBalanceLabel}>{t("wallet.balance")}</div>
+                <div className={styles.drawerBalanceValue}>฿{hasBalance ? fmt(balance as number) : "0.00"}</div>
               </div>
             </div>
 
-            {/* ปุ่มฝาก/ถอน */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", padding: "12px 16px", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
-              <Link href="/wallet?tab=deposit" onClick={() => setMenuOpen(false)} style={{ padding: "10px", borderRadius: "10px", background: "linear-gradient(135deg, #22c55e, #15803d)", color: "#fff", fontSize: "0.85rem", fontWeight: 700, textAlign: "center", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                <img src="/icons/menu/footer-menu-ic-right-1.webp" style={{ width: "18px", height: "18px" }} alt="" /> ฝากเงิน
+            <div className={styles.drawerActions}>
+              <Link href="/wallet?tab=deposit" onClick={() => setMenuOpen(false)} className={`${styles.drawerAction} ${styles.drawerDeposit}`}>
+                <img src="/icons/menu/footer-menu-ic-right-1.webp" alt="" width={18} height={18} /> {t("nav.deposit")}
               </Link>
-              <Link href="/wallet?tab=withdraw" onClick={() => setMenuOpen(false)} style={{ padding: "10px", borderRadius: "10px", background: "linear-gradient(135deg, #ef4444, #b91c1c)", color: "#fff", fontSize: "0.85rem", fontWeight: 700, textAlign: "center", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center", gap: "6px" }}>
-                <img src="/icons/menu/footer-menu-ic-right-2.webp" style={{ width: "18px", height: "18px" }} alt="" /> ถอนเงิน
+              <Link href="/wallet?tab=withdraw" onClick={() => setMenuOpen(false)} className={`${styles.drawerAction} ${styles.drawerWithdraw}`}>
+                <img src="/icons/menu/footer-menu-ic-right-2.webp" alt="" width={18} height={18} /> {t("nav.withdraw")}
               </Link>
             </div>
 
-           {/* Menu Items */}
-            <div style={{ padding: "8px 0" }}>
-              {[
-                { label: "เข้าเกม", href: "/lobby", icon: <img src="/icons/game.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
-                { label: "โปรโมชั่น", href: "/promotions", icon: <img src="/icons/menu/footer-menu-ic-left-2.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
-                { label: "กระเป๋าเงิน", href: "/wallet", icon: <img src="/icons/menu/footer-menu-ic-right-1.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" /> },
-                { label: "ติดต่อ", href: "https://lin.ee/rjOBayDx", icon: <img src="/icons/contact.webp" style={{ width: "22px", height: "22px", objectFit: "contain" as const }} alt="" />, external: true },
-                { label: "โปรไฟล์", href: "/profile", icon: <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a78bfa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> },
-              ].map((item: any) => (
-                item.external ? (
-                  <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} style={{
-                    display: "flex", alignItems: "center", gap: "12px",
-                    padding: "12px 20px", textDecoration: "none",
-                    color: "#d1d5db", fontSize: "0.9rem", fontWeight: 600, transition: "background 0.2s",
-                  }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
-                    onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
-                  >
-                    {item.icon}
-                    <span>{item.label}</span>
-                  </a>
-                ) : (
-                  <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} style={{
-                    display: "flex", alignItems: "center", gap: "12px",
-                    padding: "12px 20px", textDecoration: "none",
-                    color: pathname === item.href ? "#c084fc" : "#d1d5db",
-                    background: pathname === item.href ? "rgba(124,58,237,0.15)" : "transparent",
-                    fontSize: "0.9rem", fontWeight: 600, transition: "background 0.2s",
-                  }}
-                    onMouseEnter={(e) => e.currentTarget.style.background = "rgba(255,255,255,0.08)"}
-                    onMouseLeave={(e) => e.currentTarget.style.background = pathname === item.href ? "rgba(124,58,237,0.15)" : "transparent"}
-                  >
-                    {item.icon}
-                    <span>{item.label}</span>
-                  </Link>
-                )
+            <nav className={styles.drawerNav}>
+              {drawerItems.map((item) => item.external ? (
+                <a key={item.href} href={item.href} target="_blank" rel="noopener noreferrer" onClick={() => setMenuOpen(false)} className={styles.drawerLink}>
+                  {item.icon}<span>{item.label}</span>
+                </a>
+              ) : (
+                <Link key={item.href} href={item.href} onClick={() => setMenuOpen(false)} className={`${styles.drawerLink} ${pathname === item.href ? styles.drawerLinkActive : ""}`}>
+                  {item.icon}<span>{item.label}</span>
+                </Link>
               ))}
-            </div>
+            </nav>
 
-            {/* Logout */}
-            <div style={{ borderTop: "1px solid rgba(255,255,255,0.1)", padding: "8px 0" }}>
-              <div onClick={() => { handleLogout(); setMenuOpen(false); }} style={{
-                display: "flex", alignItems: "center", gap: "12px",
-                padding: "12px 20px", cursor: "pointer",
-                color: "#f87171", fontSize: "0.9rem", fontWeight: 600, transition: "background 0.2s",
-              }}
-                onMouseEnter={(e) => e.currentTarget.style.background = "rgba(239,68,68,0.1)"}
-                onMouseLeave={(e) => e.currentTarget.style.background = "transparent"}
-              >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-                <span>ออกจากระบบ</span>
-              </div>
+            <div className={styles.drawerFoot}>
+              <button type="button" onClick={() => { handleLogout(); setMenuOpen(false); }} className={styles.logout}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" /></svg>
+                <span>{t("nav.logout")}</span>
+              </button>
             </div>
           </div>
         </div>
       )}
-
-      {/* 🆕 Desktop Drawer CSS */}
-      <style dangerouslySetInnerHTML={{__html: `
-        .desktop-hamburger { display: none; }
-        @media (min-width: 1024px) {
-          .desktop-hamburger { display: flex !important; }
-        }
-        .desktop-drawer-overlay {
-          display: none;
-          position: fixed; inset: 0; z-index: 200;
-          background: rgba(0,0,0,0.5);
-          backdrop-filter: blur(2px);
-        }
-        @media (min-width: 1024px) {
-          .desktop-drawer-overlay { display: block; }
-        }
-       .desktop-drawer {
-  position: fixed; top: 0; left: 0;
-  width: 300px; height: 100vh;
-  background: rgba(20, 10, 40, 0.65);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
-  border-right: 1px solid rgba(168, 85, 247, 0.25);
-  box-shadow: 4px 0 30px rgba(0,0,0,0.4), inset 0 0 60px rgba(124,58,237,0.08);
-  overflow-y: auto;
-  animation: slideIn 0.25s ease-out;
-}
-        @keyframes slideIn {
-          from { transform: translateX(-100%); }
-          to { transform: translateX(0); }
-        }
-      `}} />
-
     </>
   );
 }

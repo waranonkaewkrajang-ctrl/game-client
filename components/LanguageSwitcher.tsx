@@ -46,10 +46,13 @@ export default function LanguageSwitcher() {
     <>
       {/* Trigger button — ธงกลม */}
       <button
+        type="button"
         onClick={() => setOpen(true)}
+        aria-label="เปลี่ยนภาษา / Change language"
         style={{
-          width: "36px",
-          height: "36px",
+          width: "40px",
+          height: "40px",
+          flexShrink: 0,
           borderRadius: "50%",
           border: "2px solid rgba(168,85,247,0.5)",
           padding: 0,
