@@ -4,7 +4,6 @@ import type { Rewards, Wallet } from "../types";
 import { baht, num } from "../lib";
 import { FOCUS, Icon, PRESS, Svg } from "./ui";
 import { CoinStack, SparkleCluster } from "./decorations";
-import { jump } from "./QuickActionGrid";
 import styles from "../profile.module.css";
 import ProfileArt from "./ProfileArt";
 import surface from "../styles/surfaces.module.css";
@@ -18,6 +17,8 @@ interface Props {
   acceptPromo: boolean;
   refreshing: boolean;
   onRefresh: () => void;
+  /** existing promo toggle (ProfileClient.togglePromo: state + localStorage "accept_promo") */
+  onTogglePromo: (next: boolean) => void;
   className?: string;
 }
 
@@ -29,7 +30,7 @@ const PANEL = "@lg:rounded-[var(--radius-inner)] @lg:border @lg:border-[rgba(196
  * Narrow (mobile/tablet column): figure → refresh → ledger row.
  * Wide (@lg, desktop): "สถิติ" header, the balance in an inner panel, two stat boxes, coins on the right.
  */
-export default function CreditCard({ wallet, rewards, acceptPromo, refreshing, onRefresh, className = "" }: Props) {
+export default function CreditCard({ wallet, rewards, acceptPromo, refreshing, onRefresh, onTogglePromo, className = "" }: Props) {
   const cashback = num(rewards?.cashback?.pending);
   const balance = baht(wallet?.balance);
 
@@ -57,11 +58,11 @@ export default function CreditCard({ wallet, rewards, acceptPromo, refreshing, o
           <span className="hidden @lg:inline">สถิติ</span>
         </h2>
         <div className="flex shrink-0 items-center gap-1.5">
-        {/* promo status; tapping it goes to the setting that changes it */}
-        <button type="button" onClick={() => jump("settings")} className={`inline-flex shrink-0 items-center ${PRESS} ${FOCUS} rounded-full`}>
+        {/* promo on/off: tapping toggles it (same toggle as the settings card) */}
+        <button type="button" onClick={() => onTogglePromo(!acceptPromo)} aria-pressed={acceptPromo} className={`inline-flex shrink-0 items-center ${PRESS} ${FOCUS} rounded-full`}>
           <span
             className={`inline-flex h-6 items-center gap-0.5 rounded-full border pl-2 pr-1 text-xs font-semibold ${
-              acceptPromo ? "border-emerald-400/25 bg-emerald-500/15 text-emerald-300" : "border-white/10 bg-white/10 text-[var(--text-secondary)]"
+              acceptPromo ? "border-emerald-400/25 bg-emerald-500/15 text-emerald-300" : "border-red-400/25 bg-red-500/15 text-red-300"
             }`}
           >
             {acceptPromo ? "รับโปรโมชัน" : "ไม่รับโปรโมชัน"}
