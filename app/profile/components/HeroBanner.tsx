@@ -2,6 +2,7 @@
 import Image from "next/image";
 import type { Rank, User } from "../types";
 import { baht, num } from "../lib";
+import { avatarSrc } from "../avatars";
 import { FOCUS, Icon, PRESS, RankIcon, Svg } from "./ui";
 import { Crown } from "./decorations";
 import ProfileArt from "./ProfileArt";
@@ -14,6 +15,9 @@ const CROWN = "art-crown absolute right-14 top-3 -z-10 hidden h-auto w-[200px] s
 interface Props {
   user: User;
   rank: Rank | null;
+  /** chosen chibi avatar id ("01"…"18"), or null for the default */
+  avatar: string | null;
+  onChangeAvatar: () => void;
   onLogout: () => void;
 }
 
@@ -22,7 +26,7 @@ interface Props {
  * brand gradient + light source + shade → translucent planes → corner hairline frame
  * → crown illustration (tablet+) → content.
  */
-export default function HeroBanner({ user, rank, onLogout }: Props) {
+export default function HeroBanner({ user, rank, avatar, onChangeAvatar, onLogout }: Props) {
   const current = rank?.current_rank;
   const next = rank?.next_rank;
   const progress = Math.min(100, Math.max(0, num(rank?.progress)));
@@ -65,20 +69,37 @@ export default function HeroBanner({ user, rank, onLogout }: Props) {
       </button>
 
       <div className="flex w-full items-center gap-8 sm:gap-6 lg:gap-9">
-        {/* avatar: rank-coloured conic ring + rank badge */}
+        {/* avatar: square frame + rank badge */}
         <div className="relative shrink-0">
-          <div className="rounded-full p-[3px]" style={{ background: `conic-gradient(from 210deg, ${ring}, #fde68a, ${ring}, #7c3aed, ${ring})` }}>
-            <span className="block size-[66px] overflow-hidden rounded-full bg-[var(--bg-card)] ring-2 ring-black/25 lg:size-[112px]">
-              <Image
-                src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(user.username || "game")}&backgroundColor=1b1030`}
-                alt=""
-                width={96}
-                height={96}
-                unoptimized
-                className="size-full"
-              />
+          {/* tap the avatar to pick another one */}
+          <button
+            type="button"
+            onClick={onChangeAvatar}
+            aria-label="เปลี่ยนรูปโปรไฟล์"
+            className={`group block rounded-2xl ${PRESS} ${FOCUS}`}
+          >
+            {/* frame A "Simple Square": 64/72/96px, 16px radius, sprite-navy behind the image while it loads */}
+            <span className="block size-16 overflow-hidden rounded-2xl bg-[#0f1424] sm:size-[72px] lg:size-24">
+              {avatar ? (
+                <Image src={avatarSrc(avatar)} alt="" width={128} height={128} unoptimized className="size-full object-cover" />
+              ) : (
+                <Image
+                  src={`https://api.dicebear.com/7.x/adventurer/svg?seed=${encodeURIComponent(user.username || "game")}&backgroundColor=1b1030`}
+                  alt=""
+                  width={96}
+                  height={96}
+                  unoptimized
+                  className="size-full"
+                />
+              )}
             </span>
-          </div>
+            <span
+              aria-hidden="true"
+              className="absolute -bottom-1 -left-1 grid size-6 place-items-center rounded-full border border-white/30 bg-[#1b1030]/85 text-white shadow-[0_2px_4px_rgba(0,0,0,0.4)] group-hover:bg-[#2a1748] lg:size-8"
+            >
+              <Svg size={13}>{Icon.edit}</Svg>
+            </span>
+          </button>
           {rank && (
             <RankIcon
               info={current}
