@@ -128,3 +128,13 @@
   background: linear-gradient(135deg, #b16477 0%, #8f4e5e 60%, #703c49 100%);
   box-shadow: 0 0 0 1px rgba(251, 113, 133, 0.3), 0 8px 20px rgba(177, 100, 119, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15), inset 0 -8px 20px rgba(0, 0, 0, 0.25);
 }
+
+/* mobile: icon in the top-right corner so the text keeps the full width */
+@media (max-width: 639.98px) {
+  .icon { top: 14px; width: 48px; height: 48px; transform: none; }
+  .tile:hover .icon { transform: scale(1.05); }
+  .content { padding-right: 0; }
+}
+@media (max-width: 639.98px) and (prefers-reduced-motion: reduce) {
+  .tile:hover .icon { transform: none; }
+}
