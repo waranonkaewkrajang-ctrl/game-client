@@ -10,7 +10,7 @@ import ProfileArt from "./ProfileArt";
 import surface from "../styles/surfaces.module.css";
 
 // reference: coins 110×86 flush with the right edge, 50px down (390); 180×150, 18px from the right, 77px down (1440)
-const COINS = "art-coins pointer-events-none absolute right-0 top-[50px] z-0 h-auto w-[100px] opacity-[0.22] @sm:w-[128px] @lg:top-[60px] @lg:w-[184px]";
+const COINS = "art-coins pointer-events-none absolute right-4 top-[42px] z-0 h-auto w-[48px] @sm:w-[56px] @lg:right-[16px] @lg:top-[60px] @lg:w-[184px]";
 
 interface Props {
   wallet: Wallet | null;
