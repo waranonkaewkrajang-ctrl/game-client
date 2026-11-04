@@ -99,3 +99,11 @@
 @media (min-width: 1024px) {
   .profile-scope { --deco-scale: 1; }
 }
+
+/* A site-wide `* { margin: 0; padding: 0 }` declared outside any cascade layer would beat every Tailwind
+   spacing utility (utilities live in @layer). Inside the profile, hand margin/padding back to the layered
+   styles (Tailwind preflight + utilities). Zero specificity, so the profile's own module rules still win. */
+:where(.profile-scope, .profile-scope *) {
+  margin: revert-layer;
+  padding: revert-layer;
+}
