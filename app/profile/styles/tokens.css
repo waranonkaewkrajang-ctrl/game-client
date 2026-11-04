@@ -1,0 +1,109 @@
+/*
+ * Profile design system — tokens.
+ * Scoped to .profile-scope (set on the page root) instead of :root: global CSS stays loaded after
+ * client-side navigation, so :root tokens would leak into every other page.
+ */
+.profile-scope {
+  /* Surfaces */
+  --bg-base: #120a20;
+  --bg-card: #1b1030;
+  --bg-card-elevated: #241440;
+  --bg-decoration: rgba(236, 72, 153, 0.03);
+
+  /* Brand gradients — sparingly: hero + one highlight, never on every card */
+  /* saturation −13% vs the brand primaries (#7c3aed #9333ea #c026d3 #db2777), per the reference review */
+  --gradient-hero: linear-gradient(110deg, #7f46e1 0%, #923fde 40%, #b731c8 70%, #cf3378 100%);
+  --gradient-brand: linear-gradient(135deg, #7c3aed 0%, #db2777 100%);
+  --gradient-gold: linear-gradient(135deg, #fbbf24, #eab308);
+
+  /* Accents */
+  --accent-gold: #eab308;
+  --accent-gold-soft: #fde68a;
+  --accent-success: #10b981;
+  --accent-danger: #ef4444;
+  --accent-info: #3b82f6;
+  --accent-pink: #ec4899;
+  --accent-violet: #8b5cf6;
+
+  /* Text — measured contrast on --bg-card / --bg-card-elevated: 17.3/16.1, 7.0/6.6, 5.4/5.0 (all ≥ AA 4.5).
+     The brief's #71717a muted was 3.7/3.5 (fails AA), so muted is lifted to #8b8b94. */
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #8b8b94;
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-accent: rgba(236, 72, 153, 0.25);
+  --border-gold: rgba(234, 179, 8, 0.35);
+
+  /* Shadows — one level each, subtle */
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lift: 0 8px 18px rgba(0, 0, 0, 0.32);
+  /* cards: a tight contact shadow + a faint lift, plum-black so it doesn't read as grey haze */
+  --shadow-card: 0 1px 2px rgba(6, 1, 14, 0.45), 0 6px 14px rgba(6, 1, 14, 0.24);
+
+  /* Radius — varied by role, not one value for everything */
+  --radius-card: 16px;
+  --radius-feature: 20px; /* hero, money card */
+  --radius-inner: 10px;
+  --radius-pill: 999px;
+
+  /* Spacing — 8pt grid (4 = half step for tight inline gaps) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Type */
+  --font-display: var(--font-kanit, "Kanit"), sans-serif; /* next/font Kanit when the layout provides it, else the Google Fonts "Kanit" family */
+  --font-body: var(--font-kanit, "Kanit"), sans-serif;
+  /* bank account number only; loaded in the bank card batch, falls back until then */
+  --font-mono: var(--font-jetbrains, ui-monospace), "SFMono-Regular", Consolas, monospace;
+
+  /* Type scale (px) — minor third-ish, Thai-legible: nothing under 12 */
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-base: 15px;
+  --text-lg: 18px;
+  --text-xl: 20px;
+  --text-2xl: 24px;
+  --text-3xl: 30px;
+  --text-display: clamp(28px, 12.2cqi, 64px); /* the balance figure; scales with its card (40px in a 358px card, per reference) */
+
+  /* Decoration intensity — mobile hides heavy pieces, tablet 60%, desktop full */
+  --deco-scale: 0;
+  --deco-opacity: 0.1;
+
+  /* page backdrop: a few large diagonal planes (one hard edge, one soft fall-off each) and two hairlines,
+     all on one 118° axis so they read as one composition, over the plum base lit from the top */
+  background:
+    linear-gradient(118deg, transparent 14%, rgba(255, 255, 255, 0.035) 14.06%, transparent 14.18%),
+    linear-gradient(118deg, transparent 15%, rgba(124, 58, 237, 0.085) 15.1%, rgba(124, 58, 237, 0.02) 27%, transparent 27.1%),
+    linear-gradient(118deg, transparent 57%, rgba(190, 24, 93, 0.06) 57.1%, rgba(190, 24, 93, 0.015) 66%, transparent 66.1%),
+    linear-gradient(118deg, transparent 72%, rgba(255, 255, 255, 0.03) 72.05%, transparent 72.15%),
+    radial-gradient(90% 40% at 50% 0%, #22103a, transparent 70%),
+    linear-gradient(180deg, var(--bg-base), #0e0719);
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (min-width: 640px) {
+  .profile-scope { --deco-scale: 0.6; }
+}
+@media (min-width: 1024px) {
+  .profile-scope { --deco-scale: 1; }
+}
+
+/* A site-wide `* { margin: 0; padding: 0 }` declared outside any cascade layer would beat every Tailwind
+   spacing utility (utilities live in @layer). Inside the profile, hand margin/padding back to the layered
+   styles (Tailwind preflight + utilities). Zero specificity, so the profile's own module rules still win. */
+:where(.profile-scope, .profile-scope *) {
+  margin: revert-layer;
+  padding: revert-layer;
+}

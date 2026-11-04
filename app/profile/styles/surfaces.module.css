@@ -1,0 +1,177 @@
+/*
+ * Card surfaces — each card has its own material, built in layers:
+ *   padding-box backgrounds → base colour, light source, planes / streaks
+ *   border-box backgrounds  → the edge (see "Edge" below)
+ *   ::before / ::after      → fine line work that belongs to the surface (corner lines, gold arc)
+ * Pseudo layers sit at z-index -20 so they stay under the artwork (-z-10) and the content.
+ *
+ * Edge (measured on the border reference): the 1px border is the card's own colour lifted a little,
+ * brightest along the top edge and the upper-left corner, barely lifted at the bottom and right.
+ * It is painted as border-box background layers under a transparent 1px border, so it always follows
+ * the card's radius exactly (no seams, no second frame). Outside it, a thin dark shadow; no glow.
+ */
+
+/* ── Hero: violet → magenta, lit from the upper right ─────────────────────────────── */
+.hero {
+  border: 1px solid transparent;
+  background:
+    /* two large translucent planes crossing the right half, plus one hairline plane edge */
+    linear-gradient(112deg, transparent 54%, rgba(255, 255, 255, 0.11) 54.2%, rgba(255, 255, 255, 0.035) 63%, transparent 63.2%) padding-box,
+    linear-gradient(112deg, transparent 67%, rgba(255, 255, 255, 0.075) 67.2%, rgba(255, 255, 255, 0.02) 79%, transparent 79.2%) padding-box,
+    linear-gradient(112deg, transparent 47%, rgba(255, 255, 255, 0.09) 47.1%, transparent 47.4%) padding-box,
+    /* light source, upper right */
+    radial-gradient(55% 130% at 88% -10%, rgba(255, 214, 250, 0.2), transparent 60%) padding-box,
+    /* depth: the lower-left corner falls into shade */
+    radial-gradient(70% 140% at 0% 110%, rgba(26, 8, 52, 0.55), transparent 62%) padding-box,
+    var(--gradient-hero) padding-box,
+    /* edge */
+    linear-gradient(90deg, rgba(246, 228, 255, 0.076), rgba(246, 228, 255, 0.05) 70%) top / 100% 1px no-repeat border-box,
+    radial-gradient(50% 120% at 0% 0%, rgba(236, 214, 255, 0.21), transparent 72%) border-box,
+    linear-gradient(rgba(255, 226, 250, 0.1), rgba(255, 226, 250, 0.1)) border-box,
+    /* the edge sits in the same shade as the surface next to it */
+    radial-gradient(70% 140% at 0% 110%, rgba(26, 8, 52, 0.55), transparent 62%) border-box,
+    var(--gradient-hero) border-box;
+  box-shadow: var(--shadow-card);
+}
+/* corner line work inside the surface (reference: lavender at the upper left, gold at the lower left) */
+.hero::before,
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  z-index: -20;
+  pointer-events: none;
+  border: 1px solid rgba(226, 204, 255, 0.34);
+  border-radius: calc(var(--radius-feature) - 6px);
+  --reach: 46px;
+  -webkit-mask: radial-gradient(circle at 0 0, #000 0 calc(var(--reach) * 0.5), transparent var(--reach));
+  mask: radial-gradient(circle at 0 0, #000 0 calc(var(--reach) * 0.5), transparent var(--reach));
+}
+.hero::after {
+  border-color: rgba(245, 196, 81, 0.42);
+  -webkit-mask: radial-gradient(circle at 0 100%, #000 0 calc(var(--reach) * 0.4), transparent calc(var(--reach) * 1.2));
+  mask: radial-gradient(circle at 0 100%, #000 0 calc(var(--reach) * 0.4), transparent calc(var(--reach) * 1.2));
+}
+@media (min-width: 1024px) {
+  .hero::before,
+  .hero::after {
+    inset: 8px;
+    --reach: 64px;
+  }
+}
+
+/* ── Credit: deep plum, warm light pooling behind the coins, a thin gold arc under the balance ── */
+.credit {
+  border: 1px solid transparent;
+  background:
+    /* two diagonal streaks in the lower-right corner (gold, then violet) */
+    linear-gradient(122deg, transparent 80%, rgba(234, 179, 8, 0.07) 80.2%, rgba(234, 179, 8, 0.02) 83%, transparent 83.2%) padding-box,
+    linear-gradient(122deg, transparent 86%, rgba(192, 38, 211, 0.1) 86.2%, rgba(192, 38, 211, 0.03) 92%, transparent 92.2%) padding-box,
+    radial-gradient(48% 75% at 84% 52%, rgba(234, 179, 8, 0.11), transparent 70%) padding-box,
+    radial-gradient(60% 90% at 0% 0%, rgba(124, 58, 237, 0.14), transparent 65%) padding-box,
+    linear-gradient(158deg, #2b1646 0%, #1e1035 52%, #170c29 100%) padding-box,
+    /* edge */
+    linear-gradient(90deg, rgba(214, 178, 255, 0.065), rgba(214, 178, 255, 0.03) 75%) top / 100% 1px no-repeat border-box,
+    radial-gradient(45% 110% at 0% 0%, rgba(206, 168, 255, 0.178), transparent 72%) border-box,
+    linear-gradient(rgba(214, 160, 236, 0.13), rgba(214, 160, 236, 0.13)) border-box,
+    linear-gradient(158deg, #2b1646 0%, #1e1035 52%, #170c29 100%) border-box;
+  box-shadow: var(--shadow-card);
+}
+/* gold arc: rises from beneath the balance toward the coins, fading out at both ends */
+.credit::after {
+  content: "";
+  position: absolute;
+  z-index: -20;
+  pointer-events: none;
+  left: 38%;
+  top: 62px;
+  width: 44%;
+  height: 92px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 170' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='1' x2='1' y2='0'%3E%3Cstop offset='0' stop-color='%23f5c451' stop-opacity='0'/%3E%3Cstop offset='.55' stop-color='%23f5c451' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='%23f5c451' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M2 168C112 160 222 120 298 4' fill='none' stroke='url(%23g)' stroke-width='1.6'/%3E%3C/svg%3E") no-repeat center / 100% 100%;
+}
+@container (min-width: 32rem) {
+  .credit::after {
+    left: 53%;
+    top: 64px;
+    width: 26%;
+    height: 128px;
+  }
+}
+
+/* ── Rank: plum, light streaks kept to the corners so the medal reads clean ─────────── */
+.rank {
+  border: 1px solid transparent;
+  background:
+    /* upper-right corner */
+    linear-gradient(212deg, transparent 9%, rgba(168, 85, 247, 0.09) 9.2%, rgba(168, 85, 247, 0.02) 15%, transparent 15.2%) padding-box,
+    /* lower-right corner: gold then violet */
+    linear-gradient(128deg, transparent 82%, rgba(234, 179, 8, 0.06) 82.2%, rgba(234, 179, 8, 0.015) 85%, transparent 85.2%) padding-box,
+    linear-gradient(128deg, transparent 88%, rgba(168, 85, 247, 0.1) 88.2%, rgba(168, 85, 247, 0.03) 94%, transparent 94.2%) padding-box,
+    radial-gradient(70% 60% at 100% 0%, rgba(168, 85, 247, 0.1), transparent 70%) padding-box,
+    linear-gradient(162deg, #26143e 0%, #1b0f30 58%, #150b26 100%) padding-box,
+    /* edge */
+    linear-gradient(90deg, rgba(214, 178, 255, 0.058), rgba(214, 178, 255, 0.03) 75%) top / 100% 1px no-repeat border-box,
+    radial-gradient(50% 110% at 0% 0%, rgba(206, 168, 255, 0.158), transparent 72%) border-box,
+    linear-gradient(rgba(214, 160, 236, 0.12), rgba(214, 160, 236, 0.12)) border-box,
+    linear-gradient(162deg, #26143e 0%, #1b0f30 58%, #150b26 100%) border-box;
+  box-shadow: var(--shadow-card);
+}
+
+/* showcase (wide cards only): a frosted inner sheet with the light pooled behind the medal */
+.rankShowcase {
+  background: radial-gradient(56% 70% at 50% 42%, color-mix(in srgb, var(--rank-tone) 18%, transparent), transparent 72%);
+}
+@container (min-width: 24rem) {
+  .rankShowcase {
+    border: 1px solid rgba(196, 150, 255, 0.1);
+    background:
+      radial-gradient(130px 110px at 115px 50%, color-mix(in srgb, var(--rank-tone) 22%, transparent), transparent 100%),
+      linear-gradient(115deg, transparent 62%, rgba(255, 255, 255, 0.035) 62.2%, rgba(255, 255, 255, 0.01) 74%, transparent 74.2%),
+      linear-gradient(160deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.015));
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  }
+}
+
+/* ── Referral: plum warming to magenta on the right, under the gift ─────────────────── */
+.refer {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(120deg, transparent 58%, rgba(255, 255, 255, 0.05) 66%, transparent 67%, transparent 74%, rgba(255, 255, 255, 0.04) 82%, transparent 83%) padding-box,
+    linear-gradient(110deg, #22123a 0%, #3b1450 50%, #86198f 100%) padding-box,
+    /* edge */
+    linear-gradient(90deg, rgba(230, 180, 255, 0.065), rgba(230, 180, 255, 0.04) 75%) top / 100% 1px no-repeat border-box,
+    radial-gradient(45% 110% at 0% 0%, rgba(214, 168, 255, 0.168), transparent 72%) border-box,
+    linear-gradient(rgba(240, 170, 236, 0.13), rgba(240, 170, 236, 0.13)) border-box,
+    linear-gradient(110deg, #22123a 0%, #3b1450 50%, #86198f 100%) border-box;
+  box-shadow: var(--shadow-card);
+}
+
+/* ── Plain cards (page panel, settings, bank, personal, account): darker, quieter edge ── */
+.card {
+  border: 1px solid transparent;
+  background:
+    linear-gradient(160deg, #26143d 0%, var(--bg-card) 65%) padding-box,
+    /* edge */
+    linear-gradient(90deg, rgba(210, 176, 255, 0.047), rgba(210, 176, 255, 0.025) 75%) top / 100% 1px no-repeat border-box,
+    radial-gradient(40% 100% at 0% 0%, rgba(200, 164, 255, 0.126), transparent 72%) border-box,
+    linear-gradient(rgba(210, 156, 232, 0.1), rgba(210, 156, 232, 0.1)) border-box,
+    linear-gradient(160deg, #26143d 0%, var(--bg-card) 65%) border-box;
+  box-shadow: var(--shadow-card);
+}
+
+/* ── Colour tiles: the tile itself clips overflow, so its edge is a 1px rim drawn over its border ── */
+.rim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  border-radius: inherit;
+  padding: 1px;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.076), rgba(255, 255, 255, 0.04) 75%) top / 100% 1px no-repeat,
+    radial-gradient(45% 110% at 0% 0%, rgba(255, 255, 255, 0.189), transparent 72%),
+    linear-gradient(rgba(40, 6, 30, 0.2), rgba(40, 6, 30, 0.2));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+}
