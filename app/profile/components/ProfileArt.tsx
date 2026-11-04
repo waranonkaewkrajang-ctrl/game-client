@@ -14,6 +14,10 @@ const READY = {
   "medal-silver": true,
   "laurel-wreath": true,
   "gift-purple": true,
+  "gift-red": true,
+  "bank-building": true,
+  "tile-person": true,
+  "tile-arrows": true,
 } as const;
 
 export type ArtName = keyof typeof READY;
