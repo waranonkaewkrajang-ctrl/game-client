@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import type { Rank, Rewards, User, Wallet } from "./types";
 import { confirmLogout, toast } from "./lib";
+import { loadAvatar, saveAvatar } from "./avatars";
 import HeroBanner from "./components/HeroBanner";
 import QuickActionGrid from "./components/QuickActionGrid";
 import CreditCard from "./components/CreditCard";
@@ -24,6 +25,7 @@ const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["500"], display: "swa
 
 // the modal (and its bank list) only loads when the user opens it
 const BankChangeModal = dynamic(() => import("./components/BankChangeModal"), { ssr: false });
+const AvatarPickerModal = dynamic(() => import("./components/AvatarPickerModal"), { ssr: false });
 
 /** Mobile 480 → tablet 640 → desktop 1380 (1348px content, as measured on the 1440 reference); 16px gutters. */
 const SHELL =
@@ -41,6 +43,9 @@ export default function ProfileClient() {
   const [reloadKey, setReloadKey] = useState(0);
   const [refreshing, setRefreshing] = useState(false);
   const [showBankModal, setShowBankModal] = useState(false);
+  const [showAvatarPicker, setShowAvatarPicker] = useState(false);
+  // picked this session; otherwise the saved choice for this username (read once the user is known)
+  const [pickedAvatar, setPickedAvatar] = useState<string | null>(null);
   // children of I18nProvider only render on the client, so localStorage is available here
   const [acceptPromo, setAcceptPromo] = useState(() => {
     if (typeof window === "undefined") return true;
@@ -80,6 +85,14 @@ export default function ProfileClient() {
   };
 
   const closeBankModal = useCallback(() => setShowBankModal(false), []);
+  const closeAvatarPicker = useCallback(() => setShowAvatarPicker(false), []);
+  const avatar = pickedAvatar ?? (user ? loadAvatar(user.username) : null);
+  const changeAvatar = (id: string) => {
+    if (user) saveAvatar(user.username, id);
+    setPickedAvatar(id);
+    setShowAvatarPicker(false);
+    toast("เปลี่ยนรูปโปรไฟล์แล้ว", "success");
+  };
 
   if (!user) {
     if (!userFailed) return <ProfileSkeleton />;
@@ -108,7 +121,7 @@ export default function ProfileClient() {
         {/* hero + shortcuts share one panel, as in the reference; on mobile the panel reaches 4px from the edge
             while the cards below keep the 16px gutter (reference: panel 382px, cards 358px at 390) */}
         <div className={`${CARD} -mx-3 flex flex-col gap-4 p-3 sm:mx-0 sm:p-4 lg:gap-6`}>
-          <HeroBanner user={user} rank={rank} onLogout={confirmLogout} />
+          <HeroBanner user={user} rank={rank} avatar={avatar} onChangeAvatar={() => setShowAvatarPicker(true)} onLogout={confirmLogout} />
           <QuickActionGrid />
         </div>
 
@@ -133,6 +146,7 @@ export default function ProfileClient() {
       {showBankModal && (
         <BankChangeModal initialBankCode={user.bank_code || "KBANK"} initialName={user.full_name || ""} onClose={closeBankModal} />
       )}
+      {showAvatarPicker && <AvatarPickerModal current={avatar} onSave={changeAvatar} onClose={closeAvatarPicker} />}
     </div>
   );
 }
