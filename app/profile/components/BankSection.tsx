@@ -26,7 +26,7 @@ export default function BankSection({ user, onChangeBank }: { user: User; onChan
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <p className="truncate text-sm font-semibold text-[var(--text-primary)]">{bankName || user.bank_code || "ธนาคาร"}</p>
-            <span className="shrink-0 rounded-full border border-emerald-400/25 bg-emerald-500/15 px-2 py-px text-xs font-semibold text-emerald-300">อนุมัติ</span>
+            <span className="shrink-0 text-xs font-semibold text-emerald-300">อนุมัติ</span>
           </div>
           {/* the copy button copies the raw number, not the grouped one */}
           <p className="truncate font-[family-name:var(--font-mono)] text-[15px] font-medium tracking-wide text-[var(--text-primary)]">{formatAccount(user.bank_account)}</p>
