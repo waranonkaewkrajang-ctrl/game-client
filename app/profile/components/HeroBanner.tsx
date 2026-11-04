@@ -7,8 +7,9 @@ import { Crown } from "./decorations";
 import ProfileArt from "./ProfileArt";
 import surface from "../styles/surfaces.module.css";
 
-// measured on design-reference/desktop-1440.png: crown body 185×144, 113px from the hero's right edge, 16px from its top
-const CROWN = "art-crown absolute -bottom-3 right-2 -z-10 hidden h-auto w-[180px] sm:block lg:-bottom-[42px] lg:right-[44px] lg:w-[300px]";
+// measured on design-reference/desktop-1440.png: crown body ≈185px wide, centred ≈290px from the hero's right edge,
+// ribbon running to the bottom edge. crown.webp is 800×491 (crown ≈62% of its width).
+const CROWN = "art-crown absolute right-14 top-3 -z-10 hidden h-auto w-[200px] sm:block lg:right-[56px] lg:top-[12px] lg:w-[300px]";
 
 interface Props {
   user: User;
@@ -43,9 +44,9 @@ export default function HeroBanner({ user, rank, onLogout }: Props) {
       {/* tablet+: crown on purple silk fills the right side (hidden on mobile, as in the reference) */}
       <ProfileArt
         name="crown"
-        width={520}
-        height={400}
-        sizes="(min-width: 1024px) 216px, 180px"
+        width={800}
+        height={491}
+        sizes="(min-width: 1024px) 300px, 200px"
         preload
         className={CROWN}
         fallback={<Crown className={`pointer-events-none ${CROWN}`} />}
