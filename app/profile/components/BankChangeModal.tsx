@@ -17,8 +17,8 @@ interface Props {
 type ApiError = { response?: { data?: { message?: string } } };
 
 const FIELD =
-  "w-full rounded-xl border border-white/20 bg-black/35 px-3 text-base text-white placeholder:text-white/40 " +
-  "shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)] outline-none focus:border-fuchsia-300 focus:ring-2 focus:ring-fuchsia-300/25";
+  "w-full rounded-xl border border-white/15 bg-[var(--bg-card-elevated)] px-3 text-base text-white placeholder:text-white/40 " +
+  "outline-none focus:border-pink-300 focus:ring-2 focus:ring-pink-300/25";
 
 function BankLogo({ code }: { code: string }) {
   const [hidden, setHidden] = useState(false);
@@ -87,14 +87,14 @@ export default function BankChangeModal({ initialBankCode, initialName, onClose 
         aria-labelledby="bank-change-title"
         onClick={(e) => e.stopPropagation()}
         className={
-          `${styles.dialog} max-h-[calc(100dvh-32px)] w-full max-w-[420px] overflow-y-auto rounded-3xl border border-pink-500/40 p-6 ` +
-          "bg-linear-to-b from-purple-900/95 to-pink-900/95 shadow-[0_20px_50px_rgba(0,0,0,0.7),inset_0_2px_3px_rgba(255,255,255,0.12)]"
+          `${styles.dialog} max-h-[calc(100dvh-32px)] w-full max-w-[420px] overflow-y-auto rounded-2xl border border-[var(--border-accent)] p-6 ` +
+          "bg-[var(--bg-card)] shadow-[0_12px_32px_rgba(0,0,0,0.45)]"
         }
       >
         <h2 id="bank-change-title" className="text-center text-lg font-semibold text-white">แจ้งเปลี่ยนเลขบัญชี</h2>
-        <p className="mb-5 mt-1 text-center text-sm text-fuchsia-100/75">กรอกข้อมูลบัญชีใหม่ รอแอดมินตรวจสอบ</p>
+        <p className="mb-5 mt-1 text-center text-sm text-[var(--text-secondary)]">กรอกข้อมูลบัญชีใหม่ รอแอดมินตรวจสอบ</p>
 
-        <span id="bank-picker-label" className="mb-1.5 block text-sm font-semibold text-fuchsia-100">ธนาคาร</span>
+        <span id="bank-picker-label" className="mb-1.5 block text-sm font-semibold text-[var(--text-primary)]">ธนาคาร</span>
         <div className="relative mb-4">
           <button
             ref={firstRef}
@@ -135,7 +135,7 @@ export default function BankChangeModal({ initialBankCode, initialName, onClose 
           )}
         </div>
 
-        <label htmlFor="new-bank-account" className="mb-1.5 block text-sm font-semibold text-fuchsia-100">เลขบัญชีใหม่</label>
+        <label htmlFor="new-bank-account" className="mb-1.5 block text-sm font-semibold text-[var(--text-primary)]">เลขบัญชีใหม่</label>
         <input
           id="new-bank-account"
           value={bankForm.new_bank_account}
@@ -146,7 +146,7 @@ export default function BankChangeModal({ initialBankCode, initialName, onClose 
           className={`${FIELD} mb-4 h-[50px]`}
         />
 
-        <label htmlFor="new-bank-name" className="mb-1.5 block text-sm font-semibold text-fuchsia-100">ชื่อบัญชี (ตามที่สมัคร)</label>
+        <label htmlFor="new-bank-name" className="mb-1.5 block text-sm font-semibold text-[var(--text-primary)]">ชื่อบัญชี (ตามที่สมัคร)</label>
         <input
           id="new-bank-name"
           value={bankForm.new_bank_name}
@@ -160,7 +160,7 @@ export default function BankChangeModal({ initialBankCode, initialName, onClose 
           <button
             type="button"
             onClick={onClose}
-            className={`min-h-[50px] flex-1 rounded-2xl border border-white/25 bg-black/30 font-semibold text-white hover:bg-black/40 ${PRESS} ${FOCUS}`}
+            className={`min-h-[50px] flex-1 rounded-full border border-white/15 bg-white/5 font-semibold text-white hover:bg-white/10 ${PRESS} ${FOCUS}`}
           >
             ยกเลิก
           </button>
@@ -169,8 +169,8 @@ export default function BankChangeModal({ initialBankCode, initialName, onClose 
             onClick={submitBankChange}
             disabled={submitting}
             className={
-              "min-h-[50px] flex-[2] rounded-2xl border border-yellow-300 bg-linear-to-b from-yellow-200 to-[#eab308] font-semibold text-yellow-950 " +
-              `shadow-[0_6px_12px_rgba(202,138,4,0.4),inset_0_2px_3px_rgba(255,255,255,0.6)] disabled:cursor-not-allowed disabled:opacity-70 ${PRESS} ${FOCUS}`
+              "min-h-[50px] flex-[2] rounded-full bg-[var(--accent-gold)] font-semibold text-[#1b1030] hover:brightness-110 " +
+              `disabled:cursor-not-allowed disabled:opacity-70 ${PRESS} ${FOCUS}`
             }
           >
             {submitting ? "กำลังส่ง..." : "ส่งคำขอ"}

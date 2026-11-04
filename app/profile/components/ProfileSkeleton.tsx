@@ -1,18 +1,27 @@
+import "../styles/tokens.css";
 import styles from "../profile.module.css";
 
-/** Skeleton used by app/profile/loading.tsx and while the profile data is being fetched. */
+/** Skeleton used by app/profile/loading.tsx and while the profile data is being fetched. Mirrors the real grid. */
 export default function ProfileSkeleton() {
-  const bone = `${styles.skeleton} rounded-3xl`;
+  const bone = `${styles.skeleton} rounded-2xl`;
   return (
-    <div className="mx-auto w-full max-w-[480px] px-4 pb-24 pt-4 min-[769px]:max-w-[520px]" role="status" aria-label="กำลังโหลดข้อมูลโปรไฟล์">
-      <div className={`${bone} h-[172px]`} />
-      <div className="mt-4 grid grid-cols-2 gap-3">
-        {Array.from({ length: 4 }).map((_, i) => <div key={i} className={`${styles.skeleton} h-[88px] rounded-2xl`} />)}
+    <div className={"profile-scope min-h-dvh"}>
+      <div
+        className="mx-auto flex w-full max-w-[480px] flex-col gap-4 px-4 pb-24 pt-4 sm:max-w-[640px] lg:max-w-[1200px]"
+        role="status"
+        aria-label="กำลังโหลดข้อมูลโปรไฟล์"
+      >
+        <div className={`${bone} h-[324px] sm:h-[248px] lg:h-[272px]`} />
+        <div className="grid gap-4 sm:grid-cols-2">
+          <div className={`${bone} h-[260px]`} />
+          <div className={`${bone} h-[260px]`} />
+        </div>
+        <div className="grid gap-4 lg:grid-cols-3">
+          <div className={`${bone} h-[200px] lg:col-span-2`} />
+          <div className={`${bone} h-[200px]`} />
+        </div>
+        <span className="sr-only">กำลังโหลด…</span>
       </div>
-      <div className={`${bone} mt-5 aspect-[1.75/1] min-h-[190px]`} />
-      <div className={`${styles.skeleton} mt-7 h-4 w-24 rounded-full`} />
-      <div className={`${bone} mt-3 h-[216px]`} />
-      <span className="sr-only">กำลังโหลด…</span>
     </div>
   );
 }
