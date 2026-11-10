@@ -108,13 +108,16 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
     let opening: string | null = null; // match id whose link is being minted right now
     let retryAt = 0;
     let failures = 0;
+    let needsReconnect = false; // the playing link was interrupted (offline, sleep, back-navigation)
     const abort = new AbortController();
 
+    type OpenMode = 'open' | 'switch' | 'reconnect';
     // Upstream links die a few seconds after minting, so a link is requested only at the moment a match is
-    // opened and goes straight into the iframe. A playing iframe is never reloaded (it keeps playing).
-    async function openMatch(match: FootballMatch, switching: boolean) {
+    // opened and goes straight into the iframe. A playing iframe is never reloaded (it keeps playing) —
+    // except to reconnect after the connection or the device was interrupted, again with a fresh link.
+    async function openMatch(match: FootballMatch, mode: OpenMode) {
       opening = match.id;
-      setNotice(`กำลังเชื่อมต่อสัญญาณ ${match.home} พบ ${match.away}`);
+      setNotice(mode === 'reconnect' ? 'กำลังเชื่อมต่อสัญญาณใหม่ให้อัตโนมัติ' : `กำลังเชื่อมต่อสัญญาณ ${match.home} พบ ${match.away}`);
       try {
         const response = await fetch('/api/live-football/prepare', {
           method: 'POST', cache: 'no-store', signal: abort.signal,
@@ -124,19 +127,24 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
         if (!active) return;
         if (!response.ok || !data.url) throw Error(data.error || 'ยังเชื่อมต่อสัญญาณไม่ได้');
         failures = 0;
+        needsReconnect = false;
         const current = feedRef.current.matches.find(item => item.id === match.id) ?? match;
         startedRef.current = true;
         setStarted(true);
         viewingRef.current = { id: match.id, url: data.url, match: current };
         setViewing(viewingRef.current);
         setFrameLoaded(false);
-        setNotice(switching ? `เปลี่ยนคู่ให้อัตโนมัติ: ${current.home} พบ ${current.away}` : `กำลังรับชม ${current.home} พบ ${current.away}`);
+        setNotice(mode === 'switch' ? `เปลี่ยนคู่ให้อัตโนมัติ: ${current.home} พบ ${current.away}`
+          : mode === 'reconnect' ? `เชื่อมต่อใหม่แล้ว: ${current.home} พบ ${current.away}`
+          : `กำลังรับชม ${current.home} พบ ${current.away}`);
       } catch (error) {
         if (!active) return;
         failures++;
         const wait = Math.min(15_000, 2000 * failures); // 2 s, 4 s, 6 s … capped
         retryAt = Date.now() + wait;
-        setNotice(`${error instanceof Error && error.message ? error.message : 'ยังเชื่อมต่อสัญญาณไม่ได้'} — ลองใหม่อัตโนมัติ`);
+        setNotice(!navigator.onLine
+          ? 'อินเทอร์เน็ตหลุด — จะเชื่อมต่อให้อัตโนมัติเมื่อกลับมา'
+          : `${error instanceof Error && error.message ? error.message : 'ยังเชื่อมต่อสัญญาณไม่ได้'} — ลองใหม่อัตโนมัติ`);
         clearTimeout(retryTimer);
         retryTimer = setTimeout(reconcile, wait);
       } finally { if (opening === match.id) opening = null; }
@@ -150,11 +158,16 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
           ? resolveCalendarLink(event, linksRef.current, feedRef.current.matches)
           : initialMatchId;
         const chosen = feedRef.current.matches.find(match => match.id === targetId && match.state === 'live');
-        if (chosen) void openMatch(chosen, false);
+        if (chosen) void openMatch(chosen, 'open');
         return;
       }
       const next = chooseMatch(viewingRef.current?.id ?? null, feedRef.current.matches, liveIds(feedRef.current.matches), autoRef.current);
-      if (next === viewingRef.current?.id) return; // Score/feed refresh never reloads a playing iframe.
+      if (next && next === viewingRef.current?.id) {
+        // Score/feed refresh never reloads a playing iframe; only an interrupted one gets a fresh link.
+        const match = needsReconnect && feedRef.current.matches.find(item => item.id === next && item.state === 'live');
+        if (match) void openMatch(match, 'reconnect');
+        return;
+      }
       if (!next) {
         if (viewingRef.current) {
           viewingRef.current = null;
@@ -165,8 +178,39 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
         return;
       }
       const match = feedRef.current.matches.find(item => item.id === next);
-      if (match) void openMatch(match, !!viewingRef.current);
+      if (match) void openMatch(match, viewingRef.current ? 'switch' : 'open');
     }
+
+    // The player's stream cannot survive a dropped connection or a sleeping device, and its old link has
+    // expired by then, so reconnect the same match with a fresh link as soon as we can.
+    function interrupted() {
+      if (!viewingRef.current) return;
+      needsReconnect = true;
+      retryAt = 0;
+      failures = 0;
+      clearTimeout(retryTimer);
+      retryTimer = setTimeout(reconcile, 1000); // let the network settle for a moment
+    }
+    let wentOffline = false;
+    const onOffline = () => {
+      wentOffline = true;
+      if (viewingRef.current) { setFrameLoaded(false); setNotice('อินเทอร์เน็ตหลุด — จะเชื่อมต่อให้อัตโนมัติเมื่อกลับมา'); }
+    };
+    const onOnline = () => { if (wentOffline) { wentOffline = false; interrupted(); } };
+    // Back/forward cache restores the page with the old (expired) iframe link.
+    const onPageShow = (event: PageTransitionEvent) => { if (event.persisted) interrupted(); };
+    // Sleep detection: timers stop while a computer sleeps or a phone is locked. Hidden tabs are throttled
+    // to about one tick per minute, so only a gap well beyond that counts as the device having slept.
+    let lastTick = Date.now();
+    const wakeTimer = setInterval(() => {
+      const now = Date.now();
+      const gap = now - lastTick;
+      lastTick = now;
+      if (gap > (document.visibilityState === 'hidden' ? 150_000 : 30_000)) interrupted();
+    }, 5000);
+    window.addEventListener('offline', onOffline);
+    window.addEventListener('online', onOnline);
+    window.addEventListener('pageshow', onPageShow);
 
     async function read<T>(path: string): Promise<T> {
       const response = await fetch(path, { cache: 'no-store', signal: abort.signal });
@@ -200,7 +244,12 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
     }
     void updateFeed();
     void updateLinks();
-    return () => { active = false; abort.abort(); clearTimeout(feedTimer); clearTimeout(linkTimer); clearTimeout(retryTimer); };
+    return () => {
+      active = false; abort.abort(); clearTimeout(feedTimer); clearTimeout(linkTimer); clearTimeout(retryTimer); clearInterval(wakeTimer);
+      window.removeEventListener('offline', onOffline);
+      window.removeEventListener('online', onOnline);
+      window.removeEventListener('pageshow', onPageShow);
+    };
   }, [initialMatchId]);
 
   const live = feed.matches.filter(match => match.state === 'live');
@@ -227,7 +276,7 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
   const player = <section ref={playerSectionRef} className={`${styles.broadcast} ${expanded ? styles.expanded : ''}`} aria-label="วิดีโอถ่ายทอดสด">
     <div className={styles.broadcastTop}><span className={styles.liveBadge}>{showFrame ? 'LIVE' : 'MATCH'}</span><span className={styles.broadcastLeague}>{selected?.league ?? 'ศูนย์รวมถ่ายทอดสด'}</span><button type="button" className={styles.fullscreenButton} onClick={toggleFullscreen} aria-pressed={expanded} aria-label={expanded ? 'ออกจากเต็มจอ' : 'ดูเต็มจอ'}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d={expanded ? 'M8 3v5H3m18 0h-5V3M3 16h5v5m8 0v-5h5' : 'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5'} /></svg>{expanded ? 'ออกจากเต็มจอ' : 'เต็มจอ'}</button></div>
     {selected && <div className={styles.watchMatchHeader}><FixtureRow match={selected} selected /></div>}
-    <div className={styles.stage}>{showFrame ? <iframe key={viewing.id} src={viewing.url} title={`ถ่ายทอดสด ${current?.home} พบ ${current?.away}`} allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowFullScreen onLoad={() => setFrameLoaded(true)} /> : <MatchPreview match={selected} loading={!calendar.feed && !feed.updatedAt} />}</div>
+    <div className={styles.stage}>{showFrame ? <iframe key={viewing.url} src={viewing.url} title={`ถ่ายทอดสด ${current?.home} พบ ${current?.away}`} allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowFullScreen onLoad={() => setFrameLoaded(true)} /> : <MatchPreview match={selected} loading={!calendar.feed && !feed.updatedAt} />}</div>
     {(showFrame || started) && <div className={styles.playerDetails}>{showFrame && <p>{frameLoaded ? 'เปิดเสียงหรือดูเต็มจอได้จากตัวเล่น' : notice}</p>}{started && <div className={styles.autoControl}><span>เล่นคู่ถัดไปอัตโนมัติ</span><button type="button" role="switch" aria-label="เปลี่ยนคู่ถัดไปอัตโนมัติ" aria-checked={autoNext} className={`${styles.switch} ${autoNext ? styles.switchOn : ''}`} onClick={() => { autoRef.current = !autoRef.current; setAutoNext(autoRef.current); }}><span /></button></div>}</div>}
   </section>;
   return <main className={`${styles.page} ${initialMatchId ? styles.watchPage : ''}`}><div className={styles.container}>
