@@ -1,7 +1,10 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
+import { avatarSrc, loadAvatar, subscribeAvatar } from "@/app/profile/avatars";
+import { getAvatarPath } from "@/app/profile/utils/avatar";
 import { useTranslation } from "react-i18next";
 import api from "@/lib/api";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
@@ -23,6 +26,9 @@ export default function Navbar() {
   const [username] = useState(session?.username ?? "");
   const [isLoggedIn, setIsLoggedIn] = useState(!!session);
   const [menuOpen, setMenuOpen] = useState(false);
+  // display only: the avatar picked on /profile (same localStorage key + fallback as the Profile hero)
+  const savedAvatar = useSyncExternalStore(subscribeAvatar, () => (username ? loadAvatar(username) : null), () => null);
+  const avatarUrl = savedAvatar ? avatarSrc(savedAvatar) : getAvatarPath(username || "guest");
 
   useEffect(() => {
     if (session) {
@@ -55,6 +61,8 @@ export default function Navbar() {
   const fmt = (n: number) => n.toLocaleString("th-TH", { minimumFractionDigits: 2 });
   // display guard: never crash the header if the balance payload is missing/non-numeric
   const hasBalance = typeof balance === "number" && Number.isFinite(balance);
+  // no notification source exists yet → never show the unread dot
+  const hasUnread = false;
 
   const navLinks = [
     { href: "/lobby", label: t("nav.enterGame") },
@@ -111,15 +119,28 @@ export default function Navbar() {
                   <img alt="" src="/icons/coin.svg" className={styles.coin} width={18} height={18} />
                   <span className={styles.balanceValue}>{hasBalance ? fmt(balance as number) : "…"}</span>
                   <span className={styles.topup}>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14" /></svg>
                     <span className={styles.topupText}>{t("nav.topup")}</span>
                   </span>
                 </Link>
 
-                <LanguageSwitcher />
+                {/* Notification bell (mobile + desktop). There is no notification API yet, so there's nothing to open
+                    and no unread count: the dot stays hidden. TODO: hook up hasUnread + onClick once the backend has notifications. */}
+                <button type="button" className={styles.bell} aria-label={hasUnread ? "แจ้งเตือน (มีรายการใหม่)" : "แจ้งเตือน"} title="แจ้งเตือน (เร็วๆ นี้)">
+                  {/* gold bell artwork: transparent cut-out of public/icons/notification-bell.webp (169×192, lossless) */}
+                  <img src="/icons/notification-bell-cut.webp" alt="" width={26} height={26} className={styles.bellImg} draggable={false} decoding="async" />
+                  {hasUnread && <span className={styles.bellDot} aria-hidden="true" />}
+                </button>
+
+                {/* wrapper only lets the mobile CSS resize the flag; display: contents keeps the layout unchanged */}
+                <span className={styles.lang}>
+                  <LanguageSwitcher />
+                </span>
 
                 <button type="button" className={styles.avatarBtn} onClick={() => setMenuOpen(true)} aria-label={username || "Account"} aria-controls="user-drawer">
-                  <span className={styles.avatar}>{(username || "U")[0].toUpperCase()}</span>
+                  <span className={styles.avatar}>
+                    <Image src={avatarUrl} alt="" width={34} height={34} unoptimized className={styles.avatarImg} />
+                  </span>
                   <span className={styles.avatarName}>{username}</span>
                 </button>
               </>
@@ -134,7 +155,9 @@ export default function Navbar() {
           <div id="user-drawer" className={styles.drawer} role="dialog" aria-modal="true" aria-label="Menu" onClick={(e) => e.stopPropagation()}>
             <div className={styles.drawerHead}>
               <div className={styles.drawerUser}>
-                <span className={`${styles.avatar} ${styles.avatarLg}`}>{(username || "U")[0].toUpperCase()}</span>
+                <span className={`${styles.avatar} ${styles.avatarLg}`}>
+                  <Image src={avatarUrl} alt="" width={46} height={46} unoptimized className={styles.avatarImg} />
+                </span>
                 <div>
                   <div className={styles.drawerName}>{username}</div>
                   <div className={styles.drawerRole}>สมาชิก</div>

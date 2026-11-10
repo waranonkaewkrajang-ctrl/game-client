@@ -8,6 +8,7 @@ import I18nProvider from "@/components/I18nProvider";
 import PopupModal from "@/components/PopupModal";
 import Activities from "@/components/Activities";
 import ThemeLoader from "./ThemeLoader";
+import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
 
 const TITLE = "SNAKE168 – เว็บอันดับ 1 ของไทย มั่นคงปลอดภัย 100%";
 const DESCRIPTION = "SNAKE168 เว็บสล็อตออนไลน์ ฝากถอนออโต้ ปลอดภัย 100% บริการ 24 ชม.";
@@ -97,6 +98,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <ThemeLoader />
+        <ServiceWorkerRegister />
         <I18nProvider>
           <NavbarWrapper />
           {children}

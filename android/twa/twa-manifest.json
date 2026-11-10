@@ -1,0 +1,47 @@
+{
+  "packageId": "online.snake1168.app",
+  "host": "snake1168.online",
+  "name": "SNAKE168",
+  "launcherName": "SNAKE168",
+  "display": "standalone",
+  "orientation": "default",
+  "themeColor": "#2A1145",
+  "themeColorDark": "#2A1145",
+  "navigationColor": "#2A1145",
+  "navigationColorDark": "#2A1145",
+  "navigationDividerColor": "#2A1145",
+  "navigationDividerColorDark": "#2A1145",
+  "backgroundColor": "#2A1145",
+  "enableNotifications": false,
+  "startUrl": "/lobby",
+  "iconUrl": "https://snake1168.online/pwa/icon-512.png",
+  "maskableIconUrl": "https://snake1168.online/pwa/icon-maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./.keys/snake168-release.keystore",
+    "alias": "snake168-release"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 3,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://snake1168.online/manifest.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://snake1168.online/",
+  "minSdkVersion": 24,
+  "fingerprints": [
+    {
+      "name": "release",
+      "value": "F5:90:04:44:76:22:A6:21:39:56:7E:FC:A6:83:BC:05:32:E0:43:90:F1:6D:5D:A4:B0:40:E8:8C:C8:2A:B8:B6"
+    }
+  ],
+  "additionalTrustedOrigins": [],
+  "appVersion": "1.0.0"
+}

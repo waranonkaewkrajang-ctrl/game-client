@@ -25,6 +25,10 @@ export interface CategoryItem {
   label: string;      // translated label
   icon: string;
   count?: number;
+  /** full category card artwork (label text is baked into the image); intrinsic size avoids layout shift */
+  art?: { src: string; width: number; height: number };
+  /** full-card crop of the Design C card interior around the character (opaque, no baked-in text) for the compact mobile rail; 234×186 */
+  thumb?: string;
 }
 
 const up = (v: string | null | undefined) => (v || "").toUpperCase();

@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "online.snake1168.app.dev",
+      "sha256_cert_fingerprints": ["<REPLACE: SHA-256 from `keytool -list -v -keystore .keys/snake168-dev.keystore -alias snake168-dev`>"]
+    }
+  }
+]

@@ -117,38 +117,36 @@ body {
   overflow-x: clip;
 }
 
-/* ชั้นหลัง — ภาพเดียวกันเบลอ เติมขอบไม่ให้เป็นสีดำ */
+/* Site-wide background: Style 2 purple-pink mountains as a full-viewport wallpaper behind every page.
+   One layer only (no duplicate, no blurred copy, no repeat, no mask/fade).
+   - position: fixed + a viewport-sized box → the art stays behind the content while it scrolls,
+     so long pages never run out of mountains (no solid/dark section below the image)
+   - this is a fixed *element*, not background-attachment: fixed (which iOS Safari ignores / repaints badly);
+     height 100lvh (largest viewport) so showing/hiding the mobile URL bar never resizes or jumps it
+   - background-size: cover keeps the image's own aspect ratio (no distortion) and fills the viewport;
+     the art is ~16:9 (desktop) / ~9:16 (mobile), so typical viewports crop only a little at the sides
+   - one soft uniform tint over the art only: --bg-art-tint (#2a1145 at 18%), layered in this pseudo-element,
+     so UI content is never dimmed, filtered or blurred
+   - z-index -1 with no transformed/stacking ancestor → painted under all page content; never interactive */
 body::before {
+  --bg-art-tint: linear-gradient(rgba(42, 17, 69, 0.18), rgba(42, 17, 69, 0.18));
   content: "";
   position: fixed;
-  inset: -12%;
-  z-index: -2;
-  background-image: url('/bg-mobile-v2.webp');
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;                               /* fallback for browsers without lvh */
+  height: 100lvh;
+  background-image: var(--bg-art-tint), url('/images/backgrounds/mountain-style2-mobile.webp');
+  background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
-  background-repeat: no-repeat;
-  filter: blur(28px) brightness(.55) saturate(1.1);
-  transform: scale(1.35);
   pointer-events: none;
 }
-
-/* ชั้นหน้า — ภาพเต็มไม่ถูกตัด */
-body::after {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  background-image: url('/bg-mobile-v2.webp');
-    background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  pointer-events: none;
-}
-
-@media (min-width: 1024px) {
-  body::before,
-  body::after {
-    background-image: url('/bg-desktop-v2.webp');
+@media (min-width: 600px) {
+  body::before {
+    background-image: var(--bg-art-tint), url('/images/backgrounds/mountain-style2-desktop.webp');
   }
 }
 

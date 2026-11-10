@@ -2,12 +2,17 @@
 import { useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import api from "@/lib/api";
-import Swal from "sweetalert2";
+import ProviderGameCard, { ProviderGameCardSkeleton } from "@/components/lobby/ProviderGameCard";
+import { favoriteKey, useFavoriteGames } from "@/components/lobby/favoriteGames";
+import { alertFavoriteSaveFailed, launchGame } from "@/components/lobby/launchGame";
 
 interface Game {
   id: number; product_id: string; game_code: string; game_name: string; game_name_th: string | null;
   category: string | null; type: string | null; image_url: string | null; is_active: boolean;
 }
+
+// provider id → measured cover ratio (client-side, per session; see coverRatio below)
+const coverRatioByProvider = new Map<string, number>();
 
 export default function ProviderRoomPage() {
   const router = useRouter();
@@ -16,6 +21,22 @@ export default function ProviderRoomPage() {
 
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
+  // width / height of this provider's cover artwork (measured from the first loaded image; null = 3:4 default).
+  // Remembered per provider for this browser session, so re-entering a room lays out skeletons and cards at the
+  // final ratio straight away (no resize when the first cover loads). Only written on the client (image onLoad),
+  // so server render and hydration both start from null on a full refresh.
+  const [coverRatio, setCoverRatio] = useState<number | null>(() => coverRatioByProvider.get(provider) ?? null);
+  const [ratioFor, setRatioFor] = useState(provider);
+  if (ratioFor !== provider) { setRatioFor(provider); setCoverRatio(coverRatioByProvider.get(provider) ?? null); } // switching provider
+  const rememberCoverRatio = (w: number, h: number) => {
+    coverRatioByProvider.set(provider, w / h);
+    setCoverRatio((r) => r ?? w / h);
+  };
+  // favorite games (browser-local; see components/lobby/favoriteGames.ts)
+  const { isFavorite, toggle: toggleFavorite } = useFavoriteGames();
+  const handleToggleFavorite = (game: Game) => {
+    if (!toggleFavorite(favoriteKey(game.product_id, game.game_code))) alertFavoriteSaveFailed();
+  };
 
   useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
@@ -32,24 +53,12 @@ export default function ProviderRoomPage() {
     }).catch(() => setLoading(false));
   };
 
-  const handleLaunchGame = async (game: Game) => {
-    try {
-      const res = await api.post("/games/launch", { productId: game.product_id, gameCode: game.game_code, isMobile: window.innerWidth < 768 });
-      if (res.data.status === "success" && res.data.data.game_url) {
-        const gameUrl = res.data.data.game_url;
-        if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
-          window.location.href = gameUrl;
-        } else {
-          window.open(gameUrl, "_blank");
-        }
-      }
-    } catch (err: any) {
-      Swal.fire({ icon: "error", title: "เปิดเกมไม่สำเร็จ", text: err.response?.data?.message || "กรุณาลองใหม่", background: "#ffffff", color: "#0f172a", confirmButtonColor: "#dc2626", confirmButtonText: "ตกลง" });
-    }
-  };
+  // shared with the lobby's favorites tab (components/lobby/launchGame.ts — same request and behaviour)
+  const handleLaunchGame = (game: Game) => launchGame(game);
 
   return (
     <div style={{ minHeight: "100vh", background: "transparent", paddingBottom: "70px", position: "relative", overflow: "hidden" }}>
+      {/* transparent root: the site-wide mountain background (body::before in globals.css) shows through */}
 
       {/* Dice Background */}
       <div style={{ position: "absolute", inset: 0, overflow: "hidden", pointerEvents: "none", zIndex: 0 }}>
@@ -168,9 +177,17 @@ e.currentTarget.style.boxShadow = "0 2px 0 #450a0a, 0 3px 5px rgba(0,0,0,0.4), i
 
         {/* Games Grid */}
         {loading ? (
-          <div className="games-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "12px" }}>
+          // placeholders = the card's own frame/ratio/name line (was: translucent #14142a tiles pulsing 30–60% opacity,
+          // fixed 3:4 and no name line → a different colour that flickered, then a layout jump when cards arrived)
+          <div
+            className="games-grid"
+            style={{
+              display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "12px",
+              ...(coverRatio ? { ["--cover-ar" as string]: coverRatio } : {}),
+            }}
+          >
             {Array.from({ length: 12 }).map((_, i) => (
-              <div key={i} style={{ background: "#14142a", borderRadius: "14px", aspectRatio: "3/4", animation: "pulse 1.5s ease-in-out infinite" }} />
+              <ProviderGameCardSkeleton key={i} />
             ))}
           </div>
         ) : games.length === 0 ? (
@@ -181,40 +198,27 @@ e.currentTarget.style.boxShadow = "0 2px 0 #450a0a, 0 3px 5px rgba(0,0,0,0.4), i
             </button>
           </div>
         ) : (
-          <div className="games-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "12px" }}>
-            {games.map((game) => (
-              <div key={game.id} onClick={() => handleLaunchGame(game)} style={{ cursor: "pointer", position: "relative", overflow: "visible", minWidth: 0 }}>
-               <div style={{ width: "100%", aspectRatio: "3/4", borderRadius: "14px", overflow: "hidden", position: "relative", background: "#121214", transition: "transform 0.3s ease" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.transform = "translateY(-4px)"; e.currentTarget.style.boxShadow = "0 8px 20px rgba(0,0,0,0.4)"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.transform = ""; e.currentTarget.style.boxShadow = ""; }}>
-                  {game.image_url ? (
-                    <img src={game.image_url} alt={game.game_name} style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s" }} loading="lazy"
-                      onMouseEnter={(e) => e.currentTarget.style.transform = "scale(1.05)"}
-                      onMouseLeave={(e) => e.currentTarget.style.transform = ""} />
-                  ) : (
-                    <div style={{ width: "100%", height: "100%", display: "flex", alignItems: "center", justifyContent: "center", color: "#2d2d4a", fontSize: "0.65rem" }}>No Image</div>
-                  )}
-                  <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, background: "linear-gradient(transparent, rgba(0,0,0,0.85))", padding: "20px 8px 8px", display: "flex", alignItems: "center", justifyContent: "center", gap: "4px" }}>
-                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#a78bfa" }} />
-                    <span style={{ fontSize: "0.55rem", color: "#a78bfa", fontWeight: 700, letterSpacing: "0.05em", textTransform: "uppercase" }}>{game.product_id}</span>
-                    <div style={{ width: "4px", height: "4px", borderRadius: "50%", background: "#a78bfa" }} />
-                  </div>
-                </div>
-                <p style={{
-                  fontSize: "0.78rem",
-                  fontWeight: 800,
-                  color: "#ffffff",
-                  margin: "8px 0 0",
-                  textAlign: "center",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                  textShadow: "0 1px 2px rgba(0,0,0,0.9), 0 0 8px rgba(168,85,247,0.5)",
-                  letterSpacing: "0.3px",
-                }}>
-                  {game.game_name_th || game.game_name}
-                </p>
-              </div>
+          <div
+            className="games-grid"
+            style={{
+              display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: "12px",
+              // cover box = the provider's real artwork ratio (first cover that loads)
+              ...(coverRatio ? { ["--cover-ar" as string]: coverRatio } : {}),
+            }}
+          >
+            {games.map((game, i) => (
+              <ProviderGameCard
+                key={game.id}
+                title={game.game_name_th || game.game_name}
+                imageUrl={game.image_url}
+                productId={game.product_id}
+                category={game.category}
+                onLaunch={() => handleLaunchGame(game)}
+                favorite={isFavorite(favoriteKey(game.product_id, game.game_code))}
+                onToggleFavorite={() => handleToggleFavorite(game)}
+                eager={i < 8}
+                onCoverLoad={coverRatio ? undefined : rememberCoverRatio}
+              />
             ))}
           </div>
         )}

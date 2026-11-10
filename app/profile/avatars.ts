@@ -16,10 +16,25 @@ export function loadAvatar(username: string): string | null {
   }
 }
 
+// same-tab change signal: the browser's "storage" event only reaches OTHER tabs, and the Navbar stays mounted
+// while /profile saves a new avatar
+const CHANGE_EVENT = "profile-avatar-change";
+
 export function saveAvatar(username: string, id: string) {
   try {
     localStorage.setItem(key(username), id);
   } catch {
     // storage blocked (private mode): the choice still applies until reload
   }
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}
+
+/** useSyncExternalStore subscriber for the saved avatar (this tab + other tabs). */
+export function subscribeAvatar(onChange: () => void) {
+  window.addEventListener(CHANGE_EVENT, onChange);
+  window.addEventListener("storage", onChange);
+  return () => {
+    window.removeEventListener(CHANGE_EVENT, onChange);
+    window.removeEventListener("storage", onChange);
+  };
 }

@@ -1,0 +1,188 @@
+/* Provider room game card (design-reference/provider-game-card-favorite-glass.png).
+ * Shared by every /lobby/[provider] page. The grid sets --cover-ar (cover width / height, measured from
+ * the provider's real artwork). No shadows, glow, 3D or colour filters — the artwork is the focus. */
+.card {
+  position: relative;     /* positioning context for the favorite button */
+  min-width: 0;
+}
+
+/* loading placeholder (ProviderGameCardSkeleton): identical box, not interactive → no hover lift */
+.skeleton { pointer-events: none; }
+
+/* ---------- launch control: cover + name ---------- */
+.launch {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.launch:focus-visible { outline: none; }
+.launch:focus-visible .frame { box-shadow: 0 0 0 2px #0a0a14, 0 0 0 4px #d8b4fe; }
+
+.frame {
+  display: block;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: #13091f;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+@media (hover: hover) {
+  .card:hover .frame { transform: translateY(-3px); border-color: rgba(216, 180, 254, 0.4); }
+  .card:hover .fav { transform: translateY(-3px); }
+}
+
+/* ---------- cover: full artwork, natural colours ---------- */
+.cover {
+  position: relative;
+  display: block;
+  aspect-ratio: var(--cover-ar, 0.75);
+  background: #13091f;
+}
+.coverImg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;   /* never crops embedded titles / characters; the box already matches the source ratio */
+  opacity: 1;
+  filter: none;
+}
+.noImage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-size: 0.65rem;
+  color: #6e6a93;
+}
+
+/* ---------- soft glass behind the logo: bottom ~13% only ----------
+   Light purple tint + 6px blur of just this region; the mask fades its top edge so there is no band line.
+   The logo is a sibling above it (z-index 2), so the logo itself stays sharp. */
+.logoBackdrop {
+  position: absolute;
+  z-index: 1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 13%;
+  min-height: 22px;
+  background: linear-gradient(to bottom, rgba(18, 8, 30, 0.04), rgba(18, 8, 30, 0.28));
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 45%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 45%);
+  pointer-events: none;
+}
+
+/* ---------- provider logo on the artwork, bottom centre ---------- */
+.logo {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 2px;            /* the logo files carry their own transparent padding, so the visible mark sits ~4–6px up */
+  translate: -50% 0;
+  width: auto;
+  height: 13%;            /* of the cover height (padded 1.83:1 canvas → visible mark ≈ 5–11% of the cover) */
+  min-height: 20px;
+  max-width: 48%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+.logoText {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 5px;
+  translate: -50% 0;
+  max-width: 60%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.58rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+/* ---------- favorite heart: separate button, top-right ----------
+   44×44 tap target; the visible circle is 32px (34px desktop) and sits 8px from the cover's corner. */
+.fav {
+  position: absolute;
+  z-index: 3;
+  top: 2px;
+  right: 2px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #ffffff;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.2s ease;
+}
+.favCircle {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(14, 8, 26, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.35);  /* no backdrop-filter here: one blur per card (the logo glass) is enough */
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.favCircle svg { display: block; filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.35)); }
+.fav[aria-pressed="true"] { color: #ff3d9a; }
+.fav[aria-pressed="true"] .favCircle {
+  background: rgba(255, 61, 154, 0.16);
+  border-color: rgba(255, 120, 190, 0.6);
+}
+@media (hover: hover) {
+  .fav:hover .favCircle { border-color: rgba(255, 255, 255, 0.7); }
+}
+.fav:focus-visible { outline: none; }
+.fav:focus-visible .favCircle { box-shadow: 0 0 0 2px #0a0a14, 0 0 0 4px #d8b4fe; }
+
+/* ---------- existing game name below the card ---------- */
+.name {
+  display: block;
+  margin-top: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 768px) {
+  .frame { border-radius: 12px; }
+  .name { font-size: 0.75rem; margin-top: 6px; }
+}
+@media (min-width: 1024px) {
+  .favCircle { width: 34px; height: 34px; }
+  .fav { top: 3px; right: 3px; }   /* (44 − 34) / 2 + 3 = 8px from the corner */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .frame, .fav, .favCircle { transition: none; }
+  .card:hover .frame, .card:hover .fav { transform: none; }
+}

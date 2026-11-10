@@ -1,18 +1,12 @@
 "use client";
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import api from "@/lib/api";
 import { useTranslation } from "react-i18next";
 import styles from "./BottomMenu.module.css";
 
 export default function BottomMenu() {
   const pathname = usePathname();
   const { t } = useTranslation();
-  const [contactLinks, setContactLinks] = useState({ line: "#", telegram: "#" });
-  useEffect(() => {
-    api.get("/contact-links").then((res) => setContactLinks(res.data)).catch(() => {});
-  }, []);
   if (["/login", "/register"].includes(pathname)) return null;
 
   const active = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
@@ -40,10 +34,10 @@ export default function BottomMenu() {
         <span className={styles.label}>{t("nav.walletMenu")}</span>
       </Link>
 
-      <a href={contactLinks.line} target="_blank" rel="noopener noreferrer" className={styles.item}>
-        <img src="/icons/contact.webp" className={styles.icon} alt="" width={26} height={26} />
-        <span className={styles.label}>{t("nav.contact")}</span>
-      </a>
+      <Link href="/live" className={cls("/live")} aria-current={active("/live") ? "page" : undefined}>
+        <img src="/icons/live-camera-animated.webp" className={styles.icon} alt="" width={26} height={26} />
+        <span className={styles.label}>{t("nav.liveFootball")}</span>
+      </Link>
       <Link href="/profile" className={cls("/profile")} aria-current={active("/profile") ? "page" : undefined}>
         <svg className={styles.svgIcon} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
         <span className={styles.label}>{t("nav.profile")}</span>

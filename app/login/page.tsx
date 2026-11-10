@@ -10,19 +10,12 @@ import styles from "./login.module.css";
 type ApiError = { response?: { data?: { message?: string } } };
 
 /** Real lobby room categories (see ROOM_CATEGORIES in app/lobby/page.tsx) — labels only, no claims. */
-const SHOWCASE_TAGS = ["สล็อต", "คาสิโนสด", "ยิงปลา", "กีฬา"];
-
-/** Decorative corner ornaments for the custom form frame (public/login/corner.svg). */
-function FrameCorners() {
-  return (
-    <>
-      <span className={`${styles.corner} ${styles.cornerTl}`} aria-hidden="true" />
-      <span className={`${styles.corner} ${styles.cornerTr}`} aria-hidden="true" />
-      <span className={`${styles.corner} ${styles.cornerBl}`} aria-hidden="true" />
-      <span className={`${styles.corner} ${styles.cornerBr}`} aria-hidden="true" />
-    </>
-  );
-}
+const SHOWCASE_TAGS = [
+  { label: "สล็อต", icon: "slot" },
+  { label: "คาสิโนสด", icon: "casino" },
+  { label: "ยิงปลา", icon: "fishing-game" },
+  { label: "กีฬา", icon: "sport" },
+];
 
 export default function LoginPage() {
   const router = useRouter();
@@ -32,7 +25,6 @@ export default function LoginPage() {
   const [twoFactorToken, setTwoFactorToken] = useState("");
   const [step, setStep] = useState<"login" | "2fa">("login");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
 
@@ -87,23 +79,46 @@ export default function LoginPage() {
 
   const showForgot = (e: React.MouseEvent) => {
     e.preventDefault();
-    Swal.fire({ title: "ลืมรหัสผ่าน?", text: "กรุณาติดต่อแอดมินเพื่อรีเซ็ตรหัสผ่าน", icon: "info", background: "#1a1a2e", color: "#e2e8f0", confirmButtonColor: "#7c3aed" });
+    const content = document.createElement("div");
+    const description = document.createElement("p");
+    description.textContent = "กรุณาติดต่อแอดมินเพื่อรีเซ็ตรหัสผ่าน";
+    content.appendChild(description);
+    const links = document.createElement("div");
+    links.className = styles.forgotLinks;
+    const channels = [
+      { label: "ติดต่อผ่าน LINE", url: contactLinks.line, fallback: "https://lin.ee/rjOBayDx", hosts: ["lin.ee", "line.me"], className: styles.forgotLine },
+      { label: "ติดต่อผ่าน Telegram", url: contactLinks.telegram, fallback: "https://t.me/tgsup289", hosts: ["t.me", "telegram.me"], className: styles.forgotTelegram },
+    ];
+    channels.forEach(channel => {
+      const link = document.createElement("a");
+      let href = channel.fallback;
+      try {
+        const url = new URL(channel.url);
+        if (url.protocol === "https:" && channel.hosts.includes(url.hostname) && !url.username && !url.password) href = url.href;
+      } catch { /* Keep the confirmed contact link when settings are not available. */ }
+      link.href = href;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.className = `${styles.forgotContact} ${channel.className}`;
+      link.textContent = `${channel.label} ↗`;
+      links.appendChild(link);
+    });
+    content.appendChild(links);
+    Swal.fire({
+      title: "ลืมรหัสผ่าน?",
+      icon: "info",
+      html: content,
+      background: "#ffffff",
+      color: "#1f2937",
+      confirmButtonColor: "#7c3aed",
+    });
   };
 
   return (
     <main className={styles.page}>
       <div className={styles.shell}>
-        {/* ---------- Brand showcase (layered WebP stage + logo) ---------- */}
+        {/* Brand artwork and member introduction */}
         <section className={styles.showcase} aria-label="SNAKE168">
-          <div className={styles.stage}>
-            <Image
-              src="/login/stage.webp"
-              alt=""
-              fill
-              sizes="(min-width: 1024px) 55vw, 100vw"
-              className={styles.stageImg}
-              preload
-            />
             <div className={styles.emblem}>
               {!logoFailed ? (
                 <Image
@@ -111,7 +126,7 @@ export default function LoginPage() {
                   alt="SNAKE168"
                   width={582}
                   height={428}
-                  sizes="(min-width: 1024px) 340px, 200px"
+                  sizes="(min-width: 1024px) 420px, 180px"
                   className={styles.logo}
                   preload
                   onError={() => setLogoFailed(true)}
@@ -120,14 +135,11 @@ export default function LoginPage() {
                 <div className={styles.logoFallback} aria-label="SNAKE168">S</div>
               )}
             </div>
-          </div>
 
           <div className={styles.showcaseCopy}>
-            <p className={styles.eyebrow}>SNAKE168 MEMBER</p>
-            <h2 className={styles.showcaseTitle}>ยินดีต้อนรับสู่ SNAKE168</h2>
-            <p className={styles.showcaseText}>เข้าสู่ระบบเพื่อเข้าเล่นเกม ดูโปรโมชัน และจัดการกระเป๋าเงินของคุณ</p>
+            <p className={styles.showcaseText}>เกมที่ชอบ โปรโมชันที่ใช่ และทุกความเคลื่อนไหวของคุณ รวมไว้ในที่เดียว</p>
             <ul className={styles.tags}>
-              {SHOWCASE_TAGS.map((tag) => <li key={tag} className={styles.tag}>{tag}</li>)}
+              {SHOWCASE_TAGS.map((tag) => <li key={tag.icon} className={styles.tag}><Image src={`/icons/menu/ic-nav-menu-${tag.icon}.webp`} alt="" width={64} height={64} className={styles.categoryImage} /><span>{tag.label}</span></li>)}
             </ul>
           </div>
         </section>
@@ -135,27 +147,26 @@ export default function LoginPage() {
         {/* ---------- Form panel ---------- */}
         <section className={styles.panel}>
           <div className={styles.card}>
-            <FrameCorners />
 
             {step === "login" ? (
               <form key="login" onSubmit={handleLogin} className={styles.form} aria-busy={loading}>
                 <header className={styles.head}>
                   <h1 className={styles.title}>เข้าสู่ระบบ</h1>
                   <span className={styles.divider} aria-hidden="true" />
-                  <p className={styles.subtitle}>กรอกชื่อผู้ใช้งานและรหัสผ่านของคุณ</p>
+                  <p className={styles.subtitle}>กรอกเบอร์โทรหรือชื่อผู้ใช้เดิม และรหัสผ่านของคุณ</p>
                 </header>
 
                 <div className={styles.field}>
-                  <label htmlFor="login-username" className={styles.label}>ชื่อผู้ใช้งาน</label>
+                  <label htmlFor="login-username" className={styles.label}>เบอร์โทร / ชื่อผู้ใช้เดิม</label>
                   <div className={styles.control}>
                     <span className={styles.fieldIcon} aria-hidden="true">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" /><circle cx="12" cy="7" r="4" /></svg>
+                      <Image src="/profile/artwork/tile-person.webp" alt="" width={34} height={34} className={styles.fieldIconImage} />
                     </span>
                     <input
                       id="login-username"
                       type="text"
                       className={styles.input}
-                      placeholder="กรอกชื่อผู้ใช้งาน"
+                      placeholder="เบอร์โทร หรือชื่อผู้ใช้เดิม"
                       value={username}
                       onChange={(e) => setUsername(e.target.value)}
                       autoComplete="username"
@@ -170,7 +181,7 @@ export default function LoginPage() {
                   <label htmlFor="login-password" className={styles.label}>รหัสผ่าน</label>
                   <div className={styles.control}>
                     <span className={styles.fieldIcon} aria-hidden="true">
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="4" y="11" width="16" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" /></svg>
+                      <Image src="/icons/auth/lock-3d.png" alt="" width={34} height={34} className={styles.fieldIconImage} />
                     </span>
                     <input
                       id="login-password"
@@ -206,13 +217,6 @@ export default function LoginPage() {
                 </div>
 
                 <div className={styles.row}>
-                  <label className={styles.check}>
-                    <input type="checkbox" className={styles.checkInput} checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />
-                    <span className={styles.checkBox} aria-hidden="true">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12 5 5L20 7" /></svg>
-                    </span>
-                    <span>จำฉันไว้ในระบบ</span>
-                  </label>
                   <a href="#" onClick={showForgot} className={styles.link}>ลืมรหัสผ่าน?</a>
                 </div>
 

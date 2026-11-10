@@ -12,22 +12,31 @@ import id from "./id.json";
 import my from "./my.json";
 import tl from "./tl.json";
 
-if (!i18n.isInitialized) {
+const resources = {
+  th: { translation: th },
+  en: { translation: en },
+  zh: { translation: zh },
+  vi: { translation: vi },
+  km: { translation: km },
+  lo: { translation: lo },
+  id: { translation: id },
+  my: { translation: my },
+  tl: { translation: tl },
+};
+
+if (i18n.isInitialized) {
+  // module re-evaluated (dev hot reload after a dictionary edit): the singleton keeps its old resources,
+  // so newly added keys would render as raw keys — refresh every bundle in place
+  for (const [lng, { translation }] of Object.entries(resources)) {
+    i18n.addResourceBundle(lng, "translation", translation, true, true);
+  }
+  void i18n.changeLanguage(i18n.language);
+} else {
   i18n
     .use(LanguageDetector)
     .use(initReactI18next)
     .init({
-      resources: {
-        th: { translation: th },
-        en: { translation: en },
-        zh: { translation: zh },
-        vi: { translation: vi },
-        km: { translation: km },
-        lo: { translation: lo },
-        id: { translation: id },
-        my: { translation: my },
-        tl: { translation: tl },
-      },
+      resources,
       fallbackLng: "th",
       detection: {
         order: ["cookie", "localStorage", "navigator"],

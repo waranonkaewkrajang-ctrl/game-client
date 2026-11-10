@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#2a1145">
+<meta name="robots" content="noindex">
+<title>ไม่มีการเชื่อมต่ออินเทอร์เน็ต – SNAKE168</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    display: grid; place-items: center; padding: 24px 16px;
+    background: #2a1145; color: #f3eaf8;
+    font-family: system-ui, -apple-system, "Segoe UI", "Noto Sans Thai", Tahoma, sans-serif;
+    text-align: center;
+  }
+  main { max-width: 360px; }
+  img { width: 96px; height: 96px; border-radius: 22px; }
+  h1 { margin: 20px 0 8px; font-size: 21px; font-weight: 700; }
+  p { margin: 0 0 24px; font-size: 15px; line-height: 1.6; color: #e7d8f0; }
+  button {
+    min-height: 48px; padding: 0 28px; border: 0; border-radius: 999px;
+    background: #ffd65a; color: #2a1145; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer;
+  }
+  button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+</style>
+</head>
+<body>
+<main>
+  <img src="/pwa/icon-192.png" alt="SNAKE168" width="96" height="96">
+  <h1>ไม่มีการเชื่อมต่ออินเทอร์เน็ต</h1>
+  <p>ตรวจสอบ Wi‑Fi หรืออินเทอร์เน็ตมือถือ แล้วกดลองใหม่</p>
+  <button type="button" onclick="location.reload()">ลองใหม่</button>
+</main>
+<script>
+  // reload by itself as soon as the connection comes back
+  window.addEventListener("online", function () { location.reload(); });
+</script>
+</body>
+</html>

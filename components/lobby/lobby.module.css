@@ -7,17 +7,8 @@
   min-height: 100vh;
   padding-bottom: calc(96px + env(safe-area-inset-bottom));
 }
-/* lobby-only scrim: calms the busy global background behind content (other pages untouched) */
-.page::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background:
-    radial-gradient(90% 60% at 50% 0%, rgba(124, 58, 237, 0.18), transparent 70%),
-    linear-gradient(180deg, rgba(8, 6, 18, 0.35) 0%, rgba(8, 6, 18, 0.62) 40%, rgba(8, 6, 18, 0.75) 100%);
-}
+/* (the former lobby-only dark scrim was removed: it existed to calm the old busy fixed background art;
+   the site-wide mountain background in globals.css now shows here exactly as on every other page) */
 @media (min-width: 1024px) {
   .page { padding-bottom: 0; }
 }
@@ -30,11 +21,15 @@
 }
 @media (min-width: 1024px) {
   .shell {
+    /* desktop follows the browser width; capped at 1920px so ultrawide screens don't stretch the grid
+       (the 1440px base cap only ever applied on desktop and left ~240px empty per side on a 1920px screen) */
+    max-width: 1920px;
     display: grid;
-    grid-template-columns: 248px minmax(0, 1fr);
+    /* sidebar grows slightly on wide screens: 248px at ≤1770px, up to 280px */
+    grid-template-columns: clamp(248px, 14vw, 280px) minmax(0, 1fr);
     gap: var(--ds-space-5);
     align-items: start;
-    padding: var(--ds-space-5) var(--ds-space-5) 0;
+    padding: var(--ds-space-5) clamp(var(--ds-space-5), 2vw, 40px) 0;
   }
 }
 
@@ -60,6 +55,38 @@
 .mobileOnly { display: block; }
 @media (min-width: 1024px) { .mobileOnly { display: none; } }
 
+/* Mobile/tablet: compact category rail (78px) to the left of the providers/games section.
+   Desktop: the wrapper disappears (display: contents) so the section stays a direct flex child of .main. */
+.catSplit {
+  display: grid;
+  grid-template-columns: 78px minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
+}
+.catRail {
+  position: sticky;
+  top: 58px; /* mobile header is 50px tall + 8px */
+  z-index: 1;
+}
+@media (max-width: 359px) {
+  .catSplit { grid-template-columns: 70px minmax(0, 1fr); gap: 6px; }
+}
+.catSplit .sectionCount { white-space: nowrap; flex-shrink: 0; }
+@media (max-width: 1023px) {
+  /* the content column is narrower beside the rail: smaller section title so "title · category" fits one line */
+  .catSplit .sectionHeader { gap: var(--ds-space-2); }
+  .catSplit .sectionTitle { font-size: 0.95rem; min-width: 0; }
+  /* rail takes ~86px, so providers drop to 2 columns on phones (3 on tablets) */
+  .catSplit .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+}
+@media (min-width: 600px) and (max-width: 1023px) {
+  .catSplit .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1024px) {
+  .catSplit { display: contents; }
+  .catRail { display: none; }
+}
+
 /* =========================================================
    Marquee
    ========================================================= */
@@ -79,20 +106,34 @@
 .marqueeIcon {
   position: relative;
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 36px;            /* fits the ~33×30px Christmas speaker art inside the 40px bar */
+  height: 36px;
+  padding: 0;
   display: grid;
   place-items: center;
   border: none;
   border-radius: 8px;
-  background: var(--ds-primary-soft);
+  background: transparent; /* the artwork is the whole icon — no plate behind it */
+  -webkit-tap-highlight-color: transparent;
   color: var(--ds-accent-light);
   cursor: pointer;
 }
+/* Christmas speaker WebP: 508×337 canvas, art at x 70–431, y 8–333 (transparent side padding).
+   Rendered 31px tall at its own ratio (≈46.7px wide); the negative side margins remove only the empty padding
+   (70/337 and 77/337 of the height), so the visible art is ≈33×30px, fully inside the button, never cropped. */
+.marqueeIconImg {
+  display: block;
+  width: auto;
+  height: 31px;
+  max-width: none;
+  margin: 0 calc(31px * -77 / 337) 0 calc(31px * -70 / 337);
+  object-fit: contain;
+  pointer-events: none;   /* clicks land on the button */
+  user-select: none;
+}
 .marqueeIcon::after { content: ""; position: absolute; inset: -8px; } /* 44px hit area */
-.marqueeIcon:hover { background: var(--ds-active); }
+/* icon only: no tinted/blurred plate behind the Christmas speaker in any state (hover / paused) */
 .marqueePaused .marqueeTrack { animation-play-state: paused; }
-.marqueePaused .marqueeIcon { background: var(--ds-primary); color: #fff; }
 .marqueeViewport {
   flex: 1;
   min-width: 0;
@@ -110,7 +151,10 @@
   flex-shrink: 0;
   padding-right: 64px;
   font-size: 0.85rem;
-  color: var(--ds-text-muted);
+  /* pure white, medium weight, the site's own Thai face (Kanit, self-hosted with 500) — no shadow/opacity */
+  font-family: var(--font-kanit), sans-serif;
+  font-weight: 500;
+  color: #ffffff;
 }
 .marquee:hover .marqueeTrack { animation-play-state: paused; }
 @keyframes marquee {
@@ -124,139 +168,29 @@
 }
 
 /* =========================================================
-   Toolbar — tabs + search
+   Toolbar — tabs
    ========================================================= */
-.toolbar {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ds-space-3);
-}
-@media (min-width: 1024px) {
-  .toolbar {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--ds-space-4);
-  }
-}
+/* the toolbar only holds the tab bar: a plain block, so the bar takes the content column's full width
+   (it used to be a desktop flex row + inline-flex tabs → the bar shrank to its content and left empty space) */
+.toolbar { display: block; }
 
-.tabs {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: var(--ds-space-1);
-  padding: var(--ds-space-1);
-  border-radius: var(--ds-radius-md);
-  border: 1px solid var(--ds-border);
-  background: var(--ds-surface-1);
-  backdrop-filter: var(--ds-blur);
-  -webkit-backdrop-filter: var(--ds-blur);
-}
-@media (min-width: 1024px) {
-  .tabs { display: inline-flex; flex-shrink: 0; }
-}
-
-.tab {
-  min-height: 44px;
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  padding: 4px 6px;
-  border: none;
-  border-radius: 9px;
-  background: transparent;
-  color: var(--ds-text-muted);
-  font-family: inherit;
-  font-size: 0.75rem;
-  font-weight: 500;
-  line-height: 1.2;
-  text-align: center;
-  cursor: pointer;
-  transition: background var(--ds-dur) var(--ds-ease), color var(--ds-dur);
-}
-@media (min-width: 400px) {
-  .tab { font-size: 0.8rem; }
-}
-@media (min-width: 1024px) {
-  .tab { flex-direction: row; gap: 6px; padding: 0 16px; font-size: 0.875rem; }
-}
-.tab:hover { color: var(--ds-text); background: var(--ds-hover); }
-.tabActive,
-.tabActive:hover {
-  background: var(--ds-primary-gradient);
-  color: var(--ds-text-on-primary);
-  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.45);
-}
-
-.search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-@media (min-width: 1024px) {
-  .search { max-width: 360px; }
-}
-.searchIcon {
-  position: absolute;
-  left: 14px;
-  color: var(--ds-text-subtle);
-  pointer-events: none;
-}
-.searchInput {
-  width: 100%;
-  height: 52px;
-  padding: 0 116px 0 44px;
-  border-radius: var(--ds-radius-md);
-  border: 1px solid var(--ds-border);
-  background: var(--ds-surface-1);
-  backdrop-filter: var(--ds-blur);
-  -webkit-backdrop-filter: var(--ds-blur);
-  color: var(--ds-text);
-  font-family: inherit;
-  font-size: 1rem; /* ≥16px avoids iOS zoom */
-  outline: none;
-  transition: border-color var(--ds-dur), box-shadow var(--ds-dur);
-}
-.searchInput::placeholder { color: var(--ds-text-subtle); }
-.searchInput:focus {
-  border-color: var(--ds-accent);
-  box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.22);
-}
-.searchInput::-webkit-search-cancel-button { display: none; }
-.searchActions {
-  position: absolute;
-  right: 4px;
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-.searchClear,
-.searchSubmit {
-  height: 44px;
-  border: none;
-  border-radius: 10px;
-  font-family: inherit;
-  cursor: pointer;
-}
-.searchClear {
-  width: 44px;
-  display: grid;
-  place-items: center;
-  background: transparent;
-  color: var(--ds-text-subtle);
-}
-.searchClear:hover { color: var(--ds-text); background: var(--ds-hover); }
-.searchSubmit {
-  padding: 0 16px;
-  background: var(--ds-primary);
-  color: var(--ds-text-on-primary);
-  font-size: 0.85rem;
-  font-weight: 600;
-  transition: background var(--ds-dur);
-}
-.searchSubmit:hover { background: var(--ds-primary-hover); }
+/* Airy mobile tab strip: edge arrows overlay the scroll area instead of reserving columns. */
+.tabsFrame{position:relative;display:block;width:calc(100% + 12px);min-width:0;margin-inline:-6px;padding:0;border:0;background:transparent}
+.tabs{display:flex;gap:5px;min-width:0;width:100%;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scrollbar-width:none;padding:3px 18px;scroll-padding-inline:18px;touch-action:pan-x pinch-zoom;-webkit-overflow-scrolling:touch;user-select:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{display:flex;flex:0 0 auto;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:36px;padding:7px 9px;border:1px solid rgba(220,193,240,.38);border-radius:8px;background:rgba(37,16,57,.82);color:#ffffff;font-family:inherit;font-size:12px;font-weight:600;line-height:1.4;text-align:center;white-space:nowrap;scroll-snap-align:start;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background-color 140ms ease,border-color 140ms ease}
+.tab svg{flex-shrink:0;width:14px;height:14px;color:currentColor}
+.tabArrow{position:absolute;top:50%;transform:translateY(-50%);z-index:2;display:none;align-items:center;justify-content:center;width:24px;height:30px;padding:0;border:1px solid rgba(255,75,86,.6);border-radius:7px;background:rgba(20,8,30,.94);color:#ff3b46;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tabArrow:first-child{left:-4px}
+.tabArrow:last-child{right:-4px}
+.tabsScrollable .tabArrow{display:flex}
+.tabArrow:disabled{opacity:.4;cursor:default}
+.tabArrow svg{width:18px;height:20px;filter:drop-shadow(0 1px 2px rgba(0,0,0,.6))}
+.tab:focus-visible,.tabArrow:focus-visible{outline:2px solid #f5c451;outline-offset:-2px}
+.tabActive,.tabActive:hover{background:rgba(245,196,81,.88);border-color:rgba(255,225,145,.6);color:#2b1740}
+@media(hover:hover){.tab:not(.tabActive):hover{background-color:rgba(90,53,119,.5)}}
+@media(min-width:1024px){.tabsFrame{width:100%;margin-inline:0;padding:4px;border:1px solid rgba(221,181,102,.3);border-radius:16px;background:#21102e}.tabs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;overflow:visible;padding:0}.tab{min-width:0;min-height:46px;padding:10px 12px;border-color:transparent;border-radius:12px;background:transparent;font-size:.9rem;white-space:normal}.tab svg{width:16px;height:16px}.tabsScrollable .tabArrow{display:none}.tabActive,.tabActive:hover{background:linear-gradient(180deg,#f8d56a 0%,#f5c451 55%,#e6a82e 100%);font-weight:700}}
+@media(prefers-reduced-motion:reduce){.tab{transition:none}}
 
 /* =========================================================
    Sections
@@ -307,6 +241,102 @@
   background: var(--ds-primary-soft);
   color: var(--ds-accent-light);
 }
+/* ---------- "Recommended slots" panel: Santa standing on the first provider card (design-reference/แบนเนอร์แนะนำค่ายสล็อตธีมซานต้า.png) ----------
+ * --santa-w drives everything. Animated WebP, 443×443 (square → height = width). Visible content over all 8 frames
+ * (alpha > 200): x 7.9%–92.6%, y 3.4%–95.9%; the boots span 20%–79% of the width.
+ *  - Santa is a pure overlay: its wrapper (.sectionIcon) is absolute and takes no flex space. The header reserves
+ *    room with padding-left = Santa's visible right edge + 6px (no flex item, no wrapping title).
+ *  - --santa-left = the image's left offset from the header's left edge (the first card starts at that same edge).
+ *  - --santa-top  = the image's top offset from the header's top (negative → the hat pokes above the panel border).
+ *  - the first card (strip z 2) covers the bottom of the boots; only the last ~7% of Santa fades, with ≤1px blur.
+ *    Two copies of the same image (same src + sizes → one download). */
+.santaPanel {
+  /* 375 → 103, 390 → 105, ≥ 385 → 105 (phones up to 599px) */
+  --santa-w: clamp(98px, calc(28px + 20vw), 105px);
+  --santa-pad: 16px; /* = .panel padding */
+  --santa-left: calc(var(--santa-w) * -0.15);
+  /* phones: header 44px → card top = 76px below the panel top (16 pad + 44 + 12 gap + 4 strip padding).
+     Lift = visible bottom 0.959w − 76 − 12, so the boots sink ~12px behind the card (105 → 12.7px lift) */
+  --santa-top: calc(-1 * (var(--santa-pad) + clamp(4px, var(--santa-w) * 0.959 - 88px, 14px)));
+}
+/* 320–374: the line "Santa + ค่ายสล็อตแนะนำ + ดูทั้งหมด" needs ~256px, so Santa is a bit smaller, sits 10px past the
+   panel's left border, and the heading is 0.95rem. Top ≈ the panel border; the boots still sink ~6px behind the card. */
+@media (max-width: 374px) {
+  .santaPanel {
+    --santa-w: 86px;
+    --santa-left: calc(-1 * (var(--santa-pad) + 10px) - var(--santa-w) * 0.079); /* visible left 10px past the border */
+    --santa-top: calc(-1 * var(--santa-pad) + 1px); /* hat ~4px under the border, boots ~7px behind the card */
+  }
+  .santaPanel .sectionTitle { font-size: 0.95rem; }
+}
+@media (min-width: 600px) {
+  /* visible hat 5.2% of the width above the border (as before); boots ~20% behind the card */
+  .santaPanel { --santa-w: 118px; --santa-top: calc(-1 * (var(--santa-pad) + var(--santa-w) * 0.086)); }
+}
+@media (min-width: 1024px) { .santaPanel { --santa-w: 150px; --santa-pad: 24px; } }
+
+.santaPanel .sectionHeader {
+  position: relative; /* containing block for Santa */
+  min-height: 44px;   /* phones: unchanged section height (the "ดูทั้งหมด" tap height) */
+  /* Santa's visible right edge (left + 0.926w) + 6px; = 0.776w + 6px wherever left is −0.15w */
+  padding-left: calc(var(--santa-left) + var(--santa-w) * 0.926 + 6px);
+}
+@media (min-width: 600px) {
+  .santaPanel .sectionHeader {
+    /* Santa height 0.922w − poke 0.06w − hidden 0.184w (20%) − panel padding − header→card (12px gap + 4px strip padding) */
+    min-height: max(44px, calc(var(--santa-w) * 0.678 - var(--santa-pad) - 16px));
+  }
+}
+/* heading and button always on one line */
+.santaPanel .sectionTitle { white-space: nowrap; }
+.santaPanel .linkBtn { white-space: nowrap; flex-shrink: 0; }
+/* "ดูทั้งหมด" here is text only: no pill border / fill (still a 44px-tall tap target) */
+.santaPanel .linkBtn,
+.santaPanel .linkBtn:hover {
+  border-color: transparent;
+  background: transparent;
+}
+.santaPanel .linkBtn { padding: 0 4px; }
+.santaPanel .linkBtn:hover { color: var(--ds-text); }
+
+/* lift the strip over Santa (layering only — no size, spacing or scroll change); its 4px top padding is transparent,
+   so only the opaque cards hide Santa's boots */
+.santaPanel .strip {
+  position: relative;
+  z-index: 2;
+}
+/* the wrapper is a zero-size absolute anchor at the header's top-left: no layout width */
+.sectionIcon:has(> .santaIcon) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-radius: 0;
+  background: none;
+}
+.santaIcon {
+  position: absolute; /* relative to the zero-size anchor = the header's top-left */
+  z-index: 1;         /* behind the strip */
+  top: var(--santa-top);
+  left: var(--santa-left);
+  width: var(--santa-w);
+  max-width: none;
+  height: auto; /* natural 1306:1204 ratio */
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  /* sharp everywhere; only the boot soles (89% → 96% of the box = the last ~7% of the visible figure) fade out */
+  -webkit-mask-image: linear-gradient(to bottom, #000 89%, transparent 96%);
+  mask-image: linear-gradient(to bottom, #000 89%, transparent 96%);
+}
+/* the faded band is taken over by a barely-softened copy (0.8px) that also thins out → a gentle edge, no fog.
+   Its mask is transparent above 89%, so it never sits over the face, hands or flames. */
+.santaBlur {
+  filter: blur(0.8px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 89%, rgba(0, 0, 0, 0.7) 93%, rgba(0, 0, 0, 0.3) 96%);
+  mask-image: linear-gradient(to bottom, transparent 89%, rgba(0, 0, 0, 0.7) 93%, rgba(0, 0, 0, 0.3) 96%);
+}
 .sectionCount {
   font-family: var(--font-family), var(--font-kanit), sans-serif;
   font-size: 0.75rem;
@@ -315,6 +345,21 @@
   padding: 2px 8px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.05);
+}
+/* plain header variant (provider selection): white title, gold count in parentheses on the same baseline */
+.sectionTitlePlain {
+  align-items: baseline;
+  flex-wrap: wrap;
+  column-gap: 7px;
+  row-gap: 0;
+  color: #ffffff;
+}
+.sectionCountPlain {
+  font-family: var(--font-family), var(--font-kanit), sans-serif;
+  font-size: 0.85em;
+  font-weight: 500;
+  color: #f5c75e;
+  white-space: nowrap;
 }
 
 .linkBtn {
@@ -341,13 +386,15 @@
    ========================================================= */
 .grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--ds-space-3);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
 }
-@media (min-width: 360px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } }
-@media (min-width: 640px) { .grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--ds-space-3); } }
-@media (min-width: 900px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
-@media (min-width: 1280px) { .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: var(--ds-space-4); } }
+/* provider grid: same columns as /lobby main */
+@media (min-width: 768px) { .grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; } }
+@media (min-width: 1024px) { .grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 14px; } }
+/* wider desktops: more columns instead of oversized cards — cards stay ≈ 170–205px wide, as at 1440px */
+@media (min-width: 1600px) { .grid { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+@media (min-width: 1880px) { .grid { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
 
 /* game grid: portrait cards → 2 cols on small phones, denser on desktop */
 .gridGame { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -355,6 +402,8 @@
 @media (min-width: 640px) { .gridGame { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 @media (min-width: 900px) { .gridGame { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
 @media (min-width: 1280px) { .gridGame { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+@media (min-width: 1600px) { .gridGame { grid-template-columns: repeat(7, minmax(0, 1fr)); } }
+@media (min-width: 1880px) { .gridGame { grid-template-columns: repeat(8, minmax(0, 1fr)); } }
 
 /* =========================================================
    Card
@@ -521,6 +570,139 @@
 .skeletonMedia { display: block; aspect-ratio: 1 / 1; border-radius: var(--ds-radius-md); }
 .skeletonLine { display: block; height: 10px; width: 65%; border-radius: 6px; }
 
+/* =========================================================
+   Provider card — matches the provider card on /lobby main
+   ========================================================= */
+.providerCard {
+  --pc-surface: #14142a;
+  --pc-edge: rgba(255, 255, 255, 0.12);
+  --pc-bevel: rgba(255, 255, 255, 0.15);
+  --pc-shimmer-a: #1a1a2e;
+  --pc-shimmer-b: #2a2a4a;
+  --pc-ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  position: relative;
+  display: block;
+  aspect-ratio: 1 / 1;
+  min-width: 0;
+  overflow: hidden;
+  container-type: inline-size;
+  border-radius: 12px;
+  border: 1px solid var(--pc-edge);
+  background: var(--pc-surface);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
+  color: inherit;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.3s var(--pc-ease), box-shadow 0.3s var(--pc-ease);
+}
+/* Once the art has loaded, the frame takes the image's own height (width 100%, height auto) like /lobby main,
+ * so the art is never zoomed or cropped. The square above is only the placeholder while loading / for the text fallback. */
+.providerCard:has(.mediaImgReady) {
+  aspect-ratio: auto;
+  align-self: start;
+}
+.providerCard:has(.mediaImgReady) .media {
+  position: relative;
+}
+.providerCard:has(.mediaImgReady) .mediaImg {
+  height: auto;
+}
+/* 1px light on the top inner edge, drawn above the art (an inset box-shadow would sit under the image) */
+.providerCard::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 1px 1px var(--pc-bevel);
+  pointer-events: none;
+  transition: opacity 0.3s var(--pc-ease);
+}
+@media (hover: hover) {
+  .providerCard:hover {
+    transform: translateY(-4px) scale(1.03);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  }
+  .providerCard:hover::after { opacity: 0; }
+}
+.providerCard:focus-visible {
+  outline: 2px solid var(--ds-focus);
+  outline-offset: 3px;
+}
+.providerCard .shimmer,
+.providerSkeleton {
+  background: linear-gradient(90deg, var(--pc-shimmer-a, #1a1a2e) 25%, var(--pc-shimmer-b, #2a2a4a) 50%, var(--pc-shimmer-a, #1a1a2e) 75%);
+  background-size: 200% 100%;
+  animation: pcShimmer 1.5s ease-in-out infinite;
+}
+@keyframes pcShimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+/* both images failed: show the full provider name so the card still says which provider it is */
+.providerCard .mediaFallback {
+  padding: 0 8px;
+  background: var(--pc-surface);
+  font-size: clamp(0.85rem, 14cqi, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: none;
+  overflow-wrap: anywhere;
+  color: rgba(244, 242, 255, 0.75);
+}
+.providerSkeleton {
+  display: block;
+  aspect-ratio: 1 / 1;
+  border-radius: 12px;
+}
+
+/* =========================================================
+   Christmas decorations (public/images/christmas/*.webp — transparent, used as-is)
+   The source files carry transparent margins and a few stray specks from the sheet they were cut from, so
+   each decoration box has the visible art's own ratio and the background is sized/positioned to that crop:
+     background-size = canvas / crop × 100%, background-position = crop offset / (canvas − crop) × 100%
+   → no distortion, no specks, no file edits. All decorations are aria-hidden and pointer-events: none.
+   ========================================================= */
+
+/* ---------- provider cards: snow cap on the top edge + small gift at the bottom-right ----------
+   Sizes are in cqi (the card is an inline-size container), so they scale with the card on every breakpoint.
+   The art is clipped by .media (same radius) instead of the card, so the snow can sit on the edge. */
+.providerCardFestive { overflow: visible; }
+.providerCardFestive .media { border-radius: 11px; overflow: hidden; }  /* card radius 12px − 1px border */
+.xmasCardSnow,
+.xmasCardGift {
+  position: absolute;
+  z-index: 2;
+  background-repeat: no-repeat;
+  pointer-events: none;
+}
+/* snow-card-top.webp 1385×213, art 58–1336 × 24–204 → 1278×180 */
+.xmasCardSnow {
+  top: -4cqi;              /* rests on the top edge: ~4% above it, ~10% over the art's top band */
+  left: -1cqi;
+  width: 102cqi;
+  aspect-ratio: 1278 / 180;
+  background-image: url("/images/christmas/snow-card-top.webp");
+  background-size: 108.37% 118.33%;
+  background-position: 54.21% 72.73%;
+}
+/* snow-card-corner.webp 480×248, art 12–470 × 8–232 → 458×224 */
+.xmasCardGift {
+  right: -3cqi;
+  bottom: -3cqi;
+  width: 28cqi;            /* ≈ 28% × 14% of the card: a corner accent, clear of the centred provider logo */
+  aspect-ratio: 458 / 224;
+  background-image: url("/images/christmas/snow-card-corner.webp");
+  background-size: 104.8% 110.71%;
+  background-position: 54.55% 33.33%;
+}
+@media (prefers-reduced-motion: reduce) {
+  .providerCard,
+  .providerCard::after { transition: none; }
+  .providerCard:hover { transform: none; }
+  .providerCard .shimmer,
+  .providerSkeleton { animation: none; }
+}
+
 /* empty / error state */
 .empty {
   display: flex;
@@ -570,13 +752,27 @@
 /* =========================================================
    Footer
    ========================================================= */
+/* Premium Dark (Design #6): full-width deep purple band that fades in from the page background,
+   hairline rules for structure, no outer card / glass / glow / animation. */
 .footer {
+  --footer-logo-w: 128px;   /* rendered image width; the visible mark is ≈ 70% of it */
+  position: relative;
+  isolation: isolate;
   margin-top: var(--ds-space-6);
-  padding: var(--ds-space-6) var(--ds-space-4) var(--ds-space-5);
-  border-top: 1px solid var(--ds-border);
-  background: linear-gradient(180deg, rgba(10, 10, 20, 0.55), rgba(10, 10, 20, 0.92));
-  backdrop-filter: var(--ds-blur);
-  -webkit-backdrop-filter: var(--ds-blur);
+  padding: 40px var(--ds-space-4) var(--ds-space-5);
+  background:
+    radial-gradient(70% 320px at 50% 0%, rgba(124, 58, 237, 0.16), transparent 70%),
+    linear-gradient(180deg, rgba(14, 8, 30, 0) 0, rgba(14, 8, 30, 0.82) 120px, rgba(10, 6, 22, 0.94) 100%);
+}
+/* thin top rule that fades out at both ends */
+.footer::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(168, 85, 247, 0.38), transparent);
 }
 .footerInner {
   max-width: 1200px;
@@ -584,16 +780,104 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--ds-space-5);
+  gap: 28px;
   text-align: center;
 }
-.footerLogo { height: 56px; width: auto; }
-.footerTagline {
-  max-width: 52ch;
-  font-size: 0.85rem;
-  line-height: 1.7;
-  color: var(--ds-text-muted);
+/* thin divider between each block after the brand header */
+.footerInner > * + * { position: relative; }
+.footerInner > .footerGroup::before,
+.footerInner > .providerLogoGrid::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: min(220px, 60vw);
+  height: 1px;
+  translate: -50% 0;
+  background: linear-gradient(90deg, transparent, rgba(192, 132, 252, 0.4), transparent);
 }
+
+/* ---------- brand header: logo above heading ---------- */
+.footerBrand { display: flex; flex-direction: column; align-items: center; }
+.footerLogo {
+  display: block;
+  width: var(--footer-logo-w);
+  height: auto;
+  max-width: none;
+  /* artwork padding on its 582px canvas: 66px top, 48px bottom, visible mark 19px left of centre */
+  margin-top: calc(var(--footer-logo-w) * -66 / 582);
+  margin-bottom: calc(var(--footer-logo-w) * -48 / 582 + 10px);
+  translate: calc(var(--footer-logo-w) * 19 / 582) 0;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.footerTitle {
+  margin: 0;
+  font-family: var(--ds-font-display);
+  font-size: clamp(1.3rem, 1rem + 1.6vw, 1.55rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: #ffffff;
+  text-wrap: balance;
+}
+.footerSubtitle {
+  margin: 4px 0 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ds-text-muted);
+  text-wrap: balance;
+}
+
+/* ---------- provider logos: plain wrap grid, no cards / borders / backgrounds ----------
+   Every source shares the same padded ~1.83:1 canvas (mostly 300×164), so each logo gets an equal
+   box of that ratio with object-fit: contain → consistent optical size, original colours and proportions.
+   Flex-wrap with fixed column widths (instead of CSS grid) so an incomplete last row stays centred. */
+.providerLogoGrid {
+  --pv-cols: 3;
+  --pv-gap-x: 8px;
+  list-style: none;
+  width: 100%;
+  max-width: 1040px;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  column-gap: var(--pv-gap-x);
+  row-gap: 10px;
+}
+.providerLogoItem {
+  flex: 0 0 calc((100% - (var(--pv-cols) - 1) * var(--pv-gap-x)) / var(--pv-cols));
+  min-width: 0;
+}
+.providerLogo {
+  display: block;
+  width: 100%;
+  max-width: 300px;      /* never wider than the 300px source canvas */
+  height: auto;
+  aspect-ratio: 300 / 164;
+  margin: 0 auto;
+  object-fit: contain;
+}
+/* 4 columns only once each logo box stays ≥ ~90px wide (430px → 93px); 390px keeps 3 (114px) */
+@media (min-width: 420px) {
+  .providerLogoGrid { --pv-cols: 4; }
+}
+@media (min-width: 600px) {
+  .footer { --footer-logo-w: 150px; padding: 48px var(--ds-space-5) var(--ds-space-5); }
+  .footerSubtitle { font-size: 0.95rem; }
+  .providerLogoGrid { --pv-cols: 5; --pv-gap-x: 16px; row-gap: 12px; }
+}
+@media (min-width: 1024px) {
+  .footer { --footer-logo-w: 196px; padding: 64px var(--ds-space-6) var(--ds-space-6); }
+  .footerInner { gap: 36px; }
+  .footerInner > .footerGroup::before,
+  .footerInner > .providerLogoGrid::before { top: -18px; width: 280px; }
+  .footerTitle { font-size: 2rem; }
+  .footerSubtitle { margin-top: 6px; font-size: 1.05rem; }
+  .providerLogoGrid { --pv-cols: 6; --pv-gap-x: 28px; row-gap: 14px; }
+}
+
 .footerGroup { display: flex; flex-direction: column; align-items: center; gap: var(--ds-space-3); }
 .footerHeading {
   font-family: var(--ds-font-display);

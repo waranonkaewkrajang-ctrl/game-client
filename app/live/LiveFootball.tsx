@@ -1,0 +1,246 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { chooseMatch, readyPlayers } from '@/lib/live-football/model';
+import type { FootballFeed, FootballMatch, Preparation, PreparedPlayer } from '@/lib/live-football/model';
+import styles from './live.module.css';
+import { useMonthlyCalendar } from './MonthlyFixtures';
+import FixtureBrowser, { FixtureRow } from './FixtureBrowser';
+import type { Fixture } from './FixtureBrowser';
+import MatchPreview from './MatchPreview';
+import { visibleProgrammes } from '@/lib/live-football/schedule';
+import type { ScheduleFeed } from '@/lib/live-football/schedule';
+import { resolveCalendarLink } from '@/lib/live-football/matching';
+import type { MatchLink, MatchLinks } from '@/lib/live-football/matching';
+
+type Viewing = { id: string; url: string; match: FootballMatch };
+const initialFeed: FootballFeed = { matches: [], updatedAt: 0, stale: false, message: null };
+type FullscreenSection = HTMLElement & { webkitRequestFullscreen?: () => void | Promise<void> };
+type FullscreenDocument = Document & { webkitFullscreenElement?: Element; webkitExitFullscreen?: () => void | Promise<void> };
+
+export default function LiveFootball({ initialMatchId }: { initialMatchId?: string }) {
+  const calendar = useMonthlyCalendar();
+  const [feed, setFeed] = useState(initialFeed);
+  const [viewing, setViewing] = useState<Viewing | null>(null);
+  const [started, setStarted] = useState(false);
+  const [fullscreen, setFullscreen] = useState(false);
+  const [expandedFallback, setExpandedFallback] = useState(false);
+  const [autoNext, setAutoNext] = useState(true);
+  const [notice, setNotice] = useState('กำลังเชื่อมต่อรายการถ่ายทอดสด');
+  const [frameLoaded, setFrameLoaded] = useState(false);
+  const [checkedAt, setCheckedAt] = useState(0);
+  const [schedule, setSchedule] = useState<ScheduleFeed | null>(null);
+  const [scheduleNow, setScheduleNow] = useState(0);
+  const [links, setLinks] = useState<MatchLink[]>([]);
+  const feedRef = useRef(initialFeed);
+  const playersRef = useRef<PreparedPlayer[]>([]);
+  const viewingRef = useRef<Viewing | null>(null);
+  const autoRef = useRef(true);
+  const startedRef = useRef(false);
+  const linksRef = useRef<MatchLink[]>([]);
+  const calendarRef = useRef(calendar.feed);
+  const playerSectionRef = useRef<HTMLElement>(null);
+  const expanded = fullscreen || expandedFallback;
+  useEffect(() => { calendarRef.current = calendar.feed; }, [calendar.feed]);
+
+  useEffect(() => {
+    const abort = new AbortController();
+    let active = true;
+    let timer: ReturnType<typeof setTimeout>;
+    async function updateSchedule() {
+      if (!active) return;
+      if (document.visibilityState === 'hidden') { timer = setTimeout(updateSchedule, 5000); return; }
+      setScheduleNow(Date.now());
+      try {
+        const response = await fetch('/api/live-football/schedule', { cache: 'no-store', signal: abort.signal });
+        if (!response.ok) throw new Error('Schedule unavailable');
+        const data: ScheduleFeed = await response.json();
+        if (active) setSchedule(data);
+      } catch { /* Keep the last schedule; retry silently in the background. */ }
+      finally { if (active) timer = setTimeout(updateSchedule, 60_000); }
+    }
+    void updateSchedule();
+    return () => { active = false; abort.abort(); clearTimeout(timer); };
+  }, []);
+
+  useEffect(() => {
+    const changed = () => setFullscreen((document.fullscreenElement || (document as FullscreenDocument).webkitFullscreenElement) === playerSectionRef.current);
+    document.addEventListener('fullscreenchange', changed);
+    document.addEventListener('webkitfullscreenchange', changed);
+    return () => { document.removeEventListener('fullscreenchange', changed); document.removeEventListener('webkitfullscreenchange', changed); };
+  }, []);
+
+  useEffect(() => {
+    if (!expandedFallback) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const escape = (event: KeyboardEvent) => { if (event.key === 'Escape') setExpandedFallback(false); };
+    document.addEventListener('keydown', escape);
+    return () => { document.body.style.overflow = previous; document.removeEventListener('keydown', escape); };
+  }, [expandedFallback]);
+
+  async function leaveFullscreen() {
+    try {
+      if (document.fullscreenElement === playerSectionRef.current) await document.exitFullscreen();
+      else if ((document as FullscreenDocument).webkitFullscreenElement === playerSectionRef.current) await (document as FullscreenDocument).webkitExitFullscreen?.();
+    } catch { /* Closing the player also removes it from the fullscreen tree. */ }
+    setExpandedFallback(false);
+    setFullscreen(false);
+  }
+
+  async function toggleFullscreen() {
+    if (expanded) { await leaveFullscreen(); return; }
+    const section = playerSectionRef.current as FullscreenSection | null;
+    if (!section) return;
+    try {
+      if (section.requestFullscreen) await section.requestFullscreen();
+      else if (section.webkitRequestFullscreen) await section.webkitRequestFullscreen();
+      else setExpandedFallback(true);
+    } catch { setExpandedFallback(true); }
+  }
+
+  useEffect(() => {
+    let active = true;
+    let feedTimer: ReturnType<typeof setTimeout>;
+    let prepareTimer: ReturnType<typeof setTimeout>;
+    let linkTimer: ReturnType<typeof setTimeout>;
+    const abort = new AbortController();
+
+    function reconcile() {
+      if (!startedRef.current) {
+        const event = calendarRef.current?.matches.find(match => match.id === initialMatchId);
+        const targetId = initialMatchId?.startsWith('espn:')
+          ? resolveCalendarLink(event, linksRef.current, feedRef.current.matches)
+          : initialMatchId;
+        const chosen = feedRef.current.matches.find(match => match.id === targetId && match.state === 'live');
+        const prepared = playersRef.current.find(player => player.id === targetId && player.state === 'ready' && player.url && player.expiresAt > Date.now());
+        if (!chosen || !prepared?.url) return;
+        startedRef.current = true;
+        setStarted(true);
+        viewingRef.current = { id: chosen.id, url: prepared.url, match: chosen };
+        setViewing(viewingRef.current);
+        setFrameLoaded(false);
+        return;
+      }
+      const next = chooseMatch(viewingRef.current?.id ?? null, feedRef.current.matches, readyPlayers(playersRef.current, Date.now()), autoRef.current);
+      if (next === viewingRef.current?.id) return; // Scores/URL refresh never reload a playing iframe.
+      if (!next) {
+        if (viewingRef.current) {
+          viewingRef.current = null;
+          setViewing(null);
+          setFrameLoaded(false);
+          setNotice(autoRef.current ? 'คู่เดิมจบแล้ว กำลังรอการแข่งขันสดคู่ถัดไป' : 'คู่เดิมจบแล้ว เลือกคู่ถัดไปได้จากรายการ');
+        }
+        return;
+      }
+      const match = feedRef.current.matches.find(item => item.id === next);
+      const player = playersRef.current.find(item => item.id === next);
+      if (match && player?.url) {
+        const changed = !!viewingRef.current;
+        viewingRef.current = { id: next, url: player.url, match };
+        setViewing(viewingRef.current);
+        setFrameLoaded(false);
+        setNotice(changed ? `เปลี่ยนคู่ให้อัตโนมัติ: ${match.home} พบ ${match.away}` : `กำลังรับชม ${match.home} พบ ${match.away}`);
+      }
+    }
+
+    async function read<T>(path: string, method = 'GET'): Promise<T> {
+      const response = await fetch(path, { method, cache: 'no-store', signal: abort.signal });
+      const data = await response.json();
+      if (!response.ok) throw Error(data.error || 'ต้นทางไม่พร้อมให้บริการ');
+      return data;
+    }
+    async function updateFeed() {
+      if (!active) return;
+      if (document.visibilityState === 'hidden') { feedTimer = setTimeout(updateFeed, 2000); return; }
+      try {
+        const data = await read<FootballFeed>('/api/live-football');
+        if (!active) return;
+        feedRef.current = data;
+        setFeed(data);
+        setCheckedAt(Date.now());
+        reconcile();
+      } catch { /* Keep the last feed and the playing iframe; the next poll retries. */ } finally { if (active) feedTimer = setTimeout(updateFeed, 10_000); }
+    }
+    async function prepare() {
+      if (!active) return;
+      if (document.visibilityState === 'hidden') { prepareTimer = setTimeout(prepare, 2000); return; }
+      try {
+        const data = await read<Preparation>('/api/live-football/prepare', 'POST');
+        if (!active) return;
+        playersRef.current = data.players;
+        setCheckedAt(Date.now());
+        reconcile();
+      } catch { /* The existing preparation loop retries without a page alert. */ }
+      finally { if (active) prepareTimer = setTimeout(prepare, 5000); }
+    }
+    async function updateLinks() {
+      if (!active) return;
+      if (document.visibilityState === 'hidden') { linkTimer = setTimeout(updateLinks, 2000); return; }
+      try {
+        const data = await read<MatchLinks>('/api/live-football/links');
+        if (!active) return;
+        linksRef.current = data.links;
+        setLinks(data.links);
+        reconcile();
+      } catch { /* Retain confirmed links; the resolver still validates the latest feed. */ }
+      finally { if (active) linkTimer = setTimeout(updateLinks, 10_000); }
+    }
+    void updateFeed();
+    void prepare();
+    void updateLinks();
+    return () => { active = false; abort.abort(); clearTimeout(feedTimer); clearTimeout(prepareTimer); clearTimeout(linkTimer); };
+  }, [initialMatchId]);
+
+  const live = feed.matches.filter(match => match.state === 'live');
+  const programmeNow = Math.max(scheduleNow, checkedAt);
+  const endedIds = new Set(feed.matches.filter(match => match.state === 'ended').map(match => match.id));
+  const upcoming = visibleProgrammes(schedule?.matches ?? [], programmeNow).filter(match => !live.some(item => item.id === match.id) && !endedIds.has(match.id));
+  const bridged = new Map((calendar.feed?.matches ?? []).flatMap(event => {
+    const id = resolveCalendarLink(event, links, live);
+    const match = id && live.find(item => item.id === id);
+    return match ? [[event.id, match] as const] : [];
+  }));
+  const mergedAmbIds = new Set([...bridged.values()].map(match => match.id));
+  const fixtures: Fixture[] = [
+    ...live.filter(match => !mergedAmbIds.has(match.id)).map(match => ({ ...match, live: true, status: match.clock || 'กำลังถ่ายทอดสด', timeConfirmed: true })),
+    ...upcoming.map(match => ({ ...match, live: false, awaitingSignal: Date.parse(match.startsAt) <= programmeNow, status: Date.parse(match.startsAt) <= programmeNow ? 'รอสัญญาณถ่ายทอดสด' : 'ยังไม่เริ่มแข่ง', timeConfirmed: true })),
+    ...(calendar.feed?.matches ?? []).map(event => {
+      const match = bridged.get(event.id);
+      return match ? { ...event, ambId: match.id, live: true, status: match.clock || 'กำลังถ่ายทอดสด' } : { ...event, live: false };
+    }),
+  ];
+  const current = feed.matches.find(match => match.id === viewing?.id) ?? viewing?.match;
+  const selected = fixtures.find(match => match.id === (viewing?.id ?? initialMatchId) || (viewing && match.ambId === viewing.id));
+  const showFrame = viewing && current?.state !== 'ended';
+  const player = <section ref={playerSectionRef} className={`${styles.broadcast} ${expanded ? styles.expanded : ''}`} aria-label="วิดีโอถ่ายทอดสด">
+    <div className={styles.broadcastTop}><span className={styles.liveBadge}>{showFrame ? 'LIVE' : 'MATCH'}</span><span className={styles.broadcastLeague}>{selected?.league ?? 'ศูนย์รวมถ่ายทอดสด'}</span><button type="button" className={styles.fullscreenButton} onClick={toggleFullscreen} aria-pressed={expanded} aria-label={expanded ? 'ออกจากเต็มจอ' : 'ดูเต็มจอ'}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d={expanded ? 'M8 3v5H3m18 0h-5V3M3 16h5v5m8 0v-5h5' : 'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5'} /></svg>{expanded ? 'ออกจากเต็มจอ' : 'เต็มจอ'}</button></div>
+    {selected && <div className={styles.watchMatchHeader}><FixtureRow match={selected} selected /></div>}
+    <div className={styles.stage}>{showFrame ? <iframe key={viewing.id} src={viewing.url} title={`ถ่ายทอดสด ${current?.home} พบ ${current?.away}`} allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowFullScreen onLoad={() => setFrameLoaded(true)} /> : <MatchPreview match={selected} loading={!calendar.feed && !feed.updatedAt} />}</div>
+    {(showFrame || started) && <div className={styles.playerDetails}>{showFrame && <p>{frameLoaded ? 'เปิดเสียงหรือดูเต็มจอได้จากตัวเล่น' : notice}</p>}{started && <div className={styles.autoControl}><span>เล่นคู่ถัดไปอัตโนมัติ</span><button type="button" role="switch" aria-label="เปลี่ยนคู่ถัดไปอัตโนมัติ" aria-checked={autoNext} className={`${styles.switch} ${autoNext ? styles.switchOn : ''}`} onClick={() => { autoRef.current = !autoRef.current; setAutoNext(autoRef.current); }}><span /></button></div>}</div>}
+  </section>;
+  return <main className={`${styles.page} ${initialMatchId ? styles.watchPage : ''}`}><div className={styles.container}>
+    {initialMatchId && <nav className={`${styles.breadcrumb} ${styles.watchBreadcrumb}`} aria-label="เส้นทางหน้าเว็บ"><Link href="/lobby">หน้าหลัก</Link><span>/</span><Link href="/live">ถ่ายทอดสด</Link><span>/ รับชมฟุตบอล</span></nav>}
+    {!initialMatchId && <header className={styles.hero}>
+      <Image className={styles.heroPhoto} src="/images/live-football/design-c-football-action.webp" alt="" fill sizes="100vw" preload unoptimized />
+      <div className={styles.heroShade} aria-hidden="true" />
+      <div className={styles.heroPanel} aria-hidden="true" />
+      <div className={styles.heroInner}>
+        <nav className={styles.breadcrumb} aria-label="เส้นทางหน้าเว็บ"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7v11h-6v-7H9v7H3V10Z" /></svg><Link href="/lobby">หน้าหลัก</Link><span>/</span><span aria-current="page">ถ่ายทอดสด</span></nav>
+        <div className={styles.heroCopy}>
+          <div className={styles.heroEyebrow}><span /> LIVE FOOTBALL<i aria-hidden="true" /></div>
+          <h1>ถ่ายทอดสด<span>ฟุตบอล</span></h1>
+          <p><span aria-hidden="true">/</span>เลือกคู่ที่ใช่ ดูสดทุกจังหวะ</p>
+        </div>
+        <div className={styles.heroFooter}><svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="9" width="22" height="18" rx="3" /><path d="m25 15 8-5v16l-8-5" /></svg><span>ดูบอลสดแบบเรียลไทม์</span></div>
+      </div>
+    </header>}
+    <div className={styles.content}>
+    <div className={styles.sectionBar}>{initialMatchId ? <h1 className={styles.watchTitle}>รับชมฟุตบอล</h1> : <h2 className={styles.sectionTitle}>ถ่ายทอดสด</h2>}<span className={styles.sportTag}>⚽ ฟุตบอล</span><span className={styles.liveTotal}><i /> {live.length} คู่กำลังถ่ายทอดสด</span></div>
+    {initialMatchId ? <div className={styles.watchLayout}><div className={styles.watchMain}>{player}<div className={styles.watchHelp}><Link href="/live">← ดูตารางการแข่งขันทั้งหมด</Link><a href="https://lin.ee/rjOBayDx" target="_blank" rel="noopener noreferrer">ติดต่อเจ้าหน้าที่ ↗</a></div></div><aside className={styles.watchSidebar}><FixtureBrowser matches={fixtures} loading={!calendar.feed && !feed.updatedAt} compact selectedId={selected?.id} today={calendar.today} /></aside></div>
+      : <><FixtureBrowser matches={fixtures} loading={!calendar.feed && !feed.updatedAt} today={calendar.today} /></>}
+    </div>
+  </div></main>;
+}

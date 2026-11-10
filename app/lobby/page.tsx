@@ -1,13 +1,21 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { useTranslation } from "react-i18next";
 import api from "@/lib/api";
 import GameSidebar from "@/components/GameSidebar";
 import Activities from "@/components/Activities";
 import HeroCarousel, { type BannerLike } from "@/components/lobby/HeroCarousel";
 import LobbyFooter from "@/components/lobby/LobbyFooter";
+import RecentWithdrawals from "@/components/lobby/RecentWithdrawals";
+import LobbyInfo from "@/components/lobby/LobbyInfo";
+import LobbyTabStrip from "@/components/lobby/LobbyTabStrip";
+import { DEMO_WITHDRAWALS } from "@/components/lobby/recentWithdrawals.demo";
 import { CardGrid, EmptyState, GameCard, ProviderCard, SectionHeader, SkeletonGrid } from "@/components/lobby/LobbyCards";
+import ProviderGameCard from "@/components/lobby/ProviderGameCard";
+import { favoriteKey, parseFavoriteKey, useFavoriteGames } from "@/components/lobby/favoriteGames";
+import { alertFavoriteSaveFailed, launchGame } from "@/components/lobby/launchGame";
 import { type CategoryItem, type Game, type ProductImage, gameMatchesRoomCategory, gameTitle, isSlotGame } from "@/components/lobby/types";
 import styles from "@/components/lobby/lobby.module.css";
 
@@ -19,12 +27,38 @@ const Icon = {
   star: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>,
   clock: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>,
   gift: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="4" rx="1" /><path d="M12 8v13M19 12v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5" /></svg>,
+  // same heart outline as the favorite button on the game cards (ProviderGameCard)
+  heart: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.6C1.6 7.8 3.6 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.4 0 5.4 3.3 4.3 6.4-1.8 5-9.3 9.6-9.3 9.6z" /></svg>,
   news: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2" /><path d="M10 6h8M10 10h8M10 14h5" /></svg>,
-  search: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>,
-  close: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12" /></svg>,
-  megaphone: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z" /><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" /></svg>,
+  live: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="13" rx="2" /><path d="m9 2 3 3 3-3M8 22h8M12 18v4" /><path d="m10 9 5 3-5 3Z" /></svg>,
   grid: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5" /><rect x="14" y="3" width="7" height="7" rx="1.5" /><rect x="3" y="14" width="7" height="7" rx="1.5" /><rect x="14" y="14" width="7" height="7" rx="1.5" /></svg>,
-  flame: <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.07-2.14-.22-4.05 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.15.43-2.29 1-3a2.5 2.5 0 0 0 2.5 2.5z" /></svg>,
+  // Santa decoration for the "recommended slots" panel: animated transparent WebP (443×443, 8 frames, ~195 KB).
+  // `unoptimized` → the browser gets the original file: the image optimizer re-encodes some widths to a single
+  // still frame (and had cached a static derivative of the previous artwork under the same URL).
+  // Two copies of the same URL (one request, frames stay in sync): the sharp one, and a softened one that only
+  // shows in the bottom ~7% (boot soles) via CSS masks — the flames are never covered by a duplicate.
+  santa: (
+    <>
+      <Image
+        src="/images/decorations/santa-fire.webp"
+        alt=""
+        width={443}
+        height={443}
+        unoptimized
+        className={styles.santaIcon}
+        draggable={false}
+      />
+      <Image
+        src="/images/decorations/santa-fire.webp"
+        alt=""
+        width={443}
+        height={443}
+        unoptimized
+        className={`${styles.santaIcon} ${styles.santaBlur}`}
+        draggable={false}
+      />
+    </>
+  ),
 };
 
 export default function LobbyPage() {
@@ -35,8 +69,6 @@ export default function LobbyPage() {
   const [products, setProducts] = useState<string[]>([]);
   const [selectedProduct, setSelectedProduct] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [search, setSearch] = useState("");
-  const [appliedSearch, setAppliedSearch] = useState("");
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [activeTab, setActiveTab] = useState("highlight");
@@ -65,17 +97,16 @@ export default function LobbyPage() {
     }).catch(() => {});
   }, []);
 
-  const fetchGames = (productId?: string, searchTerm?: string) => {
+  const fetchGames = (productId?: string) => {
     setLoading(true);
     setLoadError(false);
-    loadGames(productId, searchTerm);
+    loadGames(productId);
   };
 
   // network part of fetchGames — state is only set inside async callbacks
-  const loadGames = (productId?: string, searchTerm?: string) => {
+  const loadGames = (productId?: string) => {
     const params: Record<string, string> = {};
     if (productId) params.productId = productId;
-    if (searchTerm) params.search = searchTerm;
     api.get("/games", { params }).then((res) => {
       const data = res.data.data?.data || res.data.data || [];
       const active = data.filter((g: Game) => g.is_active);
@@ -103,7 +134,7 @@ export default function LobbyPage() {
   const ROOM_CATEGORIES = ["SLOT", "EGAMES", "SLOTS", "LIVECASINO", "FISHING", "CARD", "SPORT"];
   const isRoomMode = ROOM_CATEGORIES.includes(selectedCategory.toUpperCase());
 
-  useEffect(() => {
+ useEffect(() => {
     if (!localStorage.getItem("user_token")) { router.push("/login"); return; }
 
     api.get("/games/products").then((res) => { if (res.data.status === "success") setProducts(res.data.data || []); }).catch(() => {});
@@ -117,6 +148,23 @@ export default function LobbyPage() {
 
     // initial state is already loading=true / loadError=false
     loadGames();
+
+    // Honor pretty category URLs — /lobby#sport, /lobby#casino, /lobby#slot, /lobby#fishing, /lobby#card
+    // (also still accepts the older ?cat=SPORT form for backward compatibility)
+    const CATEGORY_ALIASES: Record<string, string> = {
+      sport: "SPORT", sports: "SPORT", กีฬา: "SPORT",
+      casino: "LIVECASINO", livecasino: "LIVECASINO", คาสิโน: "LIVECASINO",
+      slot: "SLOT", slots: "SLOT", สล็อต: "SLOT",
+      fishing: "FISHING", fish: "FISHING", ยิงปลา: "FISHING",
+      card: "CARD", cards: "CARD", ไพ่: "CARD",
+    };
+    const raw = decodeURIComponent(
+      window.location.hash.replace(/^#/, "") ||
+      new URLSearchParams(window.location.search).get("cat") ||
+      ""
+    ).toLowerCase();
+    const cat = CATEGORY_ALIASES[raw] || (raw ? raw.toUpperCase() : "");
+    if (cat) setSelectedCategory(cat);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -142,30 +190,29 @@ export default function LobbyPage() {
         return matches.some((m) => cat === m);
       }));
     }
-  };
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    setAppliedSearch(search.trim());
-    if (activeTab === "recent") setActiveTab("highlight");
-    fetchGames(selectedProduct, search);
-  };
-
-  const clearSearch = () => {
-    setSearch("");
-    setAppliedSearch("");
-    fetchGames(selectedProduct, "");
+    // Sync URL hash so the link reflects the current category and can be shared/bookmarked
+    const HASH_BY_CATEGORY: Record<string, string> = {
+      SPORT: "sport",
+      LIVECASINO: "casino",
+      SLOT: "slot",
+      FISHING: "fishing",
+      CARD: "card",
+    };
+    const hash = HASH_BY_CATEGORY[catId] || "";
+    const nextUrl = `${window.location.pathname}${window.location.search}${hash ? `#${hash}` : ""}`;
+    window.history.replaceState(null, "", nextUrl);
   };
 
   /* ---------- derived view data (presentation only) ---------- */
   const categories: CategoryItem[] = useMemo(() => {
     const base: Omit<CategoryItem, "count">[] = [
-      { id: "", title: "HOT GAME", label: t("sidebar.popular"), icon: "/icons/menu/ic-nav-menu-hot-game.webp" },
-      { id: "LIVECASINO", title: "CASINO", label: t("sidebar.casino"), icon: "/icons/menu/icons8-cards-48.webp" },
-      { id: "SLOT", title: "SLOT", label: t("sidebar.slot"), icon: "/icons/menu/ic-nav-menu-slot.webp" },
-      { id: "FISHING", title: "FISHING", label: t("sidebar.fishing"), icon: "/icons/menu/ic-nav-menu-fishing-game.webp" },
-      { id: "CARD", title: "CARD", label: t("sidebar.card"), icon: "/icons/menu/ic-nav-menu-casino.webp" },
-      { id: "SPORT", title: "SPORT", label: t("sidebar.sport"), icon: "/icons/menu/ic-nav-menu-sport.webp" },
+      { id: "", title: "HOT GAME", label: t("sidebar.popular"), icon: "/icons/menu/ic-nav-menu-hot-game.webp", art: { src: "/images/game-categories/hot-game.webp", width: 480, height: 189 }, thumb: "/images/game-categories/hot-game-mobile-v2.webp" },
+      { id: "LIVECASINO", title: "CASINO", label: t("sidebar.casino"), icon: "/icons/menu/icons8-cards-48.webp", art: { src: "/images/game-categories/casino.webp", width: 480, height: 200 }, thumb: "/images/game-categories/casino-mobile-v2.webp" },
+      { id: "SLOT", title: "SLOT", label: t("sidebar.slot"), icon: "/icons/menu/ic-nav-menu-slot.webp", art: { src: "/images/game-categories/slot.webp", width: 480, height: 179 }, thumb: "/images/game-categories/slot-mobile-v2.webp" },
+      { id: "FISHING", title: "FISHING", label: t("sidebar.fishing"), icon: "/icons/menu/ic-nav-menu-fishing-game.webp", art: { src: "/images/game-categories/fishing.webp", width: 480, height: 173 }, thumb: "/images/game-categories/fishing-mobile-v2.webp" },
+      { id: "CARD", title: "CARD", label: t("sidebar.card"), icon: "/icons/menu/ic-nav-menu-casino.webp", art: { src: "/images/game-categories/card.webp", width: 480, height: 176 }, thumb: "/images/game-categories/card-mobile-v2.webp" },
+      { id: "SPORT", title: "SPORT", label: t("sidebar.sport"), icon: "/icons/menu/ic-nav-menu-sport.webp", art: { src: "/images/game-categories/sport.webp", width: 480, height: 185 }, thumb: "/images/game-categories/sport-mobile-v2.webp" },
     ];
     // real game counts from GET /games (hidden while loading)
     return base.map((c) => ({ ...c, count: loading ? undefined : allGames.filter((g) => gameMatchesRoomCategory(g, c.id)).length }));
@@ -174,6 +221,9 @@ export default function LobbyPage() {
   const visibleProviders = useMemo(() => products
     .map((p) => ({ id: p, count: allGames.filter((g) => g.product_id === p && gameMatchesRoomCategory(g, selectedCategory)).length }))
     .filter((p) => p.count > 0), [products, allGames, selectedCategory]);
+
+  // providers that actually have active games (for the "Why SNAKE168" copy)
+  const providerCount = useMemo(() => new Set(allGames.map((g) => g.product_id)).size, [allGames]);
 
   const slotProviders = useMemo(() => products
     .filter((p) => allGames.some((g) => g.product_id === p && isSlotGame(g)))
@@ -185,23 +235,82 @@ export default function LobbyPage() {
     .slice(0, 10)
     .map((p) => ({ id: p, count: allGames.filter((g) => g.product_id === p && isSlotGame(g)).length })), [products, allGames]);
 
-  const showGames = activeTab === "recent" || !!appliedSearch || !(isRoomMode || selectedCategory === "");
+  /* ---------- favorites tab (shared browser-local store, see components/lobby/favoriteGames.ts) ----------
+     Favorites hold only "<PRODUCT_ID>:<game_code>" keys. Game metadata comes from the catalogue this page
+     already loads (GET /games, all providers); only favorites missing from it trigger one GET /games?productId=…
+     per provider (once per visit). Keys that resolve nowhere (game removed / disabled) are simply not shown. */
+  const { favorites, isFavorite, toggle: toggleFavorite } = useFavoriteGames();
+  const [favoriteExtra, setFavoriteExtra] = useState<Record<string, Game[]>>({});
+  const requestedFavoriteProviders = useRef(new Set<string>());
+  const [favoriteCoverRatio, setFavoriteCoverRatio] = useState<number | null>(null);
+
+  const gameByFavoriteKey = useMemo(() => {
+    const map = new Map<string, Game>();
+    for (const g of allGames) map.set(favoriteKey(g.product_id, g.game_code), g);
+    for (const list of Object.values(favoriteExtra)) {
+      for (const g of list) {
+        const k = favoriteKey(g.product_id, g.game_code);
+        if (!map.has(k)) map.set(k, g);
+      }
+    }
+    return map;
+  }, [allGames, favoriteExtra]);
+
+  const missingFavoriteProviders = useMemo(() => {
+    if (loading || loadError) return [];
+    const ids = new Set<string>();
+    for (const k of favorites) {
+      const parsed = parseFavoriteKey(k);
+      if (parsed && !gameByFavoriteKey.has(k) && !(parsed.productId in favoriteExtra)) ids.add(parsed.productId);
+    }
+    return [...ids];
+  }, [favorites, gameByFavoriteKey, favoriteExtra, loading, loadError]);
+
+  useEffect(() => {
+    if (activeTab !== "favorite") return;
+    for (const upperId of missingFavoriteProviders) {
+      if (requestedFavoriteProviders.current.has(upperId)) continue;
+      requestedFavoriteProviders.current.add(upperId);
+      // keys store the id upper-cased; ask the API with its own spelling when known
+      const productId = products.find((p) => p.toUpperCase() === upperId) ?? upperId;
+      api.get("/games", { params: { productId } }).then((res) => {
+        const data = res.data.data?.data || res.data.data || [];
+        const active = Array.isArray(data) ? data.filter((g: Game) => g.is_active) : [];
+        setFavoriteExtra((prev) => ({ ...prev, [upperId]: active }));
+      }).catch(() => setFavoriteExtra((prev) => ({ ...prev, [upperId]: [] })));
+    }
+  }, [activeTab, missingFavoriteProviders, products]);
+
+  // newest favorite first; one card per key (the store never holds duplicates)
+  const favoriteGames = useMemo(
+    () => [...favorites].reverse().map((k) => gameByFavoriteKey.get(k)).filter((g): g is Game => Boolean(g)),
+    [favorites, gameByFavoriteKey],
+  );
+  const loadingFavorites = loading || missingFavoriteProviders.length > 0;
+  const handleToggleFavorite = (game: Game) => {
+    if (!toggleFavorite(favoriteKey(game.product_id, game.game_code))) alertFavoriteSaveFailed();
+  };
+
+  const showGames = activeTab === "recent" || activeTab === "favorite" || !(isRoomMode || selectedCategory === "");
   const displayedGames: RecentGame[] = activeTab === "recent" ? recentGames : games;
-  const isGamesLoading = activeTab === "recent" ? loadingRecent : loading;
+  const isGamesLoading = activeTab === "recent" ? loadingRecent : activeTab === "favorite" ? loadingFavorites : loading;
   const activeCategory = categories.find((c) => c.id === selectedCategory);
 
   const tabs = [
     { id: "highlight", label: t("lobby.highlight"), href: "", icon: Icon.star },
     { id: "recent", label: t("lobby.recent"), href: "", icon: Icon.clock },
+    { id: "favorite", label: t("lobby.favorites"), href: "", icon: Icon.heart },
     { id: "promotion", label: t("lobby.promotion"), href: "/promotions", icon: Icon.gift },
     { id: "news", label: t("lobby.news"), href: "/history", icon: Icon.news },
+    { id: "live", label: t("lobby.live"), href: "/live", icon: Icon.live },
   ];
 
   const gamesTitle = activeTab === "recent"
     ? t("lobby.recent")
-    : appliedSearch
-      ? `${t("lobby.searchResults")}: “${appliedSearch}”`
+    : activeTab === "favorite"
+      ? t("lobby.favorites")
       : (selectedCategory || selectedProduct || t("lobby.allGames"));
+  const gamesCount = activeTab === "favorite" ? favoriteGames.length : displayedGames.length;
 
   return (
     <div className={styles.page}>
@@ -232,7 +341,18 @@ export default function LobbyPage() {
               aria-pressed={marqueePaused}
               aria-label={marqueePaused ? "Play announcement" : "Pause announcement"}
             >
-              {Icon.megaphone}
+              {/* decorative Christmas speaker (animated transparent WebP, 508×337 — plain <img> so the animation is
+                  served as-is); the button's aria-label describes the action */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/images/icons/christmas-speaker-snow-transparent.webp"
+                alt=""
+                width={508}
+                height={337}
+                className={styles.marqueeIconImg}
+                decoding="async"
+                draggable={false}
+              />
             </button>
             <div className={styles.marqueeViewport}>
               <span className={styles.marqueeTrack}>
@@ -242,28 +362,9 @@ export default function LobbyPage() {
             </div>
           </div>
 
-          {/* ===== Tabs + Search ===== */}
+          {/* ===== Tabs ===== */}
           <div className={styles.toolbar}>
-            <form className={styles.search} role="search" onSubmit={handleSearch}>
-              <span className={styles.searchIcon}>{Icon.search}</span>
-              <input
-                type="search"
-                className={styles.searchInput}
-                placeholder={t("lobby.search")}
-                aria-label={t("lobby.search")}
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                enterKeyHint="search"
-              />
-              <span className={styles.searchActions}>
-                {(search || appliedSearch) && (
-                  <button type="button" className={styles.searchClear} onClick={clearSearch} aria-label={t("lobby.clearSearch")}>{Icon.close}</button>
-                )}
-                <button type="submit" className={styles.searchSubmit}>{t("lobby.searchSubmit")}</button>
-              </span>
-            </form>
-
-            <div className={styles.tabs}>
+            <LobbyTabStrip activeKey={activeTab}>
               {tabs.map((tab) => (
                 <button
                   key={tab.id}
@@ -280,13 +381,17 @@ export default function LobbyPage() {
                   <span>{tab.label}</span>
                 </button>
               ))}
-            </div>
+            </LobbyTabStrip>
           </div>
 
-          {/* ===== Mobile category chips ===== */}
-          <div className={styles.mobileOnly}>
+          {/* ===== Activities (backend-driven) ===== */}
+          <Activities page="lobby" slot="icon_grid" />
+
+          {/* ===== Mobile: category rail beside the content (desktop: display:contents, rail hidden) ===== */}
+          <div className={styles.catSplit}>
+          <div className={styles.catRail}>
             <GameSidebar
-              variant="chips"
+              variant="rail"
               items={categories}
               selected={selectedCategory}
               onSelect={handleCategoryFilter}
@@ -294,28 +399,50 @@ export default function LobbyPage() {
             />
           </div>
 
-          {/* ===== Activities (backend-driven) ===== */}
-          <Activities page="lobby" slot="icon_grid" />
-
           {/* ===== Main content: providers or games ===== */}
           {showGames ? (
             <section className={styles.section} aria-labelledby="games-heading">
               <SectionHeader
                 id="games-heading"
                 title={gamesTitle}
-                icon={activeTab === "recent" ? Icon.clock : appliedSearch ? Icon.search : Icon.grid}
-                count={isGamesLoading ? undefined : `${displayedGames.length.toLocaleString()} ${t("lobby.games")}`}
-                action={appliedSearch && activeTab !== "recent"
-                  ? <button type="button" className={styles.linkBtn} onClick={clearSearch}>{Icon.close}{t("lobby.clearSearch")}</button>
-                  : undefined}
+                icon={activeTab === "recent" ? Icon.clock : activeTab === "favorite" ? Icon.heart : Icon.grid}
+                count={isGamesLoading ? undefined : `${gamesCount.toLocaleString()} ${t("lobby.games")}`}
               />
               {isGamesLoading ? (
                 <SkeletonGrid variant="game" count={12} />
               ) : loadError && activeTab !== "recent" ? (
                 <EmptyState
                   title={t("lobby.loadError")}
-                  action={<button type="button" className={styles.linkBtn} onClick={() => fetchGames(selectedProduct, appliedSearch)}>{t("lobby.retry")}</button>}
+                  action={<button type="button" className={styles.linkBtn} onClick={() => fetchGames(selectedProduct)}>{t("lobby.retry")}</button>}
                 />
+              ) : activeTab === "favorite" ? (
+                favoriteGames.length === 0 ? (
+                  <EmptyState
+                    title={t("lobby.noFavorites")}
+                    hint={t("lobby.noFavoritesHint")}
+                    action={<button type="button" className={styles.linkBtn} onClick={() => { setActiveTab("highlight"); handleCategoryFilter(""); }}>{t("lobby.browseGames")}</button>}
+                  />
+                ) : (
+                  // same card as the provider rooms: original cover, provider logo, heart (separate button), launch on click
+                  <div style={favoriteCoverRatio ? { ["--cover-ar" as string]: favoriteCoverRatio } : undefined}>
+                    <CardGrid variant="game">
+                      {favoriteGames.map((game, i) => (
+                        <ProviderGameCard
+                          key={favoriteKey(game.product_id, game.game_code)}
+                          title={gameTitle(game)}
+                          imageUrl={game.image_url}
+                          productId={game.product_id}
+                          category={game.category}
+                          onLaunch={() => launchGame(game)}
+                          favorite={isFavorite(favoriteKey(game.product_id, game.game_code))}
+                          onToggleFavorite={() => handleToggleFavorite(game)}
+                          eager={i < 8}
+                          onCoverLoad={favoriteCoverRatio ? undefined : (w, h) => setFavoriteCoverRatio((r) => r ?? w / h)}
+                        />
+                      ))}
+                    </CardGrid>
+                  </div>
+                )
               ) : displayedGames.length === 0 ? (
                 activeTab === "recent"
                   ? <EmptyState title={t("lobby.noRecent")} hint={t("lobby.noRecentHint")} />
@@ -339,7 +466,7 @@ export default function LobbyPage() {
               <SectionHeader
                 id="providers-heading"
                 title={activeCategory && activeCategory.id ? `${t("lobby.selectProvider")} · ${activeCategory.label}` : t("lobby.selectProvider")}
-                icon={Icon.grid}
+                plain
                 count={loading ? undefined : `${visibleProviders.length} ${t("lobby.providers")}`}
               />
               {loading ? (
@@ -347,7 +474,7 @@ export default function LobbyPage() {
               ) : loadError ? (
                 <EmptyState
                   title={t("lobby.loadError")}
-                  action={<button type="button" className={styles.linkBtn} onClick={() => fetchGames(selectedProduct, appliedSearch)}>{t("lobby.retry")}</button>}
+                  action={<button type="button" className={styles.linkBtn} onClick={() => fetchGames(selectedProduct)}>{t("lobby.retry")}</button>}
                 />
               ) : visibleProviders.length === 0 ? (
                 <EmptyState title={t("lobby.noProviders")} hint={t("lobby.noGamesHint")} />
@@ -362,20 +489,22 @@ export default function LobbyPage() {
                       gamesLabel={t("lobby.games")}
                       playLabel={t("lobby.playNow")}
                       eager={i < 6}
+                      festive
                     />
                   ))}
                 </CardGrid>
               )}
             </section>
           )}
+          </div>
 
           {/* ===== Recommended slot providers (real data: providers with slot games) ===== */}
           {!showGames && !loading && slotProviders.length > 0 && (
-            <section className={`${styles.section} ${styles.panel}`} aria-labelledby="slots-heading">
+            <section className={`${styles.section} ${styles.panel} ${styles.santaPanel}`} aria-labelledby="slots-heading">
               <SectionHeader
                 id="slots-heading"
                 title={t("lobby.recommendedSlots")}
-                icon={Icon.flame}
+                icon={Icon.santa}
                 action={selectedCategory !== "SLOT"
                   ? <button type="button" className={styles.linkBtn} onClick={() => { handleCategoryFilter("SLOT"); window.scrollTo({ top: 0, behavior: "smooth" }); }}>{t("lobby.viewAll")}</button>
                   : undefined}
@@ -394,6 +523,12 @@ export default function LobbyPage() {
               </div>
             </section>
           )}
+
+          {/* ===== Recent withdrawals — DEMO data (no feed API yet), labelled as simulated in the header ===== */}
+          <RecentWithdrawals items={DEMO_WITHDRAWALS} live={false} />
+
+          {/* ===== Why SNAKE168 + FAQ + support (Modern Color Style 2) ===== */}
+          <LobbyInfo providerCount={loading || loadError ? undefined : providerCount} />
 
           {/* ===== Activities: large cards ===== */}
           <Activities page="lobby" slot="home_card" />

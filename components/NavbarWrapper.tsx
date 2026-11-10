@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Navbar from "./Navbar";
+import AppInstallBanner from "./AppInstallBanner";
 import api from "@/lib/api";
 
 const HIDE_NAVBAR_PAGES = ["/login", "/register"];
@@ -45,5 +46,11 @@ export default function NavbarWrapper() {
     );
   }
 
-  return <Navbar />;
+  return (
+    <>
+      {/* mobile-only, in flow above the sticky Navbar (the Navbar itself is untouched) */}
+      <AppInstallBanner />
+      <Navbar />
+    </>
+  );
 }

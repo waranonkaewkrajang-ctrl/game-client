@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "online.snake1168.app",
+      "sha256_cert_fingerprints": [
+        "F5:90:04:44:76:22:A6:21:39:56:7E:FC:A6:83:BC:05:32:E0:43:90:F1:6D:5D:A4:B0:40:E8:8C:C8:2A:B8:B6"
+      ]
+    }
+  }
+]

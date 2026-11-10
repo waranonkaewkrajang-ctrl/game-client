@@ -114,6 +114,131 @@
 }
 .itemActive .count { background: rgba(168, 85, 247, 0.3); color: var(--ds-text); }
 
+/* ---------- Design C artwork cards (desktop sidebar) ----------
+ * The WebP is the whole design: no overlay, background or border is added on top of it.
+ * Selected = a thin pink-purple outline that follows the card's own shape (two 1px drop-shadows on the alpha),
+ * so the art that pokes above the card edge is outlined too instead of a rectangle around empty space. */
+.list:has(.artItem) { gap: 6px; }
+.artItem {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 14px;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.artImg {
+  display: block;
+  width: 100%;
+  height: auto; /* keeps the artwork's own proportions (width/height attributes reserve the space) */
+  filter: brightness(0.9);
+  transition: filter 160ms ease, transform 160ms ease;
+  -webkit-user-drag: none;
+}
+@media (hover: hover) {
+  .artItem:hover .artImg { filter: brightness(1); transform: translateX(2px); }
+}
+.artItem:active .artImg { transform: scale(0.98); }
+.artItemActive .artImg,
+.artItemActive:hover .artImg {
+  filter: brightness(1) drop-shadow(0 0 1px #f0abfc) drop-shadow(0 0 1px #c084fc);
+  transform: none;
+}
+.artItem:focus-visible {
+  outline: 2px solid var(--ds-focus);
+  outline-offset: 2px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .artImg { transition: none; }
+  .artItem:hover .artImg,
+  .artItem:active .artImg { transform: none; }
+}
+
+/* ---------- Christmas on the desktop artwork cards (same assets/crops as the mobile rail below) ----------
+   Per card (set in GameSidebar.tsx): --card-top = card body's top edge (fraction of image height),
+   --snow-l / --snow-r = where the artwork crosses that edge (% of width).
+   Two DIFFERENT existing snow strips, each at its own ratio (no stretching, no repetition):
+     ::before  snow-header-top.webp from the left corner to --snow-l (the long, thicker pile)
+     ::after   snow-card-top.webp from --snow-r to the right corner (a short, thinner pile)
+   so the snow piles up against the crown / hair / hat / shark / cards instead of covering them, and its thickness
+   follows each piece's length. Lifted by 35% of its own height: the mound sits on the edge, drips hang over it.
+   The outer corners are rounded like the card (≈14px) so nothing pokes past the card's shape. */
+.artLi { position: relative; }
+.artItem::before,
+.artItem::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: calc(var(--card-top, 0.08) * 100%);
+  background-repeat: no-repeat;
+  opacity: 0.82;                      /* inactive: subtle, like the rail */
+  pointer-events: none;
+  transform: translateY(-35%);
+  transition: transform 160ms ease;
+}
+/* snow-header-top.webp 1425×175, art 33–1393 × 13–175 → 1360×162 */
+.artItem::before {
+  left: 0.4%;                         /* card body spans x 2–477 of the 480px artwork */
+  width: calc((var(--snow-l, 60) - 0.4) * 1%);
+  aspect-ratio: 1360 / 162;
+  border-top-left-radius: 14px;
+  background-image: url("/images/christmas/snow-header-top.webp");
+  background-size: 104.78% 108.02%;
+  background-position: 50.77% 100%;
+}
+/* snow-card-top.webp 1385×213, art 58–1336 × 24–204 → 1278×180 (the rail's crop) */
+.artItem::after {
+  left: calc(var(--snow-r, 88) * 1%);
+  width: calc((99.6 - var(--snow-r, 88)) * 1%);
+  aspect-ratio: 1278 / 180;
+  border-top-right-radius: 14px;
+  background-image: url("/images/christmas/snow-card-top.webp");
+  background-size: 108.37% 118.33%;
+  background-position: 54.21% 72.73%;
+}
+.artItemActive::before,
+.artItemActive::after { opacity: 1; }
+@media (hover: hover) {
+  /* moves with the card art's hover nudge */
+  .artItem:hover::before,
+  .artItem:hover::after { transform: translate(2px, -35%); }
+}
+.artItemActive:hover::before,
+.artItemActive:hover::after { transform: translateY(-35%); }
+/* santa-hat.webp crop as .railHat, scaled to the taller desktop card (rail: 26px on a ~62px card) */
+.artHat {
+  position: absolute;
+  z-index: 2;
+  top: calc(var(--card-top, 0.08) * 100% - 10px);
+  left: -7px;
+  width: 34px;
+  aspect-ratio: 488 / 306;
+  background-image: url("/images/christmas/santa-hat.webp");
+  background-repeat: no-repeat;
+  background-size: 127.05% 111.11%;
+  background-position: 54.55% 0%;
+  transform: rotate(-18deg);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .artItem::before,
+  .artItem::after { transition: none; }
+}
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .footer {
   padding-top: var(--ds-space-3);
   border-top: 1px solid var(--ds-border-subtle);
@@ -165,6 +290,117 @@
   border-color: rgba(216, 180, 254, 0.55);
   color: var(--ds-text-on-primary);
   box-shadow: var(--ds-shadow-glow);
+}
+
+/* ---------- Mobile / tablet compact vertical rail (Design C character crops) ---------- */
+.rail { width: 100%; }
+@media (min-width: 1024px) {
+  .rail { display: none; }
+}
+.railList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.railItem {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: none;
+  border-radius: 9px; /* matches the artwork's own corner radius (~55px at source scale) */
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: box-shadow 160ms ease, transform 120ms ease;
+}
+/* the artwork IS the card (its own rounded corners + border); its natural aspect sets the height
+   (V2 cards are 1.245–1.29:1, i.e. ~60–63px tall at 78px wide) — no crop, no stretch, no filter */
+.railImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-user-drag: none;
+}
+.railIcon { display: block; width: 28px; height: 28px; margin: 6px auto 24px; object-fit: contain; }
+.railLabel {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: 5px;
+  display: block;
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 14px;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 4px rgba(0, 0, 0, 0.55);
+}
+.railItem:active { transform: scale(0.97); }
+.railItemActive,
+.railItemActive:hover {
+  box-shadow: 0 0 5px rgba(217, 70, 239, 0.3);
+}
+/* thin ring drawn above the artwork (an inset shadow on the button itself would sit under the <img>) */
+.railItemActive::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1.5px #ecc6ff;
+  pointer-events: none;
+}
+.railItem:focus-visible { outline: 2px solid var(--ds-focus); outline-offset: 2px; }
+
+/* ---------- Christmas: snow cap on every rail card + one Santa hat on the active one ----------
+   Assets in public/images/christmas (transparent WebP, used as-is). Their canvases carry transparent margins and
+   stray specks, so each box has the visible art's ratio and the background is sized/positioned to that crop
+   (size = canvas / crop × 100%, position = offset / (canvas − crop) × 100%). No filters, no animation. */
+/* snow-card-top.webp 1385×213, art 58–1336 × 24–204 → 1278×180 (same snow as the provider cards).
+   Drawn inside the button, so its overflow + 9px radius clip the snow to the card's rounded top corners;
+   lifted 2px so the flat top of the snow is cut by the edge and it reads as resting on the card (~9px visible). */
+.railItem::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  aspect-ratio: 1278 / 180;
+  background-image: url("/images/christmas/snow-card-top.webp");
+  background-repeat: no-repeat;
+  background-size: 108.37% 118.33%;
+  background-position: 54.21% 72.73%;
+  opacity: 0.82;            /* inactive: a subtle edge */
+  pointer-events: none;
+}
+.railItemActive::before { opacity: 1; }
+.railItemActive::after { z-index: 1; }   /* keep the existing active ring drawn over the snow (later in order) */
+.railLi { position: relative; }
+/* santa-hat.webp 620×340, art 72–560 × 0–306 → 488×306; ~26×16px, tilted onto the upper-left corner */
+.railHat {
+  position: absolute;
+  z-index: 2;
+  top: -6px;
+  left: -5px;
+  width: 26px;
+  aspect-ratio: 488 / 306;
+  background-image: url("/images/christmas/santa-hat.webp");
+  background-repeat: no-repeat;
+  background-size: 127.05% 111.11%;
+  background-position: 54.55% 0%;
+  transform: rotate(-18deg);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .railItem, .railImg { transition: none; }
+  .railItem:active { transform: none; }
 }
 
 .chipIcon { width: 26px; height: 26px; object-fit: contain; }
