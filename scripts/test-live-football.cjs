@@ -163,13 +163,13 @@ test('missing match is checking, not ended; reappearing match returns to live', 
   assert.equal(model.chooseMatch('1', missing, new Set(['2']), true), '1');
   assert.equal(model.reconcileFeed(missing, matches).find(m => m.id === '1').missingChecks, 0);
 });
-test('finished match switches only to a live match with a prepared, unexpired player', () => {
+test('finished match switches only to another live match', () => {
   const feed = [{ ...matches[0], state: 'ended' }, matches[1]];
   assert.equal(model.chooseMatch('1', feed, new Set(['2']), true), '2');
   assert.equal(model.chooseMatch('1', feed, new Set(), true), null);
   assert.equal(model.chooseMatch('1', feed, new Set(['2']), false), null);
   assert.equal(model.chooseMatch('1', [], new Set(['2']), true), '1');
-  assert.deepEqual([...model.readyPlayers([{ id: '2', state: 'ready', url: 'https://example.test/', expiresAt: 10 }], 10)], []);
+  assert.deepEqual([...model.liveIds(feed)], ['2']);
 });
 test('invalid feed is rejected, empty valid feed is accepted, names and media URL hosts are validated', () => {
   assert.throws(() => model.parseFeed({ error: 'temporary outage' }));
@@ -208,36 +208,59 @@ test('server coalesces feed requests, confirms end, and preserves state on outag
   } finally { global.fetch = savedFetch; Date.now = savedNow; delete global.__snakeFootball; }
 });
 
-test('preparation queues multiple matches before selection and isolates viewer URLs', async () => {
-  const savedFetch = global.fetch, savedNow = Date.now;
-  let now = 100000;
-  Date.now = () => now;
+test('openPlayer mints a fresh, per-viewer link on demand for live matches only', async () => {
+  const savedFetch = global.fetch;
   delete global.__snakeFootball;
-  let active = 0, maximum = 0, mints = 0;
+  const minted = [];
   global.fetch = async url => {
-    if (String(url).includes('api-streaming-channels')) return Response.json(group([1, 2, 3, 4, 5]));
-    mints++; active++; maximum = Math.max(maximum, active);
-    await new Promise(resolve => setTimeout(resolve, 5));
+    if (String(url).includes('api-streaming-channels')) return Response.json(group([1, 2, 3]));
+    minted.push(String(url));
+    return Response.json({ data: 'https://www.87333378.com/livetv/1/test/' + new URL(url).searchParams.get('uid') });
+  };
+  try {
+    const server = load('server', model);
+    const a = await server.openPlayer('2', 'ip-a');
+    const b = await server.openPlayer('2', 'ip-b');
+    assert.equal(a.id, '2');
+    assert.notEqual(a.url, b.url, 'never reuses a link: each open mints its own');
+    assert.equal(minted.length, 2, 'only the opened match is minted — no background batch for every match');
+    await assert.rejects(server.openPlayer('999', 'ip-a'), error => error.status === 404);
+    await assert.rejects(server.openPlayer('../x', 'ip-a'), error => error.status === 400);
+    assert.equal(minted.length, 2, 'rejected ids never reach upstream');
+  } finally { global.fetch = savedFetch; delete global.__snakeFootball; }
+});
+
+test('openPlayer queues bursts instead of refusing them and caps parallel upstream mints', async () => {
+  const savedFetch = global.fetch;
+  delete global.__snakeFootball;
+  let active = 0, maximum = 0;
+  global.fetch = async url => {
+    if (String(url).includes('api-streaming-channels')) return Response.json(group([1]));
+    active++; maximum = Math.max(maximum, active);
+    await new Promise(resolve => setTimeout(resolve, 10));
     active--;
     return Response.json({ data: 'https://www.87333378.com/livetv/1/test/' + new URL(url).searchParams.get('uid') });
   };
   try {
     const server = load('server', model);
-    const a = server.viewerSession();
-    const prepared = await server.preparePlayers(a.session);
-    assert.equal(prepared.players.filter(p => p.state === 'ready').length, 4);
-    assert.equal(prepared.pending, 1);
-    assert.equal(maximum, 2);
-    assert.equal(mints, 4);
-    await server.preparePlayers(a.session);
-    assert.equal(mints, 4, 'repeated calls cannot mint again within the batch cooldown');
-    now += 5000;
-    const nextBatch = await server.preparePlayers(a.session);
-    assert.equal(nextBatch.pending, 0, 'the next automatic batch includes the fifth match without any click');
-    assert.equal(mints, 5);
-    const b = server.viewerSession();
-    const second = await server.preparePlayers(b.session);
-    assert.notEqual(a.id, b.id);
-    assert.notEqual(prepared.players[0].url, second.players[0].url);
-  } finally { global.fetch = savedFetch; Date.now = savedNow; delete global.__snakeFootball; }
+    const results = await Promise.all(Array.from({ length: 60 }, (_, i) => server.openPlayer('1', 'viewer-' + i)));
+    assert.equal(results.length, 60, 'all 60 simultaneous viewers get a link (queued, none refused)');
+    assert.equal(new Set(results.map(r => r.url)).size, 60);
+    assert.equal(maximum, 8, 'never more than 8 upstream mints in flight');
+    assert.equal(global.__snakeFootball.minting, 0, 'slots are all released');
+  } finally { global.fetch = savedFetch; delete global.__snakeFootball; }
+});
+
+test('openPlayer limits one client without affecting others', async () => {
+  const savedFetch = global.fetch;
+  delete global.__snakeFootball;
+  global.fetch = async url => String(url).includes('api-streaming-channels')
+    ? Response.json(group([1]))
+    : Response.json({ data: 'https://www.87333378.com/livetv/1/test/' + new URL(url).searchParams.get('uid') });
+  try {
+    const server = load('server', model);
+    for (let i = 0; i < 30; i++) await server.openPlayer('1', 'script');
+    await assert.rejects(server.openPlayer('1', 'script'), error => error.status === 429);
+    assert.equal((await server.openPlayer('1', 'customer')).id, '1', 'other viewers are unaffected');
+  } finally { global.fetch = savedFetch; delete global.__snakeFootball; }
 });

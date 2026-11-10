@@ -21,15 +21,11 @@ export type FootballFeed = {
   stale: boolean;
   message: string | null;
 };
-export type PreparedPlayer = {
+/** A freshly minted upstream player link. It must be loaded right away — upstream rejects it after a few seconds. */
+export type PlayerLink = {
   id: string;
-  url: string | null;
-  expiresAt: number;
-  state: 'ready' | 'waiting' | 'error';
-};
-export type Preparation = {
-  players: PreparedPlayer[];
-  pending: number;
+  url: string;
+  mintedAt: number;
 };
 
 type ObjectValue = Record<string, unknown>;
@@ -95,11 +91,12 @@ export function reconcileFeed(previous: FootballMatch[], incoming: FootballMatch
   return [...next.values()];
 }
 
-export function readyPlayers(players: PreparedPlayer[], now: number): Set<string> {
-  return new Set(players.filter(player => player.state === 'ready' && player.url && player.expiresAt > now).map(player => player.id));
+export function liveIds(matches: FootballMatch[]): Set<string> {
+  return new Set(matches.filter(match => match.state === 'live').map(match => match.id));
 }
 
-// Retain a playing iframe even while its next replacement URL is being refreshed.
+// Keep the playing match while it is live (or only briefly missing); after it ends, optionally move to the
+// first live match in `ready` (every live match can be opened — links are minted on demand).
 export function chooseMatch(currentId: string | null, matches: FootballMatch[], ready: Set<string>, autoNext: boolean): string | null {
   const current = matches.find(match => match.id === currentId);
   if (currentId && !current) return currentId;

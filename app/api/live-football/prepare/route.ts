@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { preparePlayers, viewerSession } from '@/lib/live-football/server';
+import { openPlayer, PlayerError } from '@/lib/live-football/server';
 
 export const runtime = 'nodejs';
 
@@ -12,18 +12,30 @@ function publicOrigin(request: NextRequest): string {
   return `${proto}://${host}`;
 }
 
+// Real viewer IP for the per-client limit: Cloudflare → nginx → Next.
+function clientKey(request: NextRequest): string {
+  return request.headers.get('cf-connecting-ip')?.trim()
+    || request.headers.get('x-real-ip')?.trim()
+    || request.headers.get('x-forwarded-for')?.split(',')[0].trim()
+    || 'local';
+}
+
+const noStore = { 'Cache-Control': 'private, no-store' };
+
+/** POST {id} → a freshly minted player link for that live match (load it immediately). */
 export async function POST(request: NextRequest) {
   const origin = request.headers.get('origin');
   const sameOrigin = !origin || origin === request.nextUrl.origin || origin === publicOrigin(request);
   if (!sameOrigin || request.headers.get('sec-fetch-site') === 'cross-site') {
-    return NextResponse.json({ error: 'ไม่อนุญาตคำขอข้ามเว็บไซต์' }, { status: 403 });
+    return NextResponse.json({ error: 'ไม่อนุญาตคำขอข้ามเว็บไซต์' }, { status: 403, headers: noStore });
   }
+  let id = '';
+  try { id = String((await request.json() as { id?: unknown }).id ?? ''); } catch { /* validated below */ }
   try {
-    const { id, session } = viewerSession(request.cookies.get('snake_live_viewer')?.value);
-    const response = NextResponse.json(await preparePlayers(session), { headers: { 'Cache-Control': 'private, no-store', 'Vary': 'Cookie' } });
-    response.cookies.set('snake_live_viewer', id, { httpOnly: true, sameSite: 'strict', secure: publicOrigin(request).startsWith('https:'), path: '/api/live-football', maxAge: 3600 });
-    return response;
-  } catch {
-    return NextResponse.json({ error: 'กำลังรอคิวเตรียมตัวเล่น ระบบจะลองใหม่อัตโนมัติ' }, { status: 503, headers: { 'Cache-Control': 'no-store' } });
+    return NextResponse.json(await openPlayer(id, clientKey(request)), { headers: noStore });
+  } catch (error) {
+    const status = error instanceof PlayerError ? error.status : 503;
+    const message = error instanceof PlayerError ? error.message : 'ยังเชื่อมต่อรายการสดไม่ได้ ระบบจะลองใหม่อัตโนมัติ';
+    return NextResponse.json({ error: message }, { status, headers: noStore });
   }
 }

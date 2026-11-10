@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { chooseMatch, readyPlayers } from '@/lib/live-football/model';
-import type { FootballFeed, FootballMatch, Preparation, PreparedPlayer } from '@/lib/live-football/model';
+import { chooseMatch, liveIds } from '@/lib/live-football/model';
+import type { FootballFeed, FootballMatch, PlayerLink } from '@/lib/live-football/model';
 import styles from './live.module.css';
 import { useMonthlyCalendar } from './MonthlyFixtures';
 import FixtureBrowser, { FixtureRow } from './FixtureBrowser';
@@ -35,7 +35,6 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
   const [scheduleNow, setScheduleNow] = useState(0);
   const [links, setLinks] = useState<MatchLink[]>([]);
   const feedRef = useRef(initialFeed);
-  const playersRef = useRef<PreparedPlayer[]>([]);
   const viewingRef = useRef<Viewing | null>(null);
   const autoRef = useRef(true);
   const startedRef = useRef(false);
@@ -104,28 +103,58 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
   useEffect(() => {
     let active = true;
     let feedTimer: ReturnType<typeof setTimeout>;
-    let prepareTimer: ReturnType<typeof setTimeout>;
     let linkTimer: ReturnType<typeof setTimeout>;
+    let retryTimer: ReturnType<typeof setTimeout> | undefined;
+    let opening: string | null = null; // match id whose link is being minted right now
+    let retryAt = 0;
+    let failures = 0;
     const abort = new AbortController();
 
+    // Upstream links die a few seconds after minting, so a link is requested only at the moment a match is
+    // opened and goes straight into the iframe. A playing iframe is never reloaded (it keeps playing).
+    async function openMatch(match: FootballMatch, switching: boolean) {
+      opening = match.id;
+      setNotice(`กำลังเชื่อมต่อสัญญาณ ${match.home} พบ ${match.away}`);
+      try {
+        const response = await fetch('/api/live-football/prepare', {
+          method: 'POST', cache: 'no-store', signal: abort.signal,
+          headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: match.id }),
+        });
+        const data = await response.json() as PlayerLink & { error?: string };
+        if (!active) return;
+        if (!response.ok || !data.url) throw Error(data.error || 'ยังเชื่อมต่อสัญญาณไม่ได้');
+        failures = 0;
+        const current = feedRef.current.matches.find(item => item.id === match.id) ?? match;
+        startedRef.current = true;
+        setStarted(true);
+        viewingRef.current = { id: match.id, url: data.url, match: current };
+        setViewing(viewingRef.current);
+        setFrameLoaded(false);
+        setNotice(switching ? `เปลี่ยนคู่ให้อัตโนมัติ: ${current.home} พบ ${current.away}` : `กำลังรับชม ${current.home} พบ ${current.away}`);
+      } catch (error) {
+        if (!active) return;
+        failures++;
+        const wait = Math.min(15_000, 2000 * failures); // 2 s, 4 s, 6 s … capped
+        retryAt = Date.now() + wait;
+        setNotice(`${error instanceof Error && error.message ? error.message : 'ยังเชื่อมต่อสัญญาณไม่ได้'} — ลองใหม่อัตโนมัติ`);
+        clearTimeout(retryTimer);
+        retryTimer = setTimeout(reconcile, wait);
+      } finally { if (opening === match.id) opening = null; }
+    }
+
     function reconcile() {
+      if (!active || opening || Date.now() < retryAt) return;
       if (!startedRef.current) {
         const event = calendarRef.current?.matches.find(match => match.id === initialMatchId);
         const targetId = initialMatchId?.startsWith('espn:')
           ? resolveCalendarLink(event, linksRef.current, feedRef.current.matches)
           : initialMatchId;
         const chosen = feedRef.current.matches.find(match => match.id === targetId && match.state === 'live');
-        const prepared = playersRef.current.find(player => player.id === targetId && player.state === 'ready' && player.url && player.expiresAt > Date.now());
-        if (!chosen || !prepared?.url) return;
-        startedRef.current = true;
-        setStarted(true);
-        viewingRef.current = { id: chosen.id, url: prepared.url, match: chosen };
-        setViewing(viewingRef.current);
-        setFrameLoaded(false);
+        if (chosen) void openMatch(chosen, false);
         return;
       }
-      const next = chooseMatch(viewingRef.current?.id ?? null, feedRef.current.matches, readyPlayers(playersRef.current, Date.now()), autoRef.current);
-      if (next === viewingRef.current?.id) return; // Scores/URL refresh never reload a playing iframe.
+      const next = chooseMatch(viewingRef.current?.id ?? null, feedRef.current.matches, liveIds(feedRef.current.matches), autoRef.current);
+      if (next === viewingRef.current?.id) return; // Score/feed refresh never reloads a playing iframe.
       if (!next) {
         if (viewingRef.current) {
           viewingRef.current = null;
@@ -136,18 +165,11 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
         return;
       }
       const match = feedRef.current.matches.find(item => item.id === next);
-      const player = playersRef.current.find(item => item.id === next);
-      if (match && player?.url) {
-        const changed = !!viewingRef.current;
-        viewingRef.current = { id: next, url: player.url, match };
-        setViewing(viewingRef.current);
-        setFrameLoaded(false);
-        setNotice(changed ? `เปลี่ยนคู่ให้อัตโนมัติ: ${match.home} พบ ${match.away}` : `กำลังรับชม ${match.home} พบ ${match.away}`);
-      }
+      if (match) void openMatch(match, !!viewingRef.current);
     }
 
-    async function read<T>(path: string, method = 'GET'): Promise<T> {
-      const response = await fetch(path, { method, cache: 'no-store', signal: abort.signal });
+    async function read<T>(path: string): Promise<T> {
+      const response = await fetch(path, { cache: 'no-store', signal: abort.signal });
       const data = await response.json();
       if (!response.ok) throw Error(data.error || 'ต้นทางไม่พร้อมให้บริการ');
       return data;
@@ -164,18 +186,6 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
         reconcile();
       } catch { /* Keep the last feed and the playing iframe; the next poll retries. */ } finally { if (active) feedTimer = setTimeout(updateFeed, 10_000); }
     }
-    async function prepare() {
-      if (!active) return;
-      if (document.visibilityState === 'hidden') { prepareTimer = setTimeout(prepare, 2000); return; }
-      try {
-        const data = await read<Preparation>('/api/live-football/prepare', 'POST');
-        if (!active) return;
-        playersRef.current = data.players;
-        setCheckedAt(Date.now());
-        reconcile();
-      } catch { /* The existing preparation loop retries without a page alert. */ }
-      finally { if (active) prepareTimer = setTimeout(prepare, 5000); }
-    }
     async function updateLinks() {
       if (!active) return;
       if (document.visibilityState === 'hidden') { linkTimer = setTimeout(updateLinks, 2000); return; }
@@ -189,9 +199,8 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
       finally { if (active) linkTimer = setTimeout(updateLinks, 10_000); }
     }
     void updateFeed();
-    void prepare();
     void updateLinks();
-    return () => { active = false; abort.abort(); clearTimeout(feedTimer); clearTimeout(prepareTimer); clearTimeout(linkTimer); };
+    return () => { active = false; abort.abort(); clearTimeout(feedTimer); clearTimeout(linkTimer); clearTimeout(retryTimer); };
   }, [initialMatchId]);
 
   const live = feed.matches.filter(match => match.state === 'live');

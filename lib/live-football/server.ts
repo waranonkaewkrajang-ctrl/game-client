@@ -1,20 +1,33 @@
 import 'server-only';
 import { randomUUID } from 'node:crypto';
 import { parseFeed, reconcileFeed, isFinished, validatePlayerUrl } from './model';
-import type { FootballFeed, FootballMatch, PreparedPlayer, Preparation } from './model';
+import type { FootballFeed, FootballMatch, PlayerLink } from './model';
 
 const FEED_ORIGIN = 'https://api-streaming-channels.askmebet.live';
 const FEED_TTL = 10_000;
-const PLAYER_TTL = 90_000; // Our refresh policy, NOT a claimed upstream token expiry.
-const SESSION_IDLE = 15 * 60_000;
-type Session = { touched: number; lastAttempt: number; players: Map<string, PreparedPlayer>; pending?: Promise<void> };
+// Upstream player links must be OPENED within a few seconds of minting (measured: OK at 0 s, "LINK TIME OUT"
+// at 10 s; once playing they keep playing). So links are minted on demand for the match a viewer opens and
+// are never cached or reused.
+const MINT_CONCURRENCY = 8;      // parallel upstream mints (~0.1 s each → roughly 80 links/s)
+const MINT_QUEUE_MAX = 400;      // waiting viewers beyond the parallel slots; queued, not refused
+const MINT_QUEUE_WAIT = 10_000;  // give up waiting for a slot after this
+const CLIENT_WINDOW = 60_000;
+const CLIENT_MAX_OPENS = 30;     // per client IP per minute — far above a human clicking matches
+const CLIENT_TRACK_MAX = 20_000;
 type Store = {
   feed?: FootballFeed; attemptedAt: number; refreshing?: Promise<FootballFeed>;
-  sessions: Map<string, Session>; minting: number; confirmationCursor: number;
+  minting: number; waiters: (() => void)[]; clients: Map<string, number[]>; confirmationCursor: number;
 };
 const globalStore = globalThis as typeof globalThis & { __snakeFootball?: Store };
-const store: Store = globalStore.__snakeFootball ??= { attemptedAt: 0, sessions: new Map(), minting: 0, confirmationCursor: 0 };
+const store: Store = globalStore.__snakeFootball ??= { attemptedAt: 0, minting: 0, waiters: [], clients: new Map(), confirmationCursor: 0 };
 store.confirmationCursor ??= 0;
+store.minting ??= 0;
+store.waiters ??= [];
+store.clients ??= new Map();
+
+export class PlayerError extends Error {
+  constructor(message: string, readonly status: number) { super(message); }
+}
 
 async function readJSON(url: string): Promise<unknown> {
   const response = await fetch(url, { cache: 'no-store', signal: AbortSignal.timeout(8000), redirect: 'error' });
@@ -61,59 +74,58 @@ export async function footballFeed(): Promise<FootballFeed> {
   try { return await store.refreshing; } finally { store.refreshing = undefined; }
 }
 
-export function viewerSession(candidate?: string): { id: string; session: Session } {
+// Sliding-window limit per client so one script cannot occupy the shared mint slots.
+function allowClient(client: string): boolean {
   const now = Date.now();
-  for (const [id, session] of store.sessions) if (now - session.touched > SESSION_IDLE && !session.pending) store.sessions.delete(id);
-  let id = candidate && store.sessions.has(candidate) ? candidate : randomUUID();
-  let session = store.sessions.get(id);
-  if (!session) {
-    if (store.sessions.size >= 200) throw new Error('คิวเตรียมสัญญาณเต็ม กรุณารอสักครู่');
-    id = randomUUID();
-    session = { touched: now, lastAttempt: 0, players: new Map() };
-    store.sessions.set(id, session);
-  }
-  session.touched = now;
-  return { id, session };
-}
-
-async function mint(match: FootballMatch, session: Session) {
-  if (store.minting >= 4) return;
-  store.minting++;
-  try {
-    const data = await readJSON(`https://askmebet.live/matches/${match.id}?uid=${randomUUID()}`) as { data?: unknown };
-    const url = validatePlayerUrl(data.data);
-    session.players.set(match.id, { id: match.id, url, state: 'ready', expiresAt: Date.now() + PLAYER_TTL });
-  } catch {
-    const existing = session.players.get(match.id);
-    if (!existing?.url || existing.expiresAt <= Date.now()) session.players.set(match.id, { id: match.id, url: null, state: 'error', expiresAt: Date.now() + 30_000 });
-  } finally { store.minting--; }
-}
-
-// Called by the page's background loop, never by its match-click handler.
-// Work is bounded: two concurrent mints, four matches per batch, four globally.
-export async function preparePlayers(session: Session): Promise<Preparation> {
-  const feed = await footballFeed();
-  const live = feed.matches.filter(match => match.state === 'live');
-  const liveIds = new Set(live.map(match => match.id));
-  for (const id of session.players.keys()) if (!liveIds.has(id)) session.players.delete(id);
-  if (!feed.stale && !session.pending && Date.now() - session.lastAttempt >= 4000) {
-    session.lastAttempt = Date.now();
-    const queued = live.filter(match => {
-      const player = session.players.get(match.id);
-      return !player || player.expiresAt <= Date.now() + (player.state === 'error' ? 0 : 20_000);
-    }).sort((a, b) => {
-      const first = session.players.get(a.id), second = session.players.get(b.id);
-      if (!first) return second ? -1 : 0;
-      if (!second) return 1;
-      return first.expiresAt - second.expiresAt;
-    }).slice(0, 4);
-    if (queued.length) {
-      session.pending = (async () => {
-        for (let i = 0; i < queued.length; i += 2) await Promise.all(queued.slice(i, i + 2).map(match => mint(match, session)));
-      })();
-      try { await session.pending; } finally { session.pending = undefined; }
+  const recent = (store.clients.get(client) ?? []).filter(at => now - at < CLIENT_WINDOW);
+  if (recent.length >= CLIENT_MAX_OPENS) { store.clients.set(client, recent); return false; }
+  recent.push(now);
+  store.clients.delete(client); // re-insert → Map order stays least-recently-used first
+  store.clients.set(client, recent);
+  if (store.clients.size > CLIENT_TRACK_MAX) {
+    for (const [key, stamps] of store.clients) {
+      if (store.clients.size <= CLIENT_TRACK_MAX * 0.9) break;
+      if (!stamps.length || now - stamps[stamps.length - 1] >= CLIENT_WINDOW || store.clients.size > CLIENT_TRACK_MAX) store.clients.delete(key);
     }
-  } else if (session.pending) await session.pending;
-  const players = live.map(match => session.players.get(match.id) ?? { id: match.id, state: 'waiting' as const, url: null, expiresAt: 0 });
-  return { players, pending: players.filter(player => player.state !== 'ready' || player.expiresAt <= Date.now()).length };
+  }
+  return true;
+}
+
+// FIFO slot for an upstream mint: busy periods wait briefly in line instead of failing.
+async function acquireSlot(): Promise<void> {
+  if (store.minting < MINT_CONCURRENCY) { store.minting++; return; }
+  if (store.waiters.length >= MINT_QUEUE_MAX) throw new PlayerError('ผู้ชมเยอะมาก กำลังต่อคิว ระบบจะลองใหม่อัตโนมัติ', 503);
+  await new Promise<void>((resolve, reject) => {
+    const grant = () => { clearTimeout(timer); resolve(); };
+    const timer = setTimeout(() => {
+      const index = store.waiters.indexOf(grant);
+      if (index >= 0) store.waiters.splice(index, 1);
+      reject(new PlayerError('ผู้ชมเยอะมาก กำลังต่อคิว ระบบจะลองใหม่อัตโนมัติ', 503));
+    }, MINT_QUEUE_WAIT);
+    store.waiters.push(grant);
+  });
+}
+function releaseSlot() {
+  const next = store.waiters.shift();
+  if (next) next(); // hand the slot straight to the next viewer in line
+  else store.minting = Math.max(0, store.minting - 1);
+}
+
+/**
+ * Mints a fresh player link for one live match, right when a viewer opens it. Every viewer gets their own
+ * link (new uid per request); nothing is cached, so the link reaching the iframe is ~0.1 s old.
+ */
+export async function openPlayer(matchId: string, client: string): Promise<PlayerLink> {
+  if (!/^\d{1,18}$/.test(matchId)) throw new PlayerError('รหัสคู่แข่งขันไม่ถูกต้อง', 400);
+  const feed = await footballFeed();
+  if (!feed.matches.some(match => match.id === matchId && match.state === 'live')) throw new PlayerError('คู่นี้ยังไม่ถ่ายทอดสดหรือจบแล้ว', 404);
+  if (!allowClient(client)) throw new PlayerError('เปิดคู่ถี่เกินไป กรุณารอสักครู่', 429);
+  await acquireSlot();
+  try {
+    const data = await readJSON(`https://askmebet.live/matches/${matchId}?uid=${randomUUID()}`) as { data?: unknown };
+    return { id: matchId, url: validatePlayerUrl(data.data), mintedAt: Date.now() };
+  } catch (error) {
+    if (error instanceof PlayerError) throw error;
+    throw new PlayerError('ยังเชื่อมต่อสัญญาณคู่นี้ไม่ได้ ระบบจะลองใหม่อัตโนมัติ', 502);
+  } finally { releaseSlot(); }
 }
