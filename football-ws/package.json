@@ -1,0 +1,16 @@
+{
+  "name": "snake-football-ws",
+  "private": true,
+  "description": "Football notification WebSocket service (independent of Laravel Reverb / wallet)",
+  "type": "module",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node server.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ws": "8.22.0"
+  }
+}

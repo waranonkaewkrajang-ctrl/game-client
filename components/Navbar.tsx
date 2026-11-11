@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 import api from "@/lib/api";
 import { readStoredUsername } from "@/lib/safe-json";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
+import NotificationBell from "@/components/NotificationBell";
 import styles from "./Navbar.module.css";
 
 export default function Navbar() {
@@ -62,8 +63,6 @@ export default function Navbar() {
   const fmt = (n: number) => n.toLocaleString("th-TH", { minimumFractionDigits: 2 });
   // display guard: never crash the header if the balance payload is missing/non-numeric
   const hasBalance = typeof balance === "number" && Number.isFinite(balance);
-  // no notification source exists yet → never show the unread dot
-  const hasUnread = false;
 
   const navLinks = [
     { href: "/lobby", label: t("nav.enterGame") },
@@ -125,13 +124,8 @@ export default function Navbar() {
                   </span>
                 </Link>
 
-                {/* Notification bell (mobile + desktop). There is no notification API yet, so there's nothing to open
-                    and no unread count: the dot stays hidden. TODO: hook up hasUnread + onClick once the backend has notifications. */}
-                <button type="button" className={styles.bell} aria-label={hasUnread ? "แจ้งเตือน (มีรายการใหม่)" : "แจ้งเตือน"} title="แจ้งเตือน (เร็วๆ นี้)">
-                  {/* gold bell artwork: transparent cut-out of public/icons/notification-bell.webp (169×192, lossless) */}
-                  <img src="/icons/notification-bell-cut.webp" alt="" width={26} height={26} className={styles.bellImg} draggable={false} decoding="async" />
-                  {hasUnread && <span className={styles.bellDot} aria-hidden="true" />}
-                </button>
+                {/* Notification bell (mobile + desktop) — logged-in users only; football alerts for now. */}
+                <NotificationBell username={username} />
 
                 {/* wrapper only lets the mobile CSS resize the flag; display: contents keeps the layout unchanged */}
                 <span className={styles.lang}>

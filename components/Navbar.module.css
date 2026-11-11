@@ -188,16 +188,6 @@
   object-fit: contain;
   -webkit-user-drag: none;
 }
-.bellDot {
-  position: absolute;
-  top: 9px;
-  right: 10px;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #f43f68;
-  box-shadow: 0 0 0 1.5px #170b2e; /* thin cut-out so the dot reads against the bell */
-}
 /* desktop: same bell between the balance pill and the language switcher — 24px artwork in the 40px hit area */
 @media (min-width: 1024px) {
   .bellImg { width: 24px; height: 24px; }
