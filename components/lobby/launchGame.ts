@@ -3,12 +3,15 @@
 // favorites tab share one implementation (same endpoint, payload, mobile/desktop handling and error alert).
 import api from "@/lib/api";
 import Swal from "sweetalert2";
+import { externalHttpUrl } from "@/lib/safe-url";
 
 export async function launchGame(game: { product_id: string; game_code: string }) {
   try {
     const res = await api.post("/games/launch", { productId: game.product_id, gameCode: game.game_code, isMobile: window.innerWidth < 768 });
-    if (res.data.status === "success" && res.data.data.game_url) {
-      const gameUrl = res.data.data.game_url;
+    // Only follow http(s) launch URLs (blocks javascript:/data: if the response were ever tampered with).
+    // Opener access is left as before: some provider pages may rely on it to return to the lobby.
+    const gameUrl = res.data.status === "success" ? externalHttpUrl(res.data.data?.game_url) : null;
+    if (gameUrl) {
       if (/Mobi|Android|iPhone|iPad/i.test(navigator.userAgent)) {
         window.location.href = gameUrl;
       } else {

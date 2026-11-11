@@ -7,6 +7,7 @@ import { avatarSrc, loadAvatar, subscribeAvatar } from "@/app/profile/avatars";
 import { getAvatarPath } from "@/app/profile/utils/avatar";
 import { useTranslation } from "react-i18next";
 import api from "@/lib/api";
+import { readStoredUsername } from "@/lib/safe-json";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import styles from "./Navbar.module.css";
 
@@ -20,8 +21,8 @@ export default function Navbar() {
   const [session] = useState(() => {
     if (typeof window === "undefined") return null;
     const token = localStorage.getItem("user_token");
-    const userData = localStorage.getItem("user_data");
-    return token && userData ? { username: JSON.parse(userData).username as string } : null;
+    const username = readStoredUsername(); // malformed user_data → treated as logged out instead of crashing the page
+    return token && username ? { username } : null;
   });
   const [username] = useState(session?.username ?? "");
   const [isLoggedIn, setIsLoggedIn] = useState(!!session);

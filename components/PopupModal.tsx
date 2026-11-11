@@ -1,6 +1,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { readStoredJSON } from "@/lib/safe-json";
+import { externalHttpUrl, internalPath } from "@/lib/safe-url";
 
 interface Popup {
   id: number;
@@ -27,8 +29,8 @@ export default function PopupModal() {
       .then((res) => res.json())
       .then((data) => {
         if (data.data && data.data.length > 0) {
-           const seen = JSON.parse(localStorage.getItem("seen_popups") || "[]");
-          const dismissed = JSON.parse(localStorage.getItem("dismissed_popups_today") || "{}");
+           const seen = readStoredJSON<unknown>("seen_popups", []);
+          const dismissed = readStoredJSON<unknown>("dismissed_popups_today", {});
           const today = new Date().toDateString();
           const filtered = data.data.filter((p: Popup) => {
             return true;
@@ -46,10 +48,11 @@ export default function PopupModal() {
   const handleClose = () => {
     const popup = popups[currentIndex];
     if (popup?.show_once) {
-      const seen = JSON.parse(localStorage.getItem("seen_popups") || "[]");
+      const stored = readStoredJSON<unknown>("seen_popups", []);
+      const seen: unknown[] = Array.isArray(stored) ? stored : []; // corrupted value must not stop the popup from closing
       if (!seen.includes(popup.id)) {
         seen.push(popup.id);
-        localStorage.setItem("seen_popups", JSON.stringify(seen));
+        try { localStorage.setItem("seen_popups", JSON.stringify(seen)); } catch { /* blocked storage */ }
       }
     }
     if (currentIndex < popups.length - 1) {
@@ -62,6 +65,7 @@ export default function PopupModal() {
   if (!show || popups.length === 0) return null;
 
   const popup = popups[currentIndex];
+  const linkHref = externalHttpUrl(popup.link_url) ?? internalPath(popup.link_url); // only http(s) or same-site paths
   const imgSrc = popup.image_url
     ? popup.image_url.startsWith("/")
       ? `https://admintg289.sbs${popup.image_url}`
@@ -90,8 +94,8 @@ export default function PopupModal() {
           )}
 
           <div className="popup-buttons">
-            {popup.link_url && (
-              <a href={popup.link_url} className="popup-btn-primary">
+            {linkHref && (
+              <a href={linkHref} className="popup-btn-primary">
                 {popup.link_text || "ดูเพิ่มเติม"}
               </a>
             )}
@@ -99,9 +103,10 @@ export default function PopupModal() {
 
           {/* ติ๊กไม่แสดงอีกวันนี้ */}
           <label className="popup-dismiss-label" onClick={() => {
-            const dismissed = JSON.parse(localStorage.getItem("dismissed_popups_today") || "{}");
+            const stored = readStoredJSON<unknown>("dismissed_popups_today", {});
+            const dismissed: Record<string, string> = stored && typeof stored === "object" && !Array.isArray(stored) ? stored as Record<string, string> : {};
             dismissed[popup.id] = new Date().toDateString();
-            localStorage.setItem("dismissed_popups_today", JSON.stringify(dismissed));
+            try { localStorage.setItem("dismissed_popups_today", JSON.stringify(dismissed)); } catch { /* blocked storage */ }
             handleClose();
           }}>
             <input type="checkbox" className="popup-dismiss-checkbox" readOnly />

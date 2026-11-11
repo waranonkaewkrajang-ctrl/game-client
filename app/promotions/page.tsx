@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
+import { escapeHtml, sanitizeHtml } from "@/lib/safe-html";
 
 export default function PromotionsPage() {
   const router = useRouter();
@@ -41,9 +42,9 @@ export default function PromotionsPage() {
           title: "รับโปรโมชันสำเร็จ!",
           html: `
             <div style="text-align:center">
-              <p style="font-size:15px;color:#475569;margin:0 0 8px">${promo.title}</p>
-              <p style="font-size:13px;color:#64748b">โบนัส <b style="color:#7c3aed">${promo.bonus_percent}%</b> | ฝากขั้นต่ำ <b>฿${parseFloat(promo.min_deposit).toLocaleString()}</b></p>
-              <p style="font-size:13px;color:#64748b">Turnover: <b>${promo.turnover_multiplier}x</b></p>
+              <p style="font-size:15px;color:#475569;margin:0 0 8px">${escapeHtml(promo.title)}</p>
+              <p style="font-size:13px;color:#64748b">โบนัส <b style="color:#7c3aed">${escapeHtml(promo.bonus_percent)}%</b> | ฝากขั้นต่ำ <b>฿${parseFloat(promo.min_deposit).toLocaleString()}</b></p>
+              <p style="font-size:13px;color:#64748b">Turnover: <b>${escapeHtml(promo.turnover_multiplier)}x</b></p>
             </div>
           `,
           confirmButtonText: "ไปฝากเงินเลย",
@@ -109,7 +110,7 @@ export default function PromotionsPage() {
                   <h2 className="promo-heading">{promo.title}</h2>
                   
                   {promo.description && (
-                    <div className="promo-html-content" dangerouslySetInnerHTML={{ __html: promo.description }} />
+                    <div className="promo-html-content" dangerouslySetInnerHTML={{ __html: sanitizeHtml(promo.description) }} />
                   )}
 
                   {/* ปุ่มกดรับโปรและฝากเงิน */}

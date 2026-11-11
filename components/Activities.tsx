@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
+import { openConfiguredLink } from "@/lib/safe-url";
 import ActivityModal from "@/components/ActivityModal";
 
 type Act = {
@@ -59,10 +60,7 @@ export default function Activities({ page, slot }: { page: string; slot: string 
     if (hasDetail) { setModal(a); return; }
 
     api.post(`/activities/${a.id}/click`).catch(() => {});
-    const url = a.link_url || "";
-    if (!url) return;
-    if (url.startsWith("http")) window.open(url, "_blank");
-    else router.push(url);
+    openConfiguredLink(a.link_url, (path) => router.push(path));
   };
 
   const Modal = modal ? <ActivityModal act={modal as any} onClose={() => setModal(null)} /> : null;

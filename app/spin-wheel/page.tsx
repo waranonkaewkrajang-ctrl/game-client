@@ -3,6 +3,7 @@ import { useEffect, useState, useRef, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
+import { escapeHtml, safeImageSrc } from "@/lib/safe-html";
 
 interface Prize {
   id: number; label: string; type: string; value: number;
@@ -418,10 +419,10 @@ export default function SpinWheelPage() {
             title: isNothing ? "เสียใจด้วย" : "ยินดีด้วย! 🎉",
             html: `
               <div style="text-align:center">
-                ${data.prize.image_url ? `<img src="${data.prize.image_url}" style="width:80px;height:80px;object-fit:contain;margin:0 auto 12px;display:block;border-radius:10px" />` : ""}
-                <p style="font-size:1.2rem;font-weight:bold;margin:0 0 8px;color:#111">${data.prize.label}</p>
-                ${data.multiplier > 1 ? `<p style="font-size:0.9rem;color:#d97706;margin:0 0 4px">ตัวคูณ ×${data.multiplier}</p>` : ""}
-                <p style="font-size:1rem;color:#4f46e5;font-weight:600;margin:0">${data.message}</p>
+                ${safeImageSrc(data.prize.image_url) ? `<img src="${safeImageSrc(data.prize.image_url)}" style="width:80px;height:80px;object-fit:contain;margin:0 auto 12px;display:block;border-radius:10px" />` : ""}
+                <p style="font-size:1.2rem;font-weight:bold;margin:0 0 8px;color:#111">${escapeHtml(data.prize.label)}</p>
+                ${data.multiplier > 1 ? `<p style="font-size:0.9rem;color:#d97706;margin:0 0 4px">ตัวคูณ ×${escapeHtml(data.multiplier)}</p>` : ""}
+                <p style="font-size:1rem;color:#4f46e5;font-weight:600;margin:0">${escapeHtml(data.message)}</p>
               </div>
             `,
             background: "#0f0f1a",

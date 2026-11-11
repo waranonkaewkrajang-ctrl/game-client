@@ -4,6 +4,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import api from "@/lib/api";
 import Swal from "sweetalert2";
 import { getEcho } from "@/lib/echo";
+import { escapeHtml } from "@/lib/safe-html";
 import { useTranslation } from "react-i18next";
 
 interface FinanceSettings {
@@ -41,7 +42,7 @@ function WalletContent() {
     const token = localStorage.getItem("user_token");
     const storedUser = localStorage.getItem("user_data");
     if (!token) { router.push("/login"); return; }
-    if (storedUser) setUserData(JSON.parse(storedUser));
+    if (storedUser) { try { setUserData(JSON.parse(storedUser)); } catch { /* malformed user_data: skip, don't crash the wallet page */ } }
     fetchWallet();
     fetchFinanceSettings();
 
@@ -138,13 +139,13 @@ function WalletContent() {
         let secondsLeft = minutesLimit * 60;
         const banksHtml = finance.banks.map((b, i) => `
           <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
-            <img src="https://fs.cdnrc.com/payment-layout/iconbank/${b.bank_code}.png" style="width:40px;height:40px;border-radius:8px;background:#fff;padding:3px;object-fit:contain;border:1px solid #e2e8f0" />
+            <img src="https://fs.cdnrc.com/payment-layout/iconbank/${encodeURIComponent(String(b.bank_code ?? ""))}.png" style="width:40px;height:40px;border-radius:8px;background:#fff;padding:3px;object-fit:contain;border:1px solid #e2e8f0" />
             <div style="flex:1;text-align:left">
-              <div style="font-size:13px;color:#64748b">${b.bank_code}</div>
-              <div style="font-size:16px;font-weight:700;color:#0f172a;letter-spacing:0.5px">${b.bank_account}</div>
-              <div style="font-size:13px;color:#475569">${b.bank_name}</div>
+              <div style="font-size:13px;color:#64748b">${escapeHtml(b.bank_code)}</div>
+              <div style="font-size:16px;font-weight:700;color:#0f172a;letter-spacing:0.5px">${escapeHtml(b.bank_account)}</div>
+              <div style="font-size:13px;color:#475569">${escapeHtml(b.bank_name)}</div>
             </div>
-            <button type="button" class="swal-copy" data-account="${b.bank_account}" style="background:#7c3aed;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
+            <button type="button" class="swal-copy" data-account="${escapeHtml(b.bank_account)}" style="background:#7c3aed;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
           </div>
         `).join("");
 
@@ -375,10 +376,10 @@ function WalletContent() {
                               <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;margin-bottom:8px">
                                 <img src="https://fs.cdnrc.com/payment-layout/svg/true-wallet.svg" style="width:40px;height:40px;isolation:isolate;filter:none!important;" />
                                 <div style="flex:1;text-align:left">
-                                  <div style="font-size:13px;color:#166534">${w.name}</div>
-                                  <div style="font-size:18px;font-weight:700;color:#0f172a;letter-spacing:1px">${w.phone}</div>
+                                  <div style="font-size:13px;color:#166534">${escapeHtml(w.name)}</div>
+                                  <div style="font-size:18px;font-weight:700;color:#0f172a;letter-spacing:1px">${escapeHtml(w.phone)}</div>
                                 </div>
-                                <button type="button" class="tw-copy" data-phone="${w.phone}" style="background:#22c55e;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
+                                <button type="button" class="tw-copy" data-phone="${escapeHtml(w.phone)}" style="background:#22c55e;color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">คัดลอก</button>
                               </div>
                             `).join("");
 

@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/lib/api";
+import { openConfiguredLink } from "@/lib/safe-url";
 
 export type ActItem = {
   id: number; type: string; title: string; subtitle: string | null;
@@ -32,11 +33,8 @@ export default function ActivityModal({ act, onClose }: { act: ActItem; onClose:
 
   const goLink = () => {
     api.post(`/activities/${act.id}/click`).catch(() => {});
-    const url = act.link_url || "";
     onClose();
-    if (!url) return;
-    if (url.startsWith("http")) window.open(url, "_blank");
-    else router.push(url);
+    openConfiguredLink(act.link_url, (path) => router.push(path));
   };
 
   const submit = async () => {
