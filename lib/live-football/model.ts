@@ -105,10 +105,14 @@ export function chooseMatch(currentId: string | null, matches: FootballMatch[], 
   return matches.find(match => match.state === 'live' && ready.has(match.id))?.id ?? null;
 }
 
+// Player hosts the provider is known to use. The provider rotates this domain (87333378.com → 603124563329.com on
+// 2026-11-11); when streams stop with "ยังเชื่อมต่อสัญญาณคู่นี้ไม่ได้", check the host it now returns and add it here.
+export const PLAYER_HOSTS = ['www.603124563329.com', '603124563329.com', 'www.87333378.com', '87333378.com'];
+
 export function validatePlayerUrl(value: unknown): string {
   if (typeof value !== 'string') throw new Error('ยังไม่มีลิงก์ตัวเล่น');
   const url = new URL(value);
-  if (url.protocol !== 'https:' || !['www.87333378.com', '87333378.com'].includes(url.hostname) || !url.pathname.startsWith('/livetv/') || url.username || url.password || url.port) {
+  if (url.protocol !== 'https:' || !PLAYER_HOSTS.includes(url.hostname) || !url.pathname.startsWith('/livetv/') || url.username || url.password || url.port) {
     throw new Error('ผู้ให้บริการเปลี่ยนรูปแบบตัวเล่น ต้องตรวจสอบก่อน');
   }
   return url.href;

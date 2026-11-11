@@ -179,6 +179,9 @@ test('invalid feed is rejected, empty valid feed is accepted, names and media UR
   assert.throws(() => model.validatePlayerUrl('https://www.87333378.com.evil.test/livetv/1/a'));
   assert.throws(() => model.validatePlayerUrl('https://user:password@www.87333378.com/livetv/a'));
   assert.equal(model.validatePlayerUrl('https://www.87333378.com/livetv/1/a?fs=1'), 'https://www.87333378.com/livetv/1/a?fs=1');
+  assert.equal(model.validatePlayerUrl('https://www.603124563329.com/livetv/1/a'), 'https://www.603124563329.com/livetv/1/a');
+  assert.throws(() => model.validatePlayerUrl('https://www.603124563329.com.evil.test/livetv/1/a'));
+  assert.throws(() => model.validatePlayerUrl('https://www.603124563329.com/other/1/a'));
 });
 
 test('server coalesces feed requests, confirms end, and preserves state on outage', async () => {
