@@ -86,8 +86,17 @@
 .fullscreenButton{margin-left:auto;display:flex;align-items:center;gap:7px;padding:8px 0 8px 10px;min-height:40px;flex-shrink:0;border:0;background:transparent;color:#fff;font:400 11px var(--font-kanit),sans-serif;cursor:pointer}
 .watchMatchHeader .fixtureRow{grid-template-columns:minmax(0,1fr) 64px minmax(0,1fr);padding:18px;box-shadow:none;background:#2a173a}
 .watchMatchHeader .rowAction{display:none}
-.stage{aspect-ratio:16/9;position:relative;background:#09070e;width:100%}
+.stage{aspect-ratio:16/9;position:relative;background:#09070e;width:100%;container-type:size}
 .stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+/* Our logo over the stream. The player letterboxes its video into a centred 16:9 box, so the frame below
+   is that same box (pure CSS, no JS, no timers). The logo box copies the player's cust_logo_wrap exactly:
+   top 3.9%, right 4.5%, 23% x 20% of the video, radius 10px, backdrop blur. */
+.streamBrandFrame{position:absolute;left:50%;top:50%;width:min(100cqw,calc(100cqh * 16 / 9));aspect-ratio:16/9;transform:translate(-50%,-50%);pointer-events:none;z-index:2;container-type:inline-size}
+.streamBrand{position:absolute;top:3.9%;right:4.5%;width:23%;height:20%;border-radius:10px;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5cqw;padding:0 4%;background:rgba(14,8,22,.55);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+/* box height = 20% of a 16:9 frame = 11.25cqw → logo 6.6cqw + tagline 1.45cqw leave room for padding */
+.streamBrand img{display:block;flex:none;height:6.6cqw;width:auto;max-width:100%;object-fit:contain;user-select:none}
+.streamBrand span{flex:none;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:max(6px,1.45cqw);font-weight:700;line-height:1.15;color:#f6d98f;text-shadow:0 1px 2px rgba(0,0,0,.7)}
+@supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){.streamBrand{background:rgba(14,8,22,.94)}}
 .playerDetails{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px;flex-wrap:wrap}
 .playerDetails p{font-size:11px;line-height:1.8;color:#b6a0c5;margin:0}
 .autoControl{display:flex;align-items:center;gap:10px;font-size:11px;color:#d0bedc}

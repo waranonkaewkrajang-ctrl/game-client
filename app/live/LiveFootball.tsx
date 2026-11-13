@@ -14,6 +14,7 @@ import { visibleProgrammes } from '@/lib/live-football/schedule';
 import type { ScheduleFeed } from '@/lib/live-football/schedule';
 import { resolveCalendarLink } from '@/lib/live-football/matching';
 import type { MatchLink, MatchLinks } from '@/lib/live-football/matching';
+import { STREAM_BRAND } from '@/lib/live-football/brand';
 
 type Viewing = { id: string; url: string; match: FootballMatch };
 const initialFeed: FootballFeed = { matches: [], updatedAt: 0, stale: false, message: null };
@@ -276,8 +277,16 @@ export default function LiveFootball({ initialMatchId }: { initialMatchId?: stri
   const player = <section ref={playerSectionRef} className={`${styles.broadcast} ${expanded ? styles.expanded : ''}`} aria-label="วิดีโอถ่ายทอดสด">
     <div className={styles.broadcastTop}><span className={styles.liveBadge}>{showFrame ? 'LIVE' : 'MATCH'}</span><span className={styles.broadcastLeague}>{selected?.league ?? 'ศูนย์รวมถ่ายทอดสด'}</span><button type="button" className={styles.fullscreenButton} onClick={toggleFullscreen} aria-pressed={expanded} aria-label={expanded ? 'ออกจากเต็มจอ' : 'ดูเต็มจอ'}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true"><path d={expanded ? 'M8 3v5H3m18 0h-5V3M3 16h5v5m8 0v-5h5' : 'M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5'} /></svg>{expanded ? 'ออกจากเต็มจอ' : 'เต็มจอ'}</button></div>
     {selected && <div className={styles.watchMatchHeader}><FixtureRow match={selected} selected /></div>}
-    <div className={styles.stage}>{showFrame ? <iframe key={viewing.url} src={viewing.url} title={`ถ่ายทอดสด ${current?.home} พบ ${current?.away}`} allow="autoplay; fullscreen; picture-in-picture; encrypted-media" allowFullScreen onLoad={() => setFrameLoaded(true)} /> : <MatchPreview match={selected} loading={!calendar.feed && !feed.updatedAt} />}</div>
-    {(showFrame || started) && <div className={styles.playerDetails}>{showFrame && <p>{frameLoaded ? 'เปิดเสียงหรือดูเต็มจอได้จากตัวเล่น' : notice}</p>}{started && <div className={styles.autoControl}><span>เล่นคู่ถัดไปอัตโนมัติ</span><button type="button" role="switch" aria-label="เปลี่ยนคู่ถัดไปอัตโนมัติ" aria-checked={autoNext} className={`${styles.switch} ${autoNext ? styles.switchOn : ''}`} onClick={() => { autoRef.current = !autoRef.current; setAutoNext(autoRef.current); }}><span /></button></div>}</div>}
+    <div className={styles.stage}>{showFrame ? <>
+      {/* No iframe fullscreen: the player's own fullscreen would leave our logo layer behind. Fullscreen goes through the button above. */}
+      <iframe key={viewing.url} src={viewing.url} title={`ถ่ายทอดสด ${current?.home} พบ ${current?.away}`} allow="autoplay; picture-in-picture; encrypted-media" onLoad={() => setFrameLoaded(true)} />
+      <div className={styles.streamBrandFrame} aria-hidden="true"><div className={styles.streamBrand}>
+        {/* eslint-disable-next-line @next/next/no-img-element -- tiny static overlay; skip the image optimizer */}
+        <img src={STREAM_BRAND.logo} alt="" decoding="async" draggable={false} />
+        {STREAM_BRAND.tagline && <span>{STREAM_BRAND.tagline}</span>}
+      </div></div>
+    </> : <MatchPreview match={selected} loading={!calendar.feed && !feed.updatedAt} />}</div>
+    {(showFrame || started) && <div className={styles.playerDetails}>{showFrame && <p>{frameLoaded ? 'เปิดเสียงได้จากตัวเล่น · ดูเต็มจอกดปุ่ม “เต็มจอ” ด้านบน' : notice}</p>}{started && <div className={styles.autoControl}><span>เล่นคู่ถัดไปอัตโนมัติ</span><button type="button" role="switch" aria-label="เปลี่ยนคู่ถัดไปอัตโนมัติ" aria-checked={autoNext} className={`${styles.switch} ${autoNext ? styles.switchOn : ''}`} onClick={() => { autoRef.current = !autoRef.current; setAutoNext(autoRef.current); }}><span /></button></div>}</div>}
   </section>;
   return <main className={`${styles.page} ${initialMatchId ? styles.watchPage : ''}`}><div className={styles.container}>
     {initialMatchId && <nav className={`${styles.breadcrumb} ${styles.watchBreadcrumb}`} aria-label="เส้นทางหน้าเว็บ"><Link href="/lobby">หน้าหลัก</Link><span>/</span><Link href="/live">ถ่ายทอดสด</Link><span>/ รับชมฟุตบอล</span></nav>}
