@@ -15,6 +15,19 @@ interface FinanceSettings {
   banks: { bank_code: string; bank_account: string; bank_name: string; is_active: boolean }[];
   channels: string[];
   amounts: number[];
+  /** ปิดปรับปรุงถอนเงิน — set in the admin (ตั้งค่าการเงิน) */
+  withdraw_maintenance?: { enabled: boolean; title: string; message: string };
+}
+
+/** "ปิดปรับปรุงถอนเงิน" popup — texts come from the admin; shown as plain text (never as HTML). */
+function showWithdrawMaintenance(title?: string, message?: string) {
+  return Swal.fire({
+    icon: "info",
+    title: title || "ปิดปรับปรุงระบบถอนเงินชั่วคราว",
+    text: message || "ขออภัยในความไม่สะดวก กรุณาลองใหม่อีกครั้งภายหลัง",
+    confirmButtonText: "รับทราบ",
+    confirmButtonColor: "#f59e0b",
+  });
 }
 
 function WalletContent() {
@@ -214,6 +227,17 @@ function WalletContent() {
     e.preventDefault();
     const val = parseFloat(amount);
     if (!val || val <= 0) return;
+    // ask the server each time: the admin can switch "ปิดปรับปรุงถอนเงิน" on/off at any moment
+    try {
+      const fresh = (await api.get("/finance/settings")).data?.data as FinanceSettings | undefined;
+      const m = fresh?.withdraw_maintenance;
+      if (m?.enabled) {
+        showWithdrawMaintenance(m.title, m.message);
+        return;
+      }
+    } catch {
+      /* the withdrawal request below is checked by the server anyway */
+    }
     if (val < finance.min_withdraw) {
       Swal.fire({ icon: "warning", title: `ถอนขั้นต่ำ ${finance.min_withdraw.toLocaleString()} บาท` });
       return;
@@ -229,6 +253,10 @@ function WalletContent() {
       setAmount("");
       fetchWallet();
     } catch (err: any) {
+      if (err.response?.data?.code === "withdraw_maintenance") {
+        showWithdrawMaintenance(err.response.data.title, err.response.data.message);
+        return;
+      }
       Swal.fire({ icon: "error", title: "ไม่สำเร็จ", text: err.response?.data?.message || "เกิดข้อผิดพลาด" });
     } finally { setLoading(false); }
   };
