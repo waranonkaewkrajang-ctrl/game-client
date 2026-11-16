@@ -3,7 +3,7 @@ import { useEffect, useState, useSyncExternalStore } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { avatarSrc, loadAvatar, subscribeAvatar } from "@/app/profile/avatars";
+import { avatarSrc, loadAvatar, reconcileAvatar, subscribeAvatar } from "@/app/profile/avatars";
 import { getAvatarPath } from "@/app/profile/utils/avatar";
 import { useTranslation } from "react-i18next";
 import api from "@/lib/api";
@@ -31,6 +31,11 @@ export default function Navbar() {
   // display only: the avatar picked on /profile (same localStorage key + fallback as the Profile hero)
   const savedAvatar = useSyncExternalStore(subscribeAvatar, () => (username ? loadAvatar(username) : null), () => null);
   const avatarUrl = savedAvatar ? avatarSrc(savedAvatar) : getAvatarPath(username || "guest");
+
+  // once per page load: upload a choice the server does not have yet / adopt the value saved at login (no request when in step)
+  useEffect(() => {
+    if (username) reconcileAvatar(username);
+  }, [username]);
 
   useEffect(() => {
     if (session) {

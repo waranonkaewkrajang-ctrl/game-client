@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import api from "@/lib/api";
 import type { Rank, Rewards, User, Wallet } from "./types";
 import { confirmLogout, toast } from "./lib";
-import { loadAvatar, saveAvatar } from "./avatars";
+import { loadAvatar, reconcileAvatar, saveAvatar } from "./avatars";
 import HeroBanner from "./components/HeroBanner";
 import QuickActionGrid from "./components/QuickActionGrid";
 import CreditCard from "./components/CreditCard";
@@ -64,7 +64,11 @@ export default function ProfileClient() {
       api.get("/user/rank"),
     ]).then(([me, bal, rew, rk]) => {
       if (!alive) return;
-      if (me.status === "fulfilled") setUser(me.value.data.data);
+      if (me.status === "fulfilled") {
+        const u = me.value.data.data;
+        if (u?.username) reconcileAvatar(u.username, u.avatar ?? null); // server value (other device) or upload this one
+        setUser(u);
+      }
       else setUserFailed(true);
       if (bal.status === "fulfilled") setWallet(bal.value.data.data);
       if (rew.status === "fulfilled") setRewards(rew.value.data.data);

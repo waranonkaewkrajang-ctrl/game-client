@@ -11,6 +11,7 @@ export interface User {
   status?: string | null;
   referral_code?: string | null;
   last_login_at?: string | null;
+  avatar?: string | null; // "01".."18" picked on /profile, null = default
 }
 
 /** GET /wallet/balance → res.data.data */
