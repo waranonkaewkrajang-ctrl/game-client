@@ -4,8 +4,9 @@ import { seoOrigin } from "@/lib/seo-origin";
 
 export const dynamic = "force-dynamic";
 
-// Only public pages whose content is in the server HTML. /lobby and /promotions need login (they render
-// nothing for crawlers) and /live is noindex, so they are left out.
+// Only public, self-canonical pages whose content is in the server HTML (the landing page and the guides).
+// Left out: /lobby, /wallet, /profile … need login (proxy.ts redirects guests); /live is noindex;
+// /login and /register canonicalise to "/" and, like /install, render their content only in the browser.
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = seoOrigin();
 
@@ -18,8 +19,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.7,
     })),
-    { url: `${baseUrl}/install`, changeFrequency: "monthly", priority: 0.6 },
-    { url: `${baseUrl}/register`, changeFrequency: "monthly", priority: 0.5 },
-    { url: `${baseUrl}/login`, changeFrequency: "monthly", priority: 0.4 },
   ];
 }
