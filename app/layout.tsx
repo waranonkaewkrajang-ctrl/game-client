@@ -1,17 +1,13 @@
 import type { Metadata } from "next";
-import { headers } from "next/headers";
+import { connection } from "next/server";
 import { Kanit } from "next/font/google";
 import "./globals.css";
-import NavbarWrapper from "@/components/NavbarWrapper";
-import BottomMenu from "@/components/BottomMenu";
-import I18nProvider from "@/components/I18nProvider";
-import PopupModal from "@/components/PopupModal";
-import Activities from "@/components/Activities";
-import ThemeLoader from "./ThemeLoader";
+import RouteShell from "@/components/landing/RouteShell";
 import ServiceWorkerRegister from "@/components/ServiceWorkerRegister";
+import { seoOrigin } from "@/lib/seo-origin";
 
-const TITLE = "SNAKE168 – เว็บอันดับ 1 ของไทย มั่นคงปลอดภัย 100%";
-const DESCRIPTION = "SNAKE168 เว็บสล็อตออนไลน์ ฝากถอนออโต้ ปลอดภัย 100% บริการ 24 ชม.";
+const TITLE = "SNAKE168 | สล็อต คาสิโนสด ยิงปลา เกมไพ่ และโปรแกรมฟุตบอล";
+const DESCRIPTION = "SNAKE168 รวมเกมจากหลายสิบค่ายในล็อบบี้เดียว ทั้งสล็อต คาสิโนสด ยิงปลา และเกมไพ่ พร้อมปฏิทินฟุตบอลลีกหลัก ใช้งานได้ทั้งคอมพิวเตอร์และมือถือ";
 // Self-hosted by next/font (replaces the Google Fonts @import in globals.css).
 // Exposed as --font-kanit; components reference the variable, not the literal family name.
 const kanit = Kanit({
@@ -21,24 +17,15 @@ const kanit = Kanit({
   variable: "--font-kanit",
 });
 
-const CANONICAL_BASE = "https://snake1168.online";
-
 export async function generateMetadata(): Promise<Metadata> {
-  // 🎯 จับ domain ปัจจุบันแบบ dynamic
-  const headersList = await headers();
-  const host = headersList.get("host") || "snake1168.online";
-  const protocol = host.includes("localhost") ? "http" : "https";
-  // host เป็น IPv6 ต้องครอบ [ ] ไม่งั้น new URL() พัง
-  const safeHost = host.includes(":") && !host.startsWith("[") && (host.match(/:/g) || []).length > 1
-    ? `[${host}]`
-    : host;
-  const baseUrl = `${protocol}://${safeHost}`;
+  await connection();
+  const canonicalOrigin = seoOrigin();
 
   return {
     title: TITLE,
     description: DESCRIPTION,
-    keywords: ["SNAKE168", "สล็อต", "คาสิโน", "สล็อตออนไลน์", "ฝากถอนออโต้"],
-    metadataBase: new URL(CANONICAL_BASE),
+    keywords: ["SNAKE168", "สล็อต", "คาสิโน", "สล็อตออนไลน์", "ค่ายเกม"],
+    metadataBase: new URL(canonicalOrigin),
 
     // บอก Google ว่าเนื้อหาตัวจริงอยู่โดเมนเดียว — กัน 9 โดเมนแย่งคะแนนกันเอง
     alternates: { canonical: "/" },
@@ -47,7 +34,7 @@ export async function generateMetadata(): Promise<Metadata> {
     openGraph: {
       title: TITLE,
       description: DESCRIPTION,
-      url: CANONICAL_BASE,
+      url: canonicalOrigin,
       siteName: "SNAKE168",
       images: [
         {
@@ -89,23 +76,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@context": "https://schema.org",
               "@type": "WebSite",
               "name": "SNAKE168",
-              "url": "https://snake1168.online",
-              "description": "SNAKE168 เว็บสล็อตออนไลน์ ฝากถอนออโต้ ปลอดภัย 100%",
+              "url": seoOrigin(),
               "inLanguage": "th",
             }),
           }}
         />
       </head>
       <body>
-        <ThemeLoader />
         <ServiceWorkerRegister />
-        <I18nProvider>
-          <NavbarWrapper />
-          {children}
-          <BottomMenu />
-          <Activities page="" slot="float_button" />
-          <PopupModal />
-        </I18nProvider>
+        <RouteShell>{children}</RouteShell>
       </body>
     </html>
   );
