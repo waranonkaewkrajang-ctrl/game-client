@@ -17,12 +17,17 @@ export default function ScrollReveal({
   useEffect(() => {
     const element = ref.current;
     if (!element || !("IntersectionObserver" in window)) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    // content is hidden only after hydration and only while still below the fold,
+    // so the server HTML (SEO / no-JS) and anything already on screen never disappear
+    if (element.getBoundingClientRect().top < window.innerHeight * 0.85) return;
 
+    element.dataset.state = "armed";
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry.isIntersecting) return;
-      element.dataset.revealed = "true";
+      element.dataset.state = "shown";
       observer.disconnect();
-    }, { threshold: 0.12 });
+    }, { threshold: 0.2, rootMargin: "0px 0px -15% 0px" });
 
     observer.observe(element);
     return () => observer.disconnect();
