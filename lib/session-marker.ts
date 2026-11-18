@@ -20,6 +20,14 @@ export function markSignedOut() {
 /** where to go after login: the ?next= path from the redirect, only if it is a local path */
 export function nextPathAfterLogin(fallback = "/lobby") {
   if (typeof window === "undefined") return fallback;
-  const next = new URLSearchParams(window.location.search).get("next");
-  return next && next.startsWith("/") && !next.startsWith("//") && !next.startsWith("/login") ? next : fallback;
+  const raw = new URLSearchParams(window.location.search).get("next");
+  // only a path on this site: "/\evil.com", "//evil.com", "https://…" etc. resolve to another origin and are refused
+  if (!raw || !raw.startsWith("/") || /[\\\u0000-\u001f]/.test(raw)) return fallback;
+  try {
+    const url = new URL(raw, window.location.origin);
+    if (url.origin !== window.location.origin || url.pathname.startsWith("/login")) return fallback;
+    return url.pathname + url.search + url.hash;
+  } catch {
+    return fallback;
+  }
 }
