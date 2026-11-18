@@ -1,5 +1,7 @@
 // Small client helpers shared by the profile components.
 
+import { markSignedOut } from "@/lib/session-marker";
+
 /** SweetAlert2 is loaded only when a dialog/toast is actually needed. */
 export async function swal() {
   return (await import("sweetalert2")).default;
@@ -66,6 +68,7 @@ export async function confirmLogout() {
   if (res.isConfirmed) {
     localStorage.removeItem("user_token");
     localStorage.removeItem("user_data");
+    markSignedOut();
     window.location.href = "/login";
   }
 }

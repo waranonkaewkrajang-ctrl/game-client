@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import api from "@/lib/api";
+import { markSignedIn, nextPathAfterLogin } from "@/lib/session-marker";
 import Swal from "sweetalert2";
 import styles from "./login.module.css";
 
@@ -28,6 +29,13 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [logoFailed, setLogoFailed] = useState(false);
 
+  // already signed in (e.g. sent here by proxy.ts before the marker cookie existed): restore the marker and continue
+  useEffect(() => {
+    if (!localStorage.getItem("user_token")) return;
+    markSignedIn();
+    router.replace(nextPathAfterLogin());
+  }, [router]);
+
   const [contactLinks, setContactLinks] = useState({ line: "#", telegram: "#" });
   useEffect(() => {
     api.get("/contact-links").then((res) => setContactLinks(res.data)).catch(() => {});
@@ -44,7 +52,8 @@ export default function LoginPage() {
       } else {
         localStorage.setItem("user_token", res.data.data.token);
         localStorage.setItem("user_data", JSON.stringify(res.data.data.user));
-        router.push("/lobby");
+        markSignedIn();
+        router.push(nextPathAfterLogin());
       }
     } catch (err) {
       Swal.fire({
@@ -65,7 +74,8 @@ export default function LoginPage() {
       const res = await api.post("/auth/verify-2fa", { two_factor_token: twoFactorToken, otp });
       localStorage.setItem("user_token", res.data.data.token);
       localStorage.setItem("user_data", JSON.stringify(res.data.data.user));
-      router.push("/lobby");
+      markSignedIn();
+      router.push(nextPathAfterLogin());
     } catch {
       Swal.fire({
         icon: "error",

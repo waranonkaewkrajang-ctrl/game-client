@@ -7,6 +7,7 @@ import { avatarSrc, loadAvatar, reconcileAvatar, subscribeAvatar } from "@/app/p
 import { getAvatarPath } from "@/app/profile/utils/avatar";
 import { useTranslation } from "react-i18next";
 import api from "@/lib/api";
+import { markSignedIn, markSignedOut } from "@/lib/session-marker";
 import { readStoredUsername } from "@/lib/safe-json";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 import NotificationBell from "@/components/NotificationBell";
@@ -37,6 +38,9 @@ export default function Navbar() {
     if (username) reconcileAvatar(username);
   }, [username]);
 
+  // keep the server-side "signed in" marker in step with the stored login (proxy.ts)
+  useEffect(() => { if (session) markSignedIn(); }, [session]);
+
   useEffect(() => {
     if (session) {
       const fetchBalance = () => {
@@ -61,6 +65,7 @@ export default function Navbar() {
     api.post("/auth/logout").catch(() => {});
     localStorage.removeItem("user_token");
     localStorage.removeItem("user_data");
+    markSignedOut();
     setIsLoggedIn(false);
     router.push("/login");
   };

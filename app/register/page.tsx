@@ -12,6 +12,7 @@ import type { RegistrationErrors, RegistrationForm } from "@/lib/registration";
 import styles from "./register.module.css";
 import BankSelect from "./BankSelect";
 import PasswordStrength from "./PasswordStrength";
+import { markSignedIn, markSignedOut } from "@/lib/session-marker";
 
 type ApiError = { message?: string; errors?: Record<string, string[] | string> };
 
@@ -71,8 +72,10 @@ export default function RegisterPage() {
       try {
         localStorage.setItem("user_token", data.token);
         localStorage.setItem("user_data", JSON.stringify(data.user));
+        markSignedIn();
       } catch {
         try { localStorage.removeItem("user_token"); } catch {}
+        markSignedOut();
         setNotice("สมัครสำเร็จแล้ว แต่เบราว์เซอร์บันทึกการเข้าสู่ระบบไม่ได้ กรุณาไปหน้าเข้าสู่ระบบ");
         return;
       }

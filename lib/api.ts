@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { markSignedOut } from './session-marker';
 
 const api = axios.create({
   baseURL: 'https://admintg289.sbs/api',
@@ -18,6 +19,7 @@ api.interceptors.response.use(
   (err) => {
     if (err.response?.status === 401 && typeof window !== 'undefined') {
       localStorage.removeItem('user_token');
+      markSignedOut();
       window.location.href = '/login';
     }
     return Promise.reject(err);
