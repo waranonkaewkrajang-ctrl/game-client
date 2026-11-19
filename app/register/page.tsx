@@ -13,6 +13,7 @@ import styles from "./register.module.css";
 import BankSelect from "./BankSelect";
 import PasswordStrength from "./PasswordStrength";
 import { markSignedIn, markSignedOut } from "@/lib/session-marker";
+import { captureReferralCode, clearReferralCode } from "@/lib/referral-link";
 
 type ApiError = { message?: string; errors?: Record<string, string[] | string> };
 
@@ -26,9 +27,21 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [registered, setRegistered] = useState(false);
   const [referralOpen, setReferralOpen] = useState(false);
+  const [refFromLink, setRefFromLink] = useState(false);
   const submitting = useRef(false);
   const formRef = useRef<HTMLFormElement>(null);
   const previousStep = useRef(step);
+  // ลิงก์ชวนเพื่อน /register?ref=CODE → เติมรหัสแนะนำให้ (เดิมหน้านี้ไม่อ่าน ref เลย เพื่อนที่กดลิงก์จึงไม่ถูกผูกกับผู้แนะนำ)
+  useEffect(() => {
+    const t = setTimeout(() => {
+      const code = captureReferralCode();
+      if (!code) return;
+      setForm(previous => (previous.referral_code ? previous : { ...previous, referral_code: code }));
+      setRefFromLink(true);
+      setReferralOpen(true);
+    }, 0);
+    return () => clearTimeout(t);
+  }, []);
   useEffect(() => {
     if (previousStep.current !== step) {
       previousStep.current = step;
@@ -64,6 +77,7 @@ export default function RegisterPage() {
       const response = await api.post("/auth/register", registrationPayload(form));
       // A successful registration must never be resubmitted if session persistence fails.
       setRegistered(true);
+      clearReferralCode();
       const data = response.data?.data;
       if (!data?.token || !data?.user) {
         setNotice("สมัครสำเร็จแล้ว กรุณาไปหน้าเข้าสู่ระบบด้วยเบอร์โทรและรหัสผ่านที่ตั้งไว้");
@@ -126,7 +140,7 @@ export default function RegisterPage() {
               <div className={styles.field}><label id="register-bank-label" htmlFor="register-bank_code">ธนาคารที่ใช้สมัคร</label><BankSelect value={form.bank_code} onChange={value => set("bank_code", value)} error={errors.bank_code} disabled={loading} />{fieldError("bank_code")}</div>
               <div className={styles.field}><label htmlFor="register-bank_account">{form.bank_code === "TRUEWALLET" ? "เบอร์ TrueWallet" : "เลขบัญชีธนาคาร"}</label><input {...fieldProps("bank_account")} type="text" inputMode="numeric" autoComplete="off" placeholder={form.bank_code === "TRUEWALLET" ? "เบอร์ที่ผูกกับ TrueWallet" : "กรอกตัวเลข ไม่ต้องใส่ขีด"} maxLength={form.bank_code === "TRUEWALLET" ? 10 : 20} value={form.bank_account} onChange={e => set("bank_account", e.target.value.replace(/\D/g, ""))} required />{fieldError("bank_account")}</div>
               <div className={styles.field}><label htmlFor="register-bank_name">ชื่อ–นามสกุลเจ้าของบัญชี</label><input {...fieldProps("bank_name")} autoComplete="name" placeholder="ชื่อจริง นามสกุล" maxLength={100} value={form.bank_name} onChange={e => set("bank_name", e.target.value)} required /><p className={styles.hint}>ต้องตรงกับชื่อในบัญชีธนาคารหรือวอลเล็ท</p>{fieldError("bank_name")}</div>
-              <details className={styles.optional} open={referralOpen} onToggle={event => setReferralOpen(event.currentTarget.open)}><summary>มีรหัสแนะนำ? <span>ไม่จำเป็นต้องกรอก</span></summary><div className={styles.field}><label htmlFor="register-referral_code">รหัสแนะนำ</label><input {...fieldProps("referral_code")} autoComplete="off" placeholder="รหัสจากผู้แนะนำ" maxLength={20} value={form.referral_code} onChange={e => set("referral_code", e.target.value)} />{fieldError("referral_code")}</div></details>
+              <details className={styles.optional} open={referralOpen} onToggle={event => setReferralOpen(event.currentTarget.open)}><summary>มีรหัสแนะนำ? <span>{refFromLink ? "ใส่ให้แล้วจากลิงก์ของเพื่อน" : "ไม่จำเป็นต้องกรอก"}</span></summary><div className={styles.field}><label htmlFor="register-referral_code">รหัสแนะนำ</label><input {...fieldProps("referral_code")} autoComplete="off" placeholder="รหัสจากผู้แนะนำ" maxLength={20} value={form.referral_code} onChange={e => set("referral_code", e.target.value)} />{fieldError("referral_code")}</div></details>
             </fieldset>}
             <div className={styles.actions}>{step === 2 && <button type="button" className={styles.previous} disabled={loading} onClick={() => setStep(1)}>ย้อนกลับ</button>}<button type="submit" className={styles.submit} disabled={loading}>{loading ? "กำลังสมัครสมาชิก…" : step === 1 ? "ถัดไป → ข้อมูลรับเงิน" : "สมัครสมาชิก"}</button></div>
             <p className={styles.footer}>มีบัญชีอยู่แล้ว? <Link href="/login">เข้าสู่ระบบ</Link></p>
